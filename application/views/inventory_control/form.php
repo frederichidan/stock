@@ -28,7 +28,11 @@
 	<br />
 
 	<button type="submit" name="submit" class="btn btn-success">
-		<?php echo $this->lang->line('btn_save'); ?>
-	</button>
-	<a class="btn btn-default" href="<?php echo base_url() . "item/view/" . $item->item_id; ?>"><?php echo $this->lang->line('btn_cancel'); ?></a>
+		<?= lang('btn_save'); ?>
+	</button><a class="btn btn-default" href="<?php
+	if(isset($update) && $update) {
+		echo base_url().'item/inventory_controls/'.$item->item_id;
+	} else {
+		echo base_url() . "item/view/" . $item->item_id;
+	} ?>"><?= lang('btn_back_to_list'); ?></a>
 </form>

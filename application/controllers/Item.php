@@ -504,6 +504,81 @@ public function index($page = 1)
         }
     }
 
+    /**
+    * Allows modification of an inventory control.
+    *
+    * @param $id : The id of the inventory control to modify.
+    */
+    public function modify_inventory_control($id) {
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN) {
+            $this->load->model(['inventory_control_model','user_model']);
+
+            $inventory_control = $this->inventory_control_model->get($id);
+            $data['inventory_control'] = $inventory_control;
+
+            if(!isset($inventory_control) || is_null($inventory_control)) {
+                // $id is not assigned to any item
+                redirect('/item');
+            }
+
+            $data['item'] = $this->item_model->get($inventory_control->item_id);
+            $data['controller'] = $this->user_model->get($inventory_control->controller_id);
+            $data['date'] = $inventory_control->date;
+            $data['remarks'] = $inventory_control->remarks;
+            $data['update'] = TRUE;
+
+            if (isset($_POST['submit'])) {
+                $inventory_control->date = $_POST['date'];
+                $inventory_control->remarks = $_POST['remarks'];
+
+                $this->inventory_control_model->update($id, $inventory_control);
+                redirect('item/inventory_controls/'.$inventory_control->item_id);
+            } else {
+                $this->display_view('inventory_control/form', $data);
+            }
+        } else {
+            // Access is not allowed
+            redirect("auth/login");
+        }
+    }
+
+    /**
+    * Deletes an inventory control.
+    * Admin only.
+    *
+    * @param $id : The inventory control to delete.
+    * @param $confirm : Whether the user has confirmed their deletion.
+    *                   - 0 is to ask for confirmation
+    *                   - 1 is when the user has confirmed
+    */
+    public function delete_inventory_control($id, $confirm = 0) {
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN) {
+            $this->load->model('inventory_control_model');
+
+            $inventory_control = $this->inventory_control_model->get($id);
+            if(!isset($inventory_control) || is_null($inventory_control)) {
+                // $id is not assigned to any item
+                redirect('/item');
+            }
+
+            $data['inventory_control'] = $inventory_control;
+            $data['item_id'] = $inventory_control->item_id;
+
+            if ($confirm == 0) {
+                $this->display_view('inventory_control/delete', $data);
+            } else if ($confirm == 1) {
+                $this->inventory_control_model->delete($id);
+                $this->display_view('inventory_control/success', $data);
+            } else {
+                // Go back to the list
+                redirect('/item/inventory_controls/'.$data['item_id']);
+            }
+        } else {
+            // Access is not allowed
+            redirect('auth/login');
+        }
+    }
+
     /***************************************************************************
      * Display inventory controls list for one given item
      *
@@ -511,6 +586,7 @@ public function index($page = 1)
      */
 
     public function inventory_controls($id = NULL) {
+            $this->load->model('inventory_control_model');
         if (empty($id)) {
             // No item specified, display items list
             redirect('/item');

@@ -23,7 +23,7 @@ class Item_model extends MY_Model
     protected $has_many = ['item_tag_links', 'loans', 'inventory_controls'];
 
     /* MY_Model callback methods */
-    protected $after_get = ['get_inventory_id', 'get_inventory_prefix_complete', 
+    protected $after_get = ['get_inventory_id', 'get_inventory_number_complete', 
     						'get_image', 'get_warranty_status',
                             'get_current_loan', 'get_last_inventory_control',
                             'get_tags'];
@@ -60,7 +60,7 @@ class Item_model extends MY_Model
 		if (!is_null($item)) {
 			$inventory_id = $item->item_id;
 
-	    	for( $i = strlen($inventory_id) ; $i < INVENTORY_PREFIX_CHARS; $i++) {
+	    	for( $i = strlen($inventory_id) ; $i < INVENTORY_NUMBER_CHARS; $i++) {
 	        	$inventory_id = "0".$inventory_id;
 	        }
 
@@ -73,15 +73,15 @@ class Item_model extends MY_Model
 
 	/*
 	 * Returns the complete inventory number,
-	 * concatenation of inventory_prefix and inventory_id.
+	 * concatenation of inventory_number and inventory_id.
 	 */
-	public function get_inventory_prefix_complete($item)
+	public function get_inventory_number_complete($item)
 	{
-		$inventory_prefix_complete = "";
+		$inventory_number_complete = "";
 
 		if (!is_null($item)) {
-			$inventory_prefix_complete = $item->inventory_prefix.$item->inventory_id;
-      $item->inventory_prefix_complete = $inventory_prefix_complete;
+			$inventory_number_complete = $item->inventory_prefix.$item->inventory_id;
+      $item->inventory_number_complete = $inventory_number_complete;
     	}
 
     	return $item;
@@ -273,18 +273,18 @@ class Item_model extends MY_Model
             // The last part of the search text is probably the item ID
             $item_id = intval($inventory_lastPart);
 
-            // The other part(s) compose the inventory_prefix
-            $inventory_prefix = '';
+            // The other part(s) compose the inventory_number
+            $inventory_number = '';
             for ($i = 0; $i < (count($inventory_exploded) - 1); $i++) {
               if ($i > 0) {
-                $inventory_prefix .= '.';
+                $inventory_number .= '.';
               }
-              $inventory_prefix .= $inventory_exploded[$i];
+              $inventory_number .= $inventory_exploded[$i];
             }
 
           } else {
             // The item ID is probably not in the search text.
-            $inventory_prefix = $text_search_content;
+            $inventory_number = $text_search_content;
           }
 
           // Prepare WHERE clause
@@ -295,13 +295,13 @@ class Item_model extends MY_Model
             ."OR serial_number LIKE '%".$text_search_content."%' ";
 
           if (isset($item_id)) {
-            if (isset($inventory_prefix) && $inventory_prefix != '') {
-              $where_textSearchFilter .= "OR (item_id = ".$item_id." AND inventory_prefix LIKE '%".$inventory_prefix."%') ";
+            if (isset($inventory_number) && $inventory_number != '') {
+              $where_textSearchFilter .= "OR (item_id = ".$item_id." AND inventory_number LIKE '%".$inventory_number."%') ";
             } else {
               $where_textSearchFilter .= "OR item_id = ".$item_id." ";
             }
           } else {
-            $where_textSearchFilter .= "OR inventory_prefix LIKE '%".$text_search_content."%' ";
+            $where_textSearchFilter .= "OR inventory_number LIKE '%".$text_search_content."%' ";
           }
           $where_textSearchFilter .= ')';
 

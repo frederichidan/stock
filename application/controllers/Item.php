@@ -63,7 +63,7 @@ public function index($page = 1)
           $sortValue = "buying_date";
           break;
         case 3:
-          $sortValue = "inventory_prefix";
+          $sortValue = "inventory_number";
           break;
         //In case of problem, it automatically switches to name
         default:
@@ -117,7 +117,7 @@ public function index($page = 1)
     $output['sort_order'] = array($this->lang->line('sort_order_name'),
                                   $this->lang->line('sort_order_stocking_place_id'),
                                   $this->lang->line('sort_order_date'),
-                                  $this->lang->line('sort_order_inventory_prefix'));
+                                  $this->lang->line('sort_order_inventory_number'));
     $output['sort_asc_desc'] = array($this->lang->line('sort_order_asc'),
                                      $this->lang->line('sort_order_des'));
     
@@ -704,7 +704,7 @@ public function index($page = 1)
 
         $this->form_validation->set_rules("name", $this->lang->line('field_item_name'), 'required');
 
-        $this->form_validation->set_rules("inventory_prefix", $this->lang->line('field_inventory_prefix'), 'required');
+        $this->form_validation->set_rules("inventory_number", $this->lang->line('field_inventory_number'), 'required');
     }
 
 }

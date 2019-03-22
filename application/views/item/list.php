@@ -171,7 +171,7 @@
         <?php echo html_escape($item->stocking_place->name); ?>
       </span>
       <span class="col-sm-4" style="padding-left: -15px;">
-        <a href="<?php echo base_url('/item/view').'/'.$item->item_id ?>"><?php echo html_escape($item->inventory_prefix_complete); ?>
+        <a href="<?php echo base_url('/item/view').'/'.$item->item_id ?>"><?php echo html_escape($item->inventory_number_complete); ?>
         <br><?php echo html_escape($item->serial_number); ?></a>
       </span>
       <!-- DELETE ACCESS RESTRICTED FOR ADMINISTRATORS ONLY -->

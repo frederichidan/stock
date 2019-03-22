@@ -118,7 +118,7 @@
 <!-- PAGINATION -->
 <div id="pagination_top"><?=$pagination?></div>
 
-<div class="top-margin table-responsive">
+<div class="top-margin table-responsive" style="overflow-x: hidden;">
   <div class="row" style="border-bottom: black solid 2px">
   <!-- LIST OF ITEMS -->
   <?php if(empty($items)) { ?>

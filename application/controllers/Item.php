@@ -301,7 +301,7 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -419,7 +419,7 @@ public function index($page = 1)
             $this->display_view('item/form', $data);
         } else {
             // Update is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -451,7 +451,7 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -500,7 +500,7 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -578,7 +578,7 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -636,7 +636,7 @@ public function index($page = 1)
             $this->display_view('loan/form', $data);
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -691,7 +691,7 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
@@ -704,7 +704,7 @@ public function index($page = 1)
 
         $this->form_validation->set_rules("name", $this->lang->line('field_item_name'), 'required');
 
-        $this->form_validation->set_rules("inventory_number", $this->lang->line('field_inventory_number'), 'required');
+        $this->form_validation->set_rules("inventory_prefix", lang('field_inventory_number'), 'required');
     }
 
 }

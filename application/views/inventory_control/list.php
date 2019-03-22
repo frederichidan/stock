@@ -8,7 +8,7 @@
     <div class="row">
         <h3><?php
         echo $this->lang->line('field_inventory_control').' : ';
-        echo $item->name.' ('.$item->inventory_number.')';
+        echo $item->name.' ('.$item->inventory_prefix.')';
         ?></h3>
     </div>
 

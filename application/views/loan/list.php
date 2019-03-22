@@ -7,7 +7,7 @@
     <!-- ITEM NAME AND DESCRIPTION -->
 	<a style="color:inherit;" href="<?php echo $item_page; ?>">
     <div class="row">
-        <div class="col-md-4"><h3><?php echo $item->inventory_number; ?></h3></div>
+        <div class="col-md-4"><h3><?php echo $item->inventory_prefix; ?></h3></div>
         <div class="col-md-7"><h3><?php echo $item->name; ?></h3></div>
         <div class="col-md-1"><h6 class="text-right">ID <?php echo $item->item_id; ?></h6></div>
     </div>

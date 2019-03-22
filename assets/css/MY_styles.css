@@ -42,6 +42,12 @@ label {
 .left-margin {
 	margin-left: 10px;
 }
+.divTable:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+.divTable:hover {
+    background-color: #f5f5f5;
+}
 
 /* Added for mobile resizing */
 @media (max-width: 769px) {

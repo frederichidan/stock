@@ -143,8 +143,8 @@
         ?></b>
     </div>
   </div>
-    <?php foreach ($items as $item) { ?>
-    <div class="row" style="border-bottom: black solid 1px;padding: 5px 0px 5px 0px;">
+  <?php foreach ($items as $item) { ?>
+  <div class="row divTable" style="border-bottom: black solid 1px; padding: 5px 0px 5px 0px;">
     <div class="col-sm-3" style="display: flex;">
       <div class="col-sm-5">
         <a href="<?php echo base_url('/item/view').'/'.$item->item_id ?>" style="display:block;">
@@ -166,25 +166,24 @@
       <a href="<?php echo base_url('/item/view').'/'.$item->item_id ?>" style="display:block"><?php echo html_escape($item->name); ?></a>
       <h6><?php echo html_escape($item->description); ?></h6>
     </div>
-    <div class="col-sm-3">
-      <span class="col-sm-9">
+    <div class="col-sm-4">
+      <span class="col-sm-7">
         <?php echo html_escape($item->stocking_place->name); ?>
       </span>
-      <span class="col-sm-3" style="padding-left: 15px;float: right;">
-        <a href="<?php echo base_url('/item/view').'/'.$item->item_id ?>"><?php echo html_escape($item->inventory_number_complete); ?>
+      <span class="col-sm-4" style="padding-left: -15px;">
+        <a href="<?php echo base_url('/item/view').'/'.$item->item_id ?>"><?php echo html_escape($item->inventory_prefix_complete); ?>
         <br><?php echo html_escape($item->serial_number); ?></a>
       </span>
       <!-- DELETE ACCESS RESTRICTED FOR ADMINISTRATORS ONLY -->
-      <div class="col-sm-auto">
+      <span class="col-sm-1">
         <?php
           if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_ADMIN) { ?>
         <a href="<?php echo base_url('/item/delete').'/'.$item->item_id ?>" class="close" title="Supprimer l'objet">×</a>
         <?php } ?>
-      </div>
+      </span>
     </div>
   </div>
-  <?php } ?>
-  <?php } ?>
+  <?php } } ?>
 </div>
 <div id="pagination_bottom"><?=$pagination?></div>
 </div>

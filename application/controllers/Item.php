@@ -486,8 +486,11 @@ public function index($page = 1)
             } else {
                 $data['remarks'] = '';
             }
+            $problem = FALSE;
+            if(isset($_POST['remarks']) && preg_match('/<|>/', $_POST['remarks']))
+                $problem = TRUE;
 
-            if (isset($_POST['submit'])) {
+            if (isset($_POST['submit']) && !$problem) {
                 $inventory_control->item_id = $id;
                 $inventory_control->controller_id = $_SESSION['user_id'];
                 $inventory_control->date = $data['date'];
@@ -512,6 +515,7 @@ public function index($page = 1)
     public function modify_inventory_control($id) {
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN) {
             $this->load->model(['inventory_control_model','user_model']);
+            $problem = FALSE;
 
             $inventory_control = $this->inventory_control_model->get($id);
             $data['inventory_control'] = $inventory_control;
@@ -526,8 +530,10 @@ public function index($page = 1)
             $data['date'] = $inventory_control->date;
             $data['remarks'] = $inventory_control->remarks;
             $data['update'] = TRUE;
+            if(isset($_POST['remarks']) && preg_match('/<|>/', $_POST['remarks']))
+                $problem = TRUE;
 
-            if (isset($_POST['submit'])) {
+            if (isset($_POST['submit']) && !$problem) {
                 $inventory_control->date = $_POST['date'];
                 $inventory_control->remarks = $_POST['remarks'];
 

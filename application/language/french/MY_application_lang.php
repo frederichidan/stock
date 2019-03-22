@@ -115,6 +115,10 @@ $lang['header_suppliers_country']       = 'Pays';
 $lang['header_suppliers_phone']         = 'Téléphone';
 $lang['header_suppliers_email']         = 'E-mail';
 
+// Deletion text
+$lang['delete_inventory_control_verify'] = 'Voulez-vous vraiment supprimer le contrôle d\'inventaire du ';
+$lang['delete_inventory_control_success'] = 'Le contrôle d\'inventaire a été supprimé';
+
 // Admin labels
 $lang['admin_tab_users']                = 'Utilisateurs';
 $lang['admin_tab_tags']                 = 'Tags';

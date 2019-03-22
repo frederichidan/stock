@@ -504,7 +504,7 @@ public function index($page = 1)
         }
     }
 
-    /**
+    /***************************************************************************
     * Allows modification of an inventory control.
     *
     * @param $id : The id of the inventory control to modify.
@@ -538,11 +538,11 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect("auth/login");
+            $this->ask_for_login();
         }
     }
 
-    /**
+    /***************************************************************************
     * Deletes an inventory control.
     * Admin only.
     *
@@ -561,7 +561,7 @@ public function index($page = 1)
                 redirect('/item');
             }
 
-            $data['inventory_control'] = $inventory_control;
+            //$data['inventory_control'] = $inventory_control;
             $data['item_id'] = $inventory_control->item_id;
 
             if ($confirm == 0) {
@@ -575,7 +575,7 @@ public function index($page = 1)
             }
         } else {
             // Access is not allowed
-            redirect('auth/login');
+            $this->ask_for_login();
         }
     }
 

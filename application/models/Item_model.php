@@ -60,7 +60,7 @@ class Item_model extends MY_Model
 		if (!is_null($item)) {
 			$inventory_id = $item->item_id;
 
-	    	for( $i = strlen($inventory_id) ; $i < INVENTORY_NUMBER_CHARS; $i++) {
+	    	for( $i = strlen($inventory_id) ; $i < INVENTORY_PREFIX_CHARS; $i++) {
 	        	$inventory_id = "0".$inventory_id;
 	        }
 

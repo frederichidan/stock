@@ -567,7 +567,7 @@ public function index($page = 1)
                 redirect('/item');
             }
 
-            //$data['inventory_control'] = $inventory_control;
+            $data['inventory_control'] = $inventory_control;
             $data['item_id'] = $inventory_control->item_id;
 
             if ($confirm == 0) {

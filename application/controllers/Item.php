@@ -515,7 +515,6 @@ public function index($page = 1)
     public function modify_inventory_control($id) {
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN) {
             $this->load->model(['inventory_control_model','user_model']);
-            $problem = FALSE;
 
             $inventory_control = $this->inventory_control_model->get($id);
             $data['inventory_control'] = $inventory_control;
@@ -530,8 +529,8 @@ public function index($page = 1)
             $data['date'] = $inventory_control->date;
             $data['remarks'] = $inventory_control->remarks;
             $data['update'] = TRUE;
-            if(isset($_POST['remarks']) && preg_match('/<|>/', $_POST['remarks']))
-                $problem = TRUE;
+
+            $problem = (isset($_POST['remarks']) && preg_match('/<|>/', $_POST['remarks']));
 
             if (isset($_POST['submit']) && !$problem) {
                 $inventory_control->date = $_POST['date'];
@@ -556,6 +555,7 @@ public function index($page = 1)
     * @param $confirm : Whether the user has confirmed their deletion.
     *                   - 0 is to ask for confirmation
     *                   - 1 is when the user has confirmed
+    *                   - other will lead back to the list of inventory controls
     */
     public function delete_inventory_control($id, $confirm = 0) {
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN) {

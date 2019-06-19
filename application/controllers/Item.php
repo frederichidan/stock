@@ -537,6 +537,34 @@ class Item extends MY_Controller {
     }
 
     /**
+     * Modify the selected inventory control, require MSP or admin user rights
+     * 
+     * @param $id : The inventory control's id
+     */
+    public function modify_inventory_control($id = NULL)
+    {
+        // Check if this is allowed
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MSP)
+        {
+            
+        }
+    }
+    
+    /**
+     * Delete the selected inventory control, require admin user rights
+     * 
+     * @param $id : The inventory control's id
+     */
+    public function delete_inventory_control($id = NULL)
+    {
+        // Check if this is allowed
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN)
+        {
+            
+        }
+    }
+    
+    /**
      * Create loan for one given item
      *
      * @param integer $id

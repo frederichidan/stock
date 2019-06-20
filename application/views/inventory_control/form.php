@@ -10,21 +10,21 @@
 		<?php echo $this->lang->line('field_inventory_controller').' : '; ?>
 	</label>
 	<input class="form-control" name="controller"
-	       value="<?php if(isset($controller)) {echo $controller->username;} ?>" disabled />
+               value="<?php if(isset($controller->username)) {echo $controller->username;} ?>" disabled />
 	<br />
 
 	<label for="date">
 		<?php echo $this->lang->line('field_inventory_control_date').' : '; ?>
 	</label>
 	<input class="form-control" name="date" type="date"
-	       value="<?php if(isset($date)) {echo $date;} ?>" />
+               value="<?php if(isset($inventory_control->date)) {echo set_value('date', $inventory_control->date);} else {echo set_value('date');} ?>" />
 	<br />
 
 	<label for="remarks">
 		<?php echo $this->lang->line('field_remarks').' : '; ?>
 	</label>
 	<input class="form-control" name="remarks"
-	       value="<?php if(isset($remarks)) {echo $remarks;} ?>" autofocus />
+               value="<?php if(isset($inventory_control->remarks)) {echo set_value('remarks',$inventory_control->remarks);} else {echo set_value('remarks');} ?>" autofocus />
 	<br />
 
 	<button type="submit" name="submit" class="btn btn-success">

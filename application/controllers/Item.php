@@ -508,6 +508,7 @@ class Item extends MY_Controller {
                 $this->inventory_control_model->insert($inventory_control);
                 redirect("item/view/" . $id);
             } else {
+            ?><pre><?=var_dump($data);?></pre><?php
                 $this->display_view('inventory_control/form', $data);
             }
         } else {
@@ -546,7 +547,42 @@ class Item extends MY_Controller {
         // Check if this is allowed
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MSP)
         {
+            $this->load->model('inventory_control_model');
+            $this->load->model('user_model');
+            $this->load->library('form_validation');
+
+            $controller = $this->user_model->get($_SESSION['user_id']);
             
+            if(is_null($this->inventory_control_model->get($id))){
+              redirect("/inventory_controls/".$inventory_control->item_id);
+              exit();
+            }
+
+            if (!empty($_POST)) {
+              $this->form_validation->set_rules('date', $this->lang->line('field_inventory_control_date'), "required", $this->lang->line('msg_err_invalid_date'));
+              $this->form_validation->set_rules('remarks', $this->lang->line('field_remarks'), "required", $this->lang->line('msg_err_remarks_empty'));
+
+              if ($this->form_validation->run() === TRUE)
+              {
+                $data = array();
+                $data['date'] = $_POST['date'];
+                $data['remarks'] = $_POST['remarks'];
+                $this->inventory_control_model->update($id, $data);
+
+                redirect("/inventory_controls/".$inventory_control->item_id);
+                exit();
+              }
+            } else {
+              $output = get_object_vars($this->inventory_control_model->get($id));
+            }
+            if(!is_null($this->inventory_control_model->get($id))) {
+              $output['inventory_control'] = get_object_vars($this->inventory_control_model->get($id));
+              $output['item'] = $this->item_model->get($id);
+              $output['controller'] = $this->inventory_control_model->get_all();
+            }
+
+            ?><pre><?=var_dump($output);?></pre><?php
+            $this->display_view("inventory_control/form", $output);
         }
     }
     
@@ -555,12 +591,27 @@ class Item extends MY_Controller {
      * 
      * @param $id : The inventory control's id
      */
-    public function delete_inventory_control($id = NULL)
+    public function delete_inventory_control($id = NULL, $action = NULL)
     {
         // Check if this is allowed
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] == ACCESS_LVL_ADMIN)
         {
-            
+            $this->load->model('inventory_control_model');
+            $this->load->model('item_model');
+
+            if(is_null($this->inventory_control_model->get($id))) {
+              redirect("/item/inventory_controls/$id");
+            }
+
+            if (is_null($action)) {
+              $output = get_object_vars($this->inventory_control_model->get($id));
+              $output["inventory_control"] = $this->inventory_control_model->get_all();
+              
+              $this->display_view("inventory_control/delete", $output);
+            } else {
+              $this->inventory_control_model->delete($id);
+              redirect("/item/inventory_controls/$id");
+            }
         }
     }
     

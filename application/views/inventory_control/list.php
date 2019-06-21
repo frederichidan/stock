@@ -26,17 +26,25 @@
                         <th><?= lang('field_inventory_control_date'); ?></th>
                         <th><?= lang('field_inventory_controller'); ?></th>
                         <th><?= lang('field_remarks'); ?></th>
+                        <?php if($_SESSION['user_access'] == ACCESS_LVL_ADMIN){?>
                         <th>&nbsp;</th>
+                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($inventory_controls as $inventory_control) { ?>
                     <tr>
+                        <?php if($_SESSION['user_access'] >= ACCESS_LVL_MSP){?>
                         <td><a href="<?=base_url('item/modify_inventory_control/'.$inventory_control->inventory_control_id)?>"><?= databaseToShortDate($inventory_control->date); ?></a></td>
+                        <?php }else{ ?>
+                        <td><?= databaseToShortDate($inventory_control->date); ?></td>
+                        <?php } ?>
                         <td><?= $inventory_control->controller->username; ?></td>
                         <td><?= $inventory_control->remarks; ?></td>
+                        <?php if($_SESSION['user_access'] == ACCESS_LVL_ADMIN){?>
                         <td><a href="<?= base_url('item/delete_inventory_control/'.$inventory_control->inventory_control_id)?>"  class="close" title="Supprimer l'objet">x</a></td>
-                     </tr>
+                        <?php } ?>
+                    </tr>
                      <?php } ?>
                  </tbody>
              </table>

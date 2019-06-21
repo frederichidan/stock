@@ -508,7 +508,6 @@ class Item extends MY_Controller {
                 $this->inventory_control_model->insert($inventory_control);
                 redirect("item/view/" . $id);
             } else {
-            ?><pre><?=var_dump($data);?></pre><?php
                 $this->display_view('inventory_control/form', $data);
             }
         } else {
@@ -552,9 +551,10 @@ class Item extends MY_Controller {
             $this->load->library('form_validation');
 
             $controller = $this->user_model->get($_SESSION['user_id']);
+            $inventory_control = $this->inventory_control_model->get($id);
             
             if(is_null($this->inventory_control_model->get($id))){
-              redirect("/inventory_controls/".$inventory_control->item_id);
+              redirect("item/inventory_controls/".$inventory_control->item_id);
               exit();
             }
 
@@ -569,20 +569,21 @@ class Item extends MY_Controller {
                 $data['remarks'] = $_POST['remarks'];
                 $this->inventory_control_model->update($id, $data);
 
-                redirect("/inventory_controls/".$inventory_control->item_id);
+                redirect("item/inventory_controls/".$inventory_control->item_id);
                 exit();
               }
             } else {
               $output = get_object_vars($this->inventory_control_model->get($id));
             }
             if(!is_null($this->inventory_control_model->get($id))) {
-              $output['inventory_control'] = get_object_vars($this->inventory_control_model->get($id));
-              $output['item'] = $this->item_model->get($id);
-              $output['controller'] = $this->inventory_control_model->get_all();
+              $output['item'] = $this->item_model->get($inventory_control->item_id);
+              $output['control'] = $inventory_control;
+              $output['controller'] = $controller;
             }
 
-            ?><pre><?=var_dump($output);?></pre><?php
             $this->display_view("inventory_control/form", $output);
+        }else{
+            redirect("/item/inventory_controls/$id");
         }
     }
     
@@ -612,6 +613,8 @@ class Item extends MY_Controller {
               $this->inventory_control_model->delete($id);
               redirect("/item/inventory_controls/$id");
             }
+        }else{
+            redirect("/item/inventory_controls/$id");
         }
     }
     

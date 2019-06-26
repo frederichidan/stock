@@ -12,7 +12,13 @@
       <a href="#" onclick="loadPage('admin/view_item_groups/')" class="tab_unselected"><?= lang('admin_tab_item_groups'); ?></a>
     </h3>
   </div>
-
+    
+  <?php if(isset($error)){ ?>
+  <div class="alert alert-danger">
+  <?=$error?>
+  </div>
+  <?php } ?>
+    
   <div class="row">
     <table class="table table-striped table-hover">
       <thead>

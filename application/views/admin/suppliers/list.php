@@ -13,6 +13,12 @@
     </h3>
   </div>
   
+  <?php if(isset($error)){ ?>
+  <div class="alert alert-danger">
+  <?=$error?>
+  </div>
+  <?php } ?>
+    
   <div class="row">
     <table class="table table-striped table-hover">
       <thead>

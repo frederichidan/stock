@@ -144,6 +144,7 @@ $lang['delete_notok_items']             = ' objets.';
 $lang['delete_linked_items']            = 'objets';
 $lang['delete_linked_loans_registered'] = 'prêts';
 $lang['delete_linked_loans_made']       = 'emprunts';
+$lang['delete_succes']                  = 'L\'objet vient d\'être supprimé';
 
 
 // Admin other labels

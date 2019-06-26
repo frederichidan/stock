@@ -244,11 +244,23 @@ class Admin extends MY_Controller
     /**
     * As the name says, view the tags.
     */
-    public function view_tags()
+    public function view_tags($error = null)
     {
       $this->load->model('item_tag_model');
       $output["tags"] = $this->item_tag_model->get_all();
-
+      switch ($error) {
+          
+          case 1:
+              $output['error'] = lang('delete_notok_with_amount')."d'autres".lang('delete_notok_items');
+              break;
+          case 2:
+              $output['error'] = lang('delete_notok_with_amount')."un autre".lang('delete_notok_item');
+              break;
+          case 3:
+              $output['error'] = lang('delete_succes');
+              break;
+      }
+      
       $this->display_view("admin/tags/list", $output);
     }
 
@@ -373,13 +385,25 @@ class Admin extends MY_Controller
         $output["deletion_allowed"] = !(sizeof($items) > 0 && sizeof($items) < 500); // Do not make the number bigger than the amount of items
         $output["amount"] = sizeof($items);
         $output["tags"] = $this->item_tag_model->get_all();
+        
+        if(!isset($output['name']) || !$output['deletion_allowed']) {
+            if($output['amount'] > 1) {
+                $error = 1;
+            } else {
+                $error = 2;
+            }
+            
+            redirect("/admin/view_tags/$error");
+        }
+        
         $this->display_view("admin/tags/delete", $output);
       
       } else {
         // Action confirmed : delete links and delete tag
         $this->item_tag_link_model->delete_by('item_tag_id='.$id);
         $this->item_tag_model->delete($id);
-        redirect("/admin/view_tags/");
+        $error = 3;
+        redirect("/admin/view_tags/$error");
       }
     }
 
@@ -390,11 +414,23 @@ class Admin extends MY_Controller
     /**
     * As the name says, view the stocking places.
     */
-    public function view_stocking_places()
+    public function view_stocking_places($error = null)
     {
       $this->load->model('stocking_place_model');
       $output["stocking_places"] = $this->stocking_place_model->get_all();
-
+        switch ($error) {
+          
+          case 1:
+              $output['error'] = lang('delete_notok_with_amount')."d'autres".lang('delete_notok_items');
+              break;
+          case 2:
+              $output['error'] = lang('delete_notok_with_amount')."un autre".lang('delete_notok_item');
+              break;
+          case 3:
+              $output['error'] = lang('delete_succes');
+              break;
+      }
+      
       $this->display_view("admin/stocking_places/list", $output);
     }
 
@@ -507,10 +543,22 @@ class Admin extends MY_Controller
         $output["deletion_allowed"] = (sizeof($items) == 0);
         $output["amount"] = sizeof($items);
 
+        
+        if(!isset($output['name']) || !$output['deletion_allowed']) {
+            if($output['amount'] > 1) {
+                $error = 1;
+            } else {
+                $error = 2;
+            }
+            
+            redirect("/admin/view_stocking_places/$error");
+        }
         $this->display_view("admin/stocking_places/delete", $output);
+        
       } else {
         $this->stocking_place_model->delete($id);
-        redirect("/admin/view_stocking_places/");
+        $error = 3;
+        redirect("/admin/view_stocking_places/$error");
       }
 
     }
@@ -522,11 +570,24 @@ class Admin extends MY_Controller
     /**
     * As the name says, view the suppliers.
     */
-    public function view_suppliers()
+    public function view_suppliers($error = null)
     {
       $this->load->model('supplier_model');
       $output["suppliers"] = $this->supplier_model->get_all();
 
+      switch ($error) {
+          
+          case 1:
+              $output['error'] = lang('delete_notok_with_amount')."d'autres".lang('delete_notok_items');
+              break;
+          case 2:
+              $output['error'] = lang('delete_notok_with_amount')."un autre".lang('delete_notok_item');
+              break;
+          case 3:
+              $output['error'] = lang('delete_succes');
+              break;
+      }
+      
       $this->display_view("admin/suppliers/list", $output);
     }
 
@@ -625,13 +686,24 @@ class Admin extends MY_Controller
         $output["deletion_allowed"] = ($amount < 1);
         $output["amount"] = $amount;
 
+        if(!isset($output['name']) || !$output['deletion_allowed']) {
+            if($output['amount'] > 1) {
+                $error = 1;
+            } else {
+                $error = 2;
+            }
+            
+            redirect("/admin/view_suppliers/$error");
+        }
+        
         $this->display_view("admin/suppliers/delete", $output);
       } else {
         // delete it!
         $this->supplier_model->delete($id);
         
         // redirect the user to the updated table
-        redirect("/admin/view_suppliers/");
+        $error = 3;
+        redirect("/admin/view_suppliers/$error");
       }
     }
 
@@ -656,11 +728,24 @@ class Admin extends MY_Controller
     /**
     * As the name says, view the item groups.
     */
-    public function view_item_groups()
+    public function view_item_groups($error = null)
     {
       $this->load->model('item_group_model');
       $output["item_groups"] = $this->item_group_model->get_all();
 
+      switch ($error) {
+          
+          case 1:
+              $output['error'] = lang('delete_notok_with_amount')."d'autres".lang('delete_notok_items');
+              break;
+          case 2:
+              $output['error'] = lang('delete_notok_with_amount')."un autre".lang('delete_notok_item');
+              break;
+          case 3:
+              $output['error'] = lang('delete_succes');
+              break;
+      }
+      
       $this->display_view("admin/item_groups/list", $output);
     }
 
@@ -770,14 +855,25 @@ class Admin extends MY_Controller
         $output["item_groups"] = $this->item_group_model->get_all();
         $output["deletion_allowed"] = (sizeof($items) == 0);
         $output["amount"] = sizeof($items);
+        
+        if(!isset($output['name']) || !$output['deletion_allowed']) {
+            if($output['amount'] > 1) {
+                $error = 1;
+            } else {
+                $error = 2;
+            }
 
+            redirect("/admin/view_item_groups/$error");
+        }
+        
         $this->display_view("admin/item_groups/delete", $output);
+        
       } else {
         // delete it!
         $this->item_group_model->delete($id);
-        
+        $error = 3;
         // redirect the user to the updated table
-        redirect("/admin/view_item_groups/");
+        redirect("/admin/view_item_groups/$error");
       }
     }
 }

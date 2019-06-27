@@ -10,7 +10,6 @@
     </h3>
   </div>
   
-  <?php if(is_null($action) && $deletion_allowed) { ?>
     <div class="row" >
       <?= lang('admin_delete_user_verify').'"'.$username.'" ?'; ?>
     </div>
@@ -21,11 +20,4 @@
         <a href="<?= base_url().uri_string()."/disable";?>" class="btn btn-warning btn-lg"><?= lang('text_disable'); ?></a>
       <?php } ?>
     </div>
-  <?php } else { 
-    echo '<div class="alert alert-danger">'.lang('delete_user_notok');
-    foreach ($linked_objects as $linked_object) {
-        echo '['.$linked_object.'] ';
-    }
-    echo '</div>';
-  } ?>
 </div>

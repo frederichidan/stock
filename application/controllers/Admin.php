@@ -36,11 +36,37 @@ class Admin extends MY_Controller
     /**
     * As the name says, view the users.
     */
-    public function view_users(){
+    public function view_users($error = null){
 
       $this->load->model('user_model');
       $this->load->model('user_type_model');
       $output["users"] = $this->user_model->with("user_type")->get_all();
+      
+      if(is_array($error)){
+          foreach ($error as $item) {
+              switch($item){
+                case 1:
+                    $output['error'][] = lang('delete_linked_items');
+                    break;
+                case 2:
+                    $output['error'][] = lang('delete_linked_loans_registered');
+                    break;
+                case 3:
+                    $output['error'][] = lang('delete_linked_loans_made');
+                    break;
+              }
+          }
+      }else{
+          switch($error){
+              case 4:
+                  $output['error'] = lang('admin_user_disable_succes');
+                  break;
+              case 5:
+                  $output['error'] = lang('admin_user_delete_succes');
+                  break;
+          }
+      }
+      
       $this->display_view("admin/users/list", $output);
     }
 
@@ -207,25 +233,35 @@ class Admin extends MY_Controller
 
       if (!empty($user->items_created) || !empty($user->items_modified) || !empty($user->items_checked)) {
         $linked_objects[] = lang('delete_linked_items');
+        $error[] = 1;
         $deletion_allowed = false;
+        redirect("/admin/view_users/$error");
       }
       if (!empty($user->loans_registered)) {
         $linked_objects[] = lang('delete_linked_loans_registered');
+        $error[] = 2;
         $deletion_allowed = false;
+        redirect("/admin/view_users/$error");
       }
       if (!empty($user->loans_made)) {
         $linked_objects[] = lang('delete_linked_loans_made');
+        $error[] = 3;
         $deletion_allowed = false;
+        redirect("/admin/view_users/$error");
       }
       
       if($deletion_allowed && $action == "disable") {
         $this->user_model->update($id, array('is_active' => 0));
-        redirect("/admin/view_users/");
+        $error = 4;
+        redirect("/admin/view_users/$error");
         
       } else if($deletion_allowed && $action == "delete") {
         $this->user_model->delete($id);
-        redirect("/admin/view_users/");
+        $error = 5;
+        redirect("/admin/view_users/$error");
       }
+      
+      
       
       $output = get_object_vars($this->user_model->get($id));
       

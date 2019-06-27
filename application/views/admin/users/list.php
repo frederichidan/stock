@@ -12,6 +12,21 @@
       <a href="#" onclick="loadPage('admin/view_item_groups/')" class="tab_unselected"><?= lang('admin_tab_item_groups'); ?></a>
     </h3>
   </div>
+    
+    <?php if(isset($error)){ ?>
+    <div class="alert alert-danger">
+    <?php if(is_array($error)){
+        $error_message = lang('delete_user_notok');
+        foreach ($error as $item) {
+            $error_message .= '['.item.'] ';
+        }
+    }else{
+        $error_message = $error;
+    }  
+    ?>
+     <?=$error_message?>
+    </div>
+    <?php } ?>
   <div class="row">
     <div class="table-responsive">
         <table class="table table-striped table-hover">

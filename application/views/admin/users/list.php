@@ -17,8 +17,8 @@
     <div class="alert alert-danger">
     <?php if(is_array($error)){
         $error_message = lang('delete_user_notok');
-        foreach ($error as $item) {
-            $error_message .= '['.item.'] ';
+        foreach ($error['used_by'] as $item) {
+            $error_message .= '['.$item.'] ';
         }
     }else{
         $error_message = $error;

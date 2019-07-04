@@ -42,9 +42,6 @@ class Admin extends MY_Controller
       $this->load->model('user_type_model');
       $output["users"] = $this->user_model->with("user_type")->get_all();
       
-      if(isset($error)) $error = str_split($error);
-      if(isset($error)) echo var_dump($error);
-      
       if(is_array($error)){
           foreach ($error as $item) {
               switch($item){
@@ -69,8 +66,6 @@ class Admin extends MY_Controller
                   break;
           }
       }
-      
-      echo var_dump($output['error']);
       
       $this->display_view("admin/users/list", $output);
     }
@@ -235,40 +230,35 @@ class Admin extends MY_Controller
       
       // Check if user is linked to other objects
       $user = $this->user_model->with_all()->get($id);
-
+      
       $error = '';
       
       if (!empty($user->items_created) || !empty($user->items_modified) || !empty($user->items_checked)) {
         $linked_objects[] = lang('delete_linked_items');
-        $error .= '1 ';
+        $error .= '1';
         $deletion_allowed = false;
-        redirect("/admin/view_users/$error");
       }
       if (!empty($user->loans_registered)) {
         $linked_objects[] = lang('delete_linked_loans_registered');
-        $error .= '2 ';
+        $error .= '2';
         $deletion_allowed = false;
-        redirect("/admin/view_users/$error");
       }
       if (!empty($user->loans_made)) {
         $linked_objects[] = lang('delete_linked_loans_made');
-        $error .= '3 ';
+        $error .= '3';
         $deletion_allowed = false;
-        redirect("/admin/view_users/$error");
       }
       
       if($deletion_allowed && $action == "disable") {
         $this->user_model->update($id, array('is_active' => 0));
         $error = 4;
-        redirect("/admin/view_users/$error");
         
       } else if($deletion_allowed && $action == "delete") {
         $this->user_model->delete($id);
         $error = 5;
-        redirect("/admin/view_users/$error");
       }
       
-      
+      echo var_dump($error);
       
       $output = get_object_vars($this->user_model->get($id));
       
@@ -276,7 +266,7 @@ class Admin extends MY_Controller
       $output["linked_objects"] = $linked_objects;
       $output["action"] = $action;
             
-      if(!isset($output['name']) || !$output['deletion_allowed']){
+      if(!isset($output['username']) || !$output['deletion_allowed']){
           redirect("/admin/view_users/$error");
       }
       

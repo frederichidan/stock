@@ -42,28 +42,25 @@ class Admin extends MY_Controller
       $this->load->model('user_type_model');
       $output["users"] = $this->user_model->with("user_type")->get_all();
       
-      if(is_array($error)){
-          foreach ($error as $item) {
-              switch($item){
-                case 1:
-                    $output['error']['used_by'][] = lang('delete_linked_items');
-                    break;
-                case 2:
-                    $output['error']['used_by'][] = lang('delete_linked_loans_registered');
-                    break;
-                case 3:
-                    $output['error']['used_by'][] = lang('delete_linked_loans_made');
-                    break;
-              }
-          }
-      }else{
-          switch($error){
-              case 4:
-                  $output['error'] = lang('admin_user_disable_succes');
-                  break;
-              case 5:
-                  $output['error'] = lang('admin_user_delete_succes');
-                  break;
+      $error = str_split($error);
+      
+      foreach ($error as $item) {
+          switch($item){
+            case 1:
+                $output['error']['used_by'][] = lang('delete_linked_items');
+                break;
+            case 2:
+                $output['error']['used_by'][] = lang('delete_linked_loans_registered');
+                break;
+            case 3:
+                $output['error']['used_by'][] = lang('delete_linked_loans_made');
+                break;
+            case 4:
+                $output['error'] = lang('admin_user_disable_succes');
+                break;
+            case 5:
+                $output['error'] = lang('admin_user_delete_succes');
+                break;
           }
       }
       
@@ -223,8 +220,11 @@ class Admin extends MY_Controller
       $this->load->model('user_model');
       $deletion_allowed = true;
       $linked_objects = [];
+      $user = $this->user_model->get($id);
       
-      if(is_null($this->user_model->get($id))) {
+      echo var_dump($user);
+      
+      if(is_null($user)) {
         redirect("/admin/view_users/");
       }
       
@@ -258,15 +258,13 @@ class Admin extends MY_Controller
         $error = 5;
       }
       
-      echo var_dump($error);
-      
       $output = get_object_vars($this->user_model->get($id));
       
       $output["deletion_allowed"] = $deletion_allowed;
       $output["linked_objects"] = $linked_objects;
       $output["action"] = $action;
             
-      if(!isset($output['username']) || !$output['deletion_allowed']){
+      if(!isset($output['username']) || !$output['deletion_allowed'] || $action == "disable"){
           redirect("/admin/view_users/$error");
       }
       

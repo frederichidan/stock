@@ -28,15 +28,14 @@
   .ball{position:absolute;right:-38mm;top:62mm;width:170mm;opacity:.95;transform:rotate(-32deg)}
   /* header */
   .top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
-  .club{display:flex;align-items:center;gap:4mm}
-  .crest{width:13mm;height:13mm;border:.5mm solid var(--gold);border-radius:50%;display:grid;place-items:center;
-    font-family:Anton;font-size:5.2mm;letter-spacing:.3mm;color:var(--gold)}
+  .club{display:flex;align-items:center;gap:5mm}
+  .crest{height:30mm;width:auto;display:block;filter:drop-shadow(0 1.5mm 3mm rgba(0,0,0,.35))}
   .club-name{font-weight:700;font-size:3.6mm;letter-spacing:1.3mm;text-transform:uppercase;line-height:1.35}
   .club-name small{display:block;font-weight:500;color:var(--muted);letter-spacing:.9mm;font-size:2.6mm}
   .tag{font-size:2.7mm;letter-spacing:1.2mm;text-transform:uppercase;color:var(--gold);
     border:.3mm solid var(--gold);padding:1.6mm 3.4mm;border-radius:10mm}
   /* title */
-  .title-wrap{position:relative;z-index:2;margin-top:30mm}
+  .title-wrap{position:relative;z-index:2;margin-top:18mm}
   .kicker{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:9mm;color:var(--gold);line-height:1;margin-bottom:3mm}
   h1{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;line-height:1.04;letter-spacing:.6mm}
   h1 .l1{display:block;font-size:40mm}
@@ -90,7 +89,7 @@
 
   <header class="top">
     <div class="club">
-      <div class="crest">RCA</div>
+      <img class="crest" src="ecusson.png" alt="Écusson du Rugby Club Akanda">
       <div class="club-name">Rugby Club Akanda<small>Akanda · Gabon</small></div>
     </div>
     <div class="tag">Convocation</div>

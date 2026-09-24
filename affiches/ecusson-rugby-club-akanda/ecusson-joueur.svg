@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480">
+  <defs>
+    <path id="shield" d="M58 36 H342 Q360 36 360 54 V262 C360 360 292 420 200 456 C108 420 40 360 40 262 V54 Q40 36 58 36 Z"/>
+    <clipPath id="clip"><use href="#shield"/></clipPath>
+  </defs>
+
+  <!-- Fond -->
+  <use href="#shield" fill="#0f2557"/>
+
+  <g clip-path="url(#clip)">
+    <!-- Terrain : bandes aux couleurs du Gabon -->
+    <path d="M0 372 L400 318 V480 H0 Z" fill="#f4c20d"/>
+    <path d="M0 384 L400 330 V480 H0 Z" fill="#0f2557"/>
+    <path d="M0 392 L400 338 V480 H0 Z" fill="#1f9d4a"/>
+  </g>
+
+  <!-- Filet intérieur -->
+  <use href="#shield" fill="none" stroke="#ffffff" stroke-width="2.5" transform="translate(200 246) scale(.93) translate(-200 -246)"/>
+
+  <!-- Titre -->
+  <g font-family="Inter, sans-serif" font-weight="700" font-size="17" letter-spacing="6.5" fill="#ffffff" text-anchor="middle">
+    <text x="203" y="92">RUGBY CLUB</text>
+  </g>
+  <rect x="80" y="85" width="22" height="3" rx="1.5" fill="#f4c20d"/>
+  <rect x="298" y="85" width="22" height="3" rx="1.5" fill="#f4c20d"/>
+  <text x="200" y="170" font-family="Anton, sans-serif" font-size="74" letter-spacing="3" fill="#ffffff" text-anchor="middle">AKANDA</text>
+
+  <!-- Joueur en course (pictogramme) -->
+  <g stroke-linecap="round">
+    <line x1="88"  y1="252" x2="146" y2="252" stroke="#1f9d4a" stroke-width="7"/>
+    <line x1="100" y1="272" x2="150" y2="272" stroke="#f4c20d" stroke-width="7"/>
+    <line x1="112" y1="292" x2="156" y2="292" stroke="#ffffff" stroke-width="7"/>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- bras arrière -->
+    <polyline points="244,240 216,254 204,234" stroke-width="14"/>
+    <!-- jambe arrière -->
+    <polyline points="212,288 190,316 156,320" stroke-width="18"/>
+    <!-- tronc -->
+    <line x1="250" y1="230" x2="212" y2="286" stroke-width="28"/>
+    <!-- jambe avant -->
+    <polyline points="214,288 252,288 242,326" stroke-width="18"/>
+    <!-- bras avant -->
+    <polyline points="252,236 264,264 288,252" stroke-width="14"/>
+  </g>
+  <circle cx="270" cy="200" r="15" fill="#ffffff"/>
+  <!-- ballon -->
+  <g transform="translate(292 248) rotate(-35)">
+    <path d="M-27 0 C-18 -19 18 -19 27 0 C18 19 -18 19 -27 0 Z" fill="#f4c20d" stroke="#0f2557" stroke-width="4"/>
+    <line x1="-12" y1="0" x2="12" y2="0" stroke="#0f2557" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Sevens -->
+  <text x="203" y="412" font-family="Inter, sans-serif" font-weight="700" font-size="15" letter-spacing="7" fill="#ffffff" text-anchor="middle">SEVENS</text>
+</svg>

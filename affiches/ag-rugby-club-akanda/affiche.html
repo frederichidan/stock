@@ -7,8 +7,8 @@
 <style>
   @page { size: 210mm 297mm; margin: 0; }
   :root{
-    --bg:#0c1f1a; --bg2:#10291f; --gold:#d9b25f; --gold-soft:rgba(217,178,95,.22);
-    --ink:#f4efe4; --muted:rgba(244,239,228,.62); --line:rgba(244,239,228,.16);
+    --bg:#0a1747; --bg2:#0b1a52; --gold:#f5c400; --gold-soft:rgba(245,196,0,.25); --green:#22a34a;
+    --ink:#ffffff; --muted:rgba(255,255,255,.66); --line:rgba(255,255,255,.18);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:210mm;height:297mm;background:var(--bg)}
@@ -16,8 +16,8 @@
     position:relative;width:210mm;height:297mm;overflow:hidden;color:var(--ink);
     font-family:Inter,sans-serif;
     background:
-      radial-gradient(120% 70% at 85% 8%, #1a3d31 0%, transparent 60%),
-      radial-gradient(90% 60% at 0% 100%, #0a1814 0%, transparent 70%),
+      radial-gradient(120% 70% at 85% 8%, #1c3f9e 0%, transparent 62%),
+      radial-gradient(90% 60% at 0% 100%, #06102f 0%, transparent 70%),
       var(--bg);
     padding:18mm 17mm 16mm;
     display:flex;flex-direction:column;
@@ -41,7 +41,7 @@
   h1 .l1{display:block;font-size:40mm}
   h1 .l2{display:block;font-size:40mm;margin-top:6mm;color:transparent;-webkit-text-stroke:.45mm var(--ink)}
   .sub{margin-top:7mm;display:flex;align-items:center;gap:5mm}
-  .sub .bar{width:14mm;height:.6mm;background:var(--gold)}
+  .sub .bar{width:14mm;height:.6mm;background:var(--green)}
   .sub p{font-size:4.6mm;font-weight:500;letter-spacing:.4mm;line-height:1.35}
   .sub p b{font-weight:700;color:var(--gold)}
   /* spacer */
@@ -72,15 +72,15 @@
   <svg class="ball" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#d9b25f" stop-opacity=".55"/>
-        <stop offset="1" stop-color="#d9b25f" stop-opacity=".08"/>
+        <stop offset="0" stop-color="#f5c400" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#f5c400" stop-opacity=".08"/>
       </linearGradient>
     </defs>
     <path d="M10 120 C 70 10, 330 10, 390 120 C 330 230, 70 230, 10 120 Z" fill="none" stroke="url(#g)" stroke-width="1.6"/>
     <path d="M40 120 C 100 45, 300 45, 360 120" fill="none" stroke="url(#g)" stroke-width="1"/>
     <path d="M40 120 C 100 195, 300 195, 360 120" fill="none" stroke="url(#g)" stroke-width="1"/>
     <path d="M150 60 C 180 50, 220 50, 250 60" fill="none" stroke="url(#g)" stroke-width="1.6"/>
-    <g stroke="#d9b25f" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round">
+    <g stroke="#f5c400" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round">
       <line x1="165" y1="48" x2="167" y2="64"/><line x1="182" y1="44" x2="183" y2="60"/>
       <line x1="200" y1="43" x2="200" y2="59"/><line x1="218" y1="44" x2="217" y2="60"/>
       <line x1="235" y1="48" x2="233" y2="64"/>

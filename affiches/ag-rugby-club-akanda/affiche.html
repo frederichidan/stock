@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>AG Rugby Club Akanda</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{
+    --bg:#0c1f1a; --bg2:#10291f; --gold:#d9b25f; --gold-soft:rgba(217,178,95,.22);
+    --ink:#f4efe4; --muted:rgba(244,239,228,.62); --line:rgba(244,239,228,.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:210mm;height:297mm;background:var(--bg)}
+  .poster{
+    position:relative;width:210mm;height:297mm;overflow:hidden;color:var(--ink);
+    font-family:Inter,sans-serif;
+    background:
+      radial-gradient(120% 70% at 85% 8%, #1a3d31 0%, transparent 60%),
+      radial-gradient(90% 60% at 0% 100%, #0a1814 0%, transparent 70%),
+      var(--bg);
+    padding:18mm 17mm 16mm;
+    display:flex;flex-direction:column;
+  }
+  /* fine frame */
+  .poster::before{content:"";position:absolute;inset:8mm;border:.35mm solid var(--gold-soft);pointer-events:none}
+  /* rugby ball illustration */
+  .ball{position:absolute;right:-38mm;top:62mm;width:170mm;opacity:.95;transform:rotate(-32deg)}
+  /* header */
+  .top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+  .club{display:flex;align-items:center;gap:4mm}
+  .crest{width:13mm;height:13mm;border:.5mm solid var(--gold);border-radius:50%;display:grid;place-items:center;
+    font-family:Anton;font-size:5.2mm;letter-spacing:.3mm;color:var(--gold)}
+  .club-name{font-weight:700;font-size:3.6mm;letter-spacing:1.3mm;text-transform:uppercase;line-height:1.35}
+  .club-name small{display:block;font-weight:500;color:var(--muted);letter-spacing:.9mm;font-size:2.6mm}
+  .tag{font-size:2.7mm;letter-spacing:1.2mm;text-transform:uppercase;color:var(--gold);
+    border:.3mm solid var(--gold);padding:1.6mm 3.4mm;border-radius:10mm}
+  /* title */
+  .title-wrap{position:relative;z-index:2;margin-top:30mm}
+  .kicker{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:9mm;color:var(--gold);line-height:1;margin-bottom:3mm}
+  h1{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;line-height:1.04;letter-spacing:.6mm}
+  h1 .l1{display:block;font-size:40mm}
+  h1 .l2{display:block;font-size:40mm;margin-top:6mm;color:transparent;-webkit-text-stroke:.45mm var(--ink)}
+  .sub{margin-top:7mm;display:flex;align-items:center;gap:5mm}
+  .sub .bar{width:14mm;height:.6mm;background:var(--gold)}
+  .sub p{font-size:4.6mm;font-weight:500;letter-spacing:.4mm;line-height:1.35}
+  .sub p b{font-weight:700;color:var(--gold)}
+  /* spacer */
+  .grow{flex:1}
+  /* info */
+  .info{position:relative;z-index:2;display:grid;grid-template-columns:1.35fr .8fr 1.35fr;
+    border-top:.3mm solid var(--line);border-bottom:.3mm solid var(--line)}
+  .cell{padding:7mm 5mm 7mm 0}
+  .cell + .cell{padding-left:6mm;border-left:.3mm solid var(--line)}
+  .label{font-size:2.5mm;letter-spacing:1.4mm;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:3mm;
+    display:flex;align-items:center;gap:2mm}
+  .label svg{width:3.4mm;height:3.4mm;stroke:var(--gold);fill:none;stroke-width:1.6}
+  .big{font-family:Anton,sans-serif;font-size:10.5mm;line-height:1;text-transform:uppercase;letter-spacing:.2mm}
+  .pre{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:5.4mm;color:var(--ink);margin-bottom:1mm;line-height:1}
+  .small{font-size:3.2mm;color:var(--muted);margin-top:2mm;line-height:1.4}
+  /* footer */
+  .foot{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;margin-top:9mm}
+  .invite{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:8.2mm;line-height:1.15;max-width:115mm}
+  .invite em{color:var(--gold);font-style:italic}
+  .sign{text-align:right;font-size:2.7mm;letter-spacing:1.1mm;text-transform:uppercase;color:var(--muted);line-height:1.6}
+  .sign b{display:block;color:var(--ink);font-weight:600;letter-spacing:.9mm}
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- Ballon de rugby, trait fin -->
+  <svg class="ball" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#d9b25f" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#d9b25f" stop-opacity=".08"/>
+      </linearGradient>
+    </defs>
+    <path d="M10 120 C 70 10, 330 10, 390 120 C 330 230, 70 230, 10 120 Z" fill="none" stroke="url(#g)" stroke-width="1.6"/>
+    <path d="M40 120 C 100 45, 300 45, 360 120" fill="none" stroke="url(#g)" stroke-width="1"/>
+    <path d="M40 120 C 100 195, 300 195, 360 120" fill="none" stroke="url(#g)" stroke-width="1"/>
+    <path d="M150 60 C 180 50, 220 50, 250 60" fill="none" stroke="url(#g)" stroke-width="1.6"/>
+    <g stroke="#d9b25f" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round">
+      <line x1="165" y1="48" x2="167" y2="64"/><line x1="182" y1="44" x2="183" y2="60"/>
+      <line x1="200" y1="43" x2="200" y2="59"/><line x1="218" y1="44" x2="217" y2="60"/>
+      <line x1="235" y1="48" x2="233" y2="64"/>
+    </g>
+  </svg>
+
+  <header class="top">
+    <div class="club">
+      <div class="crest">RCA</div>
+      <div class="club-name">Rugby Club Akanda<small>Akanda · Gabon</small></div>
+    </div>
+    <div class="tag">Convocation</div>
+  </header>
+
+  <section class="title-wrap">
+    <div class="kicker">Avis à tous</div>
+    <h1><span class="l1">Assemblée</span><span class="l2">Générale</span></h1>
+    <div class="sub">
+      <span class="bar"></span>
+      <p><b>Constitutive</b> du bureau exécutif<br>du Rugby Club Akanda</p>
+    </div>
+  </section>
+
+  <div class="grow"></div>
+
+  <section class="info">
+    <div class="cell">
+      <div class="label"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Date</div>
+      <div class="pre">Dimanche</div>
+      <div class="big">27 Sept.<br>2026</div>
+    </div>
+    <div class="cell">
+      <div class="label"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Heure</div>
+      <div class="pre">Dès</div>
+      <div class="big">17h30</div>
+    </div>
+    <div class="cell">
+      <div class="label"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Lieu</div>
+      <div class="pre">Bar</div>
+      <div class="big">Les<br>Retrouvailles</div>
+      <div class="small">Akanda, non loin du stade</div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p class="invite">La présence de tous<br>est <em>vivement souhaitée.</em></p>
+    <div class="sign">Le Chargé<b>de la Communication</b></div>
+  </footer>
+</div>
+</body>
+</html>

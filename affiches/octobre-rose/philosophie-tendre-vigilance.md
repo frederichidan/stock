@@ -1,0 +1,13 @@
+# Tendre Vigilance
+
+*Un mouvement visuel où l'attention devient forme.*
+
+Tout part d'un seul point : l'endroit où une main se pose. De ce point naissent des cercles, fins comme un trait de graveur, qui s'élargissent avec patience jusqu'aux bords de la feuille. L'espace n'est pas décoré, il est *écouté*. Chaque anneau est une onde, chaque intervalle un silence mesuré. La composition doit donner l'impression d'avoir été tracée au compas, à la main, par quelqu'un qui a passé des nuits entières à régler l'écart exact entre deux lignes. Rien n'est approximatif : c'est un travail méticuleux, le fruit d'une maîtrise profonde.
+
+La couleur est un champ, pas un remplissage. Un rose poudré, dense et doux comme un papier teinté dans la masse, porte toute l'image ; un framboise profond sert d'encre ; un aubergine presque noir tient les petites mentions. La palette est volontairement courte : trois tons, calibrés avec une attention minutieuse, pour que la seule figure humaine — avec ses propres couleurs, vives et vraies — devienne l'événement chromatique de la page. Un grain très fin, à peine visible, rappelle l'impression et la matière.
+
+L'échelle joue sur l'écart extrême. Un mot monumental, en capitales de sérif à fort contraste, occupe la largeur comme une architecture ; la figure s'y adosse et le recouvre en partie, créant une profondeur de couverture de magazine. Un second mot, en italique ample, répond comme une signature. Tout le reste est chuchoté : des capitales espacées, des chiffres en caractères monospaces, des repères numérotés comme sur un instrument de mesure. Le texte est rare, essentiel, intégré à l'architecture visuelle — jamais un paragraphe.
+
+Le rythme vient de la répétition. Des graduations régulières courent sur un anneau comme les jours d'un calendrier circulaire ; des cercles concentriques s'espacent selon une progression régulière ; des filets fins structurent la marge haute et la marge basse. Cette répétition patiente récompense le regard prolongé : de loin, on voit une femme debout dans un champ rose ; de près, on découvre un instrument de précision, un diagramme d'une discipline imaginaire consacrée au soin.
+
+L'équilibre est asymétrique mais stable. La figure se tient légèrement décentrée, ancrée au sol par une ombre douce ; le mot italique occupe le vide qu'elle laisse ; le bloc de bas de page referme la composition comme une légende de planche scientifique. Chaque alignement, chaque marge, chaque espacement de lettres doit sembler le résultat d'innombrables ajustements — une exécution de niveau maître, soignée jusqu'au dernier pixel, où rien ne déborde et rien ne se heurte.

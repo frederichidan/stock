@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Spot recrutement RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  :root{ --navy:#0a1747; --navy2:#0b1a52; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --paper:#f4f1ea; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy)}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--navy);font-family:Inter,sans-serif;color:#fff}
+  .scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+  .full{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .glow{position:absolute;inset:0;background:radial-gradient(60% 70% at 70% 40%, rgba(28,63,158,.9) 0%, transparent 70%), radial-gradient(60% 70% at 0% 100%, #06102f 0%, transparent 70%)}
+  .anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;line-height:.95;letter-spacing:2px}
+  .serif{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500}
+  .y{color:var(--yellow)}
+
+  /* grain + vignette globaux */
+  #grain{position:absolute;inset:-50%;background:url(src/grain.png);opacity:.07;mix-blend-mode:overlay;pointer-events:none;z-index:50}
+  #vignette{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(0,0,0,.45) 100%);pointer-events:none;z-index:49}
+  #flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:48;pointer-events:none}
+
+  /* volet de transition */
+  .wipe{position:absolute;top:-300px;height:1680px;width:1500px;transform:skewX(-18deg);z-index:40;left:-2200px}
+  #wipeY{background:var(--yellow)}
+  #wipeN{background:var(--navy2)}
+
+  /* bandeau club (plans photo) */
+  #bug{position:absolute;left:64px;top:52px;display:flex;align-items:center;gap:22px;z-index:45;opacity:0}
+  #bug img{height:120px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+  #bug div{font-weight:700;font-size:22px;letter-spacing:7px;text-transform:uppercase;line-height:1.4;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+  #bug small{display:block;font-weight:500;font-size:16px;letter-spacing:6px;color:var(--yellow)}
+
+  /* traînées */
+  .streaks{position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none}
+
+  /* S1 intro */
+  #s1 .t1{position:absolute;left:150px;top:300px;font-size:230px}
+  #s1 .t2{position:absolute;left:150px;top:530px;font-size:230px}
+  #s1 .k{position:absolute;left:156px;top:220px;font-size:64px;color:var(--yellow)}
+
+  /* S2 valeurs */
+  .val .shade{position:absolute;inset:0;background:linear-gradient(90deg, rgba(10,23,71,.92) 0%, rgba(10,23,71,.55) 38%, rgba(10,23,71,0) 65%), linear-gradient(0deg, rgba(10,23,71,.7) 0%, transparent 40%)}
+  .val .num{position:absolute;left:150px;top:560px;font-size:34px;font-weight:700;letter-spacing:10px;color:var(--yellow)}
+  .val .word{position:absolute;left:142px;top:612px;font-size:240px}
+  .val .bar{position:absolute;left:150px;top:870px;height:14px;width:520px;background:var(--yellow);transform-origin:left center}
+  .val img{filter:contrast(1.08) saturate(1.12)}
+
+  /* S3 famille */
+  #s3 .shade{position:absolute;inset:0;background:rgba(10,23,71,.62)}
+  #s3 .a{position:absolute;left:0;right:0;top:330px;text-align:center;font-size:150px}
+  #s3 .b{position:absolute;left:0;right:0;top:500px;text-align:center;font-size:210px}
+
+  /* S4 recrute (papier) */
+  #s4{background:var(--paper)}
+  #s4 .aq{position:absolute;right:-150px;top:40px;height:1000px;mix-blend-mode:multiply}
+  #s4 .club{position:absolute;left:150px;top:300px;font-size:40px;font-weight:800;letter-spacing:14px;color:var(--navy);text-transform:uppercase}
+  #s4 .rec{position:absolute;left:140px;top:390px;font-size:280px;color:var(--navy)}
+  #s4 .mark{position:absolute;left:130px;top:560px;width:960px;height:130px;background:var(--yellow);transform:skewX(-10deg);transform-origin:left center}
+  #s4 .sub{position:absolute;left:150px;top:760px;font-size:58px;color:var(--navy)}
+
+  /* S5 profils */
+  #s5 .bg{filter:blur(10px) brightness(.32) saturate(.8);transform:scale(1.1)}
+  #s5 .head{position:absolute;left:0;right:0;top:150px;text-align:center;font-size:30px;font-weight:700;letter-spacing:14px;color:var(--yellow);text-transform:uppercase}
+  #s5 .title{position:absolute;left:0;right:0;top:200px;text-align:center;font-size:120px}
+  #s5 .cards{position:absolute;left:150px;right:150px;top:430px;display:grid;grid-template-columns:1fr 1fr 1fr}
+  #s5 .card{padding:40px 50px 40px 0;border-top:2px solid rgba(255,255,255,.25);border-bottom:2px solid rgba(255,255,255,.25)}
+  #s5 .card + .card{padding-left:50px;border-left:2px solid rgba(255,255,255,.25)}
+  #s5 .card svg{width:78px;height:78px;stroke:var(--yellow);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-bottom:26px}
+  #s5 .card h3{font-family:Anton,sans-serif;font-weight:400;font-size:82px;line-height:1;text-transform:uppercase;margin-bottom:22px}
+  #s5 .card p{font-size:30px;line-height:1.45;color:rgba(255,255,255,.8)}
+
+  /* S6 rejoins */
+  #s6 .shade{position:absolute;inset:0;background:linear-gradient(90deg, rgba(10,23,71,.95) 0%, rgba(10,23,71,.75) 45%, rgba(10,23,71,0) 75%)}
+  #s6 .a{position:absolute;left:150px;top:350px;font-size:140px}
+  #s6 .b{position:absolute;left:142px;top:510px;font-size:300px}
+
+  /* S7 fin */
+  #s7 .crest{position:absolute;left:220px;top:130px;height:820px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.5))}
+  #s7 .shine{position:absolute;left:220px;top:130px;width:684px;height:820px;overflow:hidden;
+    -webkit-mask:url(src/ecusson.png) center/contain no-repeat;mask:url(src/ecusson.png) center/contain no-repeat}
+  #s7 .shine i{position:absolute;top:-10%;left:-60%;width:40%;height:120%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg)}
+  #s7 .info{position:absolute;left:1010px;top:190px;width:780px}
+  #s7 .name{font-size:30px;font-weight:700;letter-spacing:12px;text-transform:uppercase}
+  #s7 .name small{display:block;color:var(--yellow);font-size:22px;letter-spacing:10px;margin-top:6px}
+  #s7 .cta{margin-top:50px;font-size:120px}
+  #s7 .how{margin-top:26px;font-size:50px;color:rgba(255,255,255,.85)}
+  #s7 .how b{color:var(--yellow);font-weight:500}
+  #s7 ul{list-style:none;margin-top:44px;border-top:2px solid rgba(255,255,255,.25);padding-top:30px}
+  #s7 li{font-family:Anton,sans-serif;font-size:84px;line-height:1.2;letter-spacing:3px;display:flex;align-items:center;gap:22px}
+  #s7 li svg{width:44px;height:44px;stroke:var(--yellow);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  #s7 li small{font-family:Inter;font-size:30px;color:var(--yellow);font-weight:600;letter-spacing:2px}
+  #s7 .flag{position:absolute;left:0;bottom:0;height:18px;width:1920px;display:flex;transform-origin:left center}
+  #s7 .flag i{flex:1}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- S1 : intro -->
+  <section class="scene" id="s1">
+    <div class="glow"></div>
+    <svg class="streaks" id="st1" viewBox="0 0 1920 1080"></svg>
+    <div class="k serif">Toi…</div>
+    <div class="t1 anton">Tu as le rugby</div>
+    <div class="t2 anton y">dans le sang ?</div>
+  </section>
+
+  <!-- S2 : valeurs (4 plans) -->
+  <section class="scene val" id="v1"><img class="full" src="src/hd/coureur.jpg" style="object-position:50% 25%"><div class="shade"></div>
+    <div class="num">01 — NOS VALEURS</div><div class="word anton">Courage</div><div class="bar"></div></section>
+  <section class="scene val" id="v2"><img class="full" src="src/hd/plaquage.jpg" style="object-position:50% 40%"><div class="shade"></div>
+    <div class="num">02 — NOS VALEURS</div><div class="word anton">Engagement</div><div class="bar"></div></section>
+  <section class="scene val" id="v3"><img class="full" src="src/hd/melee.jpg" style="object-position:50% 55%"><div class="shade"></div>
+    <div class="num">03 — NOS VALEURS</div><div class="word anton">Solidarité</div><div class="bar"></div></section>
+  <section class="scene val" id="v4"><img class="full" src="src/hd/touche.jpg" style="object-position:50% 20%"><div class="shade"></div>
+    <div class="num">04 — NOS VALEURS</div><div class="word anton">Dépassement</div><div class="bar"></div></section>
+
+  <!-- S3 : famille -->
+  <section class="scene" id="s3"><img class="full" src="src/hd/cercle.jpg" style="object-position:50% 40%"><div class="shade"></div>
+    <div class="a serif">Plus qu’un club,</div>
+    <div class="b serif y">une famille&nbsp;!</div>
+  </section>
+
+  <!-- S4 : recrute -->
+  <section class="scene" id="s4">
+    <img class="aq" src="src/hd/aquarelle.jpg">
+    <div class="club">Le Rugby Club Akanda</div>
+    <div class="mark"></div>
+    <div class="rec anton">Recrute&nbsp;!</div>
+    <div class="sub serif">Nouveau club — ouvert à tous</div>
+  </section>
+
+  <!-- S5 : profils -->
+  <section class="scene" id="s5"><img class="full bg" src="src/hd/ballon.jpg">
+    <div class="head">Appel au recrutement</div>
+    <div class="title anton">Il y a une place pour toi</div>
+    <div class="cards">
+      <div class="card" id="c1">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6"/><path d="M16 11.5a3 3 0 1 0 0-6"/><path d="M17.5 14.3c2.1.7 3.5 2.8 3.5 5.7"/></svg>
+        <h3>Nouveaux<br>joueurs</h3><p>Tu n’as jamais joué&nbsp;? Pas de problème&nbsp;! Viens découvrir le rugby.</p>
+      </div>
+      <div class="card" id="c2">
+        <svg viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3 4v4.5h4.5"/><path d="M12 7.5V12l3 2"/></svg>
+        <h3>Anciens<br>joueurs</h3><p>Tu veux retrouver les terrains&nbsp;? On t’attend&nbsp;!</p>
+      </div>
+      <div class="card" id="c3">
+        <svg viewBox="0 0 24 24"><circle cx="7" cy="5.5" r="2.2"/><path d="M7 9v11M4 12.5h6"/><circle cx="17" cy="7.5" r="2.6"/><path d="M17 11.5v8.5M13.5 14.5h7"/></svg>
+        <h3>Tous les<br>gabarits</h3><p>Petits, grands, légers, costauds… Chacun a sa place.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 : rejoins -->
+  <section class="scene" id="s6"><img class="full" src="src/hd/mains.jpg" style="object-position:60% 50%"><div class="shade"></div>
+    <div class="a anton">Rejoins l’aventure</div>
+    <div class="b anton y">RCA&nbsp;!</div>
+  </section>
+
+  <!-- S7 : signature -->
+  <section class="scene" id="s7">
+    <div class="glow"></div>
+    <svg class="streaks" id="st7" viewBox="0 0 1920 1080"></svg>
+    <img class="crest" src="src/ecusson.png">
+    <div class="shine"><i></i></div>
+    <div class="info">
+      <div class="name" id="nm">Rugby Club Akanda<small>Sevens · Akanda</small></div>
+      <div class="cta serif" id="cta">Rejoins-nous&nbsp;!</div>
+      <div class="how" id="how">Contacte-nous en privé <b>au</b></div>
+      <ul>
+        <li id="p1"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><small>+241</small>077 05 44 13</li>
+        <li id="p2"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><small>+241</small>074 85 69 48</li>
+        <li id="p3"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><small>+241</small>074 91 40 12</li>
+      </ul>
+    </div>
+    <div class="flag"><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
+  </section>
+
+  <div id="bug"><img src="src/ecusson.png"><div>Rugby Club Akanda<small>Sevens</small></div></div>
+  <div class="wipe" id="wipeN"></div>
+  <div class="wipe" id="wipeY"></div>
+  <div id="flash"></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+</div>
+
+<script src="lib/gsap.min.js"></script>
+<script>
+// ---------- traînées de vitesse (SVG) ----------
+function streaks(svgId, seed, n){
+  const svg=document.getElementById(svgId); let s=seed;
+  const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};
+  const cols=['#f5c400','#22a34a','#ffffff','#f5c400'];
+  for(let i=0;i<n;i++){
+    const y=120+rnd()*840, len=500+rnd()*900, th=6+rnd()*18, c=cols[i%4];
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','sk');
+    g.innerHTML=`<path d="M0 0 L${len-th/2} ${-th/2} A${th/2} ${th/2} 0 0 1 ${len-th/2} ${th/2} Z" fill="${c}" opacity="${c==='#ffffff'?.8:1}"/>`;
+    g.dataset.y=y; g.dataset.len=len; g.dataset.d=rnd();
+    svg.appendChild(g);
+  }
+  return [...svg.querySelectorAll('.sk')];
+}
+const sk1=streaks('st1',11,14), sk7=streaks('st7',23,12);
+
+const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
+const show=(id,at)=>tl.set('#'+id,{visibility:'visible'},at);
+const hide=(id,at)=>tl.set('#'+id,{visibility:'hidden'},at);
+const E='expo.out';
+
+// Volet : couvre l'écran à l'instant "at"
+function wipe(at){
+  tl.fromTo('#wipeN',{x:0},{x:4400,duration:.62,ease:'power2.inOut'},at-.31);
+  tl.fromTo('#wipeY',{x:-300},{x:4300,duration:.62,ease:'power2.inOut'},at-.36);
+}
+function flash(at,o=.9){ tl.fromTo('#flash',{opacity:o},{opacity:0,duration:.5,ease:'power2.out',immediateRender:false},at); }
+function streakPass(list,at,dur,rot){
+  list.forEach((g,i)=>{
+    const y=+g.dataset.y, len=+g.dataset.len, d=+g.dataset.d;
+    tl.fromTo(g,{attr:{transform:`translate(${-len-200} ${y}) rotate(${rot})`}},
+      {attr:{transform:`translate(${2100} ${y-260*Math.tan(-rot*Math.PI/180)}) rotate(${rot})`},duration:dur*(0.7+d*0.6),ease:'power2.inOut'},at+d*0.8);
+  });
+}
+
+// ===== S1 : 0 → 4 s =====
+show('s1',0);
+streakPass(sk1,0.0,2.2,-9); streakPass(sk1,2.0,1.8,-9);
+tl.fromTo('#s1 .k',{opacity:0,x:-40},{opacity:1,x:0,duration:.6},0.1);
+tl.fromTo('#s1 .t1',{opacity:0,scale:1.35,x:-30,transformOrigin:'left center'},{opacity:1,scale:1,x:0,duration:.45,ease:E},0.5);
+tl.fromTo('#s1 .t2',{opacity:0,scale:1.35,transformOrigin:'left center'},{opacity:1,scale:1,duration:.45,ease:E},1.5);
+tl.to('#s1 .t1, #s1 .t2, #s1 .k',{x:30,duration:1.5,ease:'none'},2.0);
+tl.to('#s1 .t1, #s1 .t2, #s1 .k',{scale:1.6,opacity:0,filter:'blur(12px)',duration:.4,ease:'power2.in',transformOrigin:'50% 50%'},3.6);
+hide('s1',4.0); flash(4.0,1);
+
+// ===== S2 : 4 → 12 s (4 plans de 2 s) =====
+['v1','v2','v3','v4'].forEach((id,i)=>{
+  const at=4+i*2;
+  show(id,at); hide(id,at+2);
+  const pans=[[-30,0],[30,-10],[-20,10],[0,-25]][i];
+  tl.fromTo(`#${id} img`,{scale:1.06,x:pans[0],y:pans[1]},{scale:1.2,x:-pans[0],y:-pans[1],duration:2.3,ease:'none'},at);
+  tl.fromTo(`#${id} .num`,{opacity:0,y:20},{opacity:1,y:0,duration:.4},at+.15);
+  tl.fromTo(`#${id} .word`,{opacity:0,x:-80},{opacity:1,x:0,duration:.5,ease:E},at+.2);
+  tl.fromTo(`#${id} .bar`,{scaleX:0},{scaleX:1,duration:.7,ease:E},at+.35);
+  tl.to(`#${id} .word`,{x:40,duration:1.3,ease:'none'},at+.7);
+  if(i>0) wipe(at);
+});
+tl.to('#bug',{opacity:1,duration:.4},4.2);
+
+// ===== S3 : 12 → 16 s =====
+wipe(12); show('s3',12); hide('s3',16);
+tl.fromTo('#s3 img',{scale:1.2},{scale:1.05,duration:4.2,ease:'none'},12);
+tl.fromTo('#s3 .a',{opacity:0,y:40,filter:'blur(8px)'},{opacity:1,y:0,filter:'blur(0px)',duration:.9},12.35);
+tl.fromTo('#s3 .b',{opacity:0,y:40,filter:'blur(8px)'},{opacity:1,y:0,filter:'blur(0px)',duration:.9},13.2);
+tl.to('#s3 .a, #s3 .b',{scale:1.04,duration:2.5,ease:'none'},13.5);
+
+// ===== S4 : 16 → 20 s (papier) =====
+wipe(16); show('s4',16); hide('s4',20);
+tl.to('#bug',{opacity:0,duration:.2},15.8);
+tl.fromTo('#s4 .aq',{opacity:0,x:120,scale:1.05},{opacity:1,x:0,scale:1,duration:1.2},16.1);
+tl.to('#s4 .aq',{x:-40,duration:2.6,ease:'none'},17.3);
+tl.fromTo('#s4 .club',{opacity:0,y:20},{opacity:1,y:0,duration:.5},16.3);
+tl.fromTo('#s4 .rec',{opacity:0,scale:1.3,transformOrigin:'left center'},{opacity:1,scale:1,duration:.45,ease:E},16.5);
+tl.fromTo('#s4 .mark',{scaleX:0},{scaleX:1,duration:.6,ease:'power3.inOut'},17.0);
+tl.fromTo('#s4 .sub',{opacity:0,x:-30},{opacity:1,x:0,duration:.6},17.5);
+
+// ===== S5 : 20 → 24 s =====
+wipe(20); show('s5',20); hide('s5',24);
+tl.to('#bug',{opacity:1,duration:.3},20.2);
+tl.fromTo('#s5 .bg',{scale:1.15},{scale:1.05,duration:4.2,ease:'none'},20);
+tl.fromTo('#s5 .head',{opacity:0,y:-20},{opacity:1,y:0,duration:.5},20.15);
+tl.fromTo('#s5 .title',{opacity:0,scale:1.15},{opacity:1,scale:1,duration:.5,ease:E},20.3);
+['#c1','#c2','#c3'].forEach((c,i)=>{
+  tl.fromTo(c,{opacity:0,y:60},{opacity:1,y:0,duration:.6,ease:E},20.9+i*.75);
+  tl.fromTo(c+' svg',{scale:0,transformOrigin:'50% 50%'},{scale:1,duration:.5,ease:'back.out(2)'},21.0+i*.75);
+});
+
+// ===== S6 : 24 → 26 s =====
+wipe(24); show('s6',24); hide('s6',26);
+tl.to('#bug',{opacity:0,duration:.2},25.7);
+tl.fromTo('#s6 img',{scale:1.05},{scale:1.35,duration:2.1,ease:'power1.in'},24);
+tl.fromTo('#s6 .a',{opacity:0,x:-80},{opacity:1,x:0,duration:.45,ease:E},24.25);
+tl.fromTo('#s6 .b',{opacity:0,scale:1.5,transformOrigin:'left center'},{opacity:1,scale:1,duration:.4,ease:E},25.0);
+tl.to('#s6 .b',{scale:1.12,duration:.9,ease:'power1.in'},25.1);
+
+// ===== S7 : 26 → 30 s =====
+show('s7',26); flash(26,1);
+streakPass(sk7,25.9,1.6,-9);
+tl.fromTo('#s7 .crest',{opacity:0,scale:.6,rotation:-6,transformOrigin:'50% 55%'},{opacity:1,scale:1,rotation:0,duration:.9,ease:'back.out(1.6)'},26.0);
+tl.fromTo('#s7 .shine i',{left:'-60%'},{left:'130%',duration:.9,ease:'power2.inOut'},26.9);
+tl.fromTo('#nm',{opacity:0,x:40},{opacity:1,x:0,duration:.5},26.35);
+tl.fromTo('#cta',{opacity:0,x:40},{opacity:1,x:0,duration:.5},26.6);
+tl.fromTo('#how',{opacity:0,x:40},{opacity:1,x:0,duration:.5},26.85);
+['#p1','#p2','#p3'].forEach((p,i)=>tl.fromTo(p,{opacity:0,x:60},{opacity:1,x:0,duration:.5,ease:E},27.1+i*.22));
+tl.fromTo('#s7 .flag',{scaleX:0},{scaleX:1,duration:1.0,ease:'power3.inOut'},26.3);
+tl.to('#s7 .crest',{scale:1.035,duration:.12,yoyo:true,repeat:1,ease:'power1.out'},29.0);
+flash(29.0,.35);
+tl.to('#stage > .scene#s7',{opacity:0,duration:.35,ease:'power1.in'},29.62);
+tl.set({}, {}, 30);
+
+// grain animé (déterministe)
+window.seek=(t)=>{
+  tl.seek(t,false);
+  const f=Math.round(t*30), a=(f*7919)%512, b=(f*104729)%512;
+  document.getElementById('grain').style.transform=`translate(${-a/4}px,${-b/4}px)`;
+};
+window.ready=()=>Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))]);
+window.seek(0);
+</script>
+</body>
+</html>

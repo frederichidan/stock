@@ -47,14 +47,14 @@
   h1 .l2{font-size:24mm;color:var(--yellow);margin-top:3.5mm}
 
   /* accroche + joueur */
-  .mid{position:relative;margin-top:4mm;min-height:54mm}
+  .mid{position:relative;margin-top:4mm;min-height:48mm}
   .intro{position:relative;z-index:2;width:84mm}
   .intro p{font-size:4.6mm;line-height:1.42;font-weight:500}
   .intro p b{color:var(--yellow);font-weight:700}
   .intro .open{margin-top:5mm;display:flex;gap:4mm;align-items:flex-start}
   .intro .open .bar{flex:none;width:10mm;height:.6mm;background:var(--green);margin-top:3.4mm}
   .intro .open p{font-weight:700;font-size:5.2mm;line-height:1.3}
-  .player{position:absolute;z-index:1;right:-8mm;top:-12mm;width:90mm}
+  .player{position:absolute;z-index:1;right:-6mm;top:-15mm;width:82mm}
   .streaks{position:absolute;z-index:0;right:44mm;top:6mm;width:52mm}
 
   /* infos pratiques */
@@ -66,7 +66,8 @@
     display:flex;align-items:center;gap:2mm}
   .label svg{width:3.4mm;height:3.4mm;stroke:var(--yellow);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .pre{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:5.4mm;margin-bottom:1mm;line-height:1}
-  .big{font-family:Anton,sans-serif;font-size:10.5mm;line-height:1;text-transform:uppercase;letter-spacing:.2mm}
+  .small{font-size:3.2mm;color:var(--muted);margin-top:2mm;line-height:1.4}
+  .big{font-family:Anton,sans-serif;font-size:10.5mm;line-height:1.1;text-transform:uppercase;letter-spacing:.2mm}
 
   /* consigne */
   .rule{position:relative;z-index:2;margin-top:6mm;display:flex;align-items:center;gap:6mm;
@@ -135,7 +136,8 @@
     <div class="cell">
       <div class="label"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Lieu</div>
       <div class="pre">Rendez-vous à</div>
-      <div class="big">Okala</div>
+      <div class="big">Okala<br>Carrière</div>
+      <div class="small">À la deuxième pompe</div>
     </div>
   </section>
 

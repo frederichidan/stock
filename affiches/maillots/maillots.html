@@ -62,7 +62,7 @@
     <div class="num">02</div>
     <div class="kit" id="kitAway"></div>
     <div class="desc">
-      <p>Base blanche, écharpe diagonale vert-jaune-bleu de l’épaule à la hanche, col et manches marine. Short marine, chaussettes blanches à bandes tricolores.</p>
+      <p>Base blanche, épaules marine soulignées de vert et de jaune, traînées de vitesse ton sur ton reprises de l’écusson. Short blanc, chaussettes blanches tricolores.</p>
       <div class="chips"><i style="background:#fff"></i><i style="background:#0b1a52"></i><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
     </div>
   </section>
@@ -92,17 +92,20 @@ function jersey(opt, back){
       <rect x="112" y="150" width="14" height="270" fill="#000" opacity=".18"/>
       <rect x="274" y="150" width="14" height="270" fill="#000" opacity=".18"/>`;
   } else {
-    // écharpe diagonale tricolore (épaule droite du joueur -> hanche gauche)
-    const band=(o,col)=>`<path d="M${40+o} 30 L${100+o} 30 L${340+o} 440 L${280+o} 440 Z" fill="${col}"/>`;
-    deco = back
-      ? `<rect x="0" y="380" width="400" height="12" fill="#22a34a"/><rect x="0" y="392" width="400" height="10" fill="#f5c400"/><rect x="0" y="402" width="400" height="12" fill="#1c3f9e"/>`
-      : band(-62,'#22a34a')+band(0,'#f5c400')+band(62,'#1c3f9e');
-    deco+=`<rect x="112" y="150" width="14" height="270" fill="#0b1a52" opacity=".12"/><rect x="274" y="150" width="14" height="270" fill="#0b1a52" opacity=".12"/>`;
+    // extérieur : base blanche, empiècement marine, traînées de vitesse ton sur ton
+    const st=(x,y,len,th,col,op)=>`<path transform="translate(${x} ${y}) rotate(-16)" d="M0 0 L${len-th/2} ${-th/2} A${th/2} ${th/2} 0 0 1 ${len-th/2} ${th/2} Z" fill="${col}" opacity="${op}"/>`;
+    deco = `
+      ${back ? '' : st(50,270,300,26,'#d2daea',1)+st(30,322,330,34,'#dee4f0',1)+st(80,372,260,22,'#d2daea',1)+st(60,262,180,7,'#22a34a',1)+st(100,346,200,6,'#f5c400',1)}
+      ${back ? st(60,400,300,18,'#dee4f0',1) : ''}
+      <path d="M0 0 H400 V100 L292 72 L200 100 L108 72 L0 100 Z" fill="#0b1a52"/>
+      <path d="M0 106 L108 78 L200 106 L292 78 L400 106" fill="none" stroke="#22a34a" stroke-width="5"/>
+      <path d="M0 114 L108 86 L200 114 L292 86 L400 114" fill="none" stroke="#f5c400" stroke-width="3.5"/>
+      <rect x="112" y="150" width="14" height="270" fill="#0b1a52" opacity=".1"/><rect x="274" y="150" width="14" height="270" fill="#0b1a52" opacity=".1"/>`;
   }
   const front = back ? `
       <text x="200" y="128" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" letter-spacing="5" fill="${c.ink}">AKANDA</text>
       <text x="200" y="330" text-anchor="middle" font-family="Anton" font-size="170" fill="${c.ink}" stroke="${c.numStroke}" stroke-width="5" paint-order="stroke">7</text>
-      <text x="200" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="10" letter-spacing="3" fill="${c.ink}" opacity=".85">RUGBY CLUB AKANDA</text>`
+      <text x="200" y="68" text-anchor="middle" font-family="Inter" font-weight="700" font-size="10" letter-spacing="3" fill="${c.neck||c.ink}" opacity=".85">RUGBY CLUB AKANDA</text>`
     : `
       <image href="ecusson.png" x="226" y="140" width="52" height="62"/>
 `;
@@ -180,8 +183,8 @@ kit(document.getElementById('kitHome'),
   {base:'#0b1a52', band:'#22a34a', stripe:'#f5c400', stripe2:'#22a34a', ink:'#fff'},
   {base:'#0b1a52', top:'#22a34a', hoops:[['#22a34a',8],['#f5c400',6],['#22a34a',8]]});
 kit(document.getElementById('kitAway'),
-  {style:'away', base:'#f7f7f4', cuff:'#0b1a52', hem:'#0b1a52', collar:'#0b1a52', ink:'#0b1a52', numStroke:'#f5c400'},
-  {base:'#0b1a52', band:'#f5c400', stripe:'#22a34a', stripe2:'#f5c400', ink:'#fff'},
+  {style:'away', base:'#f7f7f4', cuff:'#0b1a52', hem:'#0b1a52', collar:'#f5c400', ink:'#0b1a52', numStroke:'#22a34a', neck:'#ffffff'},
+  {base:'#f7f7f4', band:'#0b1a52', stripe:'#22a34a', stripe2:'#f5c400', ink:'#0b1a52'},
   {base:'#f7f7f4', top:'#0b1a52', hoops:[['#22a34a',8],['#f5c400',6],['#1c3f9e',8]]});
 </script>
 </body>

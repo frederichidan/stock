@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Maillots RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  :root{ --navy:#0a1747; --navy2:#0b1a52; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --paper:#f4f1ea; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy)}
+  .board{position:relative;width:1920px;height:1080px;font-family:Inter,sans-serif;color:#fff;
+    background:radial-gradient(60% 70% at 25% 30%, #1c3f9e 0%, transparent 70%), var(--navy)}
+  header{position:absolute;left:70px;right:70px;top:46px;display:flex;align-items:center;gap:26px;z-index:2}
+  header img{height:96px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
+  header .club{font-weight:700;font-size:18px;letter-spacing:7px;text-transform:uppercase}
+  header .club small{color:var(--yellow);margin-left:12px;letter-spacing:5px}
+  header h1{font-family:Anton,sans-serif;font-weight:400;font-size:58px;line-height:1.05;text-transform:uppercase;letter-spacing:1px}
+  header h1 span{color:var(--yellow)}
+  header .season{margin-left:auto;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:32px;color:rgba(255,255,255,.85)}
+
+  /* panneaux */
+  .panel{position:absolute;top:190px;bottom:60px;width:860px;border-radius:22px;overflow:hidden}
+  .home{left:70px;background:linear-gradient(160deg,#13286e 0%,#0a1747 70%);border:1.5px solid rgba(255,255,255,.12)}
+  .away{right:70px;background:linear-gradient(160deg,#ffffff 0%,#e9ebf1 80%);color:var(--navy)}
+  .panel .tag{position:absolute;left:40px;top:34px;font-family:Anton,sans-serif;font-size:54px;letter-spacing:1px;text-transform:uppercase;line-height:1}
+  .panel .tag small{display:block;font-family:Inter;font-size:15px;letter-spacing:6px;font-weight:700;margin-top:10px;color:var(--yellow)}
+  .away .tag small{color:var(--green)}
+  .panel .num{position:absolute;right:40px;top:30px;font-family:Anton;font-size:110px;line-height:1;opacity:.08}
+  .kit{position:absolute;left:0;right:0;top:130px;height:620px}
+  .kit svg{position:absolute}
+  .lbl{position:absolute;font-size:13px;font-weight:700;letter-spacing:4px;text-transform:uppercase;opacity:.6}
+  .desc{position:absolute;left:40px;right:40px;bottom:34px;display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+  .desc p{font-size:17px;line-height:1.5;max-width:560px;opacity:.85}
+  .chips{display:flex;gap:10px}
+  .chips i{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.5)}
+  .away .chips i{border-color:rgba(10,23,71,.2)}
+</style>
+</head>
+<body>
+<div class="board">
+  <header>
+    <img src="ecusson.png" alt="">
+    <div>
+      <div class="club">Rugby Club Akanda<small>Sevens</small></div>
+      <h1>Propositions de <span>maillots</span></h1>
+    </div>
+    <div class="season">Saison 2026-2027</div>
+  </header>
+
+  <section class="panel home">
+    <div class="tag">Domicile<small>Tenue n°1</small></div>
+    <div class="num">01</div>
+    <div class="kit" id="kitHome"></div>
+    <div class="desc">
+      <p>Bleu marine du club, empiècement d’épaules vert liseré de jaune et traînées de vitesse reprises de l’écusson. Short marine, chaussettes cerclées aux couleurs du Gabon.</p>
+      <div class="chips"><i style="background:#0b1a52"></i><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#fff"></i></div>
+    </div>
+  </section>
+
+  <section class="panel away">
+    <div class="tag">Extérieur<small>Tenue n°2</small></div>
+    <div class="num">02</div>
+    <div class="kit" id="kitAway"></div>
+    <div class="desc">
+      <p>Base blanche, écharpe diagonale vert-jaune-bleu de l’épaule à la hanche, col et manches marine. Short marine, chaussettes blanches à bandes tricolores.</p>
+      <div class="chips"><i style="background:#fff"></i><i style="background:#0b1a52"></i><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const BODY='M160 38 Q200 62 240 38 L294 54 Q330 80 364 130 L326 180 L286 154 L288 418 Q200 430 112 418 L114 154 L74 180 L36 130 Q70 80 106 54 Z';
+const SLEEVE_L='M36 130 L74 180 L86 166 L49 116 Z';     // revers de manche
+const SLEEVE_R='M364 130 L326 180 L314 166 L351 116 Z';
+const SHORTS='M118 0 H282 L304 158 Q262 168 214 162 L200 104 L186 162 Q138 168 96 158 Z';
+const SOCK='M10 0 H70 V150 Q72 186 96 196 Q112 204 108 220 H20 Q6 220 8 200 L10 150 Z';
+
+function jersey(opt, back){
+  const id='j'+Math.random().toString(36).slice(2,7);
+  const c=opt;
+  let deco='';
+  if(c.style==='home'){
+    deco=`
+      <path d="M0 0 H400 V128 L292 92 L200 128 L108 92 L0 128 Z" fill="${c.yoke}"/>
+      <path d="M0 128 L108 92 L200 128 L292 92 L400 128" fill="none" stroke="${c.trim}" stroke-width="5"/>
+      <g opacity="${back?0:1}">
+        <path d="M112 330 L262 296 A5 5 0 0 1 264 306 Z" fill="${c.trim}"/>
+        <path d="M112 352 L236 326 A4 4 0 0 1 238 334 Z" fill="#fff" opacity=".7"/>
+        <path d="M112 374 L250 344 A6 6 0 0 1 252 356 Z" fill="${c.yoke}"/>
+      </g>
+      <rect x="112" y="150" width="14" height="270" fill="#000" opacity=".18"/>
+      <rect x="274" y="150" width="14" height="270" fill="#000" opacity=".18"/>`;
+  } else {
+    // écharpe diagonale tricolore (épaule droite du joueur -> hanche gauche)
+    const band=(o,col)=>`<path d="M${40+o} 30 L${100+o} 30 L${340+o} 440 L${280+o} 440 Z" fill="${col}"/>`;
+    deco = back
+      ? `<rect x="0" y="380" width="400" height="12" fill="#22a34a"/><rect x="0" y="392" width="400" height="10" fill="#f5c400"/><rect x="0" y="402" width="400" height="12" fill="#1c3f9e"/>`
+      : band(-62,'#22a34a')+band(0,'#f5c400')+band(62,'#1c3f9e');
+    deco+=`<rect x="112" y="150" width="14" height="270" fill="#0b1a52" opacity=".12"/><rect x="274" y="150" width="14" height="270" fill="#0b1a52" opacity=".12"/>`;
+  }
+  const front = back ? `
+      <text x="200" y="128" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" letter-spacing="5" fill="${c.ink}">AKANDA</text>
+      <text x="200" y="330" text-anchor="middle" font-family="Anton" font-size="170" fill="${c.ink}" stroke="${c.numStroke}" stroke-width="5" paint-order="stroke">7</text>
+      <text x="200" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="10" letter-spacing="3" fill="${c.ink}" opacity=".85">RUGBY CLUB AKANDA</text>`
+    : `
+      <image href="ecusson.png" x="226" y="140" width="52" height="62"/>
+`;
+  const collar = back
+    ? `<path d="M160 38 Q200 52 240 38 L236 30 Q200 42 164 30 Z" fill="${c.collar}"/>`
+    : `<path d="M160 38 Q200 62 240 38 L234 30 Q200 54 166 30 Z" fill="${c.collar}"/>
+       <path d="M200 52 L200 84" stroke="${c.collar}" stroke-width="4"/>
+       <path d="M188 51 L200 84 L212 51" fill="${c.collar}"/>`;
+  return `<svg xmlns="${NS}" viewBox="0 0 400 440" width="${c.w}" height="${c.w*1.1}">
+    <defs>
+      <clipPath id="${id}c"><path d="${BODY}"/></clipPath>
+      <linearGradient id="${id}s" x1="0" x2="1">
+        <stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".25" stop-color="#000" stop-opacity="0"/>
+        <stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
+      <radialGradient id="${id}h" cx=".42" cy=".3" r=".6"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path d="${BODY}" fill="#000" opacity=".25" transform="translate(8 14)" filter="blur(6px)"/>
+    <g clip-path="url(#${id}c)">
+      <rect width="400" height="440" fill="${c.base}"/>
+      ${deco}
+      <path d="${SLEEVE_L}" fill="${c.cuff}"/><path d="${SLEEVE_R}" fill="${c.cuff}"/>
+      <rect y="404" width="400" height="20" fill="${c.hem}"/>
+      ${front}
+      <rect width="400" height="440" fill="url(#${id}s)"/>
+      <rect width="400" height="440" fill="url(#${id}h)"/>
+      <path d="M150 230 Q200 250 250 226" fill="none" stroke="#000" stroke-opacity=".07" stroke-width="6"/>
+    </g>
+    ${collar}
+    <path d="${BODY}" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.5"/>
+  </svg>`;
+}
+function shorts(c){
+  const id='s'+Math.random().toString(36).slice(2,7);
+  return `<svg xmlns="${NS}" viewBox="0 0 400 180" width="${c.w}" height="${c.w*.45}">
+    <defs><clipPath id="${id}"><path d="${SHORTS}"/></clipPath></defs>
+    <g clip-path="url(#${id})">
+      <rect width="400" height="180" fill="${c.base}"/>
+      <rect y="0" width="400" height="16" fill="${c.band}"/>
+      <path d="M96 40 L110 158 L122 160 L108 40 Z" fill="${c.stripe}"/><path d="M304 40 L290 158 L278 160 L292 40 Z" fill="${c.stripe}"/>
+      <path d="M86 40 L100 158 L106 158 L92 40 Z" fill="${c.stripe2}"/><path d="M314 40 L300 158 L294 158 L308 40 Z" fill="${c.stripe2}"/>
+      <text x="252" y="140" text-anchor="middle" font-family="Anton" font-size="26" fill="${c.ink}">7</text>
+    </g>
+    <path d="${SHORTS}" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.5"/>
+  </svg>`;
+}
+function socks(c){
+  const id='k'+Math.random().toString(36).slice(2,7);
+  const one=(x,flip)=>`<g transform="translate(${x} 0) ${flip?'scale(-1 1) translate(-110 0)':''}">
+      <clipPath id="${id}${x}"><path d="${SOCK}"/></clipPath>
+      <g clip-path="url(#${id}${x})">
+        <rect width="120" height="230" fill="${c.base}"/>
+        ${c.hoops.map((h,i)=>`<rect y="${18+i*14}" width="120" height="${h[1]}" fill="${h[0]}"/>`).join('')}
+        <rect y="0" width="120" height="12" fill="${c.top}"/>
+        <rect x="0" width="22" height="230" fill="#000" opacity=".12"/>
+      </g>
+      <path d="${SOCK}" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.5"/></g>`;
+  return `<svg xmlns="${NS}" viewBox="0 0 250 230" width="${c.w}" height="${c.w*.92}">${one(0,false)}${one(130,true)}</svg>`;
+}
+
+function kit(el, J, S, K, dark){
+  el.innerHTML = `
+    <div style="position:absolute;left:60px;top:0">${jersey({...J,w:340},false)}</div>
+    <div style="position:absolute;left:460px;top:0">${jersey({...J,w:340},true)}</div>
+    <div class="lbl" style="left:60px;width:340px;text-align:center;top:384px">Face</div>
+    <div class="lbl" style="left:460px;width:340px;text-align:center;top:384px">Dos</div>
+    <div style="position:absolute;left:180px;top:418px">${shorts({...S,w:220})}</div>
+    <div class="lbl" style="left:180px;width:220px;text-align:center;top:536px">Short</div>
+    <div style="position:absolute;left:540px;top:412px">${socks({...K,w:118})}</div>
+    <div class="lbl" style="left:500px;width:200px;text-align:center;top:536px">Chaussettes</div>
+`;
+}
+
+kit(document.getElementById('kitHome'),
+  {style:'home', base:'#0b1a52', yoke:'#22a34a', trim:'#f5c400', cuff:'#f5c400', hem:'#22a34a', collar:'#f5c400', ink:'#ffffff', numStroke:'#f5c400'},
+  {base:'#0b1a52', band:'#22a34a', stripe:'#f5c400', stripe2:'#22a34a', ink:'#fff'},
+  {base:'#0b1a52', top:'#22a34a', hoops:[['#22a34a',8],['#f5c400',6],['#22a34a',8]]});
+kit(document.getElementById('kitAway'),
+  {style:'away', base:'#f7f7f4', cuff:'#0b1a52', hem:'#0b1a52', collar:'#0b1a52', ink:'#0b1a52', numStroke:'#f5c400'},
+  {base:'#0b1a52', band:'#f5c400', stripe:'#22a34a', stripe2:'#f5c400', ink:'#fff'},
+  {base:'#f7f7f4', top:'#0b1a52', hoops:[['#22a34a',8],['#f5c400',6],['#1c3f9e',8]]});
+</script>
+</body>
+</html>

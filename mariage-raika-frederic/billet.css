@@ -110,25 +110,26 @@
   flex-direction: column;
   background: radial-gradient(ellipse 80% 90% at 50% 45%, var(--verso-1) 0%, var(--verso-2) 55%, var(--verso-3) 100%);
 }
-.billet.verso .bandeau { height: 14mm; justify-content: space-between; }
+/* Bandeau et pied assez hauts pour garder les textes à plus de 3 mm de la coupe. */
+.billet.verso .bandeau { height: 16mm; justify-content: space-between; }
 .billet.verso .bandeau .etiquette { color: var(--accent-fort); font-size: 5.4pt; }
 .billet.verso .bandeau h2 {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -52%);
+  transform: translate(-50%, -46%);
   display: flex;
   align-items: center;
   gap: 3mm;
   font-family: var(--script);
   font-weight: 400;
-  font-size: 23pt;
+  font-size: 21pt;
   white-space: nowrap;
 }
 .billet.verso .bandeau h2 .icone { color: var(--accent); width: 4.6mm; height: 4.6mm; }
 .billet.verso .bandeau h2 span { padding: 0 2mm; line-height: 1.3; }
 
-.billet .itineraire { position: relative; flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); padding: 5.5mm 5mm 5mm; }
+.billet .itineraire { position: relative; flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); padding: 4.5mm 5mm 3mm; }
 .billet .etape { position: relative; padding: 0 5mm; }
 .billet .etape + .etape { border-left: 0.3mm dashed var(--ligne); }
 .billet .avion-etape {
@@ -167,7 +168,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 4mm;
-  height: 11mm;
+  height: 13mm;
   padding: 0 7mm;
   background: linear-gradient(90deg, var(--bande-2), var(--bande-1));
   border-top: 0.35mm solid var(--accent);

@@ -1,56 +1,54 @@
 # Mariage de Raïka & Frédéric — pochette passeport, billet d'invitation et carte de menu
 
-Supports imprimables aux couleurs violet & or du « Passeport de Mariage ».
-Il n'y a pas de photo du couple : le visuel principal est le monogramme **R & F**,
-avec l'initiale de la mariée placée avant celle du marié.
+Supports imprimables aux couleurs violet & or du « Passeport de Mariage » (version A,
+Violet royal & or). Il n'y a pas de photo du couple : le visuel principal est le
+monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
-| Fichier | Contenu | Format |
-|---|---|---|
-| `pochette-passeport.html` | Extérieur : dos (alliances et déclaration pour l'union) et couverture « Passeport de Mariage » datée du 18 décembre 2026. Intérieur : invitation avec les tampons des escales, et page d'identité où le monogramme remplace la photo | feuille A5 210 × 148 mm, pliée en passeport A6 (105 × 148 mm) |
-| `billet-invitation.html` | Recto : carte d'embarquement avec talon. Verso : programme du voyage (3 escales) | 210 × 99 mm (1/3 de A4) |
-| `carte-menu.html` | Recto : menu de la soirée de gala. Verso : monogramme et devise | 99 × 210 mm (1/3 de A4) |
-| `maquettes.html` | Maquettes de présentation (`?scene=pochette`, `billet`, `menu` ou `ensemble`) | 16:9 |
-| `impression.html` | Planches pour l'imprimeur : fond perdu 3 mm + traits de coupe (`?doc=passeport`, `billet` ou `menu`) | format fini + 2 × 12 mm |
-| `export/violet/` | Version A retenue : un dossier par élément (voir ci-dessous) | |
-| `nuancier.html` | Les 4 versions de couleurs côte à côte (comparatif) | |
+## Les fichiers à utiliser : `export/violet/`
 
-## Versions de couleurs
-
-**Version retenue : A, Violet royal & or.** C'est la version par défaut (`theme: "violet"`
-dans `infos.js`) et la seule exportée. Les 3 autres versions restent disponibles,
-toutes tirées de la palette du mariage (nuit, violet royal, or antique, or champagne, argent) :
-
-| Version | Dossier | Rendu |
-|---|---|---|
-| A. Violet royal & or (retenue) | `export/violet/` | fond violet, textes or et ivoire (comme le passeport) |
-| B. Nuit, or & argent | `export/minuit/` (avec `--toutes`) | fond nuit très foncé, or et argent, programme sur fond foncé |
-| C. Or champagne & violet | `export/champagne/` (avec `--toutes`) | fond champagne clair, prénoms violets, ornements or |
-| D. Argent, violet & or | `export/argent/` (avec `--toutes`) | fond argent nacré, prénoms violets, ornements or |
-
-## Contenu de `export/violet/`
-
-Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-menu/`), avec :
+Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-menu/`) :
 
 | Fichier | Usage |
 |---|---|
-| `…-maquette-8k.jpg` | Maquette de présentation réaliste (posé sur marbre, ombres, grain du papier), **7680 × 4320** (8K) |
-| `…-imprimeur.pdf` | **PDF pour l'imprimeur** : fond perdu 3 mm, traits de coupe, repères de pli (pochette) |
-| `…-format-fini.pdf` | PDF au format exact, sans fond perdu (imprimante personnelle, envoi numérique) |
-| `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg` | Chaque face à plat, **7680 px** sur le grand côté |
+| `…-A4-8k.pdf` | **À imprimer sur A4**, recto verso bord long : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi) |
+| `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier plus léger, textes nets à toute taille) |
+| `…-maquette-8k.jpg` / `.pdf` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
+| `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) |
 
-Et `ensemble-maquette-8k.jpg` : les trois supports réunis sur une même maquette.
-Avec `--toutes`, les mêmes dossiers sont produits pour les 4 versions, plus un nuancier
-comparatif de 4696 × 7680. Les PDF sont vectoriels, polices incluses : ils restent nets
-à n'importe quelle taille d'impression. Leurs textes dorés sont redessinés en dégradé
-vectoriel (sans masque de transparence) pour éviter les fines coutures que certains
-logiciels affichent autour des textes en dégradé.
+Et `ensemble-maquette-8k.jpg` / `.pdf` : les trois supports réunis sur une même maquette.
 
-Pour voir une version dans le navigateur, ajoutez `?theme=` à l'adresse,
-par exemple `billet-invitation.html?theme=champagne`. La version par défaut
-se choisit dans `infos.js` (`theme: "violet"`). Les teintes sont réglées dans
-`commun.css` et la liste des versions dans `themes.js`.
+## Impression sur A4
 
-## Dates
+Pour tenir sur une feuille A4 avec fond perdu, traits de coupe et 8 mm de marge (zone que
+les imprimantes n'impriment pas), les trois éléments sont imprimés à **88,5 %** de leur
+dessin d'origine :
+
+| Élément | Format fini | Par feuille A4 |
+|---|---|---|
+| Pochette passeport | ouverte 185,9 × 131 mm, pliée en deux : 92,9 × 131 mm | 2 (A4 portrait) |
+| Billet d'invitation | 185,9 × 87,6 mm | 3 (A4 portrait) |
+| Carte de menu | 87,6 × 185,9 mm | 3 (A4 paysage) |
+
+Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Imprimer en
+**recto verso avec retournement sur le bord long**, à **100 %** (taille réelle, sans
+« ajuster à la page »). Les versos sont placés et orientés pour tomber derrière les rectos :
+
+- **Pochette** : une fois la feuille découpée et pliée au milieu (repères « pli » en
+  pointillés), l'invitation se trouve derrière la couverture et la page d'identité derrière
+  le dos, à l'endroit.
+- **Billet** : le verso se lit à l'endroit en retournant le billet de haut en bas.
+- **Carte de menu** : le verso se lit à l'endroit en retournant la carte de gauche à droite.
+
+Faites un essai sur papier ordinaire avant le tirage final : si le verso est décalé,
+vérifiez que l'impression est bien à 100 % et en « bord long ».
+
+Découpe : suivre les traits de coupe (massicot ou cutter et règle) ; le fond perdu de 3 mm
+absorbe les petits écarts. Conseils : papier 250 à 350 g, finition mate ou soft-touch ;
+coins arrondis de 3 mm conseillés pour la pochette, comme sur la maquette. Les PDF sont en
+RVB : demandez une épreuve couleur si vous passez par un imprimeur (le violet vif peut
+légèrement se ternir en quadrichromie).
+
+## Dates et lieux
 
 - **Escale 1 : mariage coutumier**, mercredi 16 décembre 2026, à La Sablière (entrée Hôtel Onomo)
 - **Escale 2 : mariage civil**, vendredi 18 décembre 2026, à l'Hôtel de ville de Libreville, à partir de 13h
@@ -62,9 +60,10 @@ La couverture du passeport ne porte que la date du 18 décembre 2026 (réglage
 
 ## Modifier les textes
 
-Tous les textes personnalisables sont dans **`infos.js`** (les intitulés fixes comme « Carte d'embarquement » restent dans le code) : prénoms, lieux, horaires, contacts RSVP,
-code vestimentaire, textes du passeport (verset, invitation, « Royaume de l'Amour »…)
-et plats du menu. Les autres fichiers n'ont pas besoin d'être modifiés.
+Tous les textes personnalisables sont dans **`infos.js`** (les intitulés fixes comme
+« Carte d'embarquement » restent dans le code) : prénoms, lieux, horaires, contacts RSVP,
+code vestimentaire, textes du passeport (texte du dos, invitation, « Royaume de l'Amour »…)
+et plats du menu.
 
 À valider avant l'impression (ce sont encore des propositions) :
 
@@ -76,40 +75,28 @@ et plats du menu. Les autres fichiers n'ont pas besoin d'être modifiés.
 Le nom du ou des invités (« Passager(s) ») et le numéro de table restent en
 pointillés pour être écrits à la main.
 
-## Imprimer ou régénérer les fichiers
-
-**Méthode simple :** ouvrir le fichier `.html` dans Google Chrome, puis
-*Imprimer → Enregistrer au format PDF*, avec *Marges : aucune* et
-*Graphiques d'arrière-plan* coché.
-
-**Méthode automatique** (régénère `export/` pour la version choisie dans `infos.js` ; ajoutez `--toutes` pour les 4 versions et le nuancier) :
+## Régénérer les fichiers
 
 ```bash
 cd mariage-raika-frederic
-npm install playwright
+npm install
 npx playwright install chromium
-node exporter.js
+node exporter.js            # la version choisie dans infos.js (theme)
+node exporter.js --toutes   # les 4 versions de couleurs et un nuancier comparatif
 ```
 
-### Recto verso, retournement sur le bord long
+## Organisation du code
 
-Tous les PDF (imprimeur et format fini) sont prévus pour un **recto verso avec
-retournement sur le bord long** : page 1 = recto, page 2 = verso.
-
-- **Pochette passeport** : la page 2 (intérieur) est volontairement **tête-bêche**
-  (tournée de 180°). Avec un retournement sur le bord long, c'est ce qui place la page
-  d'identité derrière le dos et l'invitation derrière la couverture, à l'endroit une fois
-  la feuille pliée au milieu (repères « pli » sur le PDF imprimeur).
-- **Billet** (paysage) : le verso se lit à l'endroit en retournant le billet de haut en bas.
-- **Carte de menu** (portrait) : le verso se lit à l'endroit en retournant la carte
-  de gauche à droite.
-
-Faites un essai sur papier ordinaire avant le tirage final.
-
-Conseils pour l'imprimeur : papier 300 à 350 g, finition mate ou soft-touch.
-La dorure à chaud sur le monogramme et les prénoms donne un très bel effet.
-Les PDF sont en RVB : l'imprimeur les convertit en CMJN (demandez une épreuve couleur,
-le violet vif peut légèrement se ternir en quadrichromie).
+| Fichier | Rôle |
+|---|---|
+| `infos.js` | Tous les textes (le seul fichier à modifier) |
+| `themes.js`, `commun.css` | Les 4 versions de couleurs (A violet, B nuit, C champagne, D argent) |
+| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css` | Dessin de chaque élément |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html` | Aperçu de chaque élément dans le navigateur (`?theme=` pour une autre version) |
+| `impression.html` | Planches A4 (`?doc=passeport`, `billet` ou `menu`) |
+| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `menu` ou `ensemble`) |
+| `nuancier.html` | Les 4 versions de couleurs côte à côte |
+| `exporter.js` | Génère tout le dossier `export/` |
 
 ## Polices
 

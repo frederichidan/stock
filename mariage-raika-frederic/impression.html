@@ -10,24 +10,29 @@
 <link rel="stylesheet" href="menu.css">
 <style id="format-page"></style>
 <style>
-  /* Planches pour l'imprimeur : chaque face au format fini, entourée d'un fond perdu
-     de 3 mm (bords prolongés en miroir) et de traits de coupe, prêtes pour une impression
-     recto verso avec retournement sur le bord long. Paramètre d'adresse :
-     ?doc=passeport | billet | menu (et ?theme= comme ailleurs). */
+  /* Planches d'impression A4 : plusieurs exemplaires par feuille, chacun entouré d'un fond
+     perdu de 3 mm (bords prolongés en miroir), traits de coupe sur le pourtour ; page 1 =
+     rectos, page 2 = versos, pour un recto verso avec retournement sur le bord long.
+     Paramètres d'adresse :
+       ?doc=passeport | billet | menu   (et ?theme= comme ailleurs)
+       ?images=["…","…"]  une illustration par face (fond perdu compris, à l'endroit) :
+                          c'est ainsi qu'exporter.js produit les PDF « 8K » ;
+       ?capture=1         une seule face par feuille, à taille réelle, sans vectoriser les
+                          textes dorés : sert à capturer chaque illustration en image 8K. */
   .feuille { position: relative; overflow: hidden; background: #fff; break-after: page; }
   .feuille:last-child { break-after: auto; }
+  .exemplaire { position: absolute; }
   /* contain: strict empêche Chromium de réduire la page à cause des copies hors feuille. */
-  .fond-perdu { position: absolute; overflow: hidden; contain: strict; }
+  .fond-perdu { position: absolute; left: 0; top: 0; overflow: hidden; contain: strict; }
   .copie { position: absolute; }
   .copie .page { margin: 0 !important; box-shadow: none !important; }
-  .tete-beche { transform: rotate(180deg); }
+  .exemplaire > img { display: block; width: 100%; height: 100%; }
+  .reperes { position: absolute; inset: 0; width: 100%; height: 100%; }
   #preparation { position: absolute; left: 0; top: 0; }
-  .trait { position: absolute; background: #000; }
-  .pli { position: absolute; border-left: 0.2mm dashed #000; }
   .legende {
     position: absolute;
     font-family: var(--sans);
-    font-size: 5.5pt;
+    font-size: 4.6pt;
     letter-spacing: 0.02em;
     color: #000;
     white-space: nowrap;
@@ -50,86 +55,144 @@
 <script src="menu.js"></script>
 <script>
   const FOND_PERDU = 3; // mm
-  const MARGE = 12; // mm, du bord de la feuille au format fini
-  const TRAIT = 6; // longueur des traits de coupe, en mm
+  const GOUTTIERE = 2 * FOND_PERDU; // mm entre deux exemplaires : leurs fonds perdus se touchent
+  const MARGE_IMPRIMANTE = 4.5; // mm que les imprimantes de bureau n'impriment pas
+  // mm : les copies miroir glissent sous la face pour ne laisser aucun filet à la coupe. Plus large
+  // que l'arrondi au pixel des bords (≈ 0,3 mm), sinon les deux interstices se superposent.
+  const RECOUVREMENT = 1;
+  const A4 = [210, 297];
+  // Réduction commune à tous les éléments pour en placer plusieurs par A4 avec fond perdu,
+  // traits de coupe et 8 mm de marge (3 billets ou 3 menus par feuille, 2 pochettes).
+  const ECHELLE_A4 = 0.885;
+  // Le fond perdu est dessiné à l'échelle 1 puis réduit : il est donc prévu un peu plus large
+  // pour mesurer exactement 3 mm une fois imprimé (et les images 8K le contiennent déjà).
+  const FOND_PERDU_DESSIN = FOND_PERDU / ECHELLE_A4;
 
-  // `teteBeche` : faces tournées de 180° pour qu'un recto verso bord long tombe juste.
-  // Pour la pochette (feuille paysage pliée au milieu comme un livre), l'intérieur doit être
-  // tête-bêche : sinon il serait à l'envers et l'invitation se retrouverait derrière le dos.
+  // `retournement` : axe autour duquel on retourne l'objet pour lire son verso.
+  // La pochette s'ouvre comme un livre (axe vertical) ; le billet, en paysage, se retourne de
+  // haut en bas (axe horizontal) ; la carte de menu, de gauche à droite (axe vertical).
   const DOCUMENTS = {
-    passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, faces: ["extérieur (dos | couverture)", "intérieur, tête-bêche"], teteBeche: [false, true], pli: true },
-    billet: { rendu: billet, nom: "Billet d'invitation", largeur: 210, hauteur: 99, faces: ["recto", "verso"] },
-    menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, faces: ["recto", "verso"] },
+    passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, retournement: "vertical", pli: true, a4: { paysage: false, colonnes: 1, lignes: 2 }, finition: "coins arrondis 3 mm conseillés" },
+    billet: { rendu: billet, nom: "Billet d'invitation", largeur: 210, hauteur: 99, retournement: "horizontal", a4: { paysage: false, colonnes: 1, lignes: 3 } },
+    menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, retournement: "vertical", a4: { paysage: true, colonnes: 3, lignes: 1 } },
   };
 
-  const doc = DOCUMENTS[new URLSearchParams(location.search).get("doc")] || DOCUMENTS.billet;
+  const parametres = new URLSearchParams(location.search);
+  const doc = DOCUMENTS[parametres.get("doc")] || DOCUMENTS.billet;
+  const images = JSON.parse(parametres.get("images") || "null");
+  const capture = parametres.has("capture");
+
+  // Disposition : en capture, une face à taille réelle par feuille ; sinon la planche A4.
   const L = doc.largeur;
   const H = doc.hauteur;
-  const largeurFeuille = L + 2 * MARGE;
-  const hauteurFeuille = H + 2 * MARGE;
+  const echelle = capture ? 1 : ECHELLE_A4;
+  const [colonnes, lignes] = capture ? [1, 1] : [doc.a4.colonnes, doc.a4.lignes];
+  const [largeurFeuille, hauteurFeuille] = capture
+    ? [L + 24, H + 24]
+    : doc.a4.paysage ? [A4[1], A4[0]] : A4;
+  const [l, h] = [L * echelle, H * echelle]; // format fini imprimé
+  const largeurGrille = colonnes * l + (colonnes - 1) * GOUTTIERE;
+  const hauteurGrille = lignes * h + (lignes - 1) * GOUTTIERE;
+  const [x0, y0] = [(largeurFeuille - largeurGrille) / 2, (hauteurFeuille - hauteurGrille) / 2];
+  const xs = Array.from({ length: colonnes }, (_, i) => x0 + i * (l + GOUTTIERE));
+  const ys = Array.from({ length: lignes }, (_, j) => y0 + j * (h + GOUTTIERE));
+
+  // Recto verso bord long : la feuille tourne autour de son grand côté (axe vertical en
+  // portrait, horizontal en paysage). Les exemplaires sont identiques et la grille centrée,
+  // donc chaque verso tombe derrière un recto ; il est tourné de 180° quand l'axe de la feuille
+  // diffère de celui de l'objet, pour se lire à l'endroit une fois l'objet retourné.
+  const axeFeuille = largeurFeuille < hauteurFeuille ? "vertical" : "horizontal";
+  const rotationVerso = capture || axeFeuille === doc.retournement ? 0 : 180;
+
   document.getElementById("format-page").textContent =
     `@page { size: ${largeurFeuille}mm ${hauteurFeuille}mm; margin: 0; }
      .feuille { width: ${largeurFeuille}mm; height: ${hauteurFeuille}mm; }`;
 
-
   const mm = (v) => `${v}mm`;
-  const trait = (x, y, l, h) => `<span class="trait" style="left:${mm(x)};top:${mm(y)};width:${mm(l)};height:${mm(h)}"></span>`;
+  const decimale = (v) => (Math.round(v * 10) / 10).toString().replace(".", ",");
 
-  // Traits de coupe aux quatre coins, écartés du format fini de la largeur du fond perdu.
-  function traitsDeCoupe() {
-    const e = 0.1; // épaisseur ≈ 0,25 pt
-    const debut = MARGE - FOND_PERDU - TRAIT;
-    const fin = MARGE + FOND_PERDU;
-    let html = "";
-    for (const x of [MARGE, MARGE + L]) {
-      html += trait(x - e / 2, debut, e, TRAIT) + trait(x - e / 2, MARGE + H + FOND_PERDU, e, TRAIT);
-    }
-    for (const y of [MARGE, MARGE + H]) {
-      html += trait(debut, y - e / 2, TRAIT, e) + trait(MARGE + L + FOND_PERDU, y - e / 2, TRAIT, e);
-    }
-    return html;
-  }
-
-  function reperesDePli() {
-    if (!doc.pli) return "";
-    const x = MARGE + L / 2;
-    return `<span class="pli" style="left:${mm(x)};top:${mm(MARGE - FOND_PERDU - TRAIT)};height:${mm(TRAIT)}"></span>
-      <span class="pli" style="left:${mm(x)};top:${mm(MARGE + H + FOND_PERDU)};height:${mm(TRAIT)}"></span>
-      <span class="legende" style="left:${mm(x + 1)};top:${mm(MARGE - FOND_PERDU - TRAIT)}">pli</span>`;
+  // Traits de coupe dans les marges, en face de chaque bord de coupe, et repères de pli :
+  // tracés en SVG en mm (0,25 pt d'épaisseur, sans arrondi au pixel).
+  function reperes() {
+    const longueur = (marge) => Math.max(2, Math.min(6, marge - FOND_PERDU - MARGE_IMPRIMANTE));
+    const [tx, ty] = [longueur(x0), longueur(y0)];
+    const ligne = (a, b, c, d, pointille) => `<line x1="${a}" y1="${b}" x2="${c}" y2="${d}"${pointille ? ' stroke-dasharray="0.8 0.6"' : ""}/>`;
+    const [haut, bas] = [y0 - FOND_PERDU, y0 + hauteurGrille + FOND_PERDU];
+    const [gauche, droite] = [x0 - FOND_PERDU, x0 + largeurGrille + FOND_PERDU];
+    let traits = "";
+    for (const x of xs.flatMap((x) => [x, x + l])) traits += ligne(x, haut - ty, x, haut) + ligne(x, bas, x, bas + ty);
+    for (const y of ys.flatMap((y) => [y, y + h])) traits += ligne(gauche - tx, y, gauche, y) + ligne(droite, y, droite + tx, y);
+    if (doc.pli) for (const x of xs.map((x) => x + l / 2)) traits += ligne(x, haut - ty, x, haut, true) + ligne(x, bas, x, bas + ty, true);
+    return `<svg class="reperes" viewBox="0 0 ${largeurFeuille} ${hauteurFeuille}" aria-hidden="true">
+      <g stroke="#000" stroke-width="0.088" fill="none">${traits}</g></svg>`;
   }
 
   // La face au centre, et ses 8 voisines en miroir : seuls 3 mm de chacune restent visibles.
-  function fondPerdu(face, teteBeche) {
+  // Copies miroir d'abord (légèrement glissées vers le centre), la face elle-même au-dessus.
+  function fondPerdu(face) {
     let html = "";
+    let centre = "";
     for (const dy of [-1, 0, 1]) {
       for (const dx of [-1, 0, 1]) {
-        const transformation = `scale(${dx ? -1 : 1}, ${dy ? -1 : 1})`;
-        html += `<div class="copie" style="left:${mm(FOND_PERDU + dx * L)};top:${mm(FOND_PERDU + dy * H)};transform:${transformation}">${face.outerHTML}</div>`;
+        const x = FOND_PERDU_DESSIN + dx * (L - RECOUVREMENT);
+        const y = FOND_PERDU_DESSIN + dy * (H - RECOUVREMENT);
+        const copie = `<div class="copie" style="left:${mm(x)};top:${mm(y)};transform:scale(${dx ? -1 : 1}, ${dy ? -1 : 1})">${face.outerHTML}</div>`;
+        if (dx || dy) html += copie;
+        else centre = copie;
       }
     }
-    return `<div class="fond-perdu${teteBeche ? " tete-beche" : ""}" style="left:${mm(MARGE - FOND_PERDU)};top:${mm(MARGE - FOND_PERDU)};width:${mm(L + 2 * FOND_PERDU)};height:${mm(H + 2 * FOND_PERDU)}">${html}</div>`;
+    return `<div class="fond-perdu" style="width:${mm(L + 2 * FOND_PERDU_DESSIN)};height:${mm(H + 2 * FOND_PERDU_DESSIN)};zoom:${echelle}">${html}${centre}</div>`;
   }
 
-  const legende = (nomFace) =>
-    `${initiale(INFOS.mariee)} & ${initiale(INFOS.marie)} · ${doc.nom} · ${nomFace} · ${L} × ${H} mm + fond perdu ${FOND_PERDU} mm · recto verso bord long`;
+  function exemplaires(face, rotation) {
+    const contenu = typeof face === "string" ? `<img src="${esc(face)}" alt="">` : fondPerdu(face);
+    const fp = FOND_PERDU_DESSIN * echelle; // 3 mm sur la planche A4
+    return xs
+      .flatMap((x) => ys.map((y) => `<div class="exemplaire" style="left:${mm(x - fp)};top:${mm(y - fp)};width:${mm(l + 2 * fp)};height:${mm(h + 2 * fp)};transform:rotate(${rotation}deg)">${contenu}</div>`))
+      .join("");
+  }
+
+  function legende(i) {
+    const face = i === 0 ? "rectos" : `versos${rotationVerso ? " (tournés de 180°)" : ""}`;
+    const nombre = colonnes * lignes;
+    const morceaux = [
+      `${initiale(INFOS.mariee)} & ${initiale(INFOS.marie)}`,
+      doc.nom,
+      capture ? (i === 0 ? "recto" : "verso") : face,
+      capture ? `${L} × ${H} mm` : `${nombre} par feuille A4, ${decimale(l)} × ${decimale(h)} mm`,
+      `fond perdu ${FOND_PERDU} mm`,
+      "recto verso bord long",
+    ];
+    if (doc.finition && i === 0) morceaux.push(doc.finition);
+    if (images) morceaux.push("8K");
+    // En bas, entre les deux premiers traits de coupe verticaux.
+    return `<span class="legende" style="left:${mm(x0 + 1.5)};top:${mm(y0 + hauteurGrille + FOND_PERDU + 0.8)}">${esc(morceaux.join(" · "))}</span>`;
+  }
 
   // Les faces sont d'abord mises en page seules, polices chargées, pour vectoriser les textes
   // dorés (voir vectoriserDegrades dans commun.js), puis recopiées dans les planches.
-  document.fonts.ready.then(() => {
+  // Toutes les polices sont chargées d'avance : document.fonts.ready seul ne suffit pas,
+  // car les polices ne se chargent qu'à leur première utilisation (ici, après l'insertion).
+  Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
     const preparation = document.getElementById("preparation");
-    preparation.innerHTML = doc.rendu(THEME);
-    vectoriserDegrades(preparation);
-    const faces = [...preparation.querySelectorAll(".page")];
+    let faces = images;
+    if (!faces) {
+      preparation.innerHTML = doc.rendu(THEME);
+      if (!capture) vectoriserDegrades(preparation);
+      faces = [...preparation.querySelectorAll(".page")];
+    }
     document.getElementById("planches").innerHTML = faces
-    .map((face, i) => `
-      <section class="feuille">
-        ${fondPerdu(face, doc.teteBeche && doc.teteBeche[i])}
-        ${traitsDeCoupe()}
-        ${reperesDePli()}
-        <span class="legende" style="left:${mm(MARGE + 2)};top:${mm(MARGE + H + FOND_PERDU + 2.2)}">${esc(legende(doc.faces[i]))}</span>
-      </section>`)
-    .join("");
+      .map((face, i) => `
+        <section class="feuille">
+          ${exemplaires(face, i === 0 ? 0 : rotationVerso)}
+          ${reperes()}
+          ${legende(i)}
+        </section>`)
+      .join("");
     preparation.remove();
+    await Promise.all([...document.images].map((image) =>
+      image.complete ? null : new Promise((fin) => image.addEventListener("load", fin, { once: true })),
+    ));
     window.planchesPretes = true;
   });
 </script>

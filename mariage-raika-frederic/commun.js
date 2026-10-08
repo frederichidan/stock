@@ -208,13 +208,15 @@ function codeBarres(texte, { largeur = 100, hauteur = 20, couleur = "currentColo
    avec des masques de transparence dont les bords laissent de fines coutures visibles.
    Pour les PDF, chaque ligne de ces textes est redessinée en texte SVG rempli d'un dégradé
    vectoriel identique, et le texte d'origine est masqué (sa place dans la mise en page
-   est conservée). À appeler une fois les polices chargées et la page mise en page. */
+   est conservée). À appeler une fois les polices chargées et la page mise en page ;
+   un élément déjà traité est ignoré. */
 function vectoriserDegrades(racine = document) {
   const NS = "http://www.w3.org/2000/svg";
   const contexte = document.createElement("canvas").getContext("2d");
   const plage = document.createRange();
 
-  for (const element of racine.querySelectorAll(".texte-degrade")) {
+  for (const element of racine.querySelectorAll(".texte-degrade:not([data-vectorise])")) {
+    element.dataset.vectorise = "";
     const boite = element.getBoundingClientRect();
     const lignes = [];
 
@@ -226,7 +228,7 @@ function vectoriserDegrades(racine = document) {
         plage.setStart(noeud, i);
         plage.setEnd(noeud, i + 1);
         const r = plage.getClientRects()[0];
-        if (!r || !r.width) continue;
+        if (!r || r.width < 0.1) continue; // espace repliée en fin de ligne
         let ligne = lignes.find((l) => Math.abs(l.haut - r.top) < r.height / 2);
         if (!ligne) lignes.push((ligne = { haut: r.top, segments: [] }));
         const dernier = ligne.segments[ligne.segments.length - 1];
@@ -252,6 +254,7 @@ function vectoriserDegrades(racine = document) {
 
     for (const ligne of lignes) {
       for (const s of ligne.segments) {
+        if (!s.texte.trim()) continue;
         const style = getComputedStyle(s.parent);
         contexte.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
         const ligneDeBase = s.haut + contexte.measureText("Hg").fontBoundingBoxAscent - boite.top;
@@ -303,3 +306,6 @@ function ornement({ classe = "" } = {}) {
     <path d="${ICONES.coeur}" transform="translate(75.2,1.2) scale(0.4)" fill="${remplissage}"/>
   </svg>`;
 }
+
+// Impression directe depuis le navigateur : textes dorés vectorisés juste avant l'impression.
+window.addEventListener("beforeprint", () => vectoriserDegrades(document));

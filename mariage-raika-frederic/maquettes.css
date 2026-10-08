@@ -24,14 +24,12 @@ body { background: #d9d4cc; }
 .objet { position: absolute; transform-origin: center; }
 
 /* Papier : ombre portée (lumière en haut à gauche), reflet et grain. */
+.pose { position: relative; }
+.ombre { position: absolute; pointer-events: none; }
 .carte {
   position: relative;
   overflow: hidden;
   border-radius: 0.5mm;
-  box-shadow:
-    0.25mm 0.4mm 0.5mm rgba(30, 20, 45, 0.3),
-    1.5mm 2.6mm 4.5mm rgba(30, 20, 45, 0.2),
-    4mm 8mm 16mm rgba(30, 20, 45, 0.13);
 }
 .carte::after {
   content: "";
@@ -53,11 +51,8 @@ body { background: #d9d4cc; }
   transform: translate(0.55mm, 0.8mm);
   border-radius: 3mm;
   background: var(--bande-1);
-  box-shadow:
-    1.5mm 2.6mm 4.5mm rgba(30, 20, 45, 0.25),
-    4mm 8mm 16mm rgba(30, 20, 45, 0.15);
 }
-.livret .carte { border-radius: 3mm; box-shadow: none; }
+.livret .carte { border-radius: 3mm; }
 .decoupe { width: 105mm; height: 148mm; overflow: hidden; }
 .decoupe > div { width: 210mm; }
 
@@ -80,15 +75,11 @@ body { background: #d9d4cc; }
   background:
     radial-gradient(circle, rgba(0, 0, 0, 0) 83%, rgba(80, 55, 15, 0.35) 84%, rgba(0, 0, 0, 0) 85.5%),
     conic-gradient(from 200deg, #a07a32, #f3dfa6, #c9a464, #8f6a28, #ecd295, #b8903f, #f3dfa6, #a07a32);
-  box-shadow:
-    0.4mm 0.7mm 1mm rgba(40, 28, 10, 0.35),
-    3mm 6mm 12mm rgba(40, 28, 10, 0.25),
-    inset 0 0 3mm rgba(255, 240, 200, 0.4);
 }
 .assiette.porcelaine {
   background: radial-gradient(circle, #fdfcfa 0%, #f7f4ef 58%, #e7e2da 63.5%, #fbfaf7 68%, #f4f0ea 90%, #e2ddd4 100%);
-  box-shadow: 0.3mm 0.6mm 1mm rgba(40, 30, 20, 0.25), 2mm 4mm 7mm rgba(40, 30, 20, 0.18);
 }
+.pose > .assiette { position: relative; }
 .couvert { display: block; filter: drop-shadow(0.5mm 0.9mm 0.7mm rgba(30, 20, 10, 0.35)); }
 .alliances { display: block; filter: drop-shadow(0.6mm 1.2mm 1mm rgba(30, 20, 10, 0.35)); }
 .accessoires .ruban-satin { filter: drop-shadow(0.8mm 1.6mm 1.5mm rgba(30, 15, 50, 0.3)); }

@@ -80,6 +80,7 @@
 .passeport .tampon.t2 { right: 0; top: 4mm; color: var(--accent); }
 .passeport .tampon.t3 { left: 31mm; top: 25mm; color: var(--accent-fort); }
 .passeport .bon-voyage { display: flex; align-items: center; gap: 2mm; font-family: var(--script); font-size: 19pt; line-height: 1.3; margin-top: auto; }
+.passeport .bon-voyage .texte-degrade { padding: 0 1.5mm 0 0.5mm; } /* le « ! » penché dépasse à droite */
 .passeport .bon-voyage .icone { color: var(--accent); width: 5mm; height: 5mm; }
 
 /* ---------------------- Intérieur : page d'identité ---------------------- */
@@ -118,11 +119,13 @@
 .passeport .observations { margin-top: 6mm; }
 .passeport .observations p { font-style: italic; font-size: 11pt; line-height: 1.3; margin-top: 1mm; }
 .passeport .observations p + p { font-style: normal; font-size: 9pt; color: var(--texte-doux); margin-top: 0.4mm; }
+/* La bande déborde d'1 mm sous les bords (rognés par la face) : sinon, à la coupe, un filet
+   de la largeur d'un arrondi peut séparer la bande du bord de la page. */
 .passeport .mrz {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 22mm;
-  padding: 4.5mm 6mm 0;
+  left: -1mm; right: -1mm; bottom: -1mm;
+  height: 23mm;
+  padding: 4.5mm 7mm 0;
   background: var(--zone);
   border-top: 0.3mm solid var(--accent);
 }

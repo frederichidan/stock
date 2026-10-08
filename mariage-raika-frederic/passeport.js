@@ -56,21 +56,19 @@ function ruban(texte) {
   </svg>`;
 }
 
-// Symbole du passeport biométrique.
+// Symbole du passeport biométrique, en tracés pleins (sans masque, pour rester vectoriel
+// dans les PDF) : deux bandes échancrées par le cercle, et l'anneau central.
 function puceBiometrique() {
   const or = idUnique("orn");
-  const masque = idUnique("masque");
+  const ecart = Math.sqrt(8.6 ** 2 - 2.4 ** 2).toFixed(3); // le cercle de 8,6 coupe les bandes à 2,4 du centre
+  const [gauche, droite] = [(20 - ecart).toFixed(3), (20 + Number(ecart)).toFixed(3)];
   return `<svg class="puce" viewBox="0 0 40 24" aria-hidden="true">
-    <defs>${degrade(or, "orn")}
-      <mask id="${masque}">
-        <rect width="40" height="24" fill="white"/>
-        <rect y="9.6" width="40" height="4.8" fill="black"/>
-        <circle cx="20" cy="12" r="8.6" fill="black"/>
-        <circle cx="20" cy="12" r="6.6" fill="white"/>
-        <circle cx="20" cy="12" r="4.4" fill="black"/>
-      </mask>
-    </defs>
-    <rect width="40" height="24" rx="1.6" fill="url(#${or})" mask="url(#${masque})"/>
+    <defs>${degrade(or, "orn")}</defs>
+    <g fill="url(#${or})">
+      <path d="M1.6,0 H38.4 Q40,0 40,1.6 V9.6 H${droite} A8.6,8.6 0 0 0 ${gauche},9.6 H0 V1.6 Q0,0 1.6,0 Z"/>
+      <path d="M1.6,24 H38.4 Q40,24 40,22.4 V14.4 H${droite} A8.6,8.6 0 0 1 ${gauche},14.4 H0 V22.4 Q0,24 1.6,24 Z"/>
+      <path fill-rule="evenodd" d="M13.4,12 A6.6,6.6 0 1 0 26.6,12 A6.6,6.6 0 1 0 13.4,12 Z M15.6,12 A4.4,4.4 0 1 0 24.4,12 A4.4,4.4 0 1 0 15.6,12 Z"/>
+    </g>
   </svg>`;
 }
 

@@ -1,0 +1,12 @@
+{
+  "name": "mariage-raika-frederic",
+  "private": true,
+  "description": "Pochette passeport, billet d'invitation et carte de menu du mariage de Raïka & Frédéric",
+  "scripts": {
+    "exporter": "node exporter.js",
+    "exporter:toutes": "node exporter.js --toutes"
+  },
+  "dependencies": {
+    "playwright": "1.56.1"
+  }
+}

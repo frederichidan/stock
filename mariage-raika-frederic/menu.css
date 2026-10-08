@@ -18,7 +18,8 @@
 
 /* ------------------------------ Recto ------------------------------ */
 .menu.recto .monogramme { width: 31mm; height: 31mm; display: block; margin-top: 2mm; }
-.menu .titre-menu { font-family: var(--script); font-weight: 400; font-size: 46pt; line-height: 1.15; padding: 0 4mm; margin-top: 3mm; }
+/* Marge intérieure haute : la boucle du « M » dépasse de la ligne et serait coupée par background-clip. */
+.menu .titre-menu { font-family: var(--script); font-weight: 400; font-size: 46pt; line-height: 1.15; padding: 3mm 4mm 0; margin-top: 0; }
 .menu.recto .etiquette.evenement { color: var(--accent-fort); font-size: 6.4pt; letter-spacing: 0.34em; margin-top: -1mm; }
 .menu.recto .date { font-style: italic; font-size: 10.5pt; opacity: 0.9; margin-top: 0.8mm; }
 .menu.recto .ornement { width: 52mm; height: 4mm; margin: 3.6mm 0 1.6mm; }

@@ -2,161 +2,146 @@
 <html lang="fr"><head><meta charset="utf-8"><title>AGM – Mboma 2026</title>
 <style>
 @font-face{font-family:BS;src:url(fonts/BigShoulders-Bold.ttf);font-weight:700}
-@font-face{font-family:BS;src:url(fonts/BigShoulders-Regular.ttf);font-weight:400}
 @font-face{font-family:IS;src:url(fonts/InstrumentSerif-Italic.ttf);font-style:italic}
-@font-face{font-family:IS;src:url(fonts/InstrumentSerif-Regular.ttf)}
 @font-face{font-family:IN;src:url(fonts/InstrumentSans-Regular.ttf);font-weight:400}
 @font-face{font-family:IN;src:url(fonts/InstrumentSans-Bold.ttf);font-weight:700}
-@font-face{font-family:DM;src:url(fonts/DMMono-Regular.ttf)}
-:root{--f:#1583C2;--f2:#2f2f2f;--c:#FBFBF8;--c2:#EAEEE6;--o:#F0AE23;--t:#1583C2;--g:#6FA82C;--br:#814C21;--ink:#2b2b2b}
+:root{--f:#1583C2;--f2:#2f2f2f;--c:#FFFFFF;--c2:#E3EEF7;--o:#F0AE23;--t:#1178B5;--g:#5E9A1F;--br:#814C21;--ink:#1c1c1c}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--f)}
-.p{width:1400px;height:2240px;position:relative;background:var(--f);color:var(--c);font-family:IN;overflow:hidden}
-.mono{font-family:DM;letter-spacing:.14em;text-transform:uppercase;font-size:13px}
-.m{position:absolute;left:70px;right:70px}
-/* top */
-.top{top:48px;display:flex;justify-content:space-between;color:var(--c)}
-.hero{top:100px;height:540px}
-.hero h1{font-family:BS;font-weight:700;font-size:268px;line-height:.82;letter-spacing:-.01em;position:absolute;left:-4px;top:30px;color:var(--c)}
+html,body{background:#fff}
+.p{width:1400px;position:relative;background:var(--c);color:var(--ink);font-family:IN;font-size:23px;line-height:1.38}
+.lab{font-family:IN;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:17px}
+.big{font-family:BS;font-weight:700;line-height:.82}
+.pad{padding-left:70px;padding-right:70px}
+/* hero */
+.hero{background:var(--f);color:#fff;height:660px;position:relative}
+.hero .top{position:absolute;top:44px;left:70px;right:70px;display:flex;justify-content:space-between;color:#fff}
+.hero h1{font-family:BS;font-weight:700;font-size:252px;line-height:.82;position:absolute;left:62px;top:130px}
 .hero h1 span{display:block;color:var(--o)}
-.hero .assoc{position:absolute;left:0;top:-4px}
-.sun{position:absolute;right:0;top:20px;width:480px;height:480px}
-.sunlbl{position:absolute;right:0;top:505px;width:480px;text-align:center;color:var(--c)}
+.hero .sub{position:absolute;left:70px;top:88px;color:#fff;font-size:20px}
+.sun{position:absolute;right:50px;top:92px;width:500px;height:500px}
+.sunlbl{position:absolute;right:50px;top:604px;width:500px;text-align:center;color:#fff;font-size:17px}
+.stripe{height:14px;display:flex}.stripe i{flex:1}
 /* sections */
-.sec{position:absolute;left:0;right:0}
-.band{background:var(--c);color:var(--ink)}
-.hd{display:flex;align-items:baseline;gap:22px;margin-bottom:26px}
-.hd .n{font-family:DM;font-size:15px;letter-spacing:.14em;color:var(--t)}
-.hd h2{font-family:BS;font-weight:700;font-size:78px;line-height:.9;letter-spacing:.005em}
-.hd i{font-family:IS;font-size:30px;margin-left:auto;opacity:.75}
-.big{font-family:BS;font-weight:700;line-height:.8}
-.rule{height:2px;background:currentColor;opacity:.9}
-.card{border-top:6px solid var(--t);padding-top:14px}.card:nth-child(2){border-color:var(--o)}.card:nth-child(3){border-color:var(--g)}
-.card h3{font-family:BS;font-weight:700;font-size:40px;line-height:1;margin-bottom:6px;text-transform:uppercase}
-.card .k{font-family:BS;font-weight:700;font-size:92px;line-height:.9;color:var(--t)}
-.card .u{font-family:DM;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin:4px 0 14px}
-.card p,.card li{font-size:17px;line-height:1.38}
-.card li{list-style:none;padding-left:18px;position:relative;margin-bottom:5px}
-.card li:before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--o)}
-.bar{height:14px;background:rgba(18,32,26,.13);margin:6px 0 4px;position:relative}
-.bar b{position:absolute;left:0;top:0;bottom:0;background:var(--f)}
-.bar b.o{background:var(--o)}.bar b.t{background:var(--g)}
-.cap{font-family:DM;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;display:flex;justify-content:space-between}
+.sec{padding-top:56px;padding-bottom:56px}
+.hd{display:flex;align-items:baseline;gap:22px;margin-bottom:30px}
+.hd .n{font-family:BS;font-weight:700;font-size:54px;color:var(--o)}
+.hd h2{font-family:BS;font-weight:700;font-size:84px;line-height:.9;white-space:nowrap}
+.hd i{font-family:IS;font-size:32px;margin-left:auto;color:#333;white-space:nowrap}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.card{border-top:10px solid var(--t);padding-top:16px}
+.card:nth-child(2){border-color:var(--o)}.card:nth-child(3){border-color:var(--g)}
+.card .lab{color:var(--t);margin-bottom:8px}
+.card h3{font-family:BS;font-weight:700;font-size:48px;line-height:1;margin-bottom:10px;text-transform:uppercase}
+.card .k{font-family:BS;font-weight:700;font-size:108px;line-height:.9;color:var(--t)}
+.card .u{font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;margin:6px 0 16px;color:#222}
+.card li{list-style:none;padding-left:24px;position:relative;margin-bottom:8px;font-size:22px;line-height:1.35}
+.card li:before{content:"";position:absolute;left:0;top:.5em;width:12px;height:12px;border-radius:50%;background:var(--o)}
+.bar{height:20px;background:#d9d9d9;margin:8px 0 4px}.bar b{display:block;height:100%}
+.cap{font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between;margin-bottom:6px}
+.band2{background:var(--f2);color:#fff}
+.band2 .col{border-left:5px solid var(--o);padding-left:18px}
+.band2 .col .lab{color:var(--o);margin-bottom:8px;display:block}
+.band2 .col div{font-size:22px;line-height:1.35}
+.wd{padding-top:14px}
+.tl-d{font-family:BS;font-weight:700;font-size:84px;line-height:1;color:var(--ink);}
+.tl-n b{font-size:30px;display:block;line-height:1.15}.tl-n span{font-size:22px;color:#333}
+.proj{display:grid;grid-template-columns:1fr 1fr;column-gap:36px}
+.pi{display:flex;gap:14px;border-top:3px solid var(--ink);padding:10px 0;font-size:22px;line-height:1.3;min-height:70px}
+.pi em{font-style:normal;font-family:BS;font-weight:700;font-size:44px;line-height:.95;color:var(--t);width:56px;flex:none}
+.foot{background:var(--br);color:#fff}
+.foot .g{display:grid;grid-template-columns:.8fr 1.1fr 1.1fr 1.1fr;gap:34px}
+.foot .c{border-left:5px solid #fff;padding-left:18px;font-size:22px;line-height:1.38}
+.foot .c .big{font-size:44px;white-space:nowrap;color:var(--o);margin-bottom:12px;line-height:.9}
 </style></head><body>
 <div class="p" id="p">
 
-<div class="m top mono"><span>Association Génération Soleil de Mboma · AGM</span><span>Compte rendu · 03.10.2026</span></div>
-
-<div class="m hero">
-  <div class="mono assoc" style="color:var(--c);opacity:.7">Réunion de rentrée des activités</div>
-  <h1 >MBOMA<span>2026</span></h1>
+<div class="hero">
+  <div class="top lab"><span>Association Génération Soleil de Mboma · AGM</span><span>Compte rendu · 03.10.2026</span></div>
+  <div class="sub lab">Réunion de rentrée des activités</div>
+  <h1>MBOMA<span>2026</span></h1>
   <svg class="sun" id="sun" viewBox="-260 -260 520 520"></svg>
-  <div class="mono sunlbl">29 présents · 1 rayon = 1 membre</div>
+  <div class="sunlbl lab">29 présents · 1 rayon = 1 membre</div>
 </div>
+<div class="stripe"><i style="background:var(--g)"></i><i style="background:var(--o)"></i><i style="background:var(--br)"></i></div>
 
-<!-- 01 BILAN -->
-<div class="sec band" style="top:640px;height:680px;padding:40px 70px 0">
+<!-- 01 -->
+<div class="sec pad">
   <div class="hd"><span class="n">01</span><h2>BILAN DE MBOMA 2026</h2><i>ce que nous avons fait ensemble</i></div>
-  <div style="display:flex;align-items:flex-end;gap:30px;margin-bottom:26px">
-    <div class="big" style="font-size:136px;color:var(--ink)">+10&nbsp;000&nbsp;000</div>
-    <div style="padding-bottom:6px"><div class="big" style="font-size:54px;color:var(--t)">FCFA</div><div class="mono" style="margin-top:8px">mobilisés pour toutes les actions AGM</div></div>
+  <div style="display:flex;align-items:flex-end;gap:30px;margin-bottom:40px">
+    <div class="big" style="font-size:168px">+10&nbsp;000&nbsp;000</div>
+    <div style="padding-bottom:8px"><div class="big" style="font-size:72px;color:var(--t)">FCFA</div><div class="lab" style="margin-top:8px;font-size:18px">mobilisés pour toutes<br>les actions AGM</div></div>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px">
-    <div class="card"><div class="mono" style="color:var(--t);margin-bottom:6px">A · Mariages</div>
-      <h3>Deux oncles unis</h3>
+  <div class="cards">
+    <div class="card"><div class="lab">A · Mariages</div><h3>Deux oncles unis</h3>
       <div class="k">+900&nbsp;000</div><div class="u">FCFA de cotisations globales</div>
       <ul><li>Mariages de Monsieur <b>Eric Ndong Ollomo</b> et Monsieur <b>Valentin Mendame</b> célébrés</li><li>Festivités bien déroulées</li></ul></div>
-    <div class="card"><div class="mono" style="color:var(--t);margin-bottom:6px">B · Retraits de deuil groupés</div>
-      <h3>Six danses mobilisées</h3>
+    <div class="card"><div class="lab">B · Retraits de deuil groupés</div><h3>Six danses mobilisées</h3>
       <div class="k">≈1,22&nbsp;M</div><div class="u">FCFA · coût global</div>
-      <div class="bar"><b style="width:100%"></b></div><div class="cap"><span>Budget arrêté</span><span>4 M</span></div>
-      <div class="bar"><b class="o" style="width:50%"></b></div><div class="cap"><span>Cotisé</span><span>2 M</span></div>
-      <ul style="margin-top:10px"><li><b>600&nbsp;000 FCFA</b> défalqués de la caisse AGM pour le déficit des non-cotisants</li><li>Nourriture, boisson, invités : tout a été réglé</li></ul></div>
-    <div class="card"><div class="mono" style="color:var(--t);margin-bottom:6px">C · Caravane médicale</div>
-      <h3>Soutenue par nos partenaires</h3>
-      <div class="k">+900&nbsp;000</div><div class="u">FCFA apportés en nature · budget initial 5&nbsp;025&nbsp;000</div>
-      <div class="bar"><b class="o" style="width:18%"></b></div>
-      <ul style="margin-top:10px"><li>Médecins logés, nourris, transportés</li><li>Billets d'avion, chaises, tentes, médicaments</li><li>Médicaments restants : à la disposition de chacun au village</li></ul></div>
+      <div class="bar"><b style="width:100%;background:var(--t)"></b></div><div class="cap"><span>Budget arrêté</span><span>4 M</span></div>
+      <div class="bar"><b style="width:50%;background:var(--o)"></b></div><div class="cap"><span>Cotisé</span><span>2 M</span></div>
+      <ul style="margin-top:12px"><li><b>600&nbsp;000 FCFA</b> défalqués de la caisse AGM pour le déficit des non-cotisants</li><li>Nourriture, boisson, invités : tout a été réglé</li></ul></div>
+    <div class="card"><div class="lab">C · Caravane médicale</div><h3>Soutenue par nos partenaires</h3>
+      <div class="k">+900&nbsp;000</div><div class="u">FCFA apportés en nature · budget initial 5&nbsp;025&nbsp;000 FCFA</div>
+      <div class="bar"><b style="width:18%;background:var(--g)"></b></div>
+      <ul style="margin-top:12px"><li>Médecins logés, nourris, transportés</li><li>Billets d'avion, chaises, tentes, médicaments</li><li>Médicaments restants : à la disposition de chacun au village</li></ul></div>
   </div>
 </div>
 
 <!-- partenaires -->
-<div class="sec" style="top:1320px;height:180px;background:var(--f2);padding:30px 70px 0">
-  <div style="display:flex;gap:40px">
-    <div style="width:250px"><div class="mono" style="color:var(--o)">Merci à nos partenaires</div><div style="font-family:IS;font-style:italic;font-size:46px;line-height:1;margin-top:10px">de la caravane</div></div>
-    <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:26px">
-      <div style="border-left:2px solid var(--o);padding-left:14px"><div class="big" style="font-size:50px;color:var(--o)">4</div><div style="font-size:16px;line-height:1.35;margin-top:8px"><b>Pharmacies</b><br>Razel · Les Marguerites · Avorebam</div></div>
-      <div style="border-left:2px solid var(--o);padding-left:14px"><div class="mono" style="color:var(--o)">Avion</div><div style="font-size:16px;line-height:1.35;margin-top:10px">Un partenaire a pris en charge les billets d'avion des médecins</div></div>
-      <div style="border-left:2px solid var(--o);padding-left:14px"><div class="mono" style="color:var(--o)">Carburant</div><div style="font-size:16px;line-height:1.35;margin-top:10px">Le carburant du Docteur Cheick payé par un partenaire</div></div>
-      <div style="border-left:2px solid var(--o);padding-left:14px"><div class="mono" style="color:var(--o)">Hébergement &amp; logistique</div><div style="font-size:16px;line-height:1.35;margin-top:10px"><b>Romuald</b> : 4 médecins à EDEN PARK<br><b>Ma Janvier</b> : tentes et chaises</div></div>
-    </div>
+<div class="band2 pad" style="padding-top:44px;padding-bottom:48px">
+  <div style="display:flex;align-items:baseline;gap:20px;margin-bottom:24px"><span class="big" style="font-size:64px;color:var(--o)">MERCI</span><span style="font-family:IS;font-style:italic;font-size:44px">à nos partenaires de la caravane</span></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px">
+    <div class="col"><span class="lab">4 pharmacies</span><div>Razel · Les Marguerites · Avorebam</div></div>
+    <div class="col"><span class="lab">Billets d'avion</span><div>Un partenaire a pris en charge les billets d'avion des médecins</div></div>
+    <div class="col"><span class="lab">Carburant</span><div>Le carburant du Docteur Cheick payé par un partenaire</div></div>
+    <div class="col"><span class="lab">Hébergement &amp; logistique</span><div><b>Romuald</b> : 4 médecins à EDEN PARK<br><b>Ma Janvier</b> : tentes et chaises</div></div>
   </div>
 </div>
 
-<!-- 02 A VENIR -->
-<div class="sec band" style="top:1500px;height:540px;padding:34px 70px 0">
-  <div class="hd" style="margin-bottom:18px"><span class="n">02</span><h2>PROJETS À VENIR</h2><i>décembre 2026 et Mboma 2027</i></div>
-  <div style="display:grid;grid-template-columns:520px 1fr;gap:50px">
-    <div>
-      <div class="mono" style="color:var(--t)">3 mariages · décembre 2026</div>
-      <svg id="tl" viewBox="0 0 520 250" width="520" height="250" style="display:block;margin:6px 0 4px"></svg>
-      <div style="font-size:16px;line-height:1.38;border-top:2px solid var(--ink);padding-top:10px">Catégories de cotisation connues. <b>Caisse ouverte</b> auprès de la trésorière générale <b>Mme Nanette Essame</b>.</div>
-      <div style="font-size:16px;line-height:1.38;margin-top:10px;padding:9px 12px;background:var(--c2)"><b>Corps de garde</b> : projet renvoyé à une date ultérieure.</div>
-    </div>
-    <div>
-      <div class="mono" style="color:var(--t);margin-bottom:8px">Mboma 2027 · l'AGM nous invite à soumettre des propositions</div>
-      <div id="proj" style="display:grid;grid-template-columns:1fr 1fr;column-gap:30px"></div>
-    </div>
+<!-- 02 -->
+<div class="sec pad">
+  <div class="hd"><span class="n">02</span><h2>PROJETS À VENIR</h2><i>décembre 2026 et Mboma 2027</i></div>
+  <div class="lab" style="color:var(--t);margin-bottom:10px">3 mariages · décembre 2026</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div class="wd" style="border-top:10px solid var(--t)"><div class="tl-d">05/12</div><div class="tl-n"><b>Ulrich Beh Essono</b><span>Président AGM</span></div></div>
+    <div class="wd" style="border-top:10px solid var(--o)"><div class="tl-d">16/12</div><div class="tl-n"><b>Frédéric Mendame</b><span>Secrétaire général AGM</span></div></div>
+    <div class="wd" style="border-top:10px solid var(--g)"><div class="tl-d">24 &amp; 26/12</div><div class="tl-n"><b>Abel Eyeghe Ekore</b><span>Mariage</span></div></div>
   </div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:36px;margin-top:26px">
+    <div style="padding:16px 20px;background:var(--c2);border-left:8px solid var(--t)">Catégories de cotisation connues. <b>Caisse ouverte</b> auprès de la trésorière générale <b>Mme Nanette Essame</b>.</div>
+    <div style="padding:16px 20px;background:var(--c2);border-left:8px solid var(--g)"><b>Corps de garde</b> : projet renvoyé à une date ultérieure.</div>
+  </div>
+  <div class="lab" style="color:var(--t);margin:44px 0 10px">Mboma 2027 · l'AGM nous invite à soumettre des propositions de projets</div>
+  <div class="proj" id="proj"></div>
 </div>
 
-<!-- 03 DIVERS -->
-<div class="sec" style="top:2040px;height:200px;padding:34px 70px 0;background:var(--br)">
-  <div style="display:grid;grid-template-columns:.9fr 1.1fr 1.1fr 1.1fr;gap:30px">
-    <div><div class="mono" style="color:var(--o)">03 · Divers</div><div class="big" style="font-size:78px;margin-top:10px">DIVERS</div></div>
-    <div style="border-left:2px solid var(--o);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--o);margin-bottom:6px">≈700&nbsp;000 FCFA</div><b>Les cotisations mensuelles reprennent.</b> La caisse a servi à combler le déficit des retraits de deuil.</div>
-    <div style="border-left:2px solid var(--o);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--o);margin-bottom:6px">8 nouveaux</div>membres, dont 5 absents. Bienvenue à <b>Francine, Yasmine et Laetitia</b> et aux autres !</div>
-    <div style="border-left:2px solid var(--c);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--c);margin-bottom:6px">Lundi 05.10.2026</div>Le président dépose le récépissé AGM au <b>Ministère de l'Intérieur</b> : reconnaissance légale et nationale.</div>
+<!-- 03 -->
+<div class="foot pad" style="padding-top:52px;padding-bottom:56px">
+  <div class="g">
+    <div><div class="lab" style="color:var(--o)">03</div><div class="big" style="font-size:100px;margin-top:10px">DIVERS</div></div>
+    <div class="c"><div class="big">≈700&nbsp;000 FCFA</div><b>Les cotisations mensuelles reprennent.</b> La caisse a servi à combler le déficit des retraits de deuil.</div>
+    <div class="c"><div class="big">8 nouveaux</div>membres, dont 5 absents. Bienvenue à <b>Francine, Yasmine et Laetitia</b> et aux autres !</div>
+    <div class="c"><div class="big">Lundi 05.10.2026</div>Le président dépose le récépissé AGM au <b>Ministère de l'Intérieur</b> : reconnaissance légale et nationale.</div>
   </div>
 </div>
+<div class="stripe"><i style="background:var(--g)"></i><i style="background:var(--o)"></i><i style="background:var(--t)"></i></div>
 </div>
 
 <script>
 const NS='http://www.w3.org/2000/svg';
 function el(p,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e}
-// SUN : 29 rayons
 const s=document.getElementById('sun');
-el(s,'circle',{r:250,fill:'none',stroke:'#F0AE23','stroke-width':1,opacity:.35});
-
-for(let i=0;i<360;i+=5){const a=i*Math.PI/180,r1=240,r2=i%15==0?250:245;el(s,'line',{x1:r1*Math.cos(a),y1:r1*Math.sin(a),x2:r2*Math.cos(a),y2:r2*Math.sin(a),stroke:'#FBFBF8','stroke-width':1,opacity:.5})}
+el(s,'circle',{r:250,fill:'none',stroke:'#fff','stroke-width':1.5,opacity:.5});
+for(let i=0;i<360;i+=5){const a=i*Math.PI/180,r1=240,r2=i%15==0?252:246;el(s,'line',{x1:r1*Math.cos(a),y1:r1*Math.sin(a),x2:r2*Math.cos(a),y2:r2*Math.sin(a),stroke:'#fff','stroke-width':1.5,opacity:.8})}
 const N=29;
 for(let i=0;i<N;i++){const a=(i/N)*2*Math.PI-Math.PI/2,c=Math.cos(a),sn=Math.sin(a);
- const nw=[3,11,20].includes(i); // 3 nouveaux présents
- el(s,'line',{x1:168*c,y1:168*sn,x2:(nw?232:214)*c,y2:(nw?232:214)*sn,stroke:nw?'#FFFFFF':'#F0AE23','stroke-width':nw?7:6,'stroke-linecap':'butt'});
- el(s,'circle',{cx:(nw?240:224)*c,cy:(nw?240:224)*sn,r:nw?0:3,fill:'#F0AE23'});}
+ const nw=[3,11,20].includes(i);
+ el(s,'line',{x1:168*c,y1:168*sn,x2:(nw?232:214)*c,y2:(nw?232:214)*sn,stroke:nw?'#FFFFFF':'#F0AE23','stroke-width':nw?8:7});}
 const df=el(s,'defs',{});const cp=el(df,'clipPath',{id:'lc'});el(cp,'circle',{r:150});
-el(s,'circle',{r:154,fill:'#FBFBF8'});
-const im=el(s,'image',{href:'logo.png',x:-163,y:-162,width:325,height:325,'clip-path':'url(#lc)'});
-// TIMELINE
-const t=document.getElementById('tl');
-el(t,'line',{x1:0,y1:70,x2:520,y2:70,stroke:'#2b2b2b','stroke-width':2});
-for(let d=0;d<=31;d++){const x=20+d*(480/31);el(t,'line',{x1:x,y1:70,x2:x,y2:d%5==0?60:64,stroke:'#2b2b2b','stroke-width':1})}
-el(t,'text',{x:20,y:40,'font-family':'DM','font-size':11,'letter-spacing':'1.5',fill:'#2b2b2b'},'DÉCEMBRE 2026');
-const ev=[[5,'05','Ulrich Beh Essono','Président AGM'],[16,'16','Frédéric Mendame','Secrétaire général AGM'],[24,'24 & 26','Abel Eyeghe Ekore','']];
-ev.forEach((e,i)=>{const x=20+(e[0]-1)*(480/31);
- el(t,'circle',{cx:x,cy:70,r:9,fill:'#1583C2'});
- el(t,'line',{x1:x,y1:79,x2:x,y2:96,stroke:'#1583C2','stroke-width':1.5});
-});
-// event labels in a column list below
-ev.forEach((e,i)=>{const y=122+i*48;
- el(t,'text',{x:0,y:y+16,'font-family':'BS','font-weight':700,'font-size':44,fill:'#1583C2'},e[1]);
- el(t,'text',{x:150,y:y+2,'font-family':'IN','font-weight':700,'font-size':19,fill:'#2b2b2b'},e[2]);
- el(t,'text',{x:150,y:y+19,'font-family':'IN','font-size':14,fill:'#2b2b2b',opacity:.75},e[3]||'Mariage');
-});
-// PROJETS
+el(s,'circle',{r:154,fill:'#FFFFFF'});
+el(s,'image',{href:'logo.png',x:-163,y:-162,width:325,height:325,'clip-path':'url(#lc)'});
 const P=['Fabrique de pierres tombales pour le cimetière communautaire (noms, prénoms, dates de naissance/décès)','Achat de panneaux solaires pour tout le village','Sport et culture Mboma 2027','Groupe électrogène communautaire pour alimenter tout le village','Relance du groupe de danse GSM nouvelle génération','Lancement d\'une tontine (pour ceux qui le souhaitent)','Réhabilitation de l\'église : peinture, bancs, presbytère ou chambre pour le prêtre','Achat d\'un poteau électrique de BIBASSE à BAGA et de compteur d\'électricité','Enterrer les personnes dans le cimetière commun','Maintenir la randonnée et la messe de Toussaint'];
 const pr=document.getElementById('proj');
-// column-major fill: 5 left, 5 right
-P.forEach((x,i)=>{const d=document.createElement('div');d.style.cssText='display:flex;gap:12px;border-top:1.5px solid #2b2b2b;padding:7px 0 7px;min-height:56px;'+`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;
- d.innerHTML=`<span style="font-family:BS;font-weight:700;font-size:30px;line-height:1;color:#1583C2;width:34px;flex:none">${String(i+1).padStart(2,'0')}</span><span style="font-size:15.5px;line-height:1.3">${x}</span>`;pr.appendChild(d)});
+P.forEach((x,i)=>{const d=document.createElement('div');d.className='pi';d.style.cssText=`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;
+ d.innerHTML=`<em>${String(i+1).padStart(2,'0')}</em><span>${x}</span>`;pr.appendChild(d)});
 </script></body></html>

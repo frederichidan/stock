@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billet d'invitation</title>
+<link rel="stylesheet" href="commun.css">
+<style>
+  /* Format 210 × 99 mm (1/3 de A4) : trois billets par feuille A4. */
+  @page { size: 210mm 99mm; margin: 0; }
+  .page { width: 210mm; height: 99mm; }
+
+  /* ------------------------------ Recto ------------------------------ */
+  .recto {
+    display: grid;
+    grid-template-columns: 1fr 58mm;
+    background: var(--fond-violet);
+  }
+
+  .bandeau {
+    position: relative;
+    height: 15mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7mm;
+    background: linear-gradient(90deg, var(--nuit), var(--violet-profond));
+    border-bottom: 0.35mm solid var(--or);
+  }
+  .bandeau-titre { display: flex; align-items: center; gap: 2.6mm; }
+  .bandeau-titre .icone { color: var(--or); width: 6mm; height: 6mm; }
+  .bandeau-titre .etiquette { color: var(--or-clair); font-size: 7pt; letter-spacing: 0.3em; }
+  .bandeau-titre .sous-titre { font-style: italic; font-size: 9.5pt; color: var(--ivoire); opacity: 0.85; margin-top: 0.4mm; }
+  .bandeau-infos { display: flex; gap: 6mm; text-align: right; }
+  .bandeau-infos .etiquette { color: var(--argent); font-size: 4.8pt; }
+  .bandeau-infos .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.5pt; color: var(--or-clair); letter-spacing: 0.08em; margin-top: 0.6mm; }
+
+  .principal { position: relative; display: flex; flex-direction: column; }
+  .corps {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 42mm 1fr;
+    gap: 6mm;
+    align-items: center;
+    padding: 3mm 8mm 4mm 7mm;
+  }
+  .corps .monogramme { width: 42mm; height: 42mm; display: block; }
+
+  .noms {
+    font-family: var(--script);
+    font-weight: 400;
+    font-size: 30pt;
+    line-height: 1.15;
+    padding: 0 3mm;
+    margin-left: -3mm;
+    white-space: nowrap;
+  }
+  .noms .esperluette { color: var(--ivoire); }
+  .invitation { font-style: italic; font-size: 10.5pt; opacity: 0.9; margin-top: -0.5mm; }
+
+  .trajet { display: flex; align-items: center; gap: 3mm; margin: 3.4mm 0 3.2mm; }
+  .aeroport { display: flex; flex-direction: column; align-items: center; }
+  .aeroport .code { font-family: var(--serif); font-weight: 700; font-size: 17pt; line-height: 1; letter-spacing: 0.06em; color: #dcbd7c; }
+  .aeroport .etiquette { color: var(--ivoire); opacity: 0.8; margin-top: 0.8mm; }
+  .ligne-vol { flex: 1; display: flex; align-items: center; gap: 1.5mm; color: var(--or); margin-top: -3mm; }
+  .ligne-vol span { flex: 1; border-top: 0.3mm dashed rgba(201, 164, 100, 0.75); }
+  .ligne-vol .icone { width: 5mm; height: 5mm; }
+
+  .champ { display: flex; align-items: flex-end; gap: 2.5mm; }
+  .champ .etiquette { color: var(--or-clair); white-space: nowrap; padding-bottom: 0.4mm; }
+  .champ .ligne-ecriture { color: rgba(248, 243, 234, 0.55); }
+
+  .escales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-top: 3.6mm; }
+  .escale { border-top: 0.3mm solid var(--or); padding-top: 1.4mm; }
+  .escale .etiquette { color: var(--or); font-size: 4.8pt; }
+  .escale .date { font-family: var(--sans); font-weight: 600; font-size: 7.2pt; letter-spacing: 0.04em; margin-top: 0.8mm; white-space: nowrap; }
+  .escale .titre { font-style: italic; font-size: 10pt; line-height: 1.1; margin-top: 0.3mm; color: var(--or-clair); }
+
+  /* Talon */
+  .talon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #2a1158 0%, var(--nuit) 100%);
+  }
+  .talon::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    border-left: 0.35mm dashed rgba(201, 164, 100, 0.8);
+    z-index: 2;
+  }
+  .encoche {
+    position: absolute;
+    left: -2.5mm;
+    width: 5mm; height: 5mm;
+    border-radius: 50%;
+    border: 0.3mm solid var(--or);
+    background: var(--nuit);
+    z-index: 3;
+  }
+  .encoche.haut { top: -2.5mm; }
+  .encoche.bas { bottom: -2.5mm; }
+  .talon .bandeau { padding: 0 5mm; justify-content: center; text-align: center; background: var(--nuit); }
+  .talon .bandeau .etiquette { color: var(--or-clair); font-size: 6pt; letter-spacing: 0.3em; }
+  .talon .bandeau .sous-titre { font-style: italic; font-size: 9pt; opacity: 0.85; margin-top: 0.4mm; }
+  .talon-corps { flex: 1; display: flex; flex-direction: column; align-items: stretch; padding: 3.5mm 5.5mm 4mm; gap: 3mm; }
+  .talon-corps .monogramme { width: 25mm; height: 25mm; display: block; margin: 0 auto; }
+  .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 3mm; }
+  .grille .etiquette { color: var(--or); font-size: 4.6pt; }
+  .grille .valeur { font-family: var(--sans); font-weight: 600; font-size: 7pt; letter-spacing: 0.04em; margin-top: 0.5mm; white-space: nowrap; }
+  .talon .code-barres { width: 100%; height: 7.5mm; display: block; color: var(--or-clair); margin-top: auto; }
+  .talon .devise { text-align: center; font-style: italic; font-size: 8pt; color: var(--or-clair); margin-top: -0.6mm; }
+
+  /* ------------------------------ Verso ------------------------------ */
+  .verso {
+    display: flex;
+    flex-direction: column;
+    color: var(--violet-profond);
+    background: radial-gradient(ellipse 80% 90% at 50% 45%, #fffdf8 0%, var(--ivoire) 55%, #efe7f5 100%);
+  }
+  .verso .bandeau { height: 14mm; justify-content: space-between; }
+  .verso .bandeau .etiquette { color: var(--or-clair); font-size: 5.4pt; }
+  .verso .bandeau h2 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -52%);
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    font-family: var(--script);
+    font-weight: 400;
+    font-size: 23pt;
+    white-space: nowrap;
+  }
+  .verso .bandeau h2 .icone { color: var(--or); width: 4.6mm; height: 4.6mm; }
+  .verso .bandeau h2 span { padding: 0 2mm; line-height: 1.3; }
+
+  .itineraire { position: relative; flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); padding: 5.5mm 5mm 5mm; }
+  .etape { position: relative; padding: 0 5mm; }
+  .etape + .etape { border-left: 0.3mm dashed rgba(160, 122, 50, 0.6); }
+  .etape .avion-etape {
+    position: absolute;
+    left: -2.6mm; top: 50%;
+    width: 5mm; height: 5mm;
+    margin-top: -2.5mm;
+    color: var(--or-fonce);
+    background: var(--ivoire);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .etape .avion-etape .icone { width: 3.8mm; height: 3.8mm; }
+  .pastille {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.4mm;
+    padding: 1mm 2.8mm;
+    border-radius: 3mm;
+    background: var(--violet);
+    color: var(--or-clair);
+  }
+  .pastille .etiquette { font-size: 5pt; }
+  .pastille .icone { width: 2.6mm; height: 2.6mm; }
+  .etape h3 { font-family: var(--serif); font-weight: 700; font-size: 12.5pt; color: var(--violet); margin-top: 2.2mm; }
+  .etape .date { font-family: var(--sans); font-weight: 600; font-size: 6.4pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--or-fonce); margin-top: 0.8mm; }
+  .etape .lieu { display: flex; align-items: center; gap: 1mm; font-style: italic; font-size: 10pt; margin-top: 1mm; color: #5a4a7a; }
+  .etape .lieu .icone { width: 3mm; height: 3mm; color: var(--or-fonce); }
+  .horaires { list-style: none; margin-top: 2.6mm; border-top: 0.25mm solid rgba(74, 35, 132, 0.18); padding-top: 2.4mm; }
+  .horaires li { display: flex; align-items: baseline; gap: 2mm; font-size: 10.4pt; line-height: 1.45; }
+  .horaires b { font-family: var(--sans); font-weight: 600; font-size: 7pt; color: var(--violet); width: 10mm; flex: none; }
+
+  .pied {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4mm;
+    height: 11mm;
+    padding: 0 7mm;
+    background: linear-gradient(90deg, var(--violet-profond), var(--nuit));
+    border-top: 0.35mm solid var(--or);
+    color: var(--ivoire);
+    font-size: 9pt;
+  }
+  .pied .etiquette { color: var(--or); font-size: 4.8pt; display: block; margin-bottom: 0.5mm; }
+  .pied b { font-weight: 600; color: var(--or-clair); }
+  .pied .droite { text-align: right; }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+
+<script src="infos.js"></script>
+<script src="commun.js"></script>
+<script>
+  const I = INFOS;
+  const jourCourt = (jour) => jour.slice(0, 3) + ".";
+
+  const recto = `
+  <section class="page recto">
+    <div class="principal">
+      <header class="bandeau">
+        <div class="bandeau-titre">
+          ${icone("avion", { rotation: 90 })}
+          <div>
+            <div class="etiquette">Carte d'embarquement</div>
+            <div class="sous-titre">Billet d'invitation au mariage</div>
+          </div>
+        </div>
+        <div class="bandeau-infos">
+          <div><div class="etiquette">Vol</div><div class="valeur">${esc(I.vol)}</div></div>
+          <div><div class="etiquette">Classe</div><div class="valeur">${esc(I.classe)}</div></div>
+        </div>
+      </header>
+
+      <div class="corps">
+        <div class="calque">
+          <svg viewBox="0 0 152 84" preserveAspectRatio="none" opacity="0.2">
+            ${bandeGuillochee({ largeur: 152, y: 64, amplitude: 4.5, periode: 38, nbLignes: 14, couleur: "#c9a464" })}
+          </svg>
+        </div>
+        <div>${monogramme({ halo: true })}</div>
+        <div>
+          <h1 class="noms texte-or">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</h1>
+          <p class="invitation">ont la joie de vous inviter à embarquer pour leur mariage</p>
+
+          <div class="trajet">
+            <div class="aeroport"><span class="code">${esc(I.depart.code)}</span><span class="etiquette">${esc(I.depart.ville)}</span></div>
+            <div class="ligne-vol"><span></span>${icone("avion", { rotation: 90 })}<span></span></div>
+            <div class="aeroport"><span class="code">${esc(I.arrivee.code)}</span><span class="etiquette">${esc(I.arrivee.ville)}</span></div>
+          </div>
+
+          <div class="champ"><span class="etiquette">Passager(s)</span><span class="ligne-ecriture"></span></div>
+
+          <div class="escales">
+            ${I.evenements.map((e) => `
+              <div class="escale">
+                <div class="etiquette">${esc(e.escale)}</div>
+                <div class="date">${esc(jourCourt(e.jour))} ${esc(e.dateCourte)}</div>
+                <div class="titre">${esc(e.titre)}</div>
+              </div>`).join("")}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="talon">
+      <span class="encoche haut"></span><span class="encoche bas"></span>
+      <header class="bandeau">
+        <div>
+          <div class="etiquette">Embarquement</div>
+          <div class="sous-titre">Talon</div>
+        </div>
+      </header>
+      <div class="talon-corps">
+        ${monogramme()}
+        <div class="champ"><span class="etiquette">Passager</span><span class="ligne-ecriture"></span></div>
+        <div class="grille">
+          <div><div class="etiquette">Vol</div><div class="valeur">${esc(I.vol)}</div></div>
+          <div><div class="etiquette">Porte</div><div class="valeur">${esc(I.porte)}</div></div>
+          <div><div class="etiquette">De</div><div class="valeur">${esc(I.depart.code)} · ${esc(I.depart.ville)}</div></div>
+          <div><div class="etiquette">À</div><div class="valeur">${esc(I.arrivee.code)} · ${esc(I.arrivee.ville)}</div></div>
+          <div><div class="etiquette">Siège</div><div class="valeur">Table n° ____</div></div>
+          <div><div class="etiquette">Dates</div><div class="valeur">${[...new Set(I.evenements.map((e) => e.dateCourte.slice(0, 5)))].map(esc).join(" &amp; ")}</div></div>
+        </div>
+        ${codeBarres(`${I.vol}-${I.mariee}-${I.marie}`, { largeur: 100, hauteur: 16 })}
+        <p class="devise">« ${esc(I.devise)} »</p>
+      </div>
+    </aside>
+  </section>`;
+
+  const verso = `
+  <section class="page verso">
+    <div class="calque">
+      <svg viewBox="0 0 210 99" preserveAspectRatio="none" opacity="0.09">
+        ${bandeGuillochee({ largeur: 210, y: 58, amplitude: 9, periode: 52, nbLignes: 16, couleur: "#4a2384", epaisseur: 0.18 })}
+      </svg>
+    </div>
+    <header class="bandeau">
+      <span class="etiquette">Vol ${esc(I.vol)}</span>
+      <h2>${icone("coeur")}<span class="texte-or">Programme du voyage</span>${icone("avion", { rotation: 90 })}</h2>
+      <span class="etiquette">${esc(I.mariee)} &amp; ${esc(I.marie)}</span>
+    </header>
+
+    <div class="itineraire">
+      ${I.evenements.map((e, i) => `
+        <article class="etape">
+          ${i > 0 ? `<span class="avion-etape">${icone("avion", { rotation: 90 })}</span>` : ""}
+          <span class="pastille">${anneaux()}<span class="etiquette">${esc(e.escale)}</span></span>
+          <h3>${esc(e.titre)}</h3>
+          <div class="date">${esc(e.jour)} ${esc(e.date)}</div>
+          <div class="lieu">${icone("lieu")}${esc(e.lieu)}</div>
+          <ul class="horaires">
+            ${e.programme.map(([heure, texte]) => `<li><b>${esc(heure)}</b><span>${esc(texte)}</span></li>`).join("")}
+          </ul>
+        </article>`).join("")}
+    </div>
+
+    <footer class="pied">
+      <div>
+        <span class="etiquette">Confirmez votre embarquement avant le ${esc(I.rsvp.avant)}</span>
+        ${I.rsvp.contacts.map(esc).join(" &nbsp;|&nbsp; ")}
+      </div>
+      <div class="droite">
+        <span class="etiquette">Code vestimentaire</span>
+        <b>${esc(I.codeVestimentaire)}</b>
+      </div>
+    </footer>
+  </section>`;
+
+  document.getElementById("planches").innerHTML = recto + verso;
+</script>
+</body>
+</html>

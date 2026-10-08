@@ -1,0 +1,218 @@
+/* Éléments graphiques partagés, dessinés en SVG : monogramme R & F,
+   motifs guillochés (façon passeport), code-barres, ornements et icônes. */
+
+let compteurIds = 0;
+function idUnique(prefixe) {
+  compteurIds += 1;
+  return `${prefixe}-${compteurIds}`;
+}
+
+function esc(texte) {
+  return String(texte)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function initiale(prenom) {
+  return prenom.trim().charAt(0).toUpperCase();
+}
+
+function degradeOr(id) {
+  return `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#a07a32"/>
+    <stop offset="0.3" stop-color="#ecd295"/>
+    <stop offset="0.52" stop-color="#c9a464"/>
+    <stop offset="0.72" stop-color="#f3dfa6"/>
+    <stop offset="1" stop-color="#9c762f"/>
+  </linearGradient>`;
+}
+
+/* ------------------------------ Icônes ------------------------------ */
+
+const ICONES = {
+  // Tracés des icônes Material Design (licence Apache 2.0), grille 24 × 24.
+  avion: "M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z",
+  coeur: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z",
+  lieu: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
+  horloge: "M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z",
+};
+
+function icone(nom, { taille = "1em", rotation = 0, classe = "" } = {}) {
+  const transformation = rotation ? ` transform="rotate(${rotation} 12 12)"` : "";
+  return `<svg class="icone ${classe}" viewBox="0 0 24 24" width="${taille}" height="${taille}" aria-hidden="true"><path d="${ICONES[nom]}"${transformation}/></svg>`;
+}
+
+function anneaux({ taille = "1em" } = {}) {
+  return `<svg class="icone" viewBox="0 0 24 16" width="${taille}" height="${taille}" aria-hidden="true" style="fill: none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="8.5" cy="8" r="6"/><circle cx="15.5" cy="8" r="6"/></svg>`;
+}
+
+/* ---------------------------- Monogramme ---------------------------- */
+
+function point(cx, cy, r, angleDeg) {
+  const a = (angleDeg * Math.PI) / 180;
+  return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+}
+
+function arc(cx, cy, r, debut, fin) {
+  const [x0, y0] = point(cx, cy, r, debut);
+  const [x1, y1] = point(cx, cy, r, fin);
+  const grand = Math.abs(fin - debut) > 180 ? 1 : 0;
+  const sens = fin > debut ? 1 : 0;
+  return `M${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 ${grand} ${sens} ${x1.toFixed(2)},${y1.toFixed(2)}`;
+}
+
+// Branche de laurier le long d'un arc de cercle, de l'angle `debut` vers l'angle `fin`.
+function laurier(cx, cy, r, debut, fin, nbFeuilles, remplissage) {
+  const direction = Math.sign(fin - debut);
+  const feuille = (x, y, angle, longueur) => {
+    const l = longueur;
+    const w = l * 0.32;
+    return `<path d="M0,0 Q${(l * 0.45).toFixed(2)},${(-w).toFixed(2)} ${l.toFixed(2)},0 Q${(l * 0.45).toFixed(2)},${w.toFixed(2)} 0,0Z" transform="translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${angle.toFixed(2)})"/>`;
+  };
+  let feuilles = "";
+  for (let i = 0; i < nbFeuilles; i += 1) {
+    const t = (i + 0.5) / nbFeuilles;
+    const angle = debut + (fin - debut) * t;
+    const [x, y] = point(cx, cy, r, angle);
+    const a = (angle * Math.PI) / 180;
+    const tangente = (Math.atan2(direction * Math.cos(a), -direction * Math.sin(a)) * 180) / Math.PI;
+    const longueur = 15 * (1 - 0.35 * t);
+    feuilles += feuille(x, y, tangente - 38, longueur);
+    feuilles += feuille(x, y, tangente + 38, longueur * 0.92);
+  }
+  const [xf, yf] = point(cx, cy, r, fin);
+  const af = (fin * Math.PI) / 180;
+  const tangenteFin = (Math.atan2(direction * Math.cos(af), -direction * Math.sin(af)) * 180) / Math.PI;
+  feuilles += feuille(xf, yf, tangenteFin, 9);
+  return `<g fill="${remplissage}">
+    <path d="${arc(cx, cy, r, debut, fin)}" fill="none" stroke="${remplissage}" stroke-width="1.1" stroke-linecap="round"/>
+    ${feuilles}
+  </g>`;
+}
+
+function couronne(x, y, echelle, remplissage) {
+  return `<g transform="translate(${x},${y}) scale(${echelle})" fill="${remplissage}">
+    <path d="M-10,3 L-11.5,-5.5 L-5,0 L0,-8.5 L5,0 L11.5,-5.5 L10,3 Z"/>
+    <rect x="-10" y="4" width="20" height="2.6" rx="0.6"/>
+    <circle cx="-11.5" cy="-7.2" r="1.5"/><circle cx="0" cy="-10.4" r="1.7"/><circle cx="11.5" cy="-7.2" r="1.5"/>
+  </g>`;
+}
+
+/* Monogramme : initiale de la mariée, esperluette, initiale du marié,
+   dans un médaillon couronné bordé de lauriers. Avec `halo`, une rosace
+   guillochée est dessinée autour du médaillon. */
+function monogramme({ classe = "", couleurEsperluette = "#f8f3ea", halo = false } = {}) {
+  const or = idUnique("or");
+  const remplissage = `url(#${or})`;
+  const f = initiale(INFOS.mariee);
+  const m = initiale(INFOS.marie);
+  const rosaceHalo = halo
+    ? `<g opacity="0.22">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 6, lobes: 26, nbCourbes: 10, couleur: "#c9a464", epaisseur: 0.6 })}</g>`
+    : "";
+  return `<svg class="monogramme ${classe}" viewBox="0 0 200 200" style="overflow: visible" role="img" aria-label="${esc(f)} &amp; ${esc(m)}">
+    <defs>${degradeOr(or)}</defs>
+    ${rosaceHalo}
+    <g fill="none" stroke="${remplissage}">
+      <path d="${arc(100, 100, 92, -81, 84)}" stroke-width="1.6"/>
+      <path d="${arc(100, 100, 92, 96, 261)}" stroke-width="1.6"/>
+      <path d="${arc(100, 100, 87, -78, 83)}" stroke-width="0.6"/>
+      <path d="${arc(100, 100, 87, 97, 258)}" stroke-width="0.6"/>
+    </g>
+    ${couronne(100, 9.5, 0.95, remplissage)}
+    <path d="${ICONES.coeur}" transform="translate(93.4,184.6) scale(0.55)" fill="${remplissage}"/>
+    ${laurier(100, 100, 74, 104, 236, 8, remplissage)}
+    ${laurier(100, 100, 74, 76, -56, 8, remplissage)}
+    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${remplissage}">${esc(f)}</text>
+    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${remplissage}">${esc(m)}</text>
+    <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" fill="${couleurEsperluette}">&amp;</text>
+  </svg>`;
+}
+
+/* ------------------------- Motifs guillochés ------------------------- */
+
+// Faisceau de sinusoïdes déphasées (bande guillochée horizontale).
+function bandeGuillochee({ largeur, y, amplitude, periode, nbLignes = 12, couleur, epaisseur = 0.14 }) {
+  let traces = "";
+  for (let i = 0; i < nbLignes; i += 1) {
+    const phase = (i * 2 * Math.PI) / nbLignes;
+    let d = "";
+    for (let x = -2; x <= largeur + 2; x += 0.8) {
+      const yy =
+        y +
+        amplitude * Math.sin((2 * Math.PI * x) / periode + phase) +
+        amplitude * 0.45 * Math.sin((2 * Math.PI * x) / (periode * 2.6) - phase);
+      d += `${x === -2 ? "M" : "L"}${x.toFixed(1)},${yy.toFixed(2)}`;
+    }
+    traces += `<path d="${d}"/>`;
+  }
+  return `<g fill="none" stroke="${couleur}" stroke-width="${epaisseur}">${traces}</g>`;
+}
+
+// Rosace guillochée : courbes polaires r(θ) = R + a·sin(nθ + φ) déphasées.
+function rosace({ cx, cy, rayon, amplitude, lobes, nbCourbes = 16, couleur, epaisseur = 0.14 }) {
+  let traces = "";
+  for (let i = 0; i < nbCourbes; i += 1) {
+    const phase = (i * 2 * Math.PI) / nbCourbes;
+    let d = "";
+    for (let k = 0; k <= 720; k += 1) {
+      const t = (k / 720) * 2 * Math.PI;
+      const r = rayon + amplitude * Math.sin(lobes * t + phase);
+      const x = cx + r * Math.cos(t);
+      const y = cy + r * Math.sin(t);
+      d += `${k === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
+    }
+    traces += `<path d="${d}Z"/>`;
+  }
+  return `<g fill="none" stroke="${couleur}" stroke-width="${epaisseur}">${traces}</g>`;
+}
+
+/* ---------------------------- Code-barres ---------------------------- */
+
+// Code-barres décoratif, toujours identique pour un même texte.
+function codeBarres(texte, { largeur = 100, hauteur = 20, couleur = "currentColor" } = {}) {
+  let graine = 0;
+  for (const c of texte) graine = (graine * 31 + c.charCodeAt(0)) >>> 0;
+  const aleatoire = () => {
+    graine = (graine + 0x6d2b79f5) >>> 0;
+    let t = graine;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const modules = [1, 1, 1, 1];
+  while (modules.reduce((s, m) => s + m, 0) < 150) modules.push(1 + Math.floor(aleatoire() * 3));
+  modules.push(1, 1, 1, 1);
+  const total = modules.reduce((s, m) => s + m, 0);
+  const unite = largeur / total;
+  let x = 0;
+  let barres = "";
+  modules.forEach((m, i) => {
+    if (i % 2 === 0) barres += `<rect x="${(x * unite).toFixed(3)}" y="0" width="${(m * unite).toFixed(3)}" height="${hauteur}"/>`;
+    x += m;
+  });
+  return `<svg class="code-barres" viewBox="0 0 ${largeur} ${hauteur}" preserveAspectRatio="none" fill="${couleur}" aria-hidden="true">${barres}</svg>`;
+}
+
+/* ------------------------------ Ornements ------------------------------ */
+
+function ornement({ classe = "" } = {}) {
+  const or = idUnique("or");
+  const fondu = idUnique("fondu");
+  const remplissage = `url(#${or})`;
+  return `<svg class="ornement ${classe}" viewBox="0 0 160 12" aria-hidden="true">
+    <defs>${degradeOr(or)}
+      <linearGradient id="${fondu}" x1="0" x2="1">
+        <stop offset="0" stop-color="#c9a464" stop-opacity="0"/>
+        <stop offset="0.5" stop-color="#c9a464"/>
+        <stop offset="1" stop-color="#c9a464" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="4" y="5.7" width="66" height="0.6" fill="url(#${fondu})"/>
+    <rect x="90" y="5.7" width="66" height="0.6" fill="url(#${fondu})"/>
+    <path d="M66,6 L70,3.6 L74,6 L70,8.4Z M86,6 L90,3.6 L94,6 L90,8.4Z" fill="${remplissage}"/>
+    <path d="${ICONES.coeur}" transform="translate(75.2,1.2) scale(0.4)" fill="${remplissage}"/>
+  </svg>`;
+}

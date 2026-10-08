@@ -119,18 +119,24 @@ function zoneLecture() {
   const I = INFOS;
   const P = I.passeport;
   const normaliser = (t) =>
-    t.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "<").replace(/^<+|<+$/g, "");
+    t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "<").replace(/^<+|<+$/g, "");
   const remplir = (t, n) => (t + "<".repeat(n)).slice(0, n);
   const controle = (t) =>
     String([...t].reduce((s, c, i) => s + (c === "<" ? 0 : /\d/.test(c) ? Number(c) : c.charCodeAt(0) - 55) * [7, 3, 1][i % 3], 0) % 10);
   const pays = remplir(normaliser(P.nationalite), 3);
   const numero = remplir(normaliser(P.numero), 9);
-  const [j, m, a] = I.evenements[0].dateCourte.split(".");
+  const [j, m, a] = escaleCouverture().dateCourte.split(".");
   const date = a.slice(2) + m + j;
   return [
     remplir(`P<${pays}${normaliser(I.mariee)}<<${normaliser(I.marie)}`, 44),
     remplir(`${numero}${controle(numero)}${pays}${date}${controle(date)}<<<<<<<<${normaliser(P.validite)}`, 44),
   ];
+}
+
+// Escale dont la date figure sur la couverture (infos.js : passeport.escaleCouverture).
+function escaleCouverture() {
+  const n = INFOS.passeport.escaleCouverture;
+  return INFOS.evenements[n - 1] || INFOS.evenements[0];
 }
 
 /* ------------------------------ Pages ------------------------------ */
@@ -139,15 +145,10 @@ function passeport(theme) {
   const I = INFOS;
   const P = I.passeport;
 
-  // « 16 & 18 DÉCEMBRE 2026 » quand toutes les escales tombent le même mois.
-  const parties = I.evenements.map((e) => e.date.split(" "));
-  const unique = (liste) => [...new Set(liste)];
-  const mois = unique(parties.map((p) => p.slice(1).join(" ")));
-  const dateCouverture =
-    mois.length === 1
-      ? `<span class="chiffres">${esc(unique(parties.map((p) => p[0])).join(" & "))}</span>
-         ${esc(parties[0][1].toUpperCase())} <span class="chiffres">${esc(parties[0][2])}</span>`
-      : esc(I.evenements.map((e) => e.dateCourte).join(" · "));
+  // « 18 DÉCEMBRE 2026 » : chiffres en or, mois en clair, comme sur le passeport d'origine.
+  const principale = escaleCouverture();
+  const [jour, mois, annee] = principale.date.split(" ");
+  const dateCouverture = `<span class="chiffres">${esc(jour)}</span> ${esc(mois.toUpperCase())} <span class="chiffres">${esc(annee)}</span>`;
 
   const champ = (etiquette, valeur, classe = "") =>
     `<div class="${classe}"><div class="etiquette">${esc(etiquette)}</div><div class="valeur">${valeur}</div></div>`;
@@ -161,7 +162,7 @@ function passeport(theme) {
       <div class="contenu">
         ${anneauxDores()}
         <p class="verset texte-degrade">${esc(P.verset)}</p>
-        <p class="verset-source texte-degrade">${esc(P.versetSource)}</p>
+        ${P.versetSource ? `<p class="verset-source texte-degrade">${esc(P.versetSource)}</p>` : ""}
       </div>
     </div>
 
@@ -229,7 +230,7 @@ function passeport(theme) {
             ${champ("Titulaires", `${esc(I.mariee)} &amp; ${esc(I.marie)}`, "large titulaires")}
             ${champ("Nationalité", esc(P.nationalite))}
             ${champ("Destination", esc(I.arrivee.ville))}
-            ${champ("Délivré le", esc(I.evenements[0].dateCourte))}
+            ${champ("Délivré le", esc(principale.dateCourte))}
             ${champ("Validité", esc(P.validite))}
           </div>
         </div>

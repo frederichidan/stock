@@ -99,7 +99,7 @@ function billet(theme) {
           <span class="pastille">${anneaux()}<span class="etiquette">${esc(e.escale)}</span></span>
           <h3>${esc(e.titre)}</h3>
           <div class="date">${esc(e.jour)} ${esc(e.date)}</div>
-          <div class="lieu">${icone("lieu")}${esc(e.lieu)}</div>
+          <div class="lieu">${icone("lieu")}<span>${esc(e.lieu)}${e.precision ? `<small>${esc(e.precision)}</small>` : ""}</span></div>
           <ul class="horaires">
             ${e.programme.map(([heure, texte]) => `<li><b>${esc(heure)}</b><span>${esc(texte)}</span></li>`).join("")}
           </ul>

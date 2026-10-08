@@ -1,12 +1,13 @@
 /* ==================================================================
    INFORMATIONS DU MARIAGE
-   C'est le seul fichier à modifier pour changer les textes du billet
-   d'invitation et de la carte de menu. Les lieux, horaires et contacts
-   ci-dessous sont des exemples à remplacer.
+   C'est le seul fichier à modifier pour changer les textes de la pochette
+   passeport, du billet d'invitation et de la carte de menu.
+   Restent à valider : les horaires du coutumier et de la soirée, les
+   contacts RSVP et le menu (propositions).
    ================================================================== */
 
 const INFOS = {
-  // Couleurs : "violet", "minuit", "champagne" ou "argent" (voir themes.js).
+  // Couleurs : "violet" (version A, retenue), "minuit", "champagne" ou "argent" (voir themes.js).
   theme: "violet",
 
   // Le prénom féminin se place avant le prénom masculin.
@@ -24,6 +25,7 @@ const INFOS = {
   porte: "Cœur",
 
   // Les étapes s'affichent dans cet ordre (ordre chronologique).
+  // `precision` (facultatif) s'affiche sous le lieu, en plus petit.
   evenements: [
     {
       escale: "Escale 1",
@@ -31,7 +33,8 @@ const INFOS = {
       jour: "Mercredi",
       date: "16 décembre 2026",
       dateCourte: "16.12.2026",
-      lieu: "Lieu à préciser",
+      lieu: "La Sablière",
+      precision: "Entrée Hôtel Onomo",
       programme: [
         ["14h00", "Arrivée des invités"],
         ["14h30", "Arrivée de la belle-famille"],
@@ -45,13 +48,13 @@ const INFOS = {
       jour: "Vendredi",
       date: "18 décembre 2026",
       dateCourte: "18.12.2026",
-      lieu: "Mairie — à préciser",
+      lieu: "Hôtel de ville de Libreville",
       programme: [
-        ["10h00", "Arrivée des invités"],
-        ["10h30", "Arrivée du futur marié"],
-        ["10h45", "Arrivée de la future mariée"],
-        ["11h00", "Célébration du mariage"],
-        ["12h00", "Cocktail & séance photos"],
+        ["13h00", "Arrivée des invités"],
+        ["13h30", "Arrivée du futur marié"],
+        ["13h45", "Arrivée de la future mariée"],
+        ["14h00", "Célébration du mariage"],
+        ["15h00", "Cocktail & séance photos"],
       ],
     },
     {
@@ -60,7 +63,8 @@ const INFOS = {
       jour: "Vendredi",
       date: "18 décembre 2026",
       dateCourte: "18.12.2026",
-      lieu: "Salle à préciser",
+      lieu: "Les Anges d'Ema",
+      precision: "Charbonnages, avant l'école conventionnée",
       programme: [
         ["19h00", "Accueil des invités"],
         ["20h00", "Entrée des mariés"],
@@ -83,10 +87,14 @@ const INFOS = {
     sousTitre: "de Mariage",
     emetteur: "Royaume de l'Amour",
     numero: "RF181226",
+    // Escale dont la date figure sur la couverture et la page d'identité (2 = mariage civil, 18 décembre).
+    escaleCouverture: 2,
     nationalite: "Amour",
     validite: "Pour la vie",
-    verset: "Celui qui trouve une femme trouve le bonheur ; c'est une grâce qu'il obtient de l'Éternel.",
-    versetSource: "Proverbes 18:22",
+    // Texte au dos de la pochette ; `versetSource` vide = pas de référence affichée.
+    verset:
+      "Seigneur, je déclare que mon union sera protégée de toute attaque. Ce que tu unis dans ma vie ne sera jamais séparé par la jalousie, la pauvreté ou l'adversité.",
+    versetSource: "",
     invitation:
       "ont l'immense joie de vous convier à leur union et seraient honorés de votre présence à chacune des escales de ce beau voyage.",
     bonVoyage: "Bon voyage !",

@@ -1,18 +1,19 @@
-/* Génère, pour chaque version de couleurs (themes.js), les fichiers prêts à imprimer
-   ou à partager dans export/<version>/ :
+/* Génère les fichiers prêts à imprimer ou à partager dans export/<version>/ :
    - un PDF par document (vectoriel, format exact, fond compris) pour l'imprimeur ;
    - une image JPG par face en 8K : 7680 pixels sur le grand côté.
-   Puis export/nuancier.jpg (toutes les versions côte à côte), en 8K également.
 
    Utilisation :
      npm install playwright
      npx playwright install chromium
-     node exporter.js
+     node exporter.js            → la version choisie dans infos.js (theme)
+     node exporter.js --toutes   → les 4 versions, plus export/nuancier.jpg (comparatif 8K)
 */
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
 const THEMES = require("./themes.js");
+const INFOS = new Function(`${fs.readFileSync(path.join(__dirname, "infos.js"), "utf8")}; return INFOS;`)();
+const TOUTES = process.argv.includes("--toutes");
 
 const DOSSIER = __dirname;
 const SORTIE = path.join(DOSSIER, "export");
@@ -85,7 +86,8 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier) {
   const navigateur = await chromium.launch();
   const mesure = await navigateur.newPage();
 
-  for (const theme of Object.keys(THEMES)) {
+  const themes = TOUTES ? Object.keys(THEMES) : [INFOS.theme in THEMES ? INFOS.theme : "violet"];
+  for (const theme of themes) {
     const dossierTheme = path.join(SORTIE, theme);
     fs.mkdirSync(dossierTheme, { recursive: true });
 
@@ -100,6 +102,11 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier) {
         console.log("✓", `${theme}/${nom}.jpg`);
       }
     }
+  }
+
+  if (!TOUTES) {
+    await navigateur.close();
+    return;
   }
 
   // Nuancier : la page entière, 7680 pixels sur le grand côté.

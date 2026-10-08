@@ -32,12 +32,20 @@ html,body{background:#fff}
 .card:nth-child(2){border-color:var(--o)}.card:nth-child(3){border-color:var(--g)}
 .card .lab{color:var(--t);margin-bottom:8px}
 .card h3{font-family:BS;font-weight:700;font-size:48px;line-height:1;margin-bottom:10px;text-transform:uppercase}
-.card .k{font-family:BS;font-weight:700;font-size:108px;line-height:.9;color:var(--t)}
+.card .k{font-family:BS;font-weight:700;font-size:92px;line-height:.9;color:var(--t)}
 .card .u{font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;margin:6px 0 16px;color:#222}
 .card li{list-style:none;padding-left:24px;position:relative;margin-bottom:8px;font-size:22px;line-height:1.35}
 .card li:before{content:"";position:absolute;left:0;top:.5em;width:12px;height:12px;border-radius:50%;background:var(--o)}
 .bar{height:20px;background:#d9d9d9;margin:8px 0 4px}.bar b{display:block;height:100%}
 .cap{font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between;margin-bottom:6px}
+.lead{font-size:27px;line-height:1.4;margin-bottom:34px;max-width:1180px}
+.badge{display:inline-block;color:#fff;font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:4px;margin:2px 0 14px}
+.fin{width:100%;border-collapse:collapse;margin-top:40px;font-size:25px}
+.fin th{background:var(--t);color:#fff;text-align:left;padding:12px 18px;font-size:18px;letter-spacing:.1em;text-transform:uppercase}
+.fin td{padding:14px 18px;border-bottom:3px solid #d5dfe8;font-weight:700}
+.fin td:nth-child(2){font-family:BS;font-size:40px;line-height:1}
+.fin caption{caption-side:top;text-align:left;font-family:BS;font-weight:700;font-size:44px;padding-bottom:10px}
+.close{background:var(--t);color:#fff}
 .band2{background:var(--f2);color:#fff}
 .band2 .col{border-left:5px solid var(--o);padding-left:18px}
 .band2 .col .lab{color:var(--o);margin-bottom:8px;display:block}
@@ -56,8 +64,8 @@ html,body{background:#fff}
 <div class="p" id="p">
 
 <div class="hero">
-  <div class="top lab"><span>Association Génération Soleil de Mboma · AGM</span><span>Compte rendu · 03.10.2026</span></div>
-  <div class="sub lab">Réunion de rentrée des activités</div>
+  <div class="top lab"><span>Association Génération Soleil de Mboma · AGM</span><span>Réunion de rentrée · 03.10.2026</span></div>
+  <div class="sub lab">Bilan AGM · Période des grandes vacances</div>
   <h1>MBOMA<span>2026</span></h1>
   <svg class="sun" id="sun" viewBox="-260 -260 520 520"></svg>
   <div class="sunlbl lab">29 présents · 1 rayon = 1 membre</div>
@@ -67,24 +75,33 @@ html,body{background:#fff}
 <!-- 01 -->
 <div class="sec pad">
   <div class="hd"><span class="n">01</span><h2>BILAN DE MBOMA 2026</h2><i>ce que nous avons fait ensemble</i></div>
+  <p class="lead">La période des grandes vacances 2026 a été particulièrement riche en activités pour l'Association Génération Soleil (AGM). À travers plusieurs initiatives, l'association a mobilisé ses membres, ses partenaires et ses ressources afin de contribuer concrètement à la vie de la communauté.</p>
   <div style="display:flex;align-items:flex-end;gap:30px;margin-bottom:40px">
     <div class="big" style="font-size:168px">+10&nbsp;000&nbsp;000</div>
     <div style="padding-bottom:8px"><div class="big" style="font-size:72px;color:var(--t)">FCFA</div><div class="lab" style="margin-top:8px;font-size:18px">mobilisés pour toutes<br>les actions AGM</div></div>
   </div>
   <div class="cards">
     <div class="card"><div class="lab">A · Mariages</div><h3>Deux oncles unis</h3>
-      <div class="k">930&nbsp;000</div><div class="u">FCFA de cotisations globales</div>
-      <ul><li>Mariages de Monsieur <b>Eric Ndong Ollomo</b> et Monsieur <b>Valentin Mendame</b> célébrés</li><li>Festivités bien déroulées</li></ul></div>
-    <div class="card"><div class="lab">B · Retraits de deuil groupés</div><h3>Six danses mobilisées</h3>
-      <div class="k">≈1,22&nbsp;M</div><div class="u">FCFA · coût global</div>
+      <div class="k">465&nbsp;000</div><div class="u">FCFA par mariage · 930&nbsp;000 FCFA au total</div>
+      <span class="badge" style="background:var(--g)">Financement : 100 % AGM</span>
+      <ul><li>Mariages d'<b>Eric Ndong Ollomo</b> et de <b>Valentin Mendame</b> célébrés ; festivités bien déroulées</li><li>Contribution entièrement prise en charge par l'association</li><li>La solidarité entre membres, présente dans les moments importants de la vie familiale</li></ul></div>
+    <div class="card"><div class="lab">B · Caravane médicale</div><h3>Soutenue par nos partenaires</h3>
+      <div class="k">4&nbsp;100&nbsp;000</div><div class="u">FCFA · environ 4,1 millions</div>
+      <span class="badge" style="background:var(--t)">Financement : 100 % partenaires</span>
+      <ul><li>Consultations et prestations médicales gratuites pour la communauté</li><li>Médecins logés, nourris, transportés</li><li>Billets d'avion, chaises, tentes, médicaments</li><li>Médicaments restants : à la disposition de chacun au village</li></ul></div>
+    <div class="card"><div class="lab">C · Retraits de deuil groupés</div><h3>Six danses mobilisées</h3>
+      <div class="k">1&nbsp;220&nbsp;000</div><div class="u">FCFA · coût global</div>
+      <span class="badge" style="background:var(--o);color:#1c1c1c">Financement : 100 % AGM</span>
       <div class="bar"><b style="width:100%;background:var(--t)"></b></div><div class="cap"><span>Budget arrêté</span><span>4 M</span></div>
       <div class="bar"><b style="width:50%;background:var(--o)"></b></div><div class="cap"><span>Cotisé</span><span>2 M</span></div>
-      <ul style="margin-top:12px"><li><b>600&nbsp;000 FCFA</b> défalqués de la caisse AGM pour le déficit des non-cotisants</li><li>Nourriture, boisson, invités : tout a été réglé</li></ul></div>
-    <div class="card"><div class="lab">C · Caravane médicale</div><h3>Soutenue par nos partenaires</h3>
-      <div class="k">+900&nbsp;000</div><div class="u">FCFA apportés en nature · budget initial 5&nbsp;025&nbsp;000 FCFA</div>
-      <div class="bar"><b style="width:18%;background:var(--g)"></b></div>
-      <ul style="margin-top:12px"><li>Médecins logés, nourris, transportés</li><li>Billets d'avion, chaises, tentes, médicaments</li><li>Médicaments restants : à la disposition de chacun au village</li></ul></div>
+      <ul style="margin-top:12px"><li><b>600&nbsp;000 FCFA</b> pris sur la caisse AGM pour le déficit</li><li>Nourriture, boisson, invités : tout a été réglé</li></ul></div>
   </div>
+  <table class="fin"><caption>BILAN FINANCIER SYNTHÉTIQUE</caption>
+    <tr><th>Action</th><th>Montant</th><th>Financement</th></tr>
+    <tr><td>Mariages</td><td style="color:var(--g)">465&nbsp;000 FCFA / mariage</td><td>100 % AGM</td></tr>
+    <tr><td>Caravane médicale</td><td style="color:var(--t)">4&nbsp;100&nbsp;000 FCFA</td><td>100 % partenaires</td></tr>
+    <tr><td>Retraits de deuil groupés</td><td style="color:#c98a05">1&nbsp;220&nbsp;000 FCFA</td><td>100 % AGM</td></tr>
+  </table>
 </div>
 
 <!-- partenaires -->
@@ -124,7 +141,12 @@ html,body{background:#fff}
     <div class="c"><div class="big">Lundi 05.10.2026</div>Le président dépose le récépissé AGM au <b>Ministère de l'Intérieur</b> : reconnaissance légale et nationale.</div>
   </div>
 </div>
-<div class="stripe"><i style="background:var(--g)"></i><i style="background:var(--o)"></i><i style="background:var(--t)"></i></div>
+<div class="close pad" style="padding-top:52px;padding-bottom:52px">
+  <div class="big" style="font-size:64px;line-height:.95;white-space:nowrap;color:var(--o);margin-bottom:18px">UNE ACTION COLLECTIVE, DES RÉSULTATS CONCRETS</div>
+  <p style="font-size:26px;line-height:1.42;max-width:1240px">À travers ces actions, MBOMA 2026 a permis à l'AGM de traduire ses valeurs de <b>solidarité, fraternité, entraide et responsabilité communautaire</b> en actions concrètes. Ce bilan est avant tout le résultat d'une <b style="color:var(--o)">dynamique collective</b> : les membres qui se mobilisent, les bénévoles qui donnent de leur temps et les partenaires qui nous font confiance.</p>
+  <div style="display:flex;align-items:baseline;gap:26px;margin-top:30px;border-top:4px solid #fff;padding-top:22px"><span class="big" style="font-size:96px">AGM</span><span style="font-family:IS;font-style:italic;font-size:46px">Une association, une communauté, un engagement.</span></div>
+</div>
+<div class="stripe"><i style="background:var(--g)"></i><i style="background:var(--o)"></i><i style="background:var(--br)"></i></div>
 </div>
 
 <script>
@@ -137,9 +159,7 @@ const N=29;
 for(let i=0;i<N;i++){const a=(i/N)*2*Math.PI-Math.PI/2,c=Math.cos(a),sn=Math.sin(a);
  const nw=[3,11,20].includes(i);
  el(s,'line',{x1:168*c,y1:168*sn,x2:(nw?232:214)*c,y2:(nw?232:214)*sn,stroke:nw?'#FFFFFF':'#F0AE23','stroke-width':nw?8:7});}
-const df=el(s,'defs',{});const cp=el(df,'clipPath',{id:'lc'});el(cp,'circle',{r:150});
-el(s,'circle',{r:154,fill:'#FFFFFF'});
-el(s,'image',{href:'logo.png',x:-163,y:-162,width:325,height:325,'clip-path':'url(#lc)'});
+el(s,'image',{href:'logo_rond.png',x:-152,y:-152,width:304,height:304});
 const P=['Fabrique de pierres tombales pour le cimetière communautaire (noms, prénoms, dates de naissance/décès)','Achat de panneaux solaires pour tout le village','Sport et culture Mboma 2027','Groupe électrogène communautaire pour alimenter tout le village','Relance du groupe de danse GSM nouvelle génération','Lancement d\'une tontine (pour ceux qui le souhaitent)','Réhabilitation de l\'église : peinture, bancs, presbytère ou chambre pour le prêtre','Achat d\'un poteau électrique de BIBASSE à BAGA et de compteur d\'électricité','Enterrer les personnes dans le cimetière commun','Maintenir la randonnée et la messe de Toussaint'];
 const pr=document.getElementById('proj');
 P.forEach((x,i)=>{const d=document.createElement('div');d.className='pi';d.style.cssText=`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;

@@ -64,11 +64,10 @@ html,body{background:#fff}
 <div class="p" id="p">
 
 <div class="hero">
-  <div class="top lab"><span>Association Génération Soleil de Mboma · AGM</span><span>Réunion de rentrée · 03.10.2026</span></div>
+  <div class="top lab"><span>Association Génération Soleil de Mboma · AGM</span><span>Réunion de rentrée · 03.10.2026 · 29 présents</span></div>
   <div class="sub lab">Bilan AGM · Période des grandes vacances</div>
   <h1>MBOMA<span>2026</span></h1>
   <svg class="sun" id="sun" viewBox="-260 -260 520 520"></svg>
-  <div class="sunlbl lab">29 présents · 1 rayon = 1 membre</div>
 </div>
 <div class="stripe"><i style="background:var(--g)"></i><i style="background:var(--o)"></i><i style="background:var(--br)"></i></div>
 
@@ -121,7 +120,7 @@ html,body{background:#fff}
   <div class="lab" style="color:var(--t);margin-bottom:10px">3 mariages · décembre 2026</div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
     <div class="wd" style="border-top:10px solid var(--t)"><div class="tl-d">05/12</div><div class="tl-n"><b>Ulrich Beh Essono</b><span>Président AGM</span></div></div>
-    <div class="wd" style="border-top:10px solid var(--o)"><div class="tl-d">16/12</div><div class="tl-n"><b>Frédéric Mendame</b><span>Secrétaire général AGM</span></div></div>
+    <div class="wd" style="border-top:10px solid var(--o)"><div class="tl-d">16 &amp; 18/12</div><div class="tl-n"><b>Frédéric Mendame</b><span>Secrétaire général AGM</span></div></div>
     <div class="wd" style="border-top:10px solid var(--g)"><div class="tl-d">24 &amp; 26/12</div><div class="tl-n"><b>Abel Eyeghe Ekore</b><span>Mariage</span></div></div>
   </div>
   <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:36px;margin-top:26px">
@@ -153,13 +152,7 @@ html,body{background:#fff}
 const NS='http://www.w3.org/2000/svg';
 function el(p,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e}
 const s=document.getElementById('sun');
-el(s,'circle',{r:250,fill:'none',stroke:'#fff','stroke-width':1.5,opacity:.5});
-for(let i=0;i<360;i+=5){const a=i*Math.PI/180,r1=240,r2=i%15==0?252:246;el(s,'line',{x1:r1*Math.cos(a),y1:r1*Math.sin(a),x2:r2*Math.cos(a),y2:r2*Math.sin(a),stroke:'#fff','stroke-width':1.5,opacity:.8})}
-const N=29;
-for(let i=0;i<N;i++){const a=(i/N)*2*Math.PI-Math.PI/2,c=Math.cos(a),sn=Math.sin(a);
- const nw=[3,11,20].includes(i);
- el(s,'line',{x1:168*c,y1:168*sn,x2:(nw?232:214)*c,y2:(nw?232:214)*sn,stroke:nw?'#FFFFFF':'#F0AE23','stroke-width':nw?8:7});}
-el(s,'image',{href:'logo_rond.png',x:-152,y:-152,width:304,height:304});
+el(s,'image',{href:'logo_rond.png',x:-230,y:-230,width:460,height:460});
 const P=['Fabrique de pierres tombales pour le cimetière communautaire (noms, prénoms, dates de naissance/décès)','Achat de panneaux solaires pour tout le village','Sport et culture Mboma 2027','Groupe électrogène communautaire pour alimenter tout le village','Relance du groupe de danse GSM nouvelle génération','Lancement d\'une tontine (pour ceux qui le souhaitent)','Réhabilitation de l\'église : peinture, bancs, presbytère ou chambre pour le prêtre','Achat d\'un poteau électrique de BIBASSE à BAGA et de compteur d\'électricité','Enterrer les personnes dans le cimetière commun','Maintenir la randonnée et la messe de Toussaint'];
 const pr=document.getElementById('proj');
 P.forEach((x,i)=>{const d=document.createElement('div');d.className='pi';d.style.cssText=`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;

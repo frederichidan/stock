@@ -8,20 +8,20 @@
 @font-face{font-family:IN;src:url(fonts/InstrumentSans-Regular.ttf);font-weight:400}
 @font-face{font-family:IN;src:url(fonts/InstrumentSans-Bold.ttf);font-weight:700}
 @font-face{font-family:DM;src:url(fonts/DMMono-Regular.ttf)}
-:root{--f:#0f3326;--f2:#164532;--c:#f3ead6;--c2:#e6dac0;--o:#e9a21b;--t:#c4451f;--ink:#12201a}
+:root{--f:#1583C2;--f2:#2f2f2f;--c:#FBFBF8;--c2:#EAEEE6;--o:#F0AE23;--t:#1583C2;--g:#6FA82C;--br:#814C21;--ink:#2b2b2b}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--f)}
 .p{width:1400px;height:2240px;position:relative;background:var(--f);color:var(--c);font-family:IN;overflow:hidden}
 .mono{font-family:DM;letter-spacing:.14em;text-transform:uppercase;font-size:13px}
 .m{position:absolute;left:70px;right:70px}
 /* top */
-.top{top:48px;display:flex;justify-content:space-between;color:var(--o)}
+.top{top:48px;display:flex;justify-content:space-between;color:var(--c)}
 .hero{top:100px;height:540px}
 .hero h1{font-family:BS;font-weight:700;font-size:268px;line-height:.82;letter-spacing:-.01em;position:absolute;left:-4px;top:30px;color:var(--c)}
 .hero h1 span{display:block;color:var(--o)}
 .hero .assoc{position:absolute;left:0;top:-4px}
 .sun{position:absolute;right:0;top:20px;width:480px;height:480px}
-.sunlbl{position:absolute;right:0;top:505px;width:480px;text-align:center;color:var(--o)}
+.sunlbl{position:absolute;right:0;top:505px;width:480px;text-align:center;color:var(--c)}
 /* sections */
 .sec{position:absolute;left:0;right:0}
 .band{background:var(--c);color:var(--ink)}
@@ -31,7 +31,7 @@ html,body{background:var(--f)}
 .hd i{font-family:IS;font-size:30px;margin-left:auto;opacity:.75}
 .big{font-family:BS;font-weight:700;line-height:.8}
 .rule{height:2px;background:currentColor;opacity:.9}
-.card{border-top:2px solid var(--ink);padding-top:14px}
+.card{border-top:6px solid var(--t);padding-top:14px}.card:nth-child(2){border-color:var(--o)}.card:nth-child(3){border-color:var(--g)}
 .card h3{font-family:BS;font-weight:700;font-size:40px;line-height:1;margin-bottom:6px;text-transform:uppercase}
 .card .k{font-family:BS;font-weight:700;font-size:92px;line-height:.9;color:var(--t)}
 .card .u{font-family:DM;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin:4px 0 14px}
@@ -40,7 +40,7 @@ html,body{background:var(--f)}
 .card li:before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--o)}
 .bar{height:14px;background:rgba(18,32,26,.13);margin:6px 0 4px;position:relative}
 .bar b{position:absolute;left:0;top:0;bottom:0;background:var(--f)}
-.bar b.o{background:var(--o)}.bar b.t{background:var(--t)}
+.bar b.o{background:var(--o)}.bar b.t{background:var(--g)}
 .cap{font-family:DM;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;display:flex;justify-content:space-between}
 </style></head><body>
 <div class="p" id="p">
@@ -58,7 +58,7 @@ html,body{background:var(--f)}
 <div class="sec band" style="top:640px;height:680px;padding:40px 70px 0">
   <div class="hd"><span class="n">01</span><h2>BILAN DE MBOMA 2026</h2><i>ce que nous avons fait ensemble</i></div>
   <div style="display:flex;align-items:flex-end;gap:30px;margin-bottom:26px">
-    <div class="big" style="font-size:136px;color:var(--f)">+10&nbsp;000&nbsp;000</div>
+    <div class="big" style="font-size:136px;color:var(--ink)">+10&nbsp;000&nbsp;000</div>
     <div style="padding-bottom:6px"><div class="big" style="font-size:54px;color:var(--t)">FCFA</div><div class="mono" style="margin-top:8px">mobilisés pour toutes les actions AGM</div></div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px">
@@ -111,12 +111,12 @@ html,body{background:var(--f)}
 </div>
 
 <!-- 03 DIVERS -->
-<div class="sec" style="top:2040px;height:200px;padding:34px 70px 0;background:var(--f)">
+<div class="sec" style="top:2040px;height:200px;padding:34px 70px 0;background:var(--br)">
   <div style="display:grid;grid-template-columns:.9fr 1.1fr 1.1fr 1.1fr;gap:30px">
     <div><div class="mono" style="color:var(--o)">03 · Divers</div><div class="big" style="font-size:78px;margin-top:10px">DIVERS</div></div>
     <div style="border-left:2px solid var(--o);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--o);margin-bottom:6px">≈700&nbsp;000 FCFA</div><b>Les cotisations mensuelles reprennent.</b> La caisse a servi à combler le déficit des retraits de deuil.</div>
     <div style="border-left:2px solid var(--o);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--o);margin-bottom:6px">8 nouveaux</div>membres, dont 5 absents. Bienvenue à <b>Francine, Yasmine et Laetitia</b> et aux autres !</div>
-    <div style="border-left:2px solid var(--t);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--c);margin-bottom:6px">Lundi 05.10.2026</div>Le président dépose le récépissé AGM au <b>Ministère de l'Intérieur</b> : reconnaissance légale et nationale.</div>
+    <div style="border-left:2px solid var(--c);padding-left:16px;font-size:16px;line-height:1.4"><div class="big" style="font-size:44px;color:var(--c);margin-bottom:6px">Lundi 05.10.2026</div>Le président dépose le récépissé AGM au <b>Ministère de l'Intérieur</b> : reconnaissance légale et nationale.</div>
   </div>
 </div>
 </div>
@@ -126,38 +126,37 @@ const NS='http://www.w3.org/2000/svg';
 function el(p,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e}
 // SUN : 29 rayons
 const s=document.getElementById('sun');
-el(s,'circle',{r:250,fill:'none',stroke:'#e9a21b','stroke-width':1,opacity:.35});
-el(s,'circle',{r:112,fill:'none',stroke:'#e9a21b','stroke-width':1,opacity:.5});
-for(let i=0;i<360;i+=5){const a=i*Math.PI/180,r1=240,r2=i%15==0?250:245;el(s,'line',{x1:r1*Math.cos(a),y1:r1*Math.sin(a),x2:r2*Math.cos(a),y2:r2*Math.sin(a),stroke:'#f3ead6','stroke-width':1,opacity:.5})}
+el(s,'circle',{r:250,fill:'none',stroke:'#F0AE23','stroke-width':1,opacity:.35});
+
+for(let i=0;i<360;i+=5){const a=i*Math.PI/180,r1=240,r2=i%15==0?250:245;el(s,'line',{x1:r1*Math.cos(a),y1:r1*Math.sin(a),x2:r2*Math.cos(a),y2:r2*Math.sin(a),stroke:'#FBFBF8','stroke-width':1,opacity:.5})}
 const N=29;
 for(let i=0;i<N;i++){const a=(i/N)*2*Math.PI-Math.PI/2,c=Math.cos(a),sn=Math.sin(a);
  const nw=[3,11,20].includes(i); // 3 nouveaux présents
- el(s,'line',{x1:128*c,y1:128*sn,x2:(nw?228:206)*c,y2:(nw?228:206)*sn,stroke:nw?'#c4451f':'#e9a21b','stroke-width':nw?7:6,'stroke-linecap':'butt'});
- el(s,'circle',{cx:(nw?240:218)*c,cy:(nw?240:218)*sn,r:nw?0:3,fill:'#e9a21b'});}
-el(s,'circle',{r:92,fill:'#e9a21b'});
-el(s,'text',{x:0,y:36,'text-anchor':'middle','font-family':'BS','font-weight':700,'font-size':116,fill:'#0f3326'},'29');
-el(s,'text',{x:0,y:-60,'text-anchor':'middle','font-family':'DM','font-size':11,'letter-spacing':'2',fill:'#0f3326'},'PRÉSENTS');
-el(s,'text',{x:0,y:64,'text-anchor':'middle','font-family':'DM','font-size':10,'letter-spacing':'2',fill:'#0f3326'},'3.10.2026');
+ el(s,'line',{x1:168*c,y1:168*sn,x2:(nw?232:214)*c,y2:(nw?232:214)*sn,stroke:nw?'#FFFFFF':'#F0AE23','stroke-width':nw?7:6,'stroke-linecap':'butt'});
+ el(s,'circle',{cx:(nw?240:224)*c,cy:(nw?240:224)*sn,r:nw?0:3,fill:'#F0AE23'});}
+const df=el(s,'defs',{});const cp=el(df,'clipPath',{id:'lc'});el(cp,'circle',{r:150});
+el(s,'circle',{r:154,fill:'#FBFBF8'});
+const im=el(s,'image',{href:'logo.png',x:-163,y:-162,width:325,height:325,'clip-path':'url(#lc)'});
 // TIMELINE
 const t=document.getElementById('tl');
-el(t,'line',{x1:0,y1:70,x2:520,y2:70,stroke:'#12201a','stroke-width':2});
-for(let d=0;d<=31;d++){const x=20+d*(480/31);el(t,'line',{x1:x,y1:70,x2:x,y2:d%5==0?60:64,stroke:'#12201a','stroke-width':1})}
-el(t,'text',{x:20,y:40,'font-family':'DM','font-size':11,'letter-spacing':'1.5',fill:'#12201a'},'DÉCEMBRE 2026');
+el(t,'line',{x1:0,y1:70,x2:520,y2:70,stroke:'#2b2b2b','stroke-width':2});
+for(let d=0;d<=31;d++){const x=20+d*(480/31);el(t,'line',{x1:x,y1:70,x2:x,y2:d%5==0?60:64,stroke:'#2b2b2b','stroke-width':1})}
+el(t,'text',{x:20,y:40,'font-family':'DM','font-size':11,'letter-spacing':'1.5',fill:'#2b2b2b'},'DÉCEMBRE 2026');
 const ev=[[5,'05','Ulrich Beh Essono','Président AGM'],[16,'16','Frédéric Mendame','Secrétaire général AGM'],[24,'24 & 26','Abel Eyeghe Ekore','']];
 ev.forEach((e,i)=>{const x=20+(e[0]-1)*(480/31);
- el(t,'circle',{cx:x,cy:70,r:9,fill:'#c4451f'});
- el(t,'line',{x1:x,y1:79,x2:x,y2:96,stroke:'#c4451f','stroke-width':1.5});
+ el(t,'circle',{cx:x,cy:70,r:9,fill:'#1583C2'});
+ el(t,'line',{x1:x,y1:79,x2:x,y2:96,stroke:'#1583C2','stroke-width':1.5});
 });
 // event labels in a column list below
 ev.forEach((e,i)=>{const y=122+i*48;
- el(t,'text',{x:0,y:y+16,'font-family':'BS','font-weight':700,'font-size':44,fill:'#c4451f'},e[1]);
- el(t,'text',{x:150,y:y+2,'font-family':'IN','font-weight':700,'font-size':19,fill:'#12201a'},e[2]);
- el(t,'text',{x:150,y:y+19,'font-family':'IN','font-size':14,fill:'#12201a',opacity:.75},e[3]||'Mariage');
+ el(t,'text',{x:0,y:y+16,'font-family':'BS','font-weight':700,'font-size':44,fill:'#1583C2'},e[1]);
+ el(t,'text',{x:150,y:y+2,'font-family':'IN','font-weight':700,'font-size':19,fill:'#2b2b2b'},e[2]);
+ el(t,'text',{x:150,y:y+19,'font-family':'IN','font-size':14,fill:'#2b2b2b',opacity:.75},e[3]||'Mariage');
 });
 // PROJETS
 const P=['Fabrique de pierres tombales pour le cimetière communautaire (noms, prénoms, dates de naissance/décès)','Achat de panneaux solaires pour tout le village','Sport et culture Mboma 2027','Groupe électrogène communautaire pour alimenter tout le village','Relance du groupe de danse GSM nouvelle génération','Lancement d\'une tontine (pour ceux qui le souhaitent)','Réhabilitation de l\'église : peinture, bancs, presbytère ou chambre pour le prêtre','Achat d\'un poteau électrique de BIBASSE à BAGA et de compteur d\'électricité','Enterrer les personnes dans le cimetière commun','Maintenir la randonnée et la messe de Toussaint'];
 const pr=document.getElementById('proj');
 // column-major fill: 5 left, 5 right
-P.forEach((x,i)=>{const d=document.createElement('div');d.style.cssText='display:flex;gap:12px;border-top:1.5px solid #12201a;padding:7px 0 7px;min-height:56px;'+`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;
- d.innerHTML=`<span style="font-family:BS;font-weight:700;font-size:30px;line-height:1;color:#c4451f;width:34px;flex:none">${String(i+1).padStart(2,'0')}</span><span style="font-size:15.5px;line-height:1.3">${x}</span>`;pr.appendChild(d)});
+P.forEach((x,i)=>{const d=document.createElement('div');d.style.cssText='display:flex;gap:12px;border-top:1.5px solid #2b2b2b;padding:7px 0 7px;min-height:56px;'+`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;
+ d.innerHTML=`<span style="font-family:BS;font-weight:700;font-size:30px;line-height:1;color:#1583C2;width:34px;flex:none">${String(i+1).padStart(2,'0')}</span><span style="font-size:15.5px;line-height:1.3">${x}</span>`;pr.appendChild(d)});
 </script></body></html>

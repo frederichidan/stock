@@ -6,6 +6,9 @@
    ================================================================== */
 
 const INFOS = {
+  // Couleurs : "violet", "minuit", "champagne" ou "argent" (voir themes.js).
+  theme: "violet",
+
   // Le prénom féminin se place avant le prénom masculin.
   mariee: "Raïka",
   marie: "Frédéric",

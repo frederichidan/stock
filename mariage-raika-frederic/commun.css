@@ -1,4 +1,4 @@
-/* Styles partagés : polices, couleurs (palette violet & or) et éléments communs. */
+/* Styles partagés : polices, couleurs par thème (voir themes.js) et éléments communs. */
 
 @font-face { font-family: "Great Vibes"; font-weight: 400; src: url("polices/great-vibes-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Playfair Display"; font-weight: 400; src: url("polices/playfair-display-latin-400-normal.woff2") format("woff2"); }
@@ -15,25 +15,110 @@
 @font-face { font-family: "Montserrat"; font-weight: 700; src: url("polices/montserrat-latin-700-normal.woff2") format("woff2"); }
 
 :root {
-  --nuit: #1c1036;
-  --violet-profond: #2b1159;
-  --violet: #4a2384;
-  --violet-vif: #5d2ca3;
-  --or-fonce: #a07a32;
-  --or: #c9a464;
-  --or-clair: #ecd59d;
-  --argent: #bcbec9;
-  --ivoire: #f8f3ea;
-  --lavande: #f1ecf8;
-
-  --degrade-or: linear-gradient(115deg, #a07a32 0%, #e9cf8e 30%, #c9a464 52%, #f3dfa6 72%, #9c762f 100%);
-  --fond-violet: radial-gradient(ellipse 75% 95% at 35% 50%, #55259a 0%, #3c1880 45%, #26104f 100%);
-
   --script: "Great Vibes", cursive;
   --serif: "Playfair Display", Georgia, serif;
-  --texte: "Cormorant Garamond", Georgia, serif;
+  --texte-police: "Cormorant Garamond", Georgia, serif;
   --sans: "Montserrat", Arial, sans-serif;
 }
+
+/* ------------------------- Fonds de chaque thème ------------------------- */
+/* --fond-* : recto du billet et carte de menu ; --bande-* : bandeaux et pied ;
+   --talon-* : talon du billet ; --verso-* : verso du billet. */
+
+:root,
+[data-theme="violet"] {
+  --fond-1: #55259a; --fond-2: #3c1880; --fond-3: #26104f;
+  --bande-1: #1c1036; --bande-2: #2b1159;
+  --talon-1: #2a1158; --talon-2: #1c1036;
+  --verso-1: #fffdf8; --verso-2: #f8f3ea; --verso-3: #efe7f5;
+}
+
+[data-theme="minuit"] {
+  --fond-1: #34215f; --fond-2: #22143f; --fond-3: #110a22;
+  --bande-1: #0c0717; --bande-2: #1a0f33;
+  --talon-1: #1e1238; --talon-2: #0c0717;
+  --verso-1: #2e1d55; --verso-2: #1e1238; --verso-3: #110a22;
+}
+
+[data-theme="champagne"] {
+  --fond-1: #fdf8ec; --fond-2: #f1e3c4; --fond-3: #d9bf8e;
+  --bande-1: #3c1880; --bande-2: #4a2384;
+  --talon-1: #4a2384; --talon-2: #2b1159;
+  --verso-1: #fffdf8; --verso-2: #faf3e4; --verso-3: #eddcb9;
+}
+
+[data-theme="argent"] {
+  --fond-1: #fcfcfe; --fond-2: #e7e8ee; --fond-3: #b9bcc7;
+  --bande-1: #1c1036; --bande-2: #2b1159;
+  --talon-1: #2b1159; --talon-2: #1c1036;
+  --verso-1: #ffffff; --verso-2: #f2f2f6; --verso-3: #d9dae2;
+}
+
+/* ------------------------- Contextes de couleurs ------------------------- */
+/* « sombre » : textes ivoire et or sur fond foncé.
+   « clair »  : textes violets, ornements or antique sur fond clair. */
+
+.sombre {
+  --texte: #f8f3ea;
+  --texte-doux: rgba(248, 243, 234, 0.8);
+  --accent: #c9a464;
+  --accent-fort: #ecd59d;
+  --discret: #bcbec9;
+  --ligne: rgba(201, 164, 100, 0.75);
+  --filet: rgba(201, 164, 100, 0.35);
+  --ligne-ecriture: rgba(248, 243, 234, 0.55);
+  --code: #dcbd7c;
+  --esperluette: #f8f3ea;
+  --let-a: #a07a32; --let-b: #ecd295; --let-c: #c9a464;
+  --orn-a: #a07a32; --orn-b: #ecd295; --orn-c: #c9a464;
+  --guilloche: #c9a464;
+  --guilloche-opacite: 0.2;
+  --pastille: #c9a464;
+  --pastille-texte: #1c1036;
+  --titre-etape: #ecd59d;
+  --code-barres: #ecd59d;
+  color: var(--texte);
+}
+
+.clair {
+  --texte: #2b1159;
+  --texte-doux: #5a4a7a;
+  --accent: #a07a32;
+  --accent-fort: #4a2384;
+  --discret: #6b5a8a;
+  --ligne: rgba(160, 122, 50, 0.7);
+  --filet: rgba(74, 35, 132, 0.18);
+  --ligne-ecriture: rgba(43, 17, 89, 0.45);
+  --code: #4a2384;
+  --esperluette: #a07a32;
+  --let-a: #2b1159; --let-b: #6d42b3; --let-c: #4a2384;
+  --orn-a: #8a6420; --orn-b: #d9b977; --orn-c: #a98236;
+  --guilloche: #4a2384;
+  --guilloche-opacite: 0.1;
+  --pastille: #4a2384;
+  --pastille-texte: #ecd59d;
+  --titre-etape: #4a2384;
+  --code-barres: #2b1159;
+  color: var(--texte);
+}
+
+/* Nuit : l'argent remplace l'ivoire pour les valeurs, l'esperluette et les guillochis. */
+[data-theme="minuit"] .sombre {
+  --accent-fort: #dfe1e9;
+  --discret: #c9ccd6;
+  --esperluette: #dfe1e9;
+  --guilloche: #bcbec9;
+  --code-barres: #dfe1e9;
+  --titre-etape: #ecd59d;
+}
+
+/* Argent : guillochis gris argent. */
+[data-theme="argent"] .clair {
+  --guilloche: #6f7280;
+  --guilloche-opacite: 0.14;
+}
+
+/* ------------------------------- Base ------------------------------- */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -43,8 +128,7 @@ html {
 }
 
 body {
-  font-family: var(--texte);
-  color: var(--ivoire);
+  font-family: var(--texte-police);
   background: #e7e3ec;
 }
 
@@ -68,8 +152,9 @@ body {
   body { background: none; }
 }
 
-.texte-or {
-  background: var(--degrade-or);
+/* Texte en dégradé (or sur fond sombre, violet sur fond clair). */
+.texte-degrade {
+  background: linear-gradient(115deg, var(--let-a) 0%, var(--let-b) 30%, var(--let-c) 52%, var(--let-b) 72%, var(--let-a) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -88,12 +173,12 @@ body {
   inset: 0;
   pointer-events: none;
 }
-.calque svg { width: 100%; height: 100%; display: block; }
+.calque svg { width: 100%; height: 100%; display: block; opacity: var(--guilloche-opacite); }
 
 .ligne-ecriture {
   display: block;
   flex: 1;
-  border-bottom: 0.25mm dotted currentColor;
+  border-bottom: 0.25mm dotted var(--ligne-ecriture);
   min-height: 4mm;
 }
 

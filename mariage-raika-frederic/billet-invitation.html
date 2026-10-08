@@ -6,7 +6,8 @@
 <title>Billet d'invitation</title>
 <link rel="stylesheet" href="commun.css">
 <style>
-  /* Format 210 × 99 mm (1/3 de A4) : trois billets par feuille A4. */
+  /* Format 210 × 99 mm (1/3 de A4) : trois billets par feuille A4.
+     Les couleurs viennent du thème choisi (themes.js et commun.css). */
   @page { size: 210mm 99mm; margin: 0; }
   .page { width: 210mm; height: 99mm; }
 
@@ -14,7 +15,7 @@
   .recto {
     display: grid;
     grid-template-columns: 1fr 58mm;
-    background: var(--fond-violet);
+    background: radial-gradient(ellipse 75% 95% at 35% 50%, var(--fond-1) 0%, var(--fond-2) 45%, var(--fond-3) 100%);
   }
 
   .bandeau {
@@ -24,16 +25,16 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 7mm;
-    background: linear-gradient(90deg, var(--nuit), var(--violet-profond));
-    border-bottom: 0.35mm solid var(--or);
+    background: linear-gradient(90deg, var(--bande-1), var(--bande-2));
+    border-bottom: 0.35mm solid var(--accent);
   }
   .bandeau-titre { display: flex; align-items: center; gap: 2.6mm; }
-  .bandeau-titre .icone { color: var(--or); width: 6mm; height: 6mm; }
-  .bandeau-titre .etiquette { color: var(--or-clair); font-size: 7pt; letter-spacing: 0.3em; }
-  .bandeau-titre .sous-titre { font-style: italic; font-size: 9.5pt; color: var(--ivoire); opacity: 0.85; margin-top: 0.4mm; }
+  .bandeau-titre .icone { color: var(--accent); width: 6mm; height: 6mm; }
+  .bandeau-titre .etiquette { color: var(--accent-fort); font-size: 7pt; letter-spacing: 0.3em; }
+  .bandeau-titre .sous-titre { font-style: italic; font-size: 9.5pt; opacity: 0.85; margin-top: 0.4mm; }
   .bandeau-infos { display: flex; gap: 6mm; text-align: right; }
-  .bandeau-infos .etiquette { color: var(--argent); font-size: 4.8pt; }
-  .bandeau-infos .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.5pt; color: var(--or-clair); letter-spacing: 0.08em; margin-top: 0.6mm; }
+  .bandeau-infos .etiquette { color: var(--discret); font-size: 4.8pt; }
+  .bandeau-infos .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.5pt; color: var(--accent-fort); letter-spacing: 0.08em; margin-top: 0.6mm; }
 
   .principal { position: relative; display: flex; flex-direction: column; }
   .corps {
@@ -56,39 +57,38 @@
     margin-left: -3mm;
     white-space: nowrap;
   }
-  .noms .esperluette { color: var(--ivoire); }
+  .noms .esperluette { color: var(--esperluette); }
   .invitation { font-style: italic; font-size: 10.5pt; opacity: 0.9; margin-top: -0.5mm; }
 
   .trajet { display: flex; align-items: center; gap: 3mm; margin: 3.4mm 0 3.2mm; }
   .aeroport { display: flex; flex-direction: column; align-items: center; }
-  .aeroport .code { font-family: var(--serif); font-weight: 700; font-size: 17pt; line-height: 1; letter-spacing: 0.06em; color: #dcbd7c; }
-  .aeroport .etiquette { color: var(--ivoire); opacity: 0.8; margin-top: 0.8mm; }
-  .ligne-vol { flex: 1; display: flex; align-items: center; gap: 1.5mm; color: var(--or); margin-top: -3mm; }
-  .ligne-vol span { flex: 1; border-top: 0.3mm dashed rgba(201, 164, 100, 0.75); }
+  .aeroport .code { font-family: var(--serif); font-weight: 700; font-size: 17pt; line-height: 1; letter-spacing: 0.06em; color: var(--code); }
+  .aeroport .etiquette { opacity: 0.8; margin-top: 0.8mm; }
+  .ligne-vol { flex: 1; display: flex; align-items: center; gap: 1.5mm; color: var(--accent); margin-top: -3mm; }
+  .ligne-vol span { flex: 1; border-top: 0.3mm dashed var(--ligne); }
   .ligne-vol .icone { width: 5mm; height: 5mm; }
 
   .champ { display: flex; align-items: flex-end; gap: 2.5mm; }
-  .champ .etiquette { color: var(--or-clair); white-space: nowrap; padding-bottom: 0.4mm; }
-  .champ .ligne-ecriture { color: rgba(248, 243, 234, 0.55); }
+  .champ .etiquette { color: var(--accent-fort); white-space: nowrap; padding-bottom: 0.4mm; }
 
   .escales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-top: 3.6mm; }
-  .escale { border-top: 0.3mm solid var(--or); padding-top: 1.4mm; }
-  .escale .etiquette { color: var(--or); font-size: 4.8pt; }
+  .escale { border-top: 0.3mm solid var(--accent); padding-top: 1.4mm; }
+  .escale .etiquette { color: var(--accent); font-size: 4.8pt; }
   .escale .date { font-family: var(--sans); font-weight: 600; font-size: 7.2pt; letter-spacing: 0.04em; margin-top: 0.8mm; white-space: nowrap; }
-  .escale .titre { font-style: italic; font-size: 10pt; line-height: 1.1; margin-top: 0.3mm; color: var(--or-clair); }
+  .escale .titre { font-style: italic; font-size: 10pt; line-height: 1.1; margin-top: 0.3mm; color: var(--accent-fort); }
 
   /* Talon */
   .talon {
     position: relative;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, #2a1158 0%, var(--nuit) 100%);
+    background: linear-gradient(180deg, var(--talon-1) 0%, var(--talon-2) 100%);
   }
   .talon::before {
     content: "";
     position: absolute;
     top: 0; bottom: 0; left: 0;
-    border-left: 0.35mm dashed rgba(201, 164, 100, 0.8);
+    border-left: 0.35mm dashed var(--ligne);
     z-index: 2;
   }
   .encoche {
@@ -96,32 +96,31 @@
     left: -2.5mm;
     width: 5mm; height: 5mm;
     border-radius: 50%;
-    border: 0.3mm solid var(--or);
-    background: var(--nuit);
+    border: 0.3mm solid var(--accent);
+    background: var(--bande-1);
     z-index: 3;
   }
   .encoche.haut { top: -2.5mm; }
   .encoche.bas { bottom: -2.5mm; }
-  .talon .bandeau { padding: 0 5mm; justify-content: center; text-align: center; background: var(--nuit); }
-  .talon .bandeau .etiquette { color: var(--or-clair); font-size: 6pt; letter-spacing: 0.3em; }
+  .talon .bandeau { padding: 0 5mm; justify-content: center; text-align: center; background: var(--bande-1); }
+  .talon .bandeau .etiquette { color: var(--accent-fort); font-size: 6pt; letter-spacing: 0.3em; }
   .talon .bandeau .sous-titre { font-style: italic; font-size: 9pt; opacity: 0.85; margin-top: 0.4mm; }
   .talon-corps { flex: 1; display: flex; flex-direction: column; align-items: stretch; padding: 3.5mm 5.5mm 4mm; gap: 3mm; }
   .talon-corps .monogramme { width: 25mm; height: 25mm; display: block; margin: 0 auto; }
   .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 3mm; }
-  .grille .etiquette { color: var(--or); font-size: 4.6pt; }
+  .grille .etiquette { color: var(--accent); font-size: 4.6pt; }
   .grille .valeur { font-family: var(--sans); font-weight: 600; font-size: 7pt; letter-spacing: 0.04em; margin-top: 0.5mm; white-space: nowrap; }
-  .talon .code-barres { width: 100%; height: 7.5mm; display: block; color: var(--or-clair); margin-top: auto; }
-  .talon .devise { text-align: center; font-style: italic; font-size: 8pt; color: var(--or-clair); margin-top: -0.6mm; }
+  .talon .code-barres { width: 100%; height: 7.5mm; display: block; color: var(--code-barres); margin-top: auto; }
+  .talon .devise { text-align: center; font-style: italic; font-size: 8pt; color: var(--accent-fort); margin-top: -0.6mm; }
 
   /* ------------------------------ Verso ------------------------------ */
   .verso {
     display: flex;
     flex-direction: column;
-    color: var(--violet-profond);
-    background: radial-gradient(ellipse 80% 90% at 50% 45%, #fffdf8 0%, var(--ivoire) 55%, #efe7f5 100%);
+    background: radial-gradient(ellipse 80% 90% at 50% 45%, var(--verso-1) 0%, var(--verso-2) 55%, var(--verso-3) 100%);
   }
   .verso .bandeau { height: 14mm; justify-content: space-between; }
-  .verso .bandeau .etiquette { color: var(--or-clair); font-size: 5.4pt; }
+  .verso .bandeau .etiquette { color: var(--accent-fort); font-size: 5.4pt; }
   .verso .bandeau h2 {
     position: absolute;
     left: 50%;
@@ -135,19 +134,19 @@
     font-size: 23pt;
     white-space: nowrap;
   }
-  .verso .bandeau h2 .icone { color: var(--or); width: 4.6mm; height: 4.6mm; }
+  .verso .bandeau h2 .icone { color: var(--accent); width: 4.6mm; height: 4.6mm; }
   .verso .bandeau h2 span { padding: 0 2mm; line-height: 1.3; }
 
   .itineraire { position: relative; flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); padding: 5.5mm 5mm 5mm; }
   .etape { position: relative; padding: 0 5mm; }
-  .etape + .etape { border-left: 0.3mm dashed rgba(160, 122, 50, 0.6); }
+  .etape + .etape { border-left: 0.3mm dashed var(--ligne); }
   .etape .avion-etape {
     position: absolute;
     left: -2.6mm; top: 50%;
     width: 5mm; height: 5mm;
     margin-top: -2.5mm;
-    color: var(--or-fonce);
-    background: var(--ivoire);
+    color: var(--accent);
+    background: var(--verso-2);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
   }
@@ -158,18 +157,18 @@
     gap: 1.4mm;
     padding: 1mm 2.8mm;
     border-radius: 3mm;
-    background: var(--violet);
-    color: var(--or-clair);
+    background: var(--pastille);
+    color: var(--pastille-texte);
   }
   .pastille .etiquette { font-size: 5pt; }
   .pastille .icone { width: 2.6mm; height: 2.6mm; }
-  .etape h3 { font-family: var(--serif); font-weight: 700; font-size: 12.5pt; color: var(--violet); margin-top: 2.2mm; }
-  .etape .date { font-family: var(--sans); font-weight: 600; font-size: 6.4pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--or-fonce); margin-top: 0.8mm; }
-  .etape .lieu { display: flex; align-items: center; gap: 1mm; font-style: italic; font-size: 10pt; margin-top: 1mm; color: #5a4a7a; }
-  .etape .lieu .icone { width: 3mm; height: 3mm; color: var(--or-fonce); }
-  .horaires { list-style: none; margin-top: 2.6mm; border-top: 0.25mm solid rgba(74, 35, 132, 0.18); padding-top: 2.4mm; }
+  .etape h3 { font-family: var(--serif); font-weight: 700; font-size: 12.5pt; color: var(--titre-etape); margin-top: 2.2mm; }
+  .etape .date { font-family: var(--sans); font-weight: 600; font-size: 6.4pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-top: 0.8mm; }
+  .etape .lieu { display: flex; align-items: center; gap: 1mm; font-style: italic; font-size: 10pt; margin-top: 1mm; color: var(--texte-doux); }
+  .etape .lieu .icone { width: 3mm; height: 3mm; color: var(--accent); }
+  .horaires { list-style: none; margin-top: 2.6mm; border-top: 0.25mm solid var(--filet); padding-top: 2.4mm; }
   .horaires li { display: flex; align-items: baseline; gap: 2mm; font-size: 10.4pt; line-height: 1.45; }
-  .horaires b { font-family: var(--sans); font-weight: 600; font-size: 7pt; color: var(--violet); width: 10mm; flex: none; }
+  .horaires b { font-family: var(--sans); font-weight: 600; font-size: 7pt; color: var(--accent-fort); width: 10mm; flex: none; }
 
   .pied {
     display: flex;
@@ -178,13 +177,12 @@
     gap: 4mm;
     height: 11mm;
     padding: 0 7mm;
-    background: linear-gradient(90deg, var(--violet-profond), var(--nuit));
-    border-top: 0.35mm solid var(--or);
-    color: var(--ivoire);
+    background: linear-gradient(90deg, var(--bande-2), var(--bande-1));
+    border-top: 0.35mm solid var(--accent);
     font-size: 9pt;
   }
-  .pied .etiquette { color: var(--or); font-size: 4.8pt; display: block; margin-bottom: 0.5mm; }
-  .pied b { font-weight: 600; color: var(--or-clair); }
+  .pied .etiquette { color: var(--accent); font-size: 4.8pt; display: block; margin-bottom: 0.5mm; }
+  .pied b { font-weight: 600; color: var(--accent-fort); }
   .pied .droite { text-align: right; }
 </style>
 </head>
@@ -192,15 +190,16 @@
 <main id="planches"></main>
 
 <script src="infos.js"></script>
+<script src="themes.js"></script>
 <script src="commun.js"></script>
 <script>
   const I = INFOS;
   const jourCourt = (jour) => jour.slice(0, 3) + ".";
 
   const recto = `
-  <section class="page recto">
+  <section class="page recto ${THEME.principal}">
     <div class="principal">
-      <header class="bandeau">
+      <header class="bandeau sombre">
         <div class="bandeau-titre">
           ${icone("avion", { rotation: 90 })}
           <div>
@@ -216,13 +215,13 @@
 
       <div class="corps">
         <div class="calque">
-          <svg viewBox="0 0 152 84" preserveAspectRatio="none" opacity="0.2">
-            ${bandeGuillochee({ largeur: 152, y: 64, amplitude: 4.5, periode: 38, nbLignes: 14, couleur: "#c9a464" })}
+          <svg viewBox="0 0 152 84" preserveAspectRatio="none">
+            ${bandeGuillochee({ largeur: 152, y: 64, amplitude: 4.5, periode: 38, nbLignes: 14, couleur: "var(--guilloche)" })}
           </svg>
         </div>
         <div>${monogramme({ halo: true })}</div>
         <div>
-          <h1 class="noms texte-or">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</h1>
+          <h1 class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</h1>
           <p class="invitation">ont la joie de vous inviter à embarquer pour leur mariage</p>
 
           <div class="trajet">
@@ -245,7 +244,7 @@
       </div>
     </div>
 
-    <aside class="talon">
+    <aside class="talon sombre">
       <span class="encoche haut"></span><span class="encoche bas"></span>
       <header class="bandeau">
         <div>
@@ -271,15 +270,15 @@
   </section>`;
 
   const verso = `
-  <section class="page verso">
+  <section class="page verso ${THEME.verso}">
     <div class="calque">
-      <svg viewBox="0 0 210 99" preserveAspectRatio="none" opacity="0.09">
-        ${bandeGuillochee({ largeur: 210, y: 58, amplitude: 9, periode: 52, nbLignes: 16, couleur: "#4a2384", epaisseur: 0.18 })}
+      <svg viewBox="0 0 210 99" preserveAspectRatio="none">
+        ${bandeGuillochee({ largeur: 210, y: 58, amplitude: 9, periode: 52, nbLignes: 16, couleur: "var(--guilloche)", epaisseur: 0.18 })}
       </svg>
     </div>
-    <header class="bandeau">
+    <header class="bandeau sombre">
       <span class="etiquette">Vol ${esc(I.vol)}</span>
-      <h2>${icone("coeur")}<span class="texte-or">Programme du voyage</span>${icone("avion", { rotation: 90 })}</h2>
+      <h2>${icone("coeur")}<span class="texte-degrade">Programme du voyage</span>${icone("avion", { rotation: 90 })}</h2>
       <span class="etiquette">${esc(I.mariee)} &amp; ${esc(I.marie)}</span>
     </header>
 
@@ -297,7 +296,7 @@
         </article>`).join("")}
     </div>
 
-    <footer class="pied">
+    <footer class="pied sombre">
       <div>
         <span class="etiquette">Confirmez votre embarquement avant le ${esc(I.rsvp.avant)}</span>
         ${I.rsvp.contacts.map(esc).join(" &nbsp;|&nbsp; ")}

@@ -8,7 +8,25 @@ avec l'initiale de la mariée placée avant celle du marié.
 |---|---|---|
 | `billet-invitation.html` | Recto : carte d'embarquement avec talon. Verso : programme du voyage (3 escales) | 210 × 99 mm (1/3 de A4) |
 | `carte-menu.html` | Recto : menu de la soirée de gala. Verso : monogramme et devise | 99 × 210 mm (1/3 de A4) |
-| `export/` | PDF prêts pour l'imprimeur + JPG 300 dpi (pour WhatsApp et l'aperçu) | |
+| `export/<version>/` | PDF prêts pour l'imprimeur + JPG 300 dpi (pour WhatsApp et l'aperçu) | |
+| `nuancier.html`, `export/nuancier.jpg` | Toutes les versions de couleurs côte à côte | |
+
+## Versions de couleurs
+
+Chaque support existe en 4 versions, toutes tirées de la palette du mariage
+(nuit, violet royal, or antique, or champagne, argent) :
+
+| Version | Dossier | Rendu |
+|---|---|---|
+| 1. Violet royal & or | `export/violet/` | fond violet, textes or et ivoire (comme le passeport) |
+| 2. Nuit, or & argent | `export/minuit/` | fond nuit très foncé, or et argent, programme sur fond foncé |
+| 3. Or champagne & violet | `export/champagne/` | fond champagne clair, prénoms violets, ornements or |
+| 4. Argent, violet & or | `export/argent/` | fond argent nacré, prénoms violets, ornements or |
+
+Pour voir une version dans le navigateur, ajoutez `?theme=` à l'adresse,
+par exemple `billet-invitation.html?theme=champagne`. La version par défaut
+se choisit dans `infos.js` (`theme: "violet"`). Les teintes sont réglées dans
+`commun.css` et la liste des versions dans `themes.js`.
 
 ## Dates
 
@@ -37,7 +55,7 @@ pointillés pour être écrits à la main.
 *Imprimer → Enregistrer au format PDF*, avec *Marges : aucune* et
 *Graphiques d'arrière-plan* coché.
 
-**Méthode automatique** (régénère tout le dossier `export/`) :
+**Méthode automatique** (régénère tout le dossier `export/`, pour toutes les versions) :
 
 ```bash
 cd mariage-raika-frederic

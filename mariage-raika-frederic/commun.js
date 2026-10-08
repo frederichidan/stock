@@ -1,5 +1,11 @@
-/* Éléments graphiques partagés, dessinés en SVG : monogramme R & F,
-   motifs guillochés (façon passeport), code-barres, ornements et icônes. */
+/* Choix du thème de couleurs et éléments graphiques partagés, dessinés en SVG :
+   monogramme R & F, motifs guillochés (façon passeport), code-barres, ornements, icônes.
+   Les couleurs viennent des variables CSS du thème (commun.css). */
+
+// Thème : paramètre d'adresse « ?theme=minuit », sinon celui choisi dans infos.js.
+const THEME_ID = [new URLSearchParams(location.search).get("theme"), INFOS.theme].find((id) => id in THEMES) || "violet";
+const THEME = THEMES[THEME_ID];
+document.documentElement.dataset.theme = THEME_ID;
 
 let compteurIds = 0;
 function idUnique(prefixe) {
@@ -19,13 +25,11 @@ function initiale(prenom) {
   return prenom.trim().charAt(0).toUpperCase();
 }
 
-function degradeOr(id) {
+// Dégradé métallisé à partir des variables --let-* (lettres) ou --orn-* (ornements).
+function degrade(id, jeu) {
+  const arret = (position, teinte) => `<stop offset="${position}" style="stop-color: var(--${jeu}-${teinte})"/>`;
   return `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#a07a32"/>
-    <stop offset="0.3" stop-color="#ecd295"/>
-    <stop offset="0.52" stop-color="#c9a464"/>
-    <stop offset="0.72" stop-color="#f3dfa6"/>
-    <stop offset="1" stop-color="#9c762f"/>
+    ${arret(0, "a")}${arret(0.3, "b")}${arret(0.52, "c")}${arret(0.72, "b")}${arret(1, "a")}
   </linearGradient>`;
 }
 
@@ -104,16 +108,18 @@ function couronne(x, y, echelle, remplissage) {
 /* Monogramme : initiale de la mariée, esperluette, initiale du marié,
    dans un médaillon couronné bordé de lauriers. Avec `halo`, une rosace
    guillochée est dessinée autour du médaillon. */
-function monogramme({ classe = "", couleurEsperluette = "#f8f3ea", halo = false } = {}) {
-  const or = idUnique("or");
-  const remplissage = `url(#${or})`;
+function monogramme({ classe = "", halo = false } = {}) {
+  const idOrnements = idUnique("orn");
+  const idLettres = idUnique("let");
+  const remplissage = `url(#${idOrnements})`;
+  const lettres = `url(#${idLettres})`;
   const f = initiale(INFOS.mariee);
   const m = initiale(INFOS.marie);
   const rosaceHalo = halo
-    ? `<g opacity="0.22">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 6, lobes: 26, nbCourbes: 10, couleur: "#c9a464", epaisseur: 0.6 })}</g>`
+    ? `<g style="opacity: calc(var(--guilloche-opacite) * 1.1)">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 6, lobes: 26, nbCourbes: 10, couleur: "var(--guilloche)", epaisseur: 0.6 })}</g>`
     : "";
   return `<svg class="monogramme ${classe}" viewBox="0 0 200 200" style="overflow: visible" role="img" aria-label="${esc(f)} &amp; ${esc(m)}">
-    <defs>${degradeOr(or)}</defs>
+    <defs>${degrade(idOrnements, "orn")}${degrade(idLettres, "let")}</defs>
     ${rosaceHalo}
     <g fill="none" stroke="${remplissage}">
       <path d="${arc(100, 100, 92, -81, 84)}" stroke-width="1.6"/>
@@ -125,9 +131,9 @@ function monogramme({ classe = "", couleurEsperluette = "#f8f3ea", halo = false 
     <path d="${ICONES.coeur}" transform="translate(93.4,184.6) scale(0.55)" fill="${remplissage}"/>
     ${laurier(100, 100, 74, 104, 236, 8, remplissage)}
     ${laurier(100, 100, 74, 76, -56, 8, remplissage)}
-    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${remplissage}">${esc(f)}</text>
-    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${remplissage}">${esc(m)}</text>
-    <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" fill="${couleurEsperluette}">&amp;</text>
+    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}">${esc(f)}</text>
+    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}">${esc(m)}</text>
+    <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" style="fill: var(--esperluette)">&amp;</text>
   </svg>`;
 }
 
@@ -148,7 +154,7 @@ function bandeGuillochee({ largeur, y, amplitude, periode, nbLignes = 12, couleu
     }
     traces += `<path d="${d}"/>`;
   }
-  return `<g fill="none" stroke="${couleur}" stroke-width="${epaisseur}">${traces}</g>`;
+  return `<g fill="none" style="stroke: ${couleur}" stroke-width="${epaisseur}">${traces}</g>`;
 }
 
 // Rosace guillochée : courbes polaires r(θ) = R + a·sin(nθ + φ) déphasées.
@@ -166,7 +172,7 @@ function rosace({ cx, cy, rayon, amplitude, lobes, nbCourbes = 16, couleur, epai
     }
     traces += `<path d="${d}Z"/>`;
   }
-  return `<g fill="none" stroke="${couleur}" stroke-width="${epaisseur}">${traces}</g>`;
+  return `<g fill="none" style="stroke: ${couleur}" stroke-width="${epaisseur}">${traces}</g>`;
 }
 
 /* ---------------------------- Code-barres ---------------------------- */
@@ -199,15 +205,15 @@ function codeBarres(texte, { largeur = 100, hauteur = 20, couleur = "currentColo
 /* ------------------------------ Ornements ------------------------------ */
 
 function ornement({ classe = "" } = {}) {
-  const or = idUnique("or");
+  const or = idUnique("orn");
   const fondu = idUnique("fondu");
   const remplissage = `url(#${or})`;
   return `<svg class="ornement ${classe}" viewBox="0 0 160 12" aria-hidden="true">
-    <defs>${degradeOr(or)}
+    <defs>${degrade(or, "orn")}
       <linearGradient id="${fondu}" x1="0" x2="1">
-        <stop offset="0" stop-color="#c9a464" stop-opacity="0"/>
-        <stop offset="0.5" stop-color="#c9a464"/>
-        <stop offset="1" stop-color="#c9a464" stop-opacity="0"/>
+        <stop offset="0" style="stop-color: var(--accent); stop-opacity: 0"/>
+        <stop offset="0.5" style="stop-color: var(--accent)"/>
+        <stop offset="1" style="stop-color: var(--accent); stop-opacity: 0"/>
       </linearGradient>
     </defs>
     <rect x="4" y="5.7" width="66" height="0.6" fill="url(#${fondu})"/>

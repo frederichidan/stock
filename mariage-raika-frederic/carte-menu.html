@@ -5,74 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carte de menu</title>
 <link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="menu.css">
 <style>
-  /* Format 99 × 210 mm (1/3 de A4 en portrait) : trois cartes par feuille A4.
-     Les couleurs viennent du thème choisi (themes.js et commun.css). */
+  /* Format 99 × 210 mm (1/3 de A4 en portrait) : trois cartes par feuille A4. */
   @page { size: 99mm 210mm; margin: 0; }
-  .page { width: 99mm; height: 210mm; background: radial-gradient(ellipse 95% 70% at 50% 38%, var(--fond-1) 0%, var(--fond-2) 45%, var(--fond-3) 100%); }
-
-  .cadre { position: absolute; inset: 5mm; border: 0.35mm solid var(--accent); pointer-events: none; }
-  .cadre::after { content: ""; position: absolute; inset: 1.2mm; border: 0.15mm solid var(--ligne); }
-  .losange {
-    position: absolute;
-    width: 2.6mm; height: 2.6mm;
-    background: var(--accent);
-    transform: rotate(45deg);
-  }
-  .losange.hg { top: 3.7mm; left: 3.7mm; }
-  .losange.hd { top: 3.7mm; right: 3.7mm; }
-  .losange.bg { bottom: 3.7mm; left: 3.7mm; }
-  .losange.bd { bottom: 3.7mm; right: 3.7mm; }
-
-  .contenu {
-    position: absolute;
-    inset: 5mm;
-    padding: 7mm 7mm 6mm;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  /* ------------------------------ Recto ------------------------------ */
-  .recto .monogramme { width: 31mm; height: 31mm; display: block; margin-top: 2mm; }
-  .titre-menu { font-family: var(--script); font-weight: 400; font-size: 46pt; line-height: 1.15; padding: 0 4mm; margin-top: 3mm; }
-  .recto .etiquette.evenement { color: var(--accent-fort); font-size: 6.4pt; letter-spacing: 0.34em; margin-top: -1mm; }
-  .recto .date { font-style: italic; font-size: 10.5pt; opacity: 0.9; margin-top: 0.8mm; }
-  .recto .ornement { width: 52mm; height: 4mm; margin: 3.6mm 0 1.6mm; }
-
-  .rubrique { margin-top: 4.6mm; }
-  .rubrique h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2mm;
-    font-family: var(--sans);
-    font-weight: 600;
-    font-size: 5.8pt;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.5mm;
-  }
-  .rubrique h2::before,
-  .rubrique h2::after { content: ""; width: 5mm; border-top: 0.2mm solid var(--ligne); }
-  .plat { font-size: 11pt; font-weight: 500; line-height: 1.32; }
-
-  .recto .bas { margin-top: auto; width: 100%; }
-  .recto .table { display: flex; align-items: flex-end; gap: 2mm; width: 42mm; margin: 0 auto; color: var(--accent-fort); }
-  .recto .table .etiquette { font-size: 5.4pt; padding-bottom: 0.4mm; }
-  .recto .signature { font-family: var(--script); font-size: 15pt; line-height: 1.3; padding: 0 2mm; margin-top: 2.6mm; }
-
-  /* ------------------------------ Verso ------------------------------ */
-  .verso .contenu { justify-content: center; }
-  .verso .monogramme { width: 54mm; height: 54mm; display: block; }
-  .verso .noms { font-family: var(--script); font-weight: 400; font-size: 25pt; line-height: 1.3; padding: 0 3mm; margin-top: 10mm; white-space: nowrap; }
-  .verso .noms .esperluette { color: var(--esperluette); }
-  .verso .date { font-family: var(--sans); font-weight: 600; font-size: 8pt; letter-spacing: 0.4em; margin-top: 2mm; }
-  .verso .ornement { width: 46mm; height: 4mm; margin: 6mm 0 4mm; }
-  .verso .devise { font-style: italic; font-size: 12.5pt; color: var(--accent-fort); }
-  .verso .source { font-size: 9pt; opacity: 0.75; margin-top: 0.8mm; }
 </style>
 </head>
 <body>
@@ -81,59 +17,9 @@
 <script src="infos.js"></script>
 <script src="themes.js"></script>
 <script src="commun.js"></script>
+<script src="menu.js"></script>
 <script>
-  const I = INFOS;
-  const M = I.menu;
-
-  const encadrement = `
-    <div class="cadre"></div>
-    <span class="losange hg"></span><span class="losange hd"></span>
-    <span class="losange bg"></span><span class="losange bd"></span>`;
-
-  const recto = `
-  <section class="page recto ${THEME.principal}">
-    <div class="calque">
-      <svg viewBox="0 0 99 210" preserveAspectRatio="none">
-        ${bandeGuillochee({ largeur: 99, y: 192, amplitude: 3, periode: 24, nbLignes: 12, couleur: "var(--guilloche)" })}
-      </svg>
-    </div>
-    ${encadrement}
-    <div class="contenu">
-      ${monogramme({ halo: true })}
-      <h1 class="titre-menu texte-degrade">${esc(M.titre)}</h1>
-      <div class="etiquette evenement">${esc(M.evenement)}</div>
-      <div class="date">${esc(M.date)}</div>
-      ${ornement()}
-
-      ${M.rubriques.map((r) => `
-        <section class="rubrique">
-          <h2>${esc(r.titre)}</h2>
-          ${r.plats.map((p) => `<p class="plat">${esc(p)}</p>`).join("")}
-        </section>`).join("")}
-
-      <div class="bas">
-        <div class="table"><span class="etiquette">Table</span><span class="ligne-ecriture"></span></div>
-        <div class="signature texte-degrade">${esc(I.mariee)} &amp; ${esc(I.marie)}</div>
-      </div>
-    </div>
-  </section>`;
-
-  const dateCivil = I.evenements.find((e) => /civil/i.test(e.titre)) || I.evenements[0];
-
-  const verso = `
-  <section class="page verso ${THEME.principal}">
-    ${encadrement}
-    <div class="contenu">
-      ${monogramme({ halo: true })}
-      <div class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</div>
-      <div class="date">${esc(dateCivil.dateCourte.replace(/\./g, " · "))}</div>
-      ${ornement()}
-      <p class="devise">« ${esc(I.devise)} »</p>
-      <p class="source">${esc(I.deviseSource)}</p>
-    </div>
-  </section>`;
-
-  document.getElementById("planches").innerHTML = recto + verso;
+  document.getElementById("planches").innerHTML = carteMenu(THEME);
 </script>
 </body>
 </html>

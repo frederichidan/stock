@@ -204,6 +204,13 @@ function codeBarres(texte, { largeur = 100, hauteur = 20, couleur = "currentColo
 
 /* ------------------------------ Ornements ------------------------------ */
 
+// Double filet doré avec un losange à chaque coin (styles .cadre et .losange).
+function encadrement() {
+  return `<div class="cadre"></div>
+    <span class="losange hg"></span><span class="losange hd"></span>
+    <span class="losange bg"></span><span class="losange bd"></span>`;
+}
+
 function ornement({ classe = "" } = {}) {
   const or = idUnique("orn");
   const fondu = idUnique("fondu");

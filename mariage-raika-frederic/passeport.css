@@ -1,0 +1,137 @@
+/* Pochette passeport : feuille A5 (210 × 148 mm) pliée en deux, soit un passeport A6
+   (105 × 148 mm). Extérieur : dos | couverture. Intérieur : invitation | page d'identité.
+   Couleurs : voir commun.css. */
+
+.page.passeport { width: 210mm; height: 148mm; display: grid; grid-template-columns: 1fr 1fr; }
+
+.passeport .face { position: relative; overflow: hidden; }
+.passeport.exterieur .face {
+  background: radial-gradient(ellipse 90% 70% at 50% 46%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);
+}
+.passeport.interieur .face {
+  background: radial-gradient(ellipse 90% 80% at 50% 45%, var(--verso-1) 0%, var(--verso-2) 55%, var(--verso-3) 100%);
+}
+
+.passeport .contenu {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ------------------------------- Dos ------------------------------- */
+.passeport .dos .contenu { justify-content: center; padding: 14mm 13mm; }
+.passeport .anneaux-dores { width: 62mm; height: 37mm; display: block; }
+.passeport .verset {
+  font-family: var(--script);
+  font-size: 17pt;
+  line-height: 1.32;
+  padding: 0 2mm;
+  margin-top: 10mm;
+}
+.passeport .verset-source { font-family: var(--script); font-size: 17pt; line-height: 1.3; padding: 0 2mm; margin-top: 4mm; }
+
+/* ---------------------------- Couverture ---------------------------- */
+.passeport .couverture .contenu { padding: 10mm 8mm 9mm; }
+.passeport .emetteur { color: var(--accent-fort); font-size: 5.6pt; letter-spacing: 0.36em; }
+.passeport .titre-passeport {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 31pt;
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0 1mm;
+  margin-top: 2.6mm;
+}
+.passeport .sous-titre-passeport { font-family: var(--script); font-size: 31pt; line-height: 1.2; padding: 0 3mm; margin-top: 0.6mm; }
+.passeport .blason { position: relative; margin-top: 6mm; display: flex; flex-direction: column; align-items: center; }
+.passeport .blason .monogramme { width: 47mm; height: 47mm; display: block; }
+.passeport .ruban { width: 74mm; height: 16.3mm; display: block; margin-top: -4mm; }
+.passeport .couverture .noms {
+  font-family: var(--script);
+  font-size: 25pt;
+  line-height: 1.25;
+  padding: 0 3mm;
+  margin-top: 4mm;
+  white-space: nowrap;
+}
+.passeport .noms .esperluette { color: var(--esperluette); }
+.passeport .date-couverture { font-family: var(--sans); font-weight: 700; font-size: 10pt; letter-spacing: 0.04em; margin-top: 1mm; }
+.passeport .date-couverture .chiffres { color: var(--code); }
+.passeport .puce { width: 13mm; height: 7.8mm; display: block; margin-top: auto; }
+
+/* ------------------------ Intérieur : invitation ------------------------ */
+.passeport .invitation-page .contenu { padding: 11mm 10mm 9mm; }
+.passeport .invitation-page .etiquette { color: var(--accent); font-size: 5.6pt; letter-spacing: 0.34em; }
+.passeport .invitation-page .ornement { width: 46mm; height: 4mm; margin-top: 1.6mm; }
+.passeport .invitation-page .noms { font-family: var(--script); font-size: 25pt; line-height: 1.25; padding: 0 3mm; margin-top: 2.4mm; white-space: nowrap; }
+.passeport .texte-invitation { font-style: italic; font-size: 11.5pt; line-height: 1.35; margin-top: 1.4mm; }
+.passeport .visas-titre { display: flex; align-items: center; gap: 2mm; width: 100%; margin-top: 5mm; }
+.passeport .visas-titre::before,
+.passeport .visas-titre::after { content: ""; flex: 1; border-top: 0.25mm solid var(--ligne); }
+.passeport .visas { position: relative; width: 85mm; height: 56mm; margin-top: 2mm; }
+.passeport .tampon { position: absolute; display: block; opacity: 0.9; }
+.passeport .tampon.rond { width: 31mm; height: 31mm; }
+.passeport .tampon.rectangle { width: 44mm; height: 25.6mm; }
+.passeport .tampon.t1 { left: 1mm; top: 1mm; color: var(--accent-fort); }
+.passeport .tampon.t2 { right: 0; top: 4mm; color: var(--accent); }
+.passeport .tampon.t3 { left: 31mm; top: 25mm; color: var(--accent-fort); }
+.passeport .bon-voyage { display: flex; align-items: center; gap: 2mm; font-family: var(--script); font-size: 19pt; line-height: 1.3; margin-top: auto; }
+.passeport .bon-voyage .icone { color: var(--accent); width: 5mm; height: 5mm; }
+
+/* ---------------------- Intérieur : page d'identité ---------------------- */
+.passeport .identite .contenu { align-items: stretch; text-align: left; padding: 9mm 8mm 0; }
+.passeport .identite .entete { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.3mm solid var(--accent); padding-bottom: 1.6mm; }
+.passeport .identite .entete .etiquette { color: var(--accent); font-size: 5.6pt; letter-spacing: 0.3em; }
+.passeport .identite .entete .pays { font-family: var(--serif); font-style: italic; font-size: 9.5pt; color: var(--accent-fort); }
+.passeport .identite .donnees { display: grid; grid-template-columns: 35mm 1fr; gap: 4.5mm; margin-top: 6mm; }
+.passeport .photo {
+  position: relative;
+  height: 46mm;
+  border: 0.35mm solid var(--accent);
+  border-radius: 1.5mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--zone);
+}
+.passeport .photo .monogramme { width: 30mm; height: 30mm; display: block; margin-top: -3mm; }
+.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent); font-size: 4.2pt; }
+.passeport .champs { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm 3mm; align-content: start; }
+.passeport .champs .large { grid-column: 1 / -1; }
+.passeport .champs .etiquette { color: var(--accent); font-size: 4.6pt; letter-spacing: 0.16em; }
+.passeport .champs .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.8pt; margin-top: 0.6mm; white-space: nowrap; }
+.passeport .champs .titulaires .valeur { font-family: var(--script); font-weight: 400; font-size: 15pt; line-height: 1.1; color: var(--accent-fort); }
+.passeport .signature-bloc { margin-top: 7mm; }
+.passeport .signature-bloc .etiquette,
+.passeport .observations .etiquette { color: var(--accent); font-size: 4.6pt; letter-spacing: 0.16em; }
+.passeport .signature-bloc .signature {
+  font-family: var(--script);
+  font-size: 19pt;
+  line-height: 1.3;
+  padding: 0 2mm;
+  margin-left: -2mm;
+  border-bottom: 0.25mm dotted var(--ligne-ecriture);
+}
+.passeport .observations { margin-top: 6mm; }
+.passeport .observations p { font-style: italic; font-size: 11pt; line-height: 1.3; margin-top: 1mm; }
+.passeport .observations p + p { font-style: normal; font-size: 9pt; color: var(--texte-doux); margin-top: 0.4mm; }
+.passeport .mrz {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 22mm;
+  padding: 4.5mm 6mm 0;
+  background: var(--zone);
+  border-top: 0.3mm solid var(--accent);
+}
+.passeport .mrz p {
+  font-family: "Space Mono", monospace;
+  font-size: 8.3pt;
+  letter-spacing: 0.33mm;
+  line-height: 1.55;
+  white-space: nowrap;
+  color: var(--texte);
+}

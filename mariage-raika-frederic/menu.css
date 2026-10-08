@@ -1,0 +1,57 @@
+/* Carte de menu : 99 × 210 mm (1/3 de A4 en portrait). Couleurs : voir commun.css. */
+
+.page.menu {
+  width: 99mm;
+  height: 210mm;
+  background: radial-gradient(ellipse 95% 70% at 50% 38%, var(--fond-1) 0%, var(--fond-2) 45%, var(--fond-3) 100%);
+}
+
+.menu .contenu {
+  position: absolute;
+  inset: 5mm;
+  padding: 7mm 7mm 6mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ------------------------------ Recto ------------------------------ */
+.menu.recto .monogramme { width: 31mm; height: 31mm; display: block; margin-top: 2mm; }
+.menu .titre-menu { font-family: var(--script); font-weight: 400; font-size: 46pt; line-height: 1.15; padding: 0 4mm; margin-top: 3mm; }
+.menu.recto .etiquette.evenement { color: var(--accent-fort); font-size: 6.4pt; letter-spacing: 0.34em; margin-top: -1mm; }
+.menu.recto .date { font-style: italic; font-size: 10.5pt; opacity: 0.9; margin-top: 0.8mm; }
+.menu.recto .ornement { width: 52mm; height: 4mm; margin: 3.6mm 0 1.6mm; }
+
+.menu .rubrique { margin-top: 4.6mm; }
+.menu .rubrique h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2mm;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 5.8pt;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5mm;
+}
+.menu .rubrique h2::before,
+.menu .rubrique h2::after { content: ""; width: 5mm; border-top: 0.2mm solid var(--ligne); }
+.menu .plat { font-size: 11pt; font-weight: 500; line-height: 1.32; }
+
+.menu.recto .bas { margin-top: auto; width: 100%; }
+.menu.recto .table { display: flex; align-items: flex-end; gap: 2mm; width: 42mm; margin: 0 auto; color: var(--accent-fort); }
+.menu.recto .table .etiquette { font-size: 5.4pt; padding-bottom: 0.4mm; }
+.menu.recto .signature { font-family: var(--script); font-size: 15pt; line-height: 1.3; padding: 0 2mm; margin-top: 2.6mm; }
+
+/* ------------------------------ Verso ------------------------------ */
+.menu.verso .contenu { justify-content: center; }
+.menu.verso .monogramme { width: 54mm; height: 54mm; display: block; }
+.menu.verso .noms { font-family: var(--script); font-weight: 400; font-size: 25pt; line-height: 1.3; padding: 0 3mm; margin-top: 10mm; white-space: nowrap; }
+.menu.verso .noms .esperluette { color: var(--esperluette); }
+.menu.verso .date { font-family: var(--sans); font-weight: 600; font-size: 8pt; letter-spacing: 0.4em; margin-top: 2mm; }
+.menu.verso .ornement { width: 46mm; height: 4mm; margin: 6mm 0 4mm; }
+.menu.verso .devise { font-style: italic; font-size: 12.5pt; color: var(--accent-fort); }
+.menu.verso .source { font-size: 9pt; opacity: 0.75; margin-top: 0.8mm; }

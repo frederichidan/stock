@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pochette passeport</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="passeport.css">
+<style>
+  /* Feuille A5 à plat (210 × 148 mm), pliée en deux au milieu : passeport A6.
+     Page 1 = extérieur (dos | couverture), page 2 = intérieur. */
+  @page { size: 210mm 148mm; margin: 0; }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="passeport.js"></script>
+<script>
+  document.getElementById("planches").innerHTML = passeport(THEME);
+</script>
+</body>
+</html>

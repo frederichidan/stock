@@ -5,32 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nuancier des versions</title>
 <link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="passeport.css">
+<link rel="stylesheet" href="billet.css">
+<link rel="stylesheet" href="menu.css">
 <style>
-  /* Vue d'ensemble des versions de couleurs, à partir des images du dossier export/
-     (générées par exporter.js). */
-  body { padding: 28px 36px 36px; color: #2b1159; font-family: var(--texte-police); }
-  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-  h1 { font-family: var(--script); font-weight: 400; font-size: 46px; color: #4a2384; line-height: 1.2; }
-  h1 small { display: block; font-family: var(--sans); font-weight: 600; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #a07a32; }
-  .palette { display: flex; gap: 12px; align-items: center; }
+  /* Vue d'ensemble : chaque version de couleurs, dessinée directement (pochette passeport,
+     billet et menu, recto et verso), à l'échelle réduite. */
+  body { width: max-content; padding: 34px 40px 40px; color: #2b1159; font-family: var(--texte-police); }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+  h1 { font-family: var(--script); font-weight: 400; font-size: 50px; color: #4a2384; line-height: 1.2; }
+  h1 small { display: block; font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: #a07a32; }
+  .palette { display: flex; gap: 14px; align-items: center; }
   .palette figure { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .palette span { width: 46px; height: 46px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(28, 16, 54, 0.25); }
-  .palette figcaption { font-family: var(--sans); font-size: 9px; letter-spacing: 0.08em; color: #5a4a7a; }
+  .palette span { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(28, 16, 54, 0.25); }
+  .palette figcaption { font-family: var(--sans); font-size: 10px; letter-spacing: 0.08em; color: #5a4a7a; }
 
-  .versions { display: grid; grid-template-columns: repeat(2, auto); gap: 28px 36px; justify-content: start; }
-  .version h2 { font-family: var(--serif); font-size: 19px; color: #2b1159; margin-bottom: 10px; }
-  .version h2 b { font-family: var(--sans); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #a07a32; margin-right: 10px; }
-  .planche { display: grid; grid-template-columns: 440px 200px 200px; grid-template-rows: auto auto; gap: 10px; }
-  .planche img { display: block; width: 100%; box-shadow: 0 3px 10px rgba(28, 16, 54, 0.25); }
-  .planche .billet { grid-column: 1; }
-  .planche .menu { grid-row: 1 / 3; align-self: center; }
-  .planche .menu.recto { grid-column: 2; }
-  .planche .menu.verso { grid-column: 3; }
+  .version + .version { margin-top: 34px; }
+  .version h2 { font-family: var(--serif); font-size: 21px; color: #2b1159; margin-bottom: 12px; }
+  .version h2 b { font-family: var(--sans); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #a07a32; margin-right: 12px; }
+  .planche { display: flex; gap: 24px; align-items: flex-start; }
+  .doc { display: flex; gap: var(--ecart); }
+  .doc.colonne { flex-direction: column; }
+  .doc .page { margin: 0; box-shadow: 0 1.5mm 5mm rgba(28, 16, 54, 0.3); }
 </style>
 </head>
 <body>
 <header>
-  <h1><small>Raïka &amp; Frédéric · 16 &amp; 18 décembre 2026</small>Versions du billet et du menu</h1>
+  <h1 id="titre"></h1>
   <div class="palette">
     <figure><span style="background: #1c1036"></span><figcaption>Nuit</figcaption></figure>
     <figure><span style="background: #4a2384"></span><figcaption>Violet royal</figcaption></figure>
@@ -39,18 +40,37 @@
     <figure><span style="background: #bcbec9"></span><figcaption>Argent</figcaption></figure>
   </div>
 </header>
-<main class="versions" id="versions"></main>
+<main id="versions"></main>
 
+<script src="infos.js"></script>
 <script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="passeport.js"></script>
+<script src="billet.js"></script>
+<script src="menu.js"></script>
 <script>
+  const PX_PAR_MM = 96 / 25.4;
+  const HAUTEUR = 560; // hauteur d'une rangée, en pixels
+  const ECART = 14;
+
+  // Réduit un document (deux faces, superposées ou côte à côte) à la hauteur de la rangée.
+  function vignette(html, hauteurFaceMm, disposition) {
+    const zoom = disposition === "colonne"
+      ? (HAUTEUR - ECART) / (2 * hauteurFaceMm * PX_PAR_MM)
+      : HAUTEUR / (hauteurFaceMm * PX_PAR_MM);
+    return `<div class="doc ${disposition}" style="zoom: ${zoom}; --ecart: ${ECART / zoom}px">${html}</div>`;
+  }
+
+  document.getElementById("titre").innerHTML =
+    `<small>${esc(INFOS.mariee)} &amp; ${esc(INFOS.marie)} · Versions de couleurs</small>Passeport, billet &amp; menu`;
+
   document.getElementById("versions").innerHTML = Object.entries(THEMES).map(([id, theme], i) => `
-    <section class="version">
-      <h2><b>Version ${i + 1}</b>${theme.nom}</h2>
+    <section class="version" data-theme="${id}">
+      <h2><b>Version ${i + 1}</b>${esc(theme.nom)}</h2>
       <div class="planche">
-        <img class="billet" src="export/${id}/billet-recto.jpg" alt="Billet, recto">
-        <img class="billet" src="export/${id}/billet-verso.jpg" alt="Billet, verso">
-        <img class="menu recto" src="export/${id}/menu-recto.jpg" alt="Menu, recto">
-        <img class="menu verso" src="export/${id}/menu-verso.jpg" alt="Menu, verso">
+        ${vignette(passeport(theme), 148, "colonne")}
+        ${vignette(billet(theme), 99, "colonne")}
+        ${vignette(carteMenu(theme), 210, "ligne")}
       </div>
     </section>`).join("");
 </script>

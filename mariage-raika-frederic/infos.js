@@ -77,6 +77,21 @@ const INFOS = {
   },
   codeVestimentaire: "Touches de violet & d'or",
 
+  /* ----------------------- Pochette passeport ----------------------- */
+  passeport: {
+    titre: "Passeport",
+    sousTitre: "de Mariage",
+    emetteur: "Royaume de l'Amour",
+    numero: "RF181226",
+    nationalite: "Amour",
+    validite: "Pour la vie",
+    verset: "Celui qui trouve une femme trouve le bonheur ; c'est une grâce qu'il obtient de l'Éternel.",
+    versetSource: "Proverbes 18:22",
+    invitation:
+      "ont l'immense joie de vous convier à leur union et seraient honorés de votre présence à chacune des escales de ce beau voyage.",
+    bonVoyage: "Bon voyage !",
+  },
+
   /* ------------------------- Carte de menu ------------------------- */
   menu: {
     titre: "Menu",

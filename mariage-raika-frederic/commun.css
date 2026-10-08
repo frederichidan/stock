@@ -13,6 +13,7 @@
 @font-face { font-family: "Montserrat"; font-weight: 500; src: url("polices/montserrat-latin-500-normal.woff2") format("woff2"); }
 @font-face { font-family: "Montserrat"; font-weight: 600; src: url("polices/montserrat-latin-600-normal.woff2") format("woff2"); }
 @font-face { font-family: "Montserrat"; font-weight: 700; src: url("polices/montserrat-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Space Mono"; font-weight: 400; src: url("polices/space-mono-latin-400-normal.woff2") format("woff2"); }
 
 :root {
   --script: "Great Vibes", cursive;
@@ -66,6 +67,7 @@
   --discret: #bcbec9;
   --ligne: rgba(201, 164, 100, 0.75);
   --filet: rgba(201, 164, 100, 0.35);
+  --zone: rgba(188, 190, 201, 0.12);
   --ligne-ecriture: rgba(248, 243, 234, 0.55);
   --code: #dcbd7c;
   --esperluette: #f8f3ea;
@@ -88,6 +90,7 @@
   --discret: #6b5a8a;
   --ligne: rgba(160, 122, 50, 0.7);
   --filet: rgba(74, 35, 132, 0.18);
+  --zone: rgba(74, 35, 132, 0.12);
   --ligne-ecriture: rgba(43, 17, 89, 0.45);
   --code: #4a2384;
   --esperluette: #a07a32;
@@ -183,3 +186,17 @@ body {
 }
 
 svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
+
+/* Encadrement doré (fonction encadrement() de commun.js), placé dans un parent positionné. */
+.cadre { position: absolute; inset: 5mm; border: 0.35mm solid var(--accent); pointer-events: none; }
+.cadre::after { content: ""; position: absolute; inset: 1.2mm; border: 0.15mm solid var(--ligne); }
+.losange {
+  position: absolute;
+  width: 2.6mm; height: 2.6mm;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+.losange.hg { top: 3.7mm; left: 3.7mm; }
+.losange.hd { top: 3.7mm; right: 3.7mm; }
+.losange.bg { bottom: 3.7mm; left: 3.7mm; }
+.losange.bd { bottom: 3.7mm; right: 3.7mm; }

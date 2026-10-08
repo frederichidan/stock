@@ -161,7 +161,7 @@ html,body{background:#fff}
 const NS='http://www.w3.org/2000/svg';
 function el(p,t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e}
 const s=document.getElementById('sun');
-el(s,'image',{href:'logo_rond.png',x:-230,y:-230,width:460,height:460});
+el(s,'image',{href:'logo_hd.png',x:-230,y:-230,width:460,height:460});
 const P=['Fabrique de pierres tombales pour le cimetière communautaire (noms, prénoms, dates de naissance/décès)','Achat de panneaux solaires pour tout le village','Sport et culture Mboma 2027','Groupe électrogène communautaire pour alimenter tout le village','Relance du groupe de danse GSM nouvelle génération','Lancement d\'une tontine (pour ceux qui le souhaitent)','Réhabilitation de l\'église : peinture, bancs, presbytère ou chambre pour le prêtre','Achat d\'un poteau électrique de BIBASSE à BAGA et de compteur d\'électricité','Enterrer les personnes dans le cimetière commun','Maintenir la randonnée et la messe de Toussaint'];
 const pr=document.getElementById('proj');
 P.forEach((x,i)=>{const d=document.createElement('div');d.className='pi';d.style.cssText=`grid-column:${i<5?1:2};grid-row:${(i%5)+1}`;

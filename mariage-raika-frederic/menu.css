@@ -39,7 +39,7 @@
 }
 .menu .rubrique h2::before,
 .menu .rubrique h2::after { content: ""; width: 5mm; border-top: 0.2mm solid var(--ligne); }
-.menu .plat { font-size: 11pt; font-weight: 500; line-height: 1.32; }
+.menu .plat { font-size: 11pt; font-weight: 500; line-height: 1.32; text-wrap: balance; }
 
 .menu.recto .bas { margin-top: auto; width: 100%; }
 .menu.recto .table { display: flex; align-items: flex-end; gap: 2mm; width: 42mm; margin: 0 auto; color: var(--accent-fort); }

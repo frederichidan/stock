@@ -50,7 +50,7 @@ La couverture du passeport ne porte que la date du 18 décembre 2026 (réglage
 
 ## Modifier les textes
 
-Tous les textes sont dans **`infos.js`** : prénoms, lieux, horaires, contacts RSVP,
+Tous les textes personnalisables sont dans **`infos.js`** (les intitulés fixes comme « Carte d'embarquement » restent dans le code) : prénoms, lieux, horaires, contacts RSVP,
 code vestimentaire, textes du passeport (verset, invitation, « Royaume de l'Amour »…)
 et plats du menu. Les autres fichiers n'ont pas besoin d'être modifiés.
 

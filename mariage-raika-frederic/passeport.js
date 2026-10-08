@@ -1,5 +1,5 @@
 /* Pochette passeport, sans photo : le monogramme R & F tient lieu de portrait.
-   Extérieur : dos (alliances et verset) | couverture (titre, blason, prénoms, dates).
+   Extérieur : dos (alliances et texte) | couverture (titre, blason, prénoms, date de passeport.escaleCouverture).
    Intérieur : invitation et tampons des escales | page d'identité des « titulaires ».
    `theme` : une entrée de THEMES (themes.js). */
 

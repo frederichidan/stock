@@ -68,7 +68,7 @@
 .passeport .invitation-page .etiquette { color: var(--accent); font-size: 5.6pt; letter-spacing: 0.34em; }
 .passeport .invitation-page .ornement { width: 46mm; height: 4mm; margin-top: 1.6mm; }
 .passeport .invitation-page .noms { font-family: var(--script); font-size: 25pt; line-height: 1.25; padding: 0 3mm; margin-top: 2.4mm; white-space: nowrap; }
-.passeport .texte-invitation { font-style: italic; font-size: 11.5pt; line-height: 1.35; margin-top: 1.4mm; }
+.passeport .texte-invitation { font-style: italic; font-size: 11.5pt; line-height: 1.35; margin-top: 1.4mm; text-wrap: pretty; }
 .passeport .visas-titre { display: flex; align-items: center; gap: 2mm; width: 100%; margin-top: 5mm; }
 .passeport .visas-titre::before,
 .passeport .visas-titre::after { content: ""; flex: 1; border-top: 0.25mm solid var(--ligne); }
@@ -105,7 +105,7 @@
 .passeport .champs .etiquette { color: var(--accent); font-size: 4.6pt; letter-spacing: 0.16em; }
 .passeport .champs .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.8pt; margin-top: 0.6mm; white-space: nowrap; }
 .passeport .champs .titulaires .valeur { font-family: var(--script); font-weight: 400; font-size: 15pt; line-height: 1.1; color: var(--accent-fort); }
-.passeport .signature-bloc { margin-top: 7mm; }
+.passeport .signature-bloc { margin-top: 7mm; border-bottom: 0.25mm dotted var(--ligne-ecriture); }
 .passeport .signature-bloc .etiquette,
 .passeport .observations .etiquette { color: var(--accent); font-size: 4.6pt; letter-spacing: 0.16em; }
 .passeport .signature-bloc .signature {
@@ -114,7 +114,6 @@
   line-height: 1.3;
   padding: 0 2mm;
   margin-left: -2mm;
-  border-bottom: 0.25mm dotted var(--ligne-ecriture);
 }
 .passeport .observations { margin-top: 6mm; }
 .passeport .observations p { font-style: italic; font-size: 11pt; line-height: 1.3; margin-top: 1mm; }

@@ -32,7 +32,7 @@ function billet(theme) {
         <div>${monogramme({ halo: true })}</div>
         <div>
           <h1 class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</h1>
-          <p class="invitation">ont la joie de vous inviter à embarquer pour leur mariage</p>
+          <p class="invitation">${esc(I.invitationBillet)}</p>
 
           <div class="trajet">
             <div class="aeroport"><span class="code">${esc(I.depart.code)}</span><span class="etiquette">${esc(I.depart.ville)}</span></div>

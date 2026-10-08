@@ -66,7 +66,7 @@
 
   document.getElementById("versions").innerHTML = Object.entries(THEMES).map(([id, theme], i) => `
     <section class="version" data-theme="${id}">
-      <h2><b>Version ${i + 1}</b>${esc(theme.nom)}</h2>
+      <h2><b>Version ${String.fromCharCode(65 + i)}</b>${esc(theme.nom)}${id === INFOS.theme ? " · retenue" : ""}</h2>
       <div class="planche">
         ${vignette(passeport(theme), 148, "colonne")}
         ${vignette(billet(theme), 99, "colonne")}

@@ -2,8 +2,9 @@
    INFORMATIONS DU MARIAGE
    C'est le seul fichier à modifier pour changer les textes de la pochette
    passeport, du billet d'invitation et de la carte de menu.
-   Restent à valider : les horaires du coutumier et de la soirée, les
-   contacts RSVP et le menu (propositions).
+   Restent à valider (propositions) : les horaires du coutumier et de la
+   soirée, le détail du programme du civil après 13h, la date limite et
+   les contacts RSVP, et le menu.
    ================================================================== */
 
 const INFOS = {
@@ -18,6 +19,7 @@ const INFOS = {
   deviseSource: "Ecclésiaste 4:9",
 
   /* ---------------------------- Billet ---------------------------- */
+  invitationBillet: "ont la joie de vous inviter à embarquer pour leur mariage",
   vol: "RF 1812", // initiales R·F + date du mariage civil (18/12)
   depart: { code: "CLB", ville: "Célibat" },
   arrivee: { code: "MAR", ville: "Mariage" },

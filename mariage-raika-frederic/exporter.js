@@ -5,7 +5,8 @@
                                     rectos, page 2 = versos, recto verso bord long. Chaque
                                     exemplaire est une image 8K (≈ 1 000 dpi) ;
    - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille) ;
-   - <élément>-maquette-8k.jpg / .pdf : mise en scène réaliste, 7680 × 4320 ;
+   - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 ;
+   - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
    - <élément>-<face>-8k.jpg      : chaque face à plat, 7680 px sur le grand côté.
    S'y ajoute export/<version>/ensemble-maquette-8k.jpg / .pdf (les trois supports réunis),
    et avec --toutes, export/nuancier.jpg (comparatif des 4 versions).
@@ -30,7 +31,8 @@ const SORTIE = path.join(DOSSIER, "export");
 const HUIT_K = 7680;
 const QUALITE_JPG = 90;
 const QUALITE_IMPRESSION = 95;
-const FORMAT_MAQUETTE_PDF = [420, 236.25]; // mm : largeur A3, proportions 16:9
+const FORMAT_MAQUETTE_PDF = [297, 210]; // mm : A4 paysage
+const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone imprimable
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
@@ -109,15 +111,15 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qua
   await page.close();
 }
 
-// PDF d'une page par image, l'image remplissant exactement la page (maquettes).
-async function pdfDepuisImages(navigateur, [largeur, hauteur], images, fichier) {
+// PDF d'une page par image (maquettes) : l'image centrée sur la page, avec une marge blanche.
+// La page (100vw × 100vh) suit le format que Chromium arrondit ; la marge absorbe cet arrondi.
+async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fichier) {
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>
     @page { size: ${largeur}mm ${hauteur}mm; margin: 0; }
     * { margin: 0; padding: 0; }
-    /* 100vw × 100vh : l'image remplit exactement la page, même quand Chromium arrondit son format. */
-    .p { width: 100vw; height: 100vh; overflow: hidden; break-after: page; }
+    .p { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; break-after: page; }
     .p:last-child { break-after: auto; }
-    img { display: block; width: 100%; height: 100%; }
+    img { display: block; max-width: ${largeur - 2 * marge}mm; max-height: ${hauteur - 2 * marge}mm; }
   </style></head><body>
     ${images.map((image) => `<div class="p"><img src="${pathToFileURL(image).href}"></div>`).join("")}
   </body></html>`;
@@ -174,7 +176,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
       await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
       afficher("maquette-8k.jpg");
-      await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, [nom("maquette-8k.jpg")], nom("maquette-8k.pdf"));
+      await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [nom("maquette-8k.jpg")], nom("maquette-8k.pdf"));
       afficher("maquette-8k.pdf");
 
       for (const [face, selecteur, rang] of element.faces) {
@@ -185,7 +187,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
     const ensemble = path.join(SORTIE, theme, "ensemble-maquette-8k.jpg");
     await capturer8K(navigateur, adresse("maquettes.html", { scene: "ensemble", theme }), ".scene", 0, ensemble, "maquettePrete");
-    await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, [ensemble], ensemble.replace(/\.jpg$/, ".pdf"));
+    await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [ensemble], ensemble.replace(/\.jpg$/, ".pdf"));
     console.log("✓", `${theme}/ensemble-maquette-8k.jpg / .pdf`);
   }
 

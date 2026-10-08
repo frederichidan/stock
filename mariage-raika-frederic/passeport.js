@@ -238,7 +238,7 @@ function passeport(theme) {
         </div>
         <div class="observations">
           <div class="etiquette">Observations</div>
-          <p>« ${esc(I.devise)} »</p>
+          <p>«\u202f${esc(I.devise)}\u202f»</p>
           <p>${esc(I.deviseSource)}</p>
         </div>
       </div>

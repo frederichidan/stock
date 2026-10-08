@@ -13,8 +13,8 @@ function billet(theme) {
         <div class="bandeau-titre">
           ${icone("avion", { rotation: 90 })}
           <div>
-            <div class="etiquette">Carte d'embarquement</div>
-            <div class="sous-titre">Billet d'invitation au mariage</div>
+            <div class="etiquette">Carte d’embarquement</div>
+            <div class="sous-titre">Billet d’invitation au mariage</div>
           </div>
         </div>
         <div class="bandeau-infos">
@@ -64,7 +64,7 @@ function billet(theme) {
       </header>
       <div class="talon-corps">
         ${monogramme()}
-        <div class="champ"><span class="etiquette">Passager</span><span class="ligne-ecriture"></span></div>
+        <div class="champ"><span class="etiquette">Passager(s)</span><span class="ligne-ecriture"></span></div>
         <div class="grille">
           <div><div class="etiquette">Vol</div><div class="valeur">${esc(I.vol)}</div></div>
           <div><div class="etiquette">Porte</div><div class="valeur">${esc(I.porte)}</div></div>
@@ -74,7 +74,7 @@ function billet(theme) {
           <div><div class="etiquette">Dates</div><div class="valeur">${[...new Set(I.evenements.map((e) => e.dateCourte.slice(0, 5)))].map(esc).join(" &amp; ")}</div></div>
         </div>
         ${codeBarres(`${I.vol}-${I.mariee}-${I.marie}`, { largeur: 100, hauteur: 16 })}
-        <p class="devise">« ${esc(I.devise)} »</p>
+        <p class="devise">«\u202f${esc(I.devise)}\u202f»</p>
       </div>
     </aside>
   </section>`;

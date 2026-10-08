@@ -44,7 +44,7 @@ function carteMenu(theme) {
       <div class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</div>
       <div class="date">${esc(dateCivil.dateCourte.replace(/\./g, " · "))}</div>
       ${ornement()}
-      <p class="devise">« ${esc(I.devise)} »</p>
+      <p class="devise">«\u202f${esc(I.devise)}\u202f»</p>
       <p class="source">${esc(I.deviseSource)}</p>
     </div>
   </section>`;

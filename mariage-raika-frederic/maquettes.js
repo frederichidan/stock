@@ -4,7 +4,7 @@
 
 const MAQUETTES = {
   pochette: { nom: "Pochette passeport", largeur: 480, construire: scenePochette },
-  billet: { nom: "Billet d'invitation", largeur: 400, construire: sceneBillet },
+  billet: { nom: "Billet d’invitation", largeur: 400, construire: sceneBillet },
   menu: { nom: "Carte de menu", largeur: 520, construire: sceneMenu },
   ensemble: { nom: "Ensemble", largeur: 520, construire: sceneEnsemble },
 };
@@ -219,7 +219,7 @@ function sceneMenu(theme, l, h) {
     poser(couvert("fourchette"), { x: cx - 168, y: cy, rotation: 0, z: 2 }),
     poser(couvert("couteau"), { x: cx + 168, y: cy, rotation: 0, z: 2 }),
     poser(carte(verso, [99, 210]), { x: 452, y: cy - 4, rotation: 6, z: 2 }),
-    confettis(l, h, 18, 3, [[40, 0, 400, h], [395, 20, 515, h - 20]]),
+    confettis(l, h, 18, 3, [[30, 0, 400, h], [395, 20, 515, h - 20]]),
   ].join("");
 }
 

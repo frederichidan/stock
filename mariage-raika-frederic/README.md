@@ -12,7 +12,8 @@ Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-me
 |---|---|
 | `…-A4-8k.pdf` | **À imprimer sur A4**, recto verso bord long : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi) |
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier plus léger, textes nets à toute taille) |
-| `…-maquette-8k.jpg` / `.pdf` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
+| `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
+| `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
 | `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) |
 
 Et `ensemble-maquette-8k.jpg` / `.pdf` : les trois supports réunis sur une même maquette.
@@ -90,9 +91,9 @@ node exporter.js --toutes   # les 4 versions de couleurs et un nuancier comparat
 | Fichier | Rôle |
 |---|---|
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
-| `themes.js`, `commun.css` | Les 4 versions de couleurs (A violet, B nuit, C champagne, D argent) |
+| `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
 | `passeport.js/.css`, `billet.js/.css`, `menu.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html` | Aperçu de chaque élément dans le navigateur (`?theme=` pour une autre version) |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`?theme=minuit`, par exemple, pour une autre version) |
 | `impression.html` | Planches A4 (`?doc=passeport`, `billet` ou `menu`) |
 | `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `menu` ou `ensemble`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |

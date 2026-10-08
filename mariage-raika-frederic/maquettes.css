@@ -57,7 +57,9 @@ body { background: #d9d4cc; }
 .decoupe > div { width: 210mm; }
 
 /* Pochette ouverte : ombre du pli au milieu. */
-.carte.livret-ouvert { border-radius: 3mm; }
+/* Fond opaque sous les deux pages : sinon, une fois la pochette tournée, la jointure
+   anticrénelée des deux pages laisse voir l'ombre et le marbre le long du pli. */
+.carte.livret-ouvert { border-radius: 3mm; background: var(--verso-2); }
 .carte.livret-ouvert::before {
   content: "";
   position: absolute;

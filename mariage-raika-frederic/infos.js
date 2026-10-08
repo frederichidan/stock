@@ -15,7 +15,7 @@ const INFOS = {
   mariee: "Raïka",
   marie: "Frédéric",
 
-  devise: "Deux valent mieux qu'un",
+  devise: "Deux valent mieux qu’un",
   deviseSource: "Ecclésiaste 4:9",
 
   /* ---------------------------- Billet ---------------------------- */
@@ -23,7 +23,7 @@ const INFOS = {
   vol: "RF 1812", // initiales R·F + date du mariage civil (18/12)
   depart: { code: "CLB", ville: "Célibat" },
   arrivee: { code: "MAR", ville: "Mariage" },
-  classe: "Invité d'honneur",
+  classe: "Invité d’honneur",
   porte: "Cœur",
 
   // Les étapes s'affichent dans cet ordre (ordre chronologique).
@@ -65,8 +65,8 @@ const INFOS = {
       jour: "Vendredi",
       date: "18 décembre 2026",
       dateCourte: "18.12.2026",
-      lieu: "Les Anges d'Ema",
-      precision: "Charbonnages, avant l'école conventionnée",
+      lieu: "Les Anges d’Ema",
+      precision: "Charbonnages, avant l’école conventionnée",
       programme: [
         ["19h00", "Accueil des invités"],
         ["20h00", "Entrée des mariés"],
@@ -81,13 +81,13 @@ const INFOS = {
     avant: "30 novembre 2026",
     contacts: ["Raïka · XX XX XX XX", "Frédéric · XX XX XX XX"],
   },
-  codeVestimentaire: "Touches de violet & d'or",
+  codeVestimentaire: "Touches de violet & d’or",
 
   /* ----------------------- Pochette passeport ----------------------- */
   passeport: {
     titre: "Passeport",
     sousTitre: "de Mariage",
-    emetteur: "Royaume de l'Amour",
+    emetteur: "Royaume de l’Amour",
     numero: "RF181226",
     // Escale dont la date figure sur la couverture et la page d'identité (2 = mariage civil, 18 décembre).
     escaleCouverture: 2,
@@ -95,11 +95,11 @@ const INFOS = {
     validite: "Pour la vie",
     // Texte au dos de la pochette ; `versetSource` vide = pas de référence affichée.
     verset:
-      "Seigneur, je déclare que mon union sera protégée de toute attaque. Ce que tu unis dans ma vie ne sera jamais séparé par la jalousie, la pauvreté ou l'adversité.",
+      "Seigneur, je déclare que mon union sera protégée de toute attaque. Ce que tu unis dans ma vie ne sera jamais séparé par la jalousie, la pauvreté ou l’adversité.",
     versetSource: "",
     invitation:
-      "ont l'immense joie de vous convier à leur union et seraient honorés de votre présence à chacune des escales de ce beau voyage.",
-    bonVoyage: "Bon voyage !",
+      "ont l’immense joie de vous convier à leur union et seraient honorés de votre présence à chacune des escales de ce beau voyage.",
+    bonVoyage: "Bon voyage\u202f!",
   },
 
   /* ------------------------- Carte de menu ------------------------- */
@@ -111,13 +111,13 @@ const INFOS = {
       {
         titre: "Cocktail de bienvenue",
         plats: [
-          "Cocktail signature « Violet Royal »",
+          "Cocktail signature «\u202fViolet Royal\u202f»",
           "Feuilletés, accras & brochettes de crevettes",
         ],
       },
       {
         titre: "Entrée",
-        plats: ["Salade d'avocat & crevettes, vinaigrette aux agrumes"],
+        plats: ["Salade d’avocat & crevettes, vinaigrette aux agrumes"],
       },
       {
         titre: "Plats",

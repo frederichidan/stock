@@ -7,8 +7,9 @@
 <link rel="stylesheet" href="commun.css">
 <link rel="stylesheet" href="passeport.css">
 <style>
-  /* Feuille A5 à plat (210 × 148 mm), pliée en deux au milieu : passeport A6.
-     Page 1 = extérieur (dos | couverture), page 2 = intérieur. */
+  /* Dessin d'origine : 210 × 148 mm à plat, plié en deux au milieu.
+     Page 1 = extérieur (dos | couverture), page 2 = intérieur. Pour imprimer, utiliser
+     impression.html?doc=passeport : 2 pochettes par feuille A4, à 88,5 % (185,9 × 131 mm). */
   @page { size: 210mm 148mm; margin: 0; }
   /* Recto verso avec retournement sur le bord long : l'intérieur s'imprime tête-bêche. */
   @media print { #planches > .page:nth-child(2) { transform: rotate(180deg); } }

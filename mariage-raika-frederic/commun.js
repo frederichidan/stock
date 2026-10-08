@@ -202,6 +202,80 @@ function codeBarres(texte, { largeur = 100, hauteur = 20, couleur = "currentColo
   return `<svg class="code-barres" viewBox="0 0 ${largeur} ${hauteur}" preserveAspectRatio="none" fill="${couleur}" aria-hidden="true">${barres}</svg>`;
 }
 
+/* -------------------- Textes en dégradé pour les PDF -------------------- */
+
+/* Dans un PDF, Chromium rend le dégradé des textes (.texte-degrade, background-clip: text)
+   avec des masques de transparence dont les bords laissent de fines coutures visibles.
+   Pour les PDF, chaque ligne de ces textes est redessinée en texte SVG rempli d'un dégradé
+   vectoriel identique, et le texte d'origine est masqué (sa place dans la mise en page
+   est conservée). À appeler une fois les polices chargées et la page mise en page. */
+function vectoriserDegrades(racine = document) {
+  const NS = "http://www.w3.org/2000/svg";
+  const contexte = document.createElement("canvas").getContext("2d");
+  const plage = document.createRange();
+
+  for (const element of racine.querySelectorAll(".texte-degrade")) {
+    const boite = element.getBoundingClientRect();
+    const lignes = [];
+
+    // Position de chaque caractère, regroupés par ligne puis en segments contigus de même style.
+    const marcheur = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    for (let noeud = marcheur.nextNode(); noeud; noeud = marcheur.nextNode()) {
+      const parent = noeud.parentElement;
+      for (let i = 0; i < noeud.data.length; i += 1) {
+        plage.setStart(noeud, i);
+        plage.setEnd(noeud, i + 1);
+        const r = plage.getClientRects()[0];
+        if (!r || !r.width) continue;
+        let ligne = lignes.find((l) => Math.abs(l.haut - r.top) < r.height / 2);
+        if (!ligne) lignes.push((ligne = { haut: r.top, segments: [] }));
+        const dernier = ligne.segments[ligne.segments.length - 1];
+        if (dernier && dernier.parent === parent && Math.abs(dernier.droite - r.left) < 1.5) {
+          dernier.texte += noeud.data[i];
+          dernier.droite = r.right;
+        } else {
+          ligne.segments.push({ parent, texte: noeud.data[i], gauche: r.left, droite: r.right, haut: r.top });
+        }
+      }
+    }
+
+    // Dégradé à 115° sur la boîte de l'élément, comme dans commun.css (.texte-degrade).
+    const id = idUnique("degrade-texte");
+    const a = (115 * Math.PI) / 180;
+    const [dx, dy] = [Math.sin(a), -Math.cos(a)];
+    const longueur = Math.abs(boite.width * dx) + Math.abs(boite.height * dy);
+    const [cx, cy] = [boite.width / 2, boite.height / 2];
+    const arret = (position, teinte) => `<stop offset="${position}" style="stop-color: var(--let-${teinte})"/>`;
+    let contenu = `<defs><linearGradient id="${id}" gradientUnits="userSpaceOnUse"
+      x1="${cx - (dx * longueur) / 2}" y1="${cy - (dy * longueur) / 2}" x2="${cx + (dx * longueur) / 2}" y2="${cy + (dy * longueur) / 2}">
+      ${arret(0, "a")}${arret(0.3, "b")}${arret(0.52, "c")}${arret(0.72, "b")}${arret(1, "a")}</linearGradient></defs>`;
+
+    for (const ligne of lignes) {
+      for (const s of ligne.segments) {
+        const style = getComputedStyle(s.parent);
+        contexte.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        const ligneDeBase = s.haut + contexte.measureText("Hg").fontBoundingBoxAscent - boite.top;
+        const texte = style.textTransform === "uppercase" ? s.texte.toUpperCase() : s.texte;
+        const remplissage = s.parent === element ? `url(#${id})` : style.color;
+        contenu += `<text x="${s.gauche - boite.left}" y="${ligneDeBase}" textLength="${s.droite - s.gauche}" lengthAdjust="spacing"
+          font-family='${style.fontFamily}' font-size="${style.fontSize}" font-weight="${style.fontWeight}" font-style="${style.fontStyle}"
+          letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre" fill="${remplissage}">${esc(texte)}</text>`;
+      }
+    }
+
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "texte-vectorise");
+    svg.setAttribute("width", boite.width);
+    svg.setAttribute("height", boite.height);
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("style", "position: absolute; left: 0; top: 0; overflow: visible; visibility: visible; pointer-events: none");
+    svg.innerHTML = contenu;
+    if (getComputedStyle(element).position === "static") element.style.position = "relative";
+    element.style.visibility = "hidden";
+    element.append(svg);
+  }
+}
+
 /* ------------------------------ Ornements ------------------------------ */
 
 // Double filet doré avec un losange à chaque coin (styles .cadre et .losange).

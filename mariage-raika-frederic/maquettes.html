@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquettes</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="passeport.css">
+<link rel="stylesheet" href="billet.css">
+<link rel="stylesheet" href="menu.css">
+<link rel="stylesheet" href="maquettes.css">
+</head>
+<body>
+<!-- Une maquette par adresse : ?scene=pochette | billet | menu | ensemble (et ?theme=). -->
+<main id="maquette"></main>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="passeport.js"></script>
+<script src="billet.js"></script>
+<script src="menu.js"></script>
+<script src="maquettes.js"></script>
+<script>
+  const scene = new URLSearchParams(location.search).get("scene") || "ensemble";
+  document.getElementById("maquette").innerHTML = maquette(scene, THEME);
+  // Prête pour la capture une fois les polices et la texture du papier chargées.
+  const texture = new Image();
+  texture.src = grainDonnees();
+  Promise.all([document.fonts.ready, texture.decode()]).then(() => (window.maquettePrete = true));
+</script>
+</body>
+</html>

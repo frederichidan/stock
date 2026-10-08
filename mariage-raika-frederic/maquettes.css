@@ -1,0 +1,94 @@
+/* Maquettes de présentation : supports posés sur un marbre clair, vus de dessus,
+   avec ombres portées, grain du papier et accessoires (ruban, confettis, alliances, couverts). */
+
+body { background: #d9d4cc; }
+@media screen { body { padding: 6mm 0; } }
+
+.scene {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background: #f1eee8;
+}
+.scene .fond,
+.scene .lumiere,
+.scene .accessoires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.scene .lumiere {
+  z-index: 50;
+  background:
+    radial-gradient(ellipse 60% 55% at 22% 12%, rgba(255, 252, 245, 0.35), rgba(255, 252, 245, 0) 70%),
+    radial-gradient(ellipse 70% 60% at 95% 105%, rgba(40, 30, 50, 0.16), rgba(40, 30, 50, 0) 70%);
+}
+.scene .page { margin: 0 !important; box-shadow: none !important; }
+
+.objet { position: absolute; transform-origin: center; }
+
+/* Papier : ombre portée (lumière en haut à gauche), reflet et grain. */
+.carte {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5mm;
+  box-shadow:
+    0.25mm 0.4mm 0.5mm rgba(30, 20, 45, 0.3),
+    1.5mm 2.6mm 4.5mm rgba(30, 20, 45, 0.2),
+    4mm 8mm 16mm rgba(30, 20, 45, 0.13);
+}
+.carte::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(130deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 42%, rgba(0, 0, 0, 0.07) 100%),
+    var(--grain);
+  background-size: 100% 100%, 9mm 9mm;
+  mix-blend-mode: soft-light;
+}
+
+/* Pochette fermée : demi-feuille aux coins arrondis, avec l'épaisseur du livret. */
+.livret { position: relative; width: 105mm; height: 148mm; }
+.livret .epaisseur {
+  position: absolute;
+  inset: 0;
+  transform: translate(0.55mm, 0.8mm);
+  border-radius: 3mm;
+  background: var(--bande-1);
+  box-shadow:
+    1.5mm 2.6mm 4.5mm rgba(30, 20, 45, 0.25),
+    4mm 8mm 16mm rgba(30, 20, 45, 0.15);
+}
+.livret .carte { border-radius: 3mm; box-shadow: none; }
+.decoupe { width: 105mm; height: 148mm; overflow: hidden; }
+.decoupe > div { width: 210mm; }
+
+/* Pochette ouverte : ombre du pli au milieu. */
+.carte.livret-ouvert { border-radius: 3mm; }
+.carte.livret-ouvert::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 40%, rgba(40, 25, 60, 0.07) 47%, rgba(40, 25, 60, 0.2) 49.7%,
+    rgba(255, 255, 255, 0.3) 50.3%, rgba(255, 255, 255, 0) 54%);
+}
+
+/* Vaisselle de la carte de menu. */
+.assiette { border-radius: 50%; }
+.assiette.presentation {
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0) 83%, rgba(80, 55, 15, 0.35) 84%, rgba(0, 0, 0, 0) 85.5%),
+    conic-gradient(from 200deg, #a07a32, #f3dfa6, #c9a464, #8f6a28, #ecd295, #b8903f, #f3dfa6, #a07a32);
+  box-shadow:
+    0.4mm 0.7mm 1mm rgba(40, 28, 10, 0.35),
+    3mm 6mm 12mm rgba(40, 28, 10, 0.25),
+    inset 0 0 3mm rgba(255, 240, 200, 0.4);
+}
+.assiette.porcelaine {
+  background: radial-gradient(circle, #fdfcfa 0%, #f7f4ef 58%, #e7e2da 63.5%, #fbfaf7 68%, #f4f0ea 90%, #e2ddd4 100%);
+  box-shadow: 0.3mm 0.6mm 1mm rgba(40, 30, 20, 0.25), 2mm 4mm 7mm rgba(40, 30, 20, 0.18);
+}
+.couvert { display: block; filter: drop-shadow(0.5mm 0.9mm 0.7mm rgba(30, 20, 10, 0.35)); }
+.alliances { display: block; filter: drop-shadow(0.6mm 1.2mm 1mm rgba(30, 20, 10, 0.35)); }
+.accessoires .ruban-satin { filter: drop-shadow(0.8mm 1.6mm 1.5mm rgba(30, 15, 50, 0.3)); }

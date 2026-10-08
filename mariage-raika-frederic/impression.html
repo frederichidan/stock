@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fichiers d'impression</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="passeport.css">
+<link rel="stylesheet" href="billet.css">
+<link rel="stylesheet" href="menu.css">
+<style id="format-page"></style>
+<style>
+  /* Planches pour l'imprimeur : chaque face au format fini, entourée d'un fond perdu
+     de 3 mm (bords prolongés en miroir) et de traits de coupe, prêtes pour une impression
+     recto verso avec retournement sur le bord long. Paramètre d'adresse :
+     ?doc=passeport | billet | menu (et ?theme= comme ailleurs). */
+  .feuille { position: relative; overflow: hidden; background: #fff; break-after: page; }
+  .feuille:last-child { break-after: auto; }
+  /* contain: strict empêche Chromium de réduire la page à cause des copies hors feuille. */
+  .fond-perdu { position: absolute; overflow: hidden; contain: strict; }
+  .copie { position: absolute; }
+  .copie .page { margin: 0 !important; box-shadow: none !important; }
+  .tete-beche { transform: rotate(180deg); }
+  #preparation { position: absolute; left: 0; top: 0; }
+  .trait { position: absolute; background: #000; }
+  .pli { position: absolute; border-left: 0.2mm dashed #000; }
+  .legende {
+    position: absolute;
+    font-family: var(--sans);
+    font-size: 5.5pt;
+    letter-spacing: 0.02em;
+    color: #000;
+    white-space: nowrap;
+  }
+  @media screen {
+    body { padding: 10mm 0; }
+    .feuille { margin: 0 auto 10mm; box-shadow: 0 1mm 6mm rgba(0, 0, 0, 0.25); }
+  }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+<div id="preparation"></div>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="passeport.js"></script>
+<script src="billet.js"></script>
+<script src="menu.js"></script>
+<script>
+  const FOND_PERDU = 3; // mm
+  const MARGE = 12; // mm, du bord de la feuille au format fini
+  const TRAIT = 6; // longueur des traits de coupe, en mm
+
+  // `teteBeche` : faces tournées de 180° pour qu'un recto verso bord long tombe juste.
+  // Pour la pochette (feuille paysage pliée au milieu comme un livre), l'intérieur doit être
+  // tête-bêche : sinon il serait à l'envers et l'invitation se retrouverait derrière le dos.
+  const DOCUMENTS = {
+    passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, faces: ["extérieur (dos | couverture)", "intérieur, tête-bêche"], teteBeche: [false, true], pli: true },
+    billet: { rendu: billet, nom: "Billet d'invitation", largeur: 210, hauteur: 99, faces: ["recto", "verso"] },
+    menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, faces: ["recto", "verso"] },
+  };
+
+  const doc = DOCUMENTS[new URLSearchParams(location.search).get("doc")] || DOCUMENTS.billet;
+  const L = doc.largeur;
+  const H = doc.hauteur;
+  const largeurFeuille = L + 2 * MARGE;
+  const hauteurFeuille = H + 2 * MARGE;
+  document.getElementById("format-page").textContent =
+    `@page { size: ${largeurFeuille}mm ${hauteurFeuille}mm; margin: 0; }
+     .feuille { width: ${largeurFeuille}mm; height: ${hauteurFeuille}mm; }`;
+
+
+  const mm = (v) => `${v}mm`;
+  const trait = (x, y, l, h) => `<span class="trait" style="left:${mm(x)};top:${mm(y)};width:${mm(l)};height:${mm(h)}"></span>`;
+
+  // Traits de coupe aux quatre coins, écartés du format fini de la largeur du fond perdu.
+  function traitsDeCoupe() {
+    const e = 0.1; // épaisseur ≈ 0,25 pt
+    const debut = MARGE - FOND_PERDU - TRAIT;
+    const fin = MARGE + FOND_PERDU;
+    let html = "";
+    for (const x of [MARGE, MARGE + L]) {
+      html += trait(x - e / 2, debut, e, TRAIT) + trait(x - e / 2, MARGE + H + FOND_PERDU, e, TRAIT);
+    }
+    for (const y of [MARGE, MARGE + H]) {
+      html += trait(debut, y - e / 2, TRAIT, e) + trait(MARGE + L + FOND_PERDU, y - e / 2, TRAIT, e);
+    }
+    return html;
+  }
+
+  function reperesDePli() {
+    if (!doc.pli) return "";
+    const x = MARGE + L / 2;
+    return `<span class="pli" style="left:${mm(x)};top:${mm(MARGE - FOND_PERDU - TRAIT)};height:${mm(TRAIT)}"></span>
+      <span class="pli" style="left:${mm(x)};top:${mm(MARGE + H + FOND_PERDU)};height:${mm(TRAIT)}"></span>
+      <span class="legende" style="left:${mm(x + 1)};top:${mm(MARGE - FOND_PERDU - TRAIT)}">pli</span>`;
+  }
+
+  // La face au centre, et ses 8 voisines en miroir : seuls 3 mm de chacune restent visibles.
+  function fondPerdu(face, teteBeche) {
+    let html = "";
+    for (const dy of [-1, 0, 1]) {
+      for (const dx of [-1, 0, 1]) {
+        const transformation = `scale(${dx ? -1 : 1}, ${dy ? -1 : 1})`;
+        html += `<div class="copie" style="left:${mm(FOND_PERDU + dx * L)};top:${mm(FOND_PERDU + dy * H)};transform:${transformation}">${face.outerHTML}</div>`;
+      }
+    }
+    return `<div class="fond-perdu${teteBeche ? " tete-beche" : ""}" style="left:${mm(MARGE - FOND_PERDU)};top:${mm(MARGE - FOND_PERDU)};width:${mm(L + 2 * FOND_PERDU)};height:${mm(H + 2 * FOND_PERDU)}">${html}</div>`;
+  }
+
+  const legende = (nomFace) =>
+    `${initiale(INFOS.mariee)} & ${initiale(INFOS.marie)} · ${doc.nom} · ${nomFace} · ${L} × ${H} mm + fond perdu ${FOND_PERDU} mm · recto verso bord long`;
+
+  // Les faces sont d'abord mises en page seules, polices chargées, pour vectoriser les textes
+  // dorés (voir vectoriserDegrades dans commun.js), puis recopiées dans les planches.
+  document.fonts.ready.then(() => {
+    const preparation = document.getElementById("preparation");
+    preparation.innerHTML = doc.rendu(THEME);
+    vectoriserDegrades(preparation);
+    const faces = [...preparation.querySelectorAll(".page")];
+    document.getElementById("planches").innerHTML = faces
+    .map((face, i) => `
+      <section class="feuille">
+        ${fondPerdu(face, doc.teteBeche && doc.teteBeche[i])}
+        ${traitsDeCoupe()}
+        ${reperesDePli()}
+        <span class="legende" style="left:${mm(MARGE + 2)};top:${mm(MARGE + H + FOND_PERDU + 2.2)}">${esc(legende(doc.faces[i]))}</span>
+      </section>`)
+    .join("");
+    preparation.remove();
+    window.planchesPretes = true;
+  });
+</script>
+</body>
+</html>

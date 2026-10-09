@@ -26,11 +26,15 @@
 /* --fond-* : recto du billet et carte de menu ; --bande-* : bandeaux et pied ;
    --talon-* : talon du billet ; --verso-* : verso du billet. */
 
+/* Violet améthyste : un violet plus clair que le violet royal d'origine, choisi dans la gamme
+   d'une imprimante quadri (l'ancien, trop saturé, ressortait terne et presque noir sur les
+   bords). Même teinte ; clarté environ doublée ; écart à l'impression ΔE < 3 et au plus
+   225 % d'encre sur les aplats (contre près de 300 % avant). */
 :root,
 [data-theme="violet"] {
-  --fond-1: #55259a; --fond-2: #3c1880; --fond-3: #26104f;
-  --bande-1: #1c1036; --bande-2: #2b1159;
-  --talon-1: #2a1158; --talon-2: #1c1036;
+  --fond-1: #7959a4; --fond-2: #674696; --fond-3: #54397a;
+  --bande-1: #513972; --bande-2: #573b7f;
+  --talon-1: #573b7f; --talon-2: #513972;
   --verso-1: #fffdf8; --verso-2: #f8f3ea; --verso-3: #efe7f5;
 }
 
@@ -103,6 +107,40 @@
   --titre-etape: #4a2384;
   --code-barres: #2b1159;
   color: var(--texte);
+}
+
+/* Violet améthyste : sur ce fond plus clair, l'or est éclairci pour rester lisible ; sur les
+   pages claires, violets et ors foncés sont ramenés dans la gamme imprimable (même teinte). */
+[data-theme="violet"] .sombre {
+  --accent: #e2c487;
+  --discret: #d4d6de;
+  --ligne: rgba(226, 196, 135, 0.8);
+  --filet: rgba(226, 196, 135, 0.4);
+  --code: #e6c98a;
+  --let-a: #b8913f; --let-b: #f3dfa6; --let-c: #d6b46e;
+  --orn-a: #b8913f; --orn-b: #f3dfa6; --orn-c: #d6b46e;
+  --guilloche: #e2c487;
+  --pastille: #e2c487;
+  --pastille-texte: #463260;
+}
+[data-theme="violet"] .clair {
+  --texte: #463260;
+  --texte-doux: #635278;
+  --accent: #9f7a38;
+  --accent-fort: #54397a;
+  --discret: #726187;
+  --ligne: rgba(159, 122, 56, 0.7);
+  --filet: rgba(84, 57, 122, 0.18);
+  --zone: rgba(84, 57, 122, 0.12);
+  --ligne-ecriture: rgba(70, 50, 96, 0.45);
+  --code: #54397a;
+  --esperluette: #9f7a38;
+  --let-a: #463260; --let-b: #6f4e9e; --let-c: #54397a;
+  --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
+  --guilloche: #54397a;
+  --pastille: #54397a;
+  --titre-etape: #54397a;
+  --code-barres: #463260;
 }
 
 /* Nuit : l'argent remplace l'ivoire pour les valeurs, l'esperluette et les guillochis. */

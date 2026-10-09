@@ -130,8 +130,8 @@ function rubanSatin(chemin, largeur, hauteur) {
   const id = idUnique("satin");
   return `<svg class="accessoires" style="z-index:0" viewBox="0 0 ${largeur} ${hauteur}" aria-hidden="true">
     <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2b1159"/><stop offset="0.35" stop-color="#5d2ca3"/>
-      <stop offset="0.55" stop-color="#7a4bc0"/><stop offset="0.75" stop-color="#4a2384"/><stop offset="1" stop-color="#26104f"/>
+      <stop offset="0" stop-color="#43305c"/><stop offset="0.35" stop-color="#7e5ea9"/>
+      <stop offset="0.55" stop-color="#8c6fb1"/><stop offset="0.75" stop-color="#674696"/><stop offset="1" stop-color="#513972"/>
     </linearGradient></defs>
     <g class="ruban-satin" fill="none" stroke-linecap="butt">
       <path d="${chemin}" stroke="url(#${id})" stroke-width="15"/>

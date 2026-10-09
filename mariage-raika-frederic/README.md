@@ -1,7 +1,7 @@
 # Mariage de Raïka & Frédéric — pochette passeport, billet d'invitation et carte de menu
 
 Supports imprimables aux couleurs violet & or du « Passeport de Mariage » (version A,
-Violet royal & or). Il n'y a pas de photo du couple : le visuel principal est le
+Violet améthyste & or). Il n'y a pas de photo du couple : le visuel principal est le
 monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
 ## Les fichiers à utiliser : `export/violet/`
@@ -45,9 +45,23 @@ vérifiez que l'impression est bien à 100 % et en « bord long ».
 
 Découpe : suivre les traits de coupe (massicot ou cutter et règle) ; le fond perdu de 3 mm
 absorbe les petits écarts. Conseils : papier 250 à 350 g, finition mate ou soft-touch ;
-coins arrondis de 3 mm conseillés pour la pochette, comme sur la maquette. Les PDF sont en
-RVB : demandez une épreuve couleur si vous passez par un imprimeur (le violet vif peut
-légèrement se ternir en quadrichromie).
+coins arrondis de 3 mm conseillés pour la pochette, comme sur la maquette.
+
+## Couleurs et impression
+
+Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
+l'impression il ressortait terne, presque noir sur les bords, avec beaucoup d'encre. Il est
+remplacé par un **violet améthyste** plus clair, de même teinte, et toutes les couleurs
+(violets, ors, ivoire) ont été choisies dans la gamme d'une imprimante quadri (CMJN) :
+
+- écart entre l'écran et l'impression inférieur à 3 (ΔE), soit invisible à l'œil, contre 25
+  en moyenne pour l'ancien violet ;
+- au plus 225 % d'encre sur les aplats violets (250 % pour les petits textes), contre près de
+  300 % avant : séchage plus rapide, pas de traces, papier qui ne gondole pas.
+
+Couleurs principales : fond #7959a4 → #674696 → #54397a, bandeaux #513972 / #573b7f, or
+#e2c487. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
+visible. Pour un tirage chez un imprimeur, une épreuve couleur reste conseillée.
 
 ## Dates et lieux
 

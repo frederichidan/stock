@@ -30,8 +30,8 @@ function anneauxDores() {
     </g>
     <g stroke-linejoin="round">
       <path d="M118.5,17 L117,10.5 M125.5,17 L127,10.5" style="stroke: var(--orn-a)" stroke-width="1.6"/>
-      <path d="M114.5,8 L118.5,3.5 L125.5,3.5 L129.5,8 L122,17.5 Z" fill="url(#${pierre})" stroke="#a9adb8" stroke-width="0.5"/>
-      <path d="M114.5,8 L129.5,8 M118.5,3.5 L120,8 L122,17.5 L124,8 L125.5,3.5" fill="none" stroke="#a9adb8" stroke-width="0.4"/>
+      <path d="M114.5,8 L118.5,3.5 L125.5,3.5 L129.5,8 L122,17.5 Z" fill="url(#${pierre})" stroke="#a9adb8" stroke-width="0.7"/>
+      <path d="M114.5,8 L129.5,8 M118.5,3.5 L120,8 L122,17.5 L124,8 L125.5,3.5" fill="none" stroke="#a9adb8" stroke-width="0.6"/>
     </g>
   </svg>`;
 }
@@ -167,7 +167,7 @@ function passeport(theme) {
     <div class="face couverture">
       <div class="calque">
         <svg viewBox="0 0 105 148" preserveAspectRatio="none">
-          ${bandeGuillochee({ largeur: 105, y: 134, amplitude: 3.2, periode: 26, nbLignes: 12, couleur: "var(--guilloche)" })}
+          ${bandeGuillochee({ largeur: 105, y: 134, amplitude: 3.2, periode: 26, nbLignes: 7, couleur: "var(--guilloche)" })}
         </svg>
       </div>
       <div class="contenu">
@@ -175,7 +175,7 @@ function passeport(theme) {
         <h1 class="titre-passeport texte-degrade">${esc(P.titre)}</h1>
         <div class="sous-titre-passeport texte-degrade">${esc(P.sousTitre)}</div>
         <div class="blason">
-          ${monogramme({ halo: true })}
+          ${monogramme({ halo: true, taille: 47 })}
           ${ruban(I.devise)}
         </div>
         <div class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</div>
@@ -191,7 +191,7 @@ function passeport(theme) {
     <div class="face invitation-page">
       <div class="calque">
         <svg viewBox="0 0 105 148" preserveAspectRatio="none">
-          ${bandeGuillochee({ largeur: 105, y: 132, amplitude: 4, periode: 30, nbLignes: 12, couleur: "var(--guilloche)", epaisseur: 0.16 })}
+          ${bandeGuillochee({ largeur: 105, y: 132, amplitude: 4, periode: 30, nbLignes: 7, couleur: "var(--guilloche)" })}
         </svg>
       </div>
       <div class="contenu">
@@ -210,8 +210,8 @@ function passeport(theme) {
     <div class="face identite">
       <div class="calque">
         <svg viewBox="0 0 105 148" preserveAspectRatio="none">
-          ${rosace({ cx: 62, cy: 62, rayon: 34, amplitude: 2.4, lobes: 30, nbCourbes: 12, couleur: "var(--guilloche)", epaisseur: 0.16 })}
-          ${rosace({ cx: 62, cy: 62, rayon: 20, amplitude: 1.6, lobes: 22, nbCourbes: 10, couleur: "var(--guilloche)", epaisseur: 0.14 })}
+          ${rosace({ cx: 62, cy: 62, rayon: 34, amplitude: 2.4, lobes: 30, nbCourbes: 7, couleur: "var(--guilloche)" })}
+          ${rosace({ cx: 62, cy: 62, rayon: 20, amplitude: 1.6, lobes: 22, nbCourbes: 6, couleur: "var(--guilloche)" })}
         </svg>
       </div>
       <div class="contenu">
@@ -220,7 +220,7 @@ function passeport(theme) {
           <span class="pays">${esc(P.emetteur)}</span>
         </div>
         <div class="donnees">
-          <div class="photo">${monogramme()}<span class="etiquette">Titulaires</span></div>
+          <div class="photo">${monogramme({ taille: 30 })}<span class="etiquette">Titulaires</span></div>
           <div class="champs">
             ${champ("Type", "P")}
             ${champ("Code", esc(zoneLecture()[0].slice(2, 5)))}

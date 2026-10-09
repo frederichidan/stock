@@ -28,13 +28,14 @@
 
 /* Violet améthyste : un violet plus clair que le violet royal d'origine, choisi dans la gamme
    d'une imprimante quadri (l'ancien, trop saturé, ressortait terne et presque noir sur les
-   bords). Même teinte ; clarté environ doublée ; écart à l'impression ΔE < 3 et au plus
-   225 % d'encre sur les aplats (contre près de 300 % avant). */
+   bords). Même teinte ; écart à l'impression ΔE < 2 et au plus 186 % d'encre sur les
+   aplats (contre près de 300 % avant) : sur papier couché, brillant ou mat, l'encre ne
+   pénètre pas et les aplats trop chargés perlent ou marbrent. */
 :root,
 [data-theme="violet"] {
-  --fond-1: #7959a4; --fond-2: #674696; --fond-3: #54397a;
-  --bande-1: #513972; --bande-2: #573b7f;
-  --talon-1: #573b7f; --talon-2: #513972;
+  --fond-1: #7e5ea9; --fond-2: #6f4e9d; --fond-3: #61438d;
+  --bande-1: #61438d; --bande-2: #6a4998;
+  --talon-1: #6a4998; --talon-2: #61438d;
   --verso-1: #fffdf8; --verso-2: #f8f3ea; --verso-3: #efe7f5;
 }
 
@@ -201,10 +202,12 @@ body {
   color: transparent;
 }
 
+/* Corps minimal des petits textes : 6 pt dessinés, soit 5,3 pt imprimés (88,5 %). En dessous,
+   un texte clair sur le violet s'empâte à l'impression. */
 .etiquette {
   font-family: var(--sans);
   font-weight: 600;
-  font-size: 5.2pt;
+  font-size: 6pt;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }

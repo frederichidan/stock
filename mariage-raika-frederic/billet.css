@@ -24,7 +24,7 @@
 .billet .bandeau-titre .etiquette { color: var(--accent-fort); font-size: 7pt; letter-spacing: 0.3em; }
 .billet .bandeau-titre .sous-titre { font-style: italic; font-size: 9.5pt; opacity: 0.85; margin-top: 0.4mm; }
 .billet .bandeau-infos { display: flex; gap: 6mm; text-align: right; }
-.billet .bandeau-infos .etiquette { color: var(--discret); font-size: 4.8pt; }
+.billet .bandeau-infos .etiquette { color: var(--discret); font-size: 6pt; }
 .billet .bandeau-infos .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.5pt; color: var(--accent-fort); letter-spacing: 0.08em; margin-top: 0.6mm; }
 
 .billet .principal { position: relative; display: flex; flex-direction: column; }
@@ -54,7 +54,7 @@
 .billet .trajet { display: flex; align-items: center; gap: 3mm; margin: 3.4mm 0 3.2mm; }
 .billet .aeroport { display: flex; flex-direction: column; align-items: center; }
 .billet .aeroport .code { font-family: var(--serif); font-weight: 700; font-size: 17pt; line-height: 1; letter-spacing: 0.06em; color: var(--code); }
-.billet .aeroport .etiquette { opacity: 0.8; margin-top: 0.8mm; }
+.billet .aeroport .etiquette { margin-top: 0.8mm; }
 .billet .ligne-vol { flex: 1; display: flex; align-items: center; gap: 1.5mm; color: var(--accent); margin-top: -3mm; }
 .billet .ligne-vol span { flex: 1; border-top: 0.3mm dashed var(--ligne); }
 .billet .ligne-vol .icone { width: 5mm; height: 5mm; }
@@ -64,7 +64,7 @@
 
 .billet .escales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-top: 3.6mm; }
 .billet .escale { border-top: 0.3mm solid var(--accent); padding-top: 1.4mm; }
-.billet .escale .etiquette { color: var(--accent); font-size: 4.8pt; }
+.billet .escale .etiquette { color: var(--accent); font-size: 6pt; }
 .billet .escale .date { font-family: var(--sans); font-weight: 600; font-size: 7.2pt; letter-spacing: 0.04em; margin-top: 0.8mm; white-space: nowrap; }
 .billet .escale .titre { font-style: italic; font-size: 10pt; line-height: 1.1; margin-top: 0.3mm; color: var(--accent-fort); }
 
@@ -99,7 +99,7 @@
 .billet .talon-corps { flex: 1; display: flex; flex-direction: column; align-items: stretch; padding: 3.5mm 5.5mm 4mm; gap: 3mm; }
 .billet .talon-corps .monogramme { width: 25mm; height: 25mm; display: block; margin: 0 auto; }
 .billet .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 3mm; }
-.billet .grille .etiquette { color: var(--accent); font-size: 4.6pt; }
+.billet .grille .etiquette { color: var(--accent); font-size: 6pt; }
 .billet .grille .valeur { font-family: var(--sans); font-weight: 600; font-size: 7pt; letter-spacing: 0.04em; margin-top: 0.5mm; white-space: nowrap; }
 .billet .talon .code-barres { width: 100%; height: 7.5mm; display: block; color: var(--code-barres); margin-top: auto; }
 .billet .talon .devise { text-align: center; font-style: italic; font-size: 8pt; color: var(--accent-fort); margin-top: -0.6mm; }
@@ -112,7 +112,7 @@
 }
 /* Bandeau et pied assez hauts pour garder les textes à plus de 3 mm de la coupe. */
 .billet.verso .bandeau { height: 16mm; justify-content: space-between; }
-.billet.verso .bandeau .etiquette { color: var(--accent-fort); font-size: 5.4pt; }
+.billet.verso .bandeau .etiquette { color: var(--accent-fort); font-size: 6pt; }
 .billet.verso .bandeau h2 {
   position: absolute;
   left: 50%;
@@ -152,7 +152,7 @@
   background: var(--pastille);
   color: var(--pastille-texte);
 }
-.billet .pastille .etiquette { font-size: 5pt; }
+.billet .pastille .etiquette { font-size: 6pt; }
 .billet .pastille .icone { width: 2.6mm; height: 2.6mm; }
 .billet .etape h3 { font-family: var(--serif); font-weight: 700; font-size: 12.5pt; color: var(--titre-etape); margin-top: 2.2mm; }
 .billet .etape .date { font-family: var(--sans); font-weight: 600; font-size: 6.4pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-top: 0.8mm; }
@@ -174,6 +174,6 @@
   border-top: 0.35mm solid var(--accent);
   font-size: 9pt;
 }
-.billet .pied .etiquette { color: var(--accent); font-size: 4.8pt; display: block; margin-bottom: 0.5mm; }
+.billet .pied .etiquette { color: var(--accent); font-size: 6pt; display: block; margin-bottom: 0.2mm; }
 .billet .pied b { font-weight: 600; color: var(--accent-fort); }
 .billet .pied .droite { text-align: right; }

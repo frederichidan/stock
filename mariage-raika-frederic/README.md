@@ -54,14 +54,35 @@ l'impression il ressortait terne, presque noir sur les bords, avec beaucoup d'en
 remplacé par un **violet améthyste** plus clair, de même teinte, et toutes les couleurs
 (violets, ors, ivoire) ont été choisies dans la gamme d'une imprimante quadri (CMJN) :
 
-- écart entre l'écran et l'impression inférieur à 3 (ΔE), soit invisible à l'œil, contre 25
+- écart entre l'écran et l'impression inférieur à 2 (ΔE), soit invisible à l'œil, contre 25
   en moyenne pour l'ancien violet ;
-- au plus 225 % d'encre sur les aplats violets (250 % pour les petits textes), contre près de
-  300 % avant : séchage plus rapide, pas de traces, papier qui ne gondole pas.
+- au plus 186 % d'encre sur les aplats violets (250 % pour les petits textes), contre près de
+  300 % avant : sur papier couché, l'encre ne pénètre pas ; moins chargée, elle sèche sans
+  perler ni marbrer.
 
-Couleurs principales : fond #7959a4 → #674696 → #54397a, bandeaux #513972 / #573b7f, or
+Les détails fins sont dessinés pour tenir à l'impression (mesures sur l'imprimé, à 88,5 %) :
+traits dorés d'au moins 0,18 mm, guillochis en traits d'au moins 0,27 mm, petits textes d'au
+moins 5,3 pt.
+
+Couleurs principales : fond #7e5ea9 → #6f4e9d → #61438d, bandeaux #61438d / #6a4998, or
 #e2c487. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
 visible. Pour un tirage chez un imprimeur, une épreuve couleur reste conseillée.
+
+### Réglages selon le papier
+
+Billets et menus sur **papier couché brillant**, pochettes sur **papier couché mat** :
+
+- **Imprimante jet d'encre** : utiliser du papier couché *jet d'encre* (papier photo brillant
+  ou mat, recto verso). Le couché « offset » vendu pour l'imprimerie n'absorbe pas l'encre :
+  elle reste humide, perle et bave dans les zones foncées. Dans le pilote, choisir le type de
+  papier exact (« papier photo brillant » pour billets et menus, « papier photo mat » pour les
+  pochettes) et la qualité la plus haute ; désactiver tout mode économie d'encre.
+- **Imprimante laser** : choisir le type « brillant » / « épais » (ou « cartonné ») selon le
+  grammage, pour que le toner soit bien fixé.
+- **Recto verso sur papier brillant** : laisser sécher le recto 10 à 15 minutes avant le verso.
+  Si l'imprimante ne fait pas le recto verso sur ce papier, imprimer la page 1, puis remettre
+  la feuille retournée sur le bord long et imprimer la page 2 (faire un essai sur papier
+  ordinaire pour repérer le bon sens).
 
 ## Dates et lieux
 

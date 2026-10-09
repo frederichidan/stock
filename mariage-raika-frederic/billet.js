@@ -26,10 +26,10 @@ function billet(theme) {
       <div class="corps">
         <div class="calque">
           <svg viewBox="0 0 152 84" preserveAspectRatio="none">
-            ${bandeGuillochee({ largeur: 152, y: 64, amplitude: 4.5, periode: 38, nbLignes: 14, couleur: "var(--guilloche)" })}
+            ${bandeGuillochee({ largeur: 152, y: 64, amplitude: 4.5, periode: 38, nbLignes: 8, couleur: "var(--guilloche)" })}
           </svg>
         </div>
-        <div>${monogramme({ halo: true })}</div>
+        <div>${monogramme({ halo: true, taille: 42 })}</div>
         <div>
           <h1 class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</h1>
           <p class="invitation">${esc(I.invitationBillet)}</p>
@@ -63,7 +63,7 @@ function billet(theme) {
         </div>
       </header>
       <div class="talon-corps">
-        ${monogramme()}
+        ${monogramme({ taille: 25 })}
         <div class="champ"><span class="etiquette">Passager(s)</span><span class="ligne-ecriture"></span></div>
         <div class="grille">
           <div><div class="etiquette">Vol</div><div class="valeur">${esc(I.vol)}</div></div>
@@ -83,7 +83,7 @@ function billet(theme) {
   <section class="page billet verso ${theme.verso}">
     <div class="calque">
       <svg viewBox="0 0 210 99" preserveAspectRatio="none">
-        ${bandeGuillochee({ largeur: 210, y: 58, amplitude: 9, periode: 52, nbLignes: 16, couleur: "var(--guilloche)", epaisseur: 0.18 })}
+        ${bandeGuillochee({ largeur: 210, y: 58, amplitude: 9, periode: 52, nbLignes: 9, couleur: "var(--guilloche)" })}
       </svg>
     </div>
     <header class="bandeau sombre">

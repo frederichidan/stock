@@ -35,7 +35,7 @@
 
 /* ---------------------------- Couverture ---------------------------- */
 .passeport .couverture .contenu { padding: 10mm 8mm 9mm; }
-.passeport .emetteur { color: var(--accent-fort); font-size: 5.6pt; letter-spacing: 0.36em; }
+.passeport .emetteur { color: var(--accent-fort); font-size: 6pt; letter-spacing: 0.36em; }
 .passeport .titre-passeport {
   font-family: var(--serif);
   font-weight: 700;
@@ -100,15 +100,15 @@
   background: var(--zone);
 }
 .passeport .photo .monogramme { width: 30mm; height: 30mm; display: block; margin-top: -3mm; }
-.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent); font-size: 4.2pt; }
+.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent); font-size: 5.4pt; }
 .passeport .champs { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm 3mm; align-content: start; }
 .passeport .champs .large { grid-column: 1 / -1; }
-.passeport .champs .etiquette { color: var(--accent); font-size: 4.6pt; letter-spacing: 0.16em; }
+.passeport .champs .etiquette { color: var(--accent); font-size: 5.4pt; letter-spacing: 0.16em; }
 .passeport .champs .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.8pt; margin-top: 0.6mm; white-space: nowrap; }
 .passeport .champs .titulaires .valeur { font-family: var(--script); font-weight: 400; font-size: 15pt; line-height: 1.1; color: var(--accent-fort); }
 .passeport .signature-bloc { margin-top: 7mm; border-bottom: 0.25mm dotted var(--ligne-ecriture); }
 .passeport .signature-bloc .etiquette,
-.passeport .observations .etiquette { color: var(--accent); font-size: 4.6pt; letter-spacing: 0.16em; }
+.passeport .observations .etiquette { color: var(--accent); font-size: 5.4pt; letter-spacing: 0.16em; }
 .passeport .signature-bloc .signature {
   font-family: var(--script);
   font-size: 19pt;

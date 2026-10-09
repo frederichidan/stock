@@ -49,9 +49,18 @@ function icone(nom, { taille = "1em", rotation = 0, classe = "" } = {}) {
 }
 
 function anneaux({ taille = "1em" } = {}) {
-  return `<svg class="icone" viewBox="0 0 24 16" width="${taille}" height="${taille}" aria-hidden="true" style="fill: none" stroke="currentColor" stroke-width="1.6">
+  return `<svg class="icone" viewBox="0 0 24 16" width="${taille}" height="${taille}" aria-hidden="true" style="fill: none" stroke="currentColor" stroke-width="2.2">
     <circle cx="8.5" cy="8" r="6"/><circle cx="15.5" cy="8" r="6"/></svg>`;
 }
+
+/* ---------------------- Robustesse à l'impression ---------------------- */
+// Les planches A4 impriment les supports à 88,5 % (impression.html). Sur une imprimante de
+// bureau, un trait clair plus fin qu'environ 0,2 mm imprimé se referme sous l'encre du fond
+// violet, et un trait très pâle (obtenu par transparence) se casse en pointillés : les tracés
+// fins ont donc une épaisseur minimale, mesurée sur l'imprimé.
+const ECHELLE_IMPRESSION = 0.885;
+// Épaisseur en unités d'un dessin de `mmParUnite` mm par unité, au moins `minimum` mm imprimés.
+const epaisseurImprimable = (unites, mmParUnite, minimum) => Math.max(unites, minimum / ECHELLE_IMPRESSION / mmParUnite);
 
 /* ---------------------------- Monogramme ---------------------------- */
 
@@ -69,7 +78,7 @@ function arc(cx, cy, r, debut, fin) {
 }
 
 // Branche de laurier le long d'un arc de cercle, de l'angle `debut` vers l'angle `fin`.
-function laurier(cx, cy, r, debut, fin, nbFeuilles, remplissage) {
+function laurier(cx, cy, r, debut, fin, nbFeuilles, remplissage, epaisseur = 1.1) {
   const direction = Math.sign(fin - debut);
   const feuille = (x, y, angle, longueur) => {
     const l = longueur;
@@ -92,7 +101,7 @@ function laurier(cx, cy, r, debut, fin, nbFeuilles, remplissage) {
   const tangenteFin = (Math.atan2(direction * Math.cos(af), -direction * Math.sin(af)) * 180) / Math.PI;
   feuilles += feuille(xf, yf, tangenteFin, 9);
   return `<g fill="${remplissage}">
-    <path d="${arc(cx, cy, r, debut, fin)}" fill="none" stroke="${remplissage}" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="${arc(cx, cy, r, debut, fin)}" fill="none" stroke="${remplissage}" stroke-width="${epaisseur.toFixed(2)}" stroke-linecap="round"/>
     ${feuilles}
   </g>`;
 }
@@ -107,8 +116,11 @@ function couronne(x, y, echelle, remplissage) {
 
 /* Monogramme : initiale de la mariée, esperluette, initiale du marié,
    dans un médaillon couronné bordé de lauriers. Avec `halo`, une rosace
-   guillochée est dessinée autour du médaillon. */
-function monogramme({ classe = "", halo = false } = {}) {
+   guillochée est dessinée autour du médaillon. `taille` : largeur affichée en mm
+   (voir les CSS), pour garder des traits imprimables même sur les petits monogrammes. */
+function monogramme({ classe = "", halo = false, taille = 40 } = {}) {
+  const mmParUnite = taille / 200;
+  const trait = (unites, minimum) => epaisseurImprimable(unites, mmParUnite, minimum).toFixed(2);
   const idOrnements = idUnique("orn");
   const idLettres = idUnique("let");
   const remplissage = `url(#${idOrnements})`;
@@ -116,21 +128,21 @@ function monogramme({ classe = "", halo = false } = {}) {
   const f = initiale(INFOS.mariee);
   const m = initiale(INFOS.marie);
   const rosaceHalo = halo
-    ? `<g style="opacity: calc(var(--guilloche-opacite) * 1.1)">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 6, lobes: 26, nbCourbes: 10, couleur: "var(--guilloche)", epaisseur: 0.6 })}</g>`
+    ? `<g style="opacity: calc(var(--guilloche-opacite) * 0.75)">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 7, lobes: 26, nbCourbes: 6, couleur: "var(--guilloche)", epaisseur: +trait(0.6, 0.22) })}</g>`
     : "";
   return `<svg class="monogramme ${classe}" viewBox="0 0 200 200" style="overflow: visible" role="img" aria-label="${esc(f)} &amp; ${esc(m)}">
     <defs>${degrade(idOrnements, "orn")}${degrade(idLettres, "let")}</defs>
     ${rosaceHalo}
     <g fill="none" stroke="${remplissage}">
-      <path d="${arc(100, 100, 92, -81, 84)}" stroke-width="1.6"/>
-      <path d="${arc(100, 100, 92, 96, 261)}" stroke-width="1.6"/>
-      <path d="${arc(100, 100, 87, -78, 83)}" stroke-width="0.6"/>
-      <path d="${arc(100, 100, 87, 97, 258)}" stroke-width="0.6"/>
+      <path d="${arc(100, 100, 92, -81, 84)}" stroke-width="${trait(1.6, 0.26)}"/>
+      <path d="${arc(100, 100, 92, 96, 261)}" stroke-width="${trait(1.6, 0.26)}"/>
+      <path d="${arc(100, 100, 87, -78, 83)}" stroke-width="${trait(0.6, 0.18)}"/>
+      <path d="${arc(100, 100, 87, 97, 258)}" stroke-width="${trait(0.6, 0.18)}"/>
     </g>
     ${couronne(100, 9.5, 0.95, remplissage)}
     <path d="${ICONES.coeur}" transform="translate(93.4,184.6) scale(0.55)" fill="${remplissage}"/>
-    ${laurier(100, 100, 74, 104, 236, 8, remplissage)}
-    ${laurier(100, 100, 74, 76, -56, 8, remplissage)}
+    ${laurier(100, 100, 74, 104, 236, 8, remplissage, +trait(1.1, 0.2))}
+    ${laurier(100, 100, 74, 76, -56, 8, remplissage, +trait(1.1, 0.2))}
     <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}">${esc(f)}</text>
     <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}">${esc(m)}</text>
     <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" style="fill: var(--esperluette)">&amp;</text>
@@ -139,8 +151,11 @@ function monogramme({ classe = "", halo = false } = {}) {
 
 /* ------------------------- Motifs guillochés ------------------------- */
 
+// Les guillochis sont pâles (opacité --guilloche-opacite) : au moins 0,3 mm de trait, et
+// moins de lignes, pour qu'une imprimante de bureau les rende en traits continus.
+
 // Faisceau de sinusoïdes déphasées (bande guillochée horizontale).
-function bandeGuillochee({ largeur, y, amplitude, periode, nbLignes = 12, couleur, epaisseur = 0.14 }) {
+function bandeGuillochee({ largeur, y, amplitude, periode, nbLignes = 8, couleur, epaisseur = 0.3 }) {
   let traces = "";
   for (let i = 0; i < nbLignes; i += 1) {
     const phase = (i * 2 * Math.PI) / nbLignes;
@@ -158,7 +173,7 @@ function bandeGuillochee({ largeur, y, amplitude, periode, nbLignes = 12, couleu
 }
 
 // Rosace guillochée : courbes polaires r(θ) = R + a·sin(nθ + φ) déphasées.
-function rosace({ cx, cy, rayon, amplitude, lobes, nbCourbes = 16, couleur, epaisseur = 0.14 }) {
+function rosace({ cx, cy, rayon, amplitude, lobes, nbCourbes = 8, couleur, epaisseur = 0.3 }) {
   let traces = "";
   for (let i = 0; i < nbCourbes; i += 1) {
     const phase = (i * 2 * Math.PI) / nbCourbes;

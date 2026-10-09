@@ -10,12 +10,12 @@ function carteMenu(theme) {
   <section class="page menu recto ${theme.principal}">
     <div class="calque">
       <svg viewBox="0 0 99 210" preserveAspectRatio="none">
-        ${bandeGuillochee({ largeur: 99, y: 192, amplitude: 3, periode: 24, nbLignes: 12, couleur: "var(--guilloche)" })}
+        ${bandeGuillochee({ largeur: 99, y: 192, amplitude: 3, periode: 24, nbLignes: 7, couleur: "var(--guilloche)" })}
       </svg>
     </div>
     ${encadrement()}
     <div class="contenu">
-      ${monogramme({ halo: true })}
+      ${monogramme({ halo: true, taille: 31 })}
       <h1 class="titre-menu texte-degrade">${esc(M.titre)}</h1>
       <div class="etiquette evenement">${esc(M.evenement)}</div>
       <div class="date">${esc(M.date)}</div>
@@ -40,7 +40,7 @@ function carteMenu(theme) {
   <section class="page menu verso ${theme.principal}">
     ${encadrement()}
     <div class="contenu">
-      ${monogramme({ halo: true })}
+      ${monogramme({ halo: true, taille: 54 })}
       <div class="noms texte-degrade">${esc(I.mariee)} <span class="esperluette">&amp;</span> ${esc(I.marie)}</div>
       <div class="date">${esc(dateCivil.dateCourte.replace(/\./g, " · "))}</div>
       ${ornement()}

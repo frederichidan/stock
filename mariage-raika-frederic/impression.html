@@ -65,7 +65,8 @@
   const A4 = [210, 297];
   // Réduction commune à tous les éléments pour en placer plusieurs par A4 avec fond perdu,
   // traits de coupe et 8 mm de marge (3 billets ou 3 menus par feuille, 2 pochettes).
-  const ECHELLE_A4 = 0.885;
+  // Définie dans commun.js : les épaisseurs minimales des traits fins en dépendent.
+  const ECHELLE_A4 = ECHELLE_IMPRESSION;
   // Le fond perdu est dessiné à l'échelle 1 puis réduit : il est donc prévu un peu plus large
   // pour mesurer exactement 3 mm une fois imprimé (et les images 8K le contiennent déjà).
   const FOND_PERDU_DESSIN = FOND_PERDU / ECHELLE_A4;

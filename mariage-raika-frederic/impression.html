@@ -18,8 +18,8 @@
        ?images=["…","…"]  une illustration par face (fond perdu compris, à l'endroit) :
                           c'est ainsi qu'exporter.js produit les PDF « 8K » ;
        ?capture=1         une seule face par feuille, à taille réelle, sans repères ni
-                          vectorisation des textes dorés : sert à capturer chaque
-                          illustration en image 8K. */
+                          vectorisation des textes dorés, voilé d'un grain très fin :
+                          sert à capturer chaque illustration en image 8K. */
   .feuille { position: relative; overflow: hidden; background: #fff; break-after: page; }
   .feuille:last-child { break-after: auto; }
   .exemplaire { position: absolute; }
@@ -28,6 +28,9 @@
   .copie { position: absolute; }
   .copie .page { margin: 0 !important; box-shadow: none !important; }
   .exemplaire > img { display: block; width: 100%; height: 100%; }
+  /* Grain monochrome très fin (0,05 mm, ± 2 niveaux) posé sur les illustrations 8K : invisible
+     à l'œil, il empêche les imprimantes laser de dessiner des bandes dans les grands dégradés. */
+  .grain { position: absolute; inset: 0; pointer-events: none; image-rendering: pixelated; }
   .reperes { position: absolute; inset: 0; width: 100%; height: 100%; }
   #preparation { position: absolute; left: 0; top: 0; }
   .legende {
@@ -104,8 +107,9 @@
   // portrait, horizontal en paysage). Les exemplaires sont identiques et la grille centrée,
   // donc chaque verso tombe derrière un recto ; il est tourné de 180° quand l'axe de la feuille
   // diffère de celui de l'objet, pour se lire à l'endroit une fois l'objet retourné.
-  const axeFeuille = largeurFeuille < hauteurFeuille ? "vertical" : "horizontal";
-  const rotationVerso = capture || axeFeuille === doc.retournement ? 0 : 180;
+  const axeFeuille = doc.a4.paysage ? "horizontal" : "vertical";
+  const rotationVerso = axeFeuille === doc.retournement ? 0 : 180;
+  const rotationFace = (i) => (i === 0 || capture ? 0 : rotationVerso);
 
   document.getElementById("format-page").textContent =
     `@page { size: ${largeurFeuille}mm ${hauteurFeuille}mm; margin: 0; }
@@ -130,6 +134,25 @@
       <g stroke="#000" stroke-width="0.088" fill="none">${traits}</g></svg>`;
   }
 
+  // Tuile de bruit gaussien (graine fixe : même rendu à chaque export), en noir ou blanc
+  // faiblement opaque, chaque point mesurant 0,05 mm.
+  function tuileGrain(cote = 256, force = 0.016) {
+    const toile = document.createElement("canvas");
+    toile.width = toile.height = cote;
+    const contexte = toile.getContext("2d");
+    const pixels = contexte.createImageData(cote, cote);
+    let graine = 1812;
+    const hasard = () => ((graine = (graine * 1103515245 + 12345) >>> 0) + 0.5) / 4294967296;
+    for (let i = 0; i < cote * cote; i += 1) {
+      const n = Math.sqrt(-2 * Math.log(hasard())) * Math.cos(2 * Math.PI * hasard());
+      const v = n < 0 ? 0 : 255;
+      pixels.data.set([v, v, v, Math.min(255, Math.round(Math.abs(n) * force * 255))], i * 4);
+    }
+    contexte.putImageData(pixels, 0, 0);
+    return { url: toile.toDataURL("image/png"), taille: cote * 0.05 };
+  }
+  const GRAIN = capture ? tuileGrain() : null;
+
   // La face au centre, et ses 8 voisines en miroir : seuls 3 mm de chacune restent visibles.
   // Copies miroir d'abord (légèrement glissées vers le centre) : les coins, puis les côtés, qui
   // les recouvrent jusqu'au prolongement des lignes de coupe ; la face elle-même au-dessus.
@@ -141,14 +164,19 @@
       const y = FOND_PERDU_DESSIN + dy * (H - RECOUVREMENT);
       return `<div class="copie" style="left:${mm(x)};top:${mm(y)};transform:scale(${dx ? -1 : 1}, ${dy ? -1 : 1})">${face.outerHTML}</div>`;
     });
-    return `<div class="fond-perdu" style="width:${mm(L + 2 * FOND_PERDU_DESSIN)};height:${mm(H + 2 * FOND_PERDU_DESSIN)};zoom:${echelle}">${copies.join("")}</div>`;
+    const grain = GRAIN ? `<div class="grain" style="background-image:url(${GRAIN.url});background-size:${mm(GRAIN.taille)}"></div>` : "";
+    return `<div class="fond-perdu" style="width:${mm(L + 2 * FOND_PERDU_DESSIN)};height:${mm(H + 2 * FOND_PERDU_DESSIN)};zoom:${echelle}">${copies.join("")}${grain}</div>`;
   }
 
+  // Une image est tournée elle-même : tourner son conteneur en ferait, dans le PDF, un groupe de
+  // transparence, que certains pilotes d'imprimante rendent moins bien.
   function exemplaires(face, rotation) {
-    const contenu = typeof face === "string" ? `<img src="${esc(face)}" alt="">` : fondPerdu(face);
+    const image = typeof face === "string";
+    const tourner = rotation ? `transform:rotate(${rotation}deg)` : "";
+    const contenu = image ? `<img src="${esc(face)}" alt="" style="${tourner}">` : fondPerdu(face);
     const fp = FOND_PERDU_DESSIN * echelle; // 3 mm sur la planche A4
     return xs
-      .flatMap((x) => ys.map((y) => `<div class="exemplaire" style="left:${mm(x - fp)};top:${mm(y - fp)};width:${mm(l + 2 * fp)};height:${mm(h + 2 * fp)};transform:rotate(${rotation}deg)">${contenu}</div>`))
+      .flatMap((x) => ys.map((y) => `<div class="exemplaire" style="left:${mm(x - fp)};top:${mm(y - fp)};width:${mm(l + 2 * fp)};height:${mm(h + 2 * fp)};${image ? "" : tourner}">${contenu}</div>`))
       .join("");
   }
 
@@ -185,7 +213,7 @@
     document.getElementById("planches").innerHTML = faces
       .map((face, i) => `
         <section class="feuille">
-          ${exemplaires(face, i === 0 ? 0 : rotationVerso)}
+          ${exemplaires(face, rotationFace(i))}
           ${capture ? "" : reperes() + legende(i)}
         </section>`)
       .join("");

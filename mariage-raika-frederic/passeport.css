@@ -65,7 +65,7 @@
 
 /* ------------------------ Intérieur : invitation ------------------------ */
 .passeport .invitation-page .contenu { padding: 11mm 10mm 9mm; }
-.passeport .invitation-page .etiquette { color: var(--accent); font-size: 5.6pt; letter-spacing: 0.34em; }
+.passeport .invitation-page .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.34em; }
 .passeport .invitation-page .ornement { width: 46mm; height: 4mm; margin-top: 1.6mm; }
 .passeport .invitation-page .noms { font-family: var(--script); font-size: 25pt; line-height: 1.25; padding: 0 3mm; margin-top: 2.4mm; white-space: nowrap; }
 .passeport .texte-invitation { font-style: italic; font-size: 11.5pt; line-height: 1.35; margin-top: 1.4mm; text-wrap: pretty; }
@@ -73,11 +73,11 @@
 .passeport .visas-titre::before,
 .passeport .visas-titre::after { content: ""; flex: 1; border-top: 0.25mm solid var(--ligne); }
 .passeport .visas { position: relative; width: 85mm; height: 56mm; margin-top: 2mm; }
-.passeport .tampon { position: absolute; display: block; opacity: 0.9; }
+.passeport .tampon { position: absolute; display: block; }
 .passeport .tampon.rond { width: 31mm; height: 31mm; }
 .passeport .tampon.rectangle { width: 44mm; height: 25.6mm; }
 .passeport .tampon.t1 { left: 1mm; top: 1mm; color: var(--accent-fort); }
-.passeport .tampon.t2 { right: 0; top: 4mm; color: var(--accent); }
+.passeport .tampon.t2 { right: 0; top: 4mm; color: var(--accent-texte); }
 .passeport .tampon.t3 { left: 31mm; top: 25mm; color: var(--accent-fort); }
 .passeport .bon-voyage { display: flex; align-items: center; gap: 2mm; font-family: var(--script); font-size: 19pt; line-height: 1.3; margin-top: auto; }
 .passeport .bon-voyage .texte-degrade { padding: 0 1.5mm 0 0.5mm; } /* le « ! » penché dépasse à droite */
@@ -86,7 +86,7 @@
 /* ---------------------- Intérieur : page d'identité ---------------------- */
 .passeport .identite .contenu { align-items: stretch; text-align: left; padding: 9mm 8mm 0; }
 .passeport .identite .entete { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.3mm solid var(--accent); padding-bottom: 1.6mm; }
-.passeport .identite .entete .etiquette { color: var(--accent); font-size: 5.6pt; letter-spacing: 0.3em; }
+.passeport .identite .entete .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.3em; }
 .passeport .identite .entete .pays { font-family: var(--serif); font-style: italic; font-size: 9.5pt; color: var(--accent-fort); }
 .passeport .identite .donnees { display: grid; grid-template-columns: 35mm 1fr; gap: 4.5mm; margin-top: 6mm; }
 .passeport .photo {
@@ -100,15 +100,15 @@
   background: var(--zone);
 }
 .passeport .photo .monogramme { width: 30mm; height: 30mm; display: block; margin-top: -3mm; }
-.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent); font-size: 5.4pt; }
+.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent-texte); font-size: 6pt; }
 .passeport .champs { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm 3mm; align-content: start; }
 .passeport .champs .large { grid-column: 1 / -1; }
-.passeport .champs .etiquette { color: var(--accent); font-size: 5.4pt; letter-spacing: 0.16em; }
+.passeport .champs .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.16em; }
 .passeport .champs .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.8pt; margin-top: 0.6mm; white-space: nowrap; }
 .passeport .champs .titulaires .valeur { font-family: var(--script); font-weight: 400; font-size: 15pt; line-height: 1.1; color: var(--accent-fort); }
 .passeport .signature-bloc { margin-top: 7mm; border-bottom: 0.25mm dotted var(--ligne-ecriture); }
 .passeport .signature-bloc .etiquette,
-.passeport .observations .etiquette { color: var(--accent); font-size: 5.4pt; letter-spacing: 0.16em; }
+.passeport .observations .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.16em; }
 .passeport .signature-bloc .signature {
   font-family: var(--script);
   font-size: 19pt;

@@ -22,6 +22,7 @@ const os = require("os");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const { chromium } = require("playwright");
+const { PDFDocument, PrintScaling, Duplex } = require("pdf-lib");
 const THEMES = require("./themes.js");
 const INFOS = new Function(`${fs.readFileSync(path.join(__dirname, "infos.js"), "utf8")}; return INFOS;`)();
 const TOUTES = process.argv.includes("--toutes");
@@ -32,6 +33,7 @@ const HUIT_K = 7680;
 const QUALITE_JPG = 90;
 const QUALITE_IMPRESSION = 95;
 const FORMAT_MAQUETTE_PDF = [297, 210]; // mm : A4 paysage
+const A4_PT = [595.276, 841.89];
 const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone imprimable
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
@@ -132,6 +134,24 @@ async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fi
   await page.waitForFunction(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0));
   await page.pdf({ path: fichier, preferCSSPageSize: true, printBackground: true });
   await page.close();
+  await finaliserPdf(fichier, { rectoVerso: false });
+}
+
+// Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
+// rétablit l'A4 exact, centré sur le contenu, et l'on demande aux lecteurs PDF (Acrobat, Chrome,
+// Edge…) d'imprimer à 100 %, sur le bac A4, et en recto verso bord long pour les planches.
+async function finaliserPdf(fichier, { rectoVerso }) {
+  const document = await PDFDocument.load(fs.readFileSync(fichier), { updateMetadata: false });
+  for (const page of document.getPages()) {
+    const { width, height } = page.getMediaBox();
+    const [largeur, hauteur] = width > height ? [A4_PT[1], A4_PT[0]] : A4_PT;
+    page.setMediaBox((width - largeur) / 2, (height - hauteur) / 2, largeur, hauteur);
+  }
+  const preferences = document.catalog.getOrCreateViewerPreferences();
+  preferences.setPrintScaling(PrintScaling.None);
+  preferences.setPickTrayByPDFSize(true);
+  if (rectoVerso) preferences.setDuplex(Duplex.DuplexFlipLongEdge);
+  fs.writeFileSync(fichier, await document.save({ updateFieldAppearances: false }));
 }
 
 // Illustrations 8K de chaque face, fond perdu compris, à l'endroit, capturées depuis
@@ -155,6 +175,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
   await charger(page, adresse("impression.html", parametres), "planchesPretes");
   await page.pdf({ path: fichier, preferCSSPageSize: true, printBackground: true });
   await page.close();
+  await finaliserPdf(fichier, { rectoVerso: true });
 }
 
 (async () => {

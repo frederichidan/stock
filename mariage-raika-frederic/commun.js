@@ -128,7 +128,7 @@ function monogramme({ classe = "", halo = false, taille = 40 } = {}) {
   const f = initiale(INFOS.mariee);
   const m = initiale(INFOS.marie);
   const rosaceHalo = halo
-    ? `<g style="opacity: calc(var(--guilloche-opacite) * 0.75)">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 7, lobes: 26, nbCourbes: 6, couleur: "var(--guilloche)", epaisseur: +trait(0.6, 0.22) })}</g>`
+    ? `<g style="opacity: calc(var(--guilloche-opacite) * 1.1)">${rosace({ cx: 100, cy: 100, rayon: 112, amplitude: 7, lobes: 26, nbCourbes: 6, couleur: "var(--guilloche)", epaisseur: +trait(0.6, 0.22) })}</g>`
     : "";
   return `<svg class="monogramme ${classe}" viewBox="0 0 200 200" style="overflow: visible" role="img" aria-label="${esc(f)} &amp; ${esc(m)}">
     <defs>${degrade(idOrnements, "orn")}${degrade(idLettres, "let")}</defs>

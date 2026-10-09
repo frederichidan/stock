@@ -10,8 +10,8 @@ Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-me
 
 | Fichier | Usage |
 |---|---|
-| `…-A4-8k.pdf` | **À imprimer sur A4**, recto verso bord long : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi) |
-| `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier plus léger, textes nets à toute taille) |
+| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés |
+| `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
 | `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) |
@@ -32,7 +32,9 @@ dessin d'origine :
 
 Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Imprimer en
 **recto verso avec retournement sur le bord long**, à **100 %** (taille réelle, sans
-« ajuster à la page »). Les versos sont placés et orientés pour tomber derrière les rectos :
+« ajuster à la page »). Les PDF sont au format A4 exact et demandent eux-mêmes ces réglages
+(Acrobat Reader, Chrome et Edge les présélectionnent) : vérifiez-les tout de même dans la
+fenêtre d'impression. Les versos sont placés et orientés pour tomber derrière les rectos :
 
 - **Pochette** : une fois la feuille découpée et pliée au milieu (repères « pli » en
   pointillés), l'invitation se trouve derrière la couverture et la page d'identité derrière
@@ -61,8 +63,10 @@ remplacé par un **violet améthyste** plus clair, de même teinte, et toutes le
   perler ni marbrer.
 
 Les détails fins sont dessinés pour tenir à l'impression (mesures sur l'imprimé, à 88,5 %) :
-traits dorés d'au moins 0,18 mm, guillochis en traits d'au moins 0,27 mm, petits textes d'au
-moins 5,3 pt.
+traits dorés d'au moins 0,18 mm, guillochis et halos en traits d'au moins 0,2 mm, petits textes
+d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet très légèrement épaissis
+(0,04 mm) pour compenser l'encre du fond ; petites étiquettes dorées des pages claires dans un
+or plus foncé, lisible.
 
 Couleurs principales : fond #7e5ea9 → #6f4e9d → #61438d, bandeaux #61438d / #6a4998, or
 #e2c487. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte

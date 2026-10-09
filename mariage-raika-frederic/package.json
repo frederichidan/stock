@@ -7,6 +7,7 @@
     "exporter:toutes": "node exporter.js --toutes"
   },
   "dependencies": {
-    "playwright": "1.56.1"
+    "playwright": "1.56.1",
+    "pdf-lib": "1.17.1"
   }
 }

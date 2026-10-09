@@ -48,7 +48,7 @@ function ruban(texte) {
     <g stroke="url(#${or})" stroke-width="0.9" stroke-linejoin="round">
       <path d="M32,12 L5,15 L13,22.5 L5,30 L32,29 Z" style="fill: var(--accent); fill-opacity: 0.28"/>
       <path d="M168,12 L195,15 L187,22.5 L195,30 L168,29 Z" style="fill: var(--accent); fill-opacity: 0.28"/>
-      <path d="M24,8 Q100,30 176,8 L176,26 Q100,48 24,26 Z" style="fill: var(--accent); fill-opacity: 0.16"/>
+      <path d="M24,8 Q100,30 176,8 L176,26 Q100,48 24,26 Z" style="fill: var(--accent); fill-opacity: 0.1"/>
     </g>
     <text font-family="Great Vibes" font-size="14.5" fill="url(#${lettres})">
       <textPath href="#${chemin}" startOffset="50%" text-anchor="middle">${esc(texte)}</textPath>
@@ -105,7 +105,7 @@ function tampon(e, numero, forme, rotation) {
     <g fill="currentColor" font-family="Montserrat" font-weight="700" text-anchor="middle">
       <text font-size="7.4" letter-spacing="0.9"><textPath href="#${id}-h" startOffset="50%">${esc(e.titre.toUpperCase())}</textPath></text>
       <text font-size="6.4" letter-spacing="1.4"><textPath href="#${id}-b" startOffset="50%">· ${esc(e.escale.toUpperCase())} ·</textPath></text>
-      <text x="50" y="44" font-size="5.2" letter-spacing="0.8">${esc(e.jour.toUpperCase())}</text>
+      <text x="50" y="44" font-size="6.2" letter-spacing="0.8">${esc(e.jour.toUpperCase())}</text>
       <text x="50" y="57" font-size="13">${esc(`${jj}.${mm}`)}</text>
       <text x="50" y="66" font-size="6.5" letter-spacing="0.6">${esc(aaaa)}</text>
     </g>

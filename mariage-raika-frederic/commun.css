@@ -36,7 +36,7 @@
   --fond-1: #7e5ea9; --fond-2: #6f4e9d; --fond-3: #61438d;
   --bande-1: #61438d; --bande-2: #6a4998;
   --talon-1: #6a4998; --talon-2: #61438d;
-  --verso-1: #fffdf8; --verso-2: #f8f3ea; --verso-3: #efe7f5;
+  --verso-1: #fdf9f1; --verso-2: #f8f3ea; --verso-3: #efe7f5;
 }
 
 [data-theme="minuit"] {
@@ -88,6 +88,7 @@
 }
 
 .clair {
+  --accent-texte: var(--accent);
   --texte: #2b1159;
   --texte-doux: #5a4a7a;
   --accent: #a07a32;
@@ -113,25 +114,30 @@
 /* Violet améthyste : sur ce fond plus clair, l'or est éclairci pour rester lisible ; sur les
    pages claires, violets et ors foncés sont ramenés dans la gamme imprimable (même teinte). */
 [data-theme="violet"] .sombre {
-  --accent: #e2c487;
+  --texte-doux: #dcd3dc;
+  --accent: #e9d096;
   --discret: #d4d6de;
   --ligne: rgba(226, 196, 135, 0.8);
   --filet: rgba(226, 196, 135, 0.4);
   --code: #e6c98a;
-  --let-a: #b8913f; --let-b: #f3dfa6; --let-c: #d6b46e;
-  --orn-a: #b8913f; --orn-b: #f3dfa6; --orn-c: #d6b46e;
+  --let-a: #c8a252; --let-b: #f3dfa6; --let-c: #d6b46e;
+  --orn-a: #c8a252; --orn-b: #f3dfa6; --orn-c: #d6b46e;
   --guilloche: #e2c487;
   --pastille: #e2c487;
   --pastille-texte: #463260;
+  /* Texte clair sur fond foncé : l'encre du fond grignote les déliés à l'impression ; un
+     contour de 0,04 mm de la couleur du texte compense (engraissement « en réserve »). */
+  -webkit-text-stroke: 0.04mm currentColor;
 }
 [data-theme="violet"] .clair {
   --texte: #463260;
-  --texte-doux: #635278;
+  --texte-doux: #54397a;
   --accent: #9f7a38;
+  --accent-texte: #7c6134;
   --accent-fort: #54397a;
   --discret: #726187;
   --ligne: rgba(159, 122, 56, 0.7);
-  --filet: rgba(84, 57, 122, 0.18);
+  --filet: rgba(84, 57, 122, 0.3);
   --zone: rgba(84, 57, 122, 0.12);
   --ligne-ecriture: rgba(70, 50, 96, 0.45);
   --code: #54397a;
@@ -139,7 +145,8 @@
   --let-a: #463260; --let-b: #6f4e9e; --let-c: #54397a;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
   --guilloche: #54397a;
-  --pastille: #54397a;
+  --guilloche-opacite: 0.12;
+  --pastille: #61438d;
   --titre-etape: #54397a;
   --code-barres: #463260;
 }

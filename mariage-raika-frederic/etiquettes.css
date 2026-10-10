@@ -122,8 +122,9 @@
 .bouteille.eau .aeroport .code { font-size: 12pt; }
 
 /* Talon */
-/* Le fond du talon est doré sur la hauteur du bandeau : sinon, dans le PDF vectoriel, le fond
-   champagne peint dessous ressort d'un pixel le long du bord haut (anticrénelage). */
+/* Le fond du talon reprend la couleur du bandeau sur sa hauteur : sinon, dans le PDF vectoriel,
+   le fond peint dessous ressort d'un pixel le long du bord haut (anticrénelage) quand les deux
+   couleurs diffèrent (palettes or champagne et argent). */
 .bouteille.eau .talon {
   position: relative;
   display: flex;

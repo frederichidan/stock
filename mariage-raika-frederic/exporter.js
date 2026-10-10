@@ -42,7 +42,7 @@ const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone im
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
-// `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles, en or champagne).
+// `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles).
 const ELEMENTS = [
   {
     dossier: "pochette-passeport",

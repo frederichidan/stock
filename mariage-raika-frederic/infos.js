@@ -12,8 +12,9 @@ const INFOS = {
   theme: "violet",
   // Couleurs de la carte de menu et des étiquettes de bouteilles : "blanc" = blanc & or (fond
   // blanc, textes et décors dorés), "or" = or champagne (fond ivoire, bandeaux dorés), "argent"
-  // = argent ; pour le menu, "" = les couleurs de la version ci-dessus. La pochette passeport
-  // garde celles de la version ; les billets ont une couleur par catégorie (`billets` plus bas).
+  // = argent ; pour le menu, "" = les couleurs de la version ci-dessus (pour les étiquettes,
+  // toute autre valeur revient au blanc & or). La pochette passeport garde celles de la
+  // version ; les billets ont une couleur par catégorie (`billets` plus bas).
   couleurs: { menu: "blanc", etiquettes: "blanc" },
 
   // Le prénom féminin se place avant le prénom masculin.

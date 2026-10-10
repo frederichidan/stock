@@ -1,5 +1,5 @@
-/* Étiquettes de bouteilles, dans la charte du billet (carte d'embarquement) : bandeau sombre
-   liseré d'or, monogramme couronné, prénoms en écriture dorée, trajet CLB → MAR, guillochis.
+/* Étiquettes de bouteilles, dans la charte du billet (carte d'embarquement) : bandeau liseré
+   d'or, monogramme couronné, prénoms en écriture dorée, trajet CLB → MAR, guillochis.
    - Vin : étiquette avant, 90 × 120 mm (bouteille de 75 cl).
    - Eau 33 cl : étiquette qui fait le tour de la bouteille, 200 × 50 mm. Le bord gauche passe
      sous le bord droit une fois collée : les 15 premiers millimètres ne portent aucun texte.
@@ -20,8 +20,10 @@ function dateEtiquette() {
   return `<span class="chiffres">${esc(jour)}</span> ${esc(mois.toUpperCase())} <span class="chiffres">${esc(annee)}</span>`;
 }
 
+// Toute valeur autre que "or", "argent" ou "blanc" revient au blanc & or : sans palette, la page
+// n'aurait aucune couleur de texte.
 function couleursEtiquette() {
-  return palette((INFOS.couleurs || {}).etiquettes || "blanc");
+  return palette((INFOS.couleurs || {}).etiquettes) || palette("blanc");
 }
 
 function trajetEtiquette() {

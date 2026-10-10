@@ -31,7 +31,9 @@
   .copie .page { margin: 0 !important; box-shadow: none !important; }
   .exemplaire > img { display: block; width: 100%; height: 100%; }
   /* Grain monochrome très fin (0,05 mm, ± 2 niveaux) posé sur les illustrations 8K : invisible
-     à l'œil, il empêche les imprimantes laser de dessiner des bandes dans les grands dégradés. */
+     à l'œil, il empêche les imprimantes laser de dessiner des bandes dans les grands dégradés.
+     Pas de grain sur les faces blanc & or (palette-blanc) : sans grand dégradé, leur fond reste
+     le blanc pur du papier, sans encre. */
   .grain { position: absolute; inset: 0; pointer-events: none; image-rendering: pixelated; }
   .reperes { position: absolute; inset: 0; width: 100%; height: 100%; }
   #preparation { position: absolute; left: 0; top: 0; }
@@ -173,7 +175,7 @@
       const y = FOND_PERDU_DESSIN + dy * (H - RECOUVREMENT);
       return `<div class="copie" style="left:${mm(x)};top:${mm(y)};transform:scale(${dx ? -1 : 1}, ${dy ? -1 : 1})">${face.outerHTML}</div>`;
     });
-    const grain = GRAIN ? `<div class="grain" style="background-image:url(${GRAIN.url});background-size:${mm(GRAIN.taille)}"></div>` : "";
+    const grain = GRAIN && !face.matches(".palette-blanc") ? `<div class="grain" style="background-image:url(${GRAIN.url});background-size:${mm(GRAIN.taille)}"></div>` : "";
     return `<div class="fond-perdu" style="width:${mm(L + 2 * FOND_PERDU_DESSIN)};height:${mm(H + 2 * FOND_PERDU_DESSIN)};zoom:${echelle}">${copies.join("")}${grain}</div>`;
   }
 

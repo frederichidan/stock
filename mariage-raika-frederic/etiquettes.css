@@ -1,0 +1,198 @@
+/* Étiquettes de bouteilles (etiquettes.js), dans la charte du billet, en or champagne.
+   Imprimées à taille réelle (100 %) : elles doivent correspondre aux bouteilles. */
+
+/* Palette « or champagne » (or antique #a07a32 et or champagne #c9a464 de la palette du
+   mariage) : fond ivoire et champagne, bandeaux dorés, textes bronze foncé. Toutes les teintes
+   sont dans la gamme d'une imprimante quadri (écart ΔE < 2) ; le fond, clair, ne demande que
+   7 à 65 % d'encre. */
+.page.bouteille.or {
+  --fond-1: #fdf9ef; --fond-2: #f5ead0; --fond-3: #e6d2a6;
+  --bande-1: #c39c4a; --bande-2: #d6b46e;
+  --talon-1: #eadbb3; --talon-2: #dcc591;
+  --texte: #463c2d;
+  --texte-doux: #5d4b2d;
+  --accent: #9f7a38;
+  --accent-texte: #7c6134;
+  --accent-fort: #7c6134;
+  --discret: #5d4b2d;
+  --ligne: rgba(159, 122, 56, 0.75);
+  --filet: rgba(159, 122, 56, 0.35);
+  --ligne-ecriture: rgba(70, 60, 45, 0.45);
+  --code: #816636;
+  --esperluette: #463c2d;
+  --let-a: #7c6134; --let-b: #b8913f; --let-c: #9f7a38;
+  --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
+  --guilloche: #9f7a38;
+  --guilloche-opacite: 0.16;
+  --code-barres: #3b342a;
+  color: var(--texte);
+}
+/* Sur les bandeaux dorés : textes et pictogrammes bronze foncé, bien contrastés. */
+.page.bouteille.or .bandeau {
+  --accent: #3b342a;
+  --accent-fort: #3b342a;
+  --texte-doux: #3b342a;
+  --discret: #463c2d;
+  border-bottom-color: #9f7a38;
+}
+
+.page.bouteille {
+  background: radial-gradient(ellipse 85% 75% at 50% 42%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);
+}
+
+/* Bandeau commun : comme celui du billet. */
+.bouteille .bandeau {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, var(--bande-1), var(--bande-2));
+  border-bottom: 0.35mm solid var(--accent);
+}
+.bouteille .bandeau .icone { color: var(--accent); flex: none; }
+.bouteille .mention,
+.bouteille .grille .etiquette { color: var(--accent-texte, var(--accent)); }
+.bouteille .bandeau .etiquette { color: var(--accent-fort); letter-spacing: 0.3em; }
+.bouteille .bandeau .sous-titre { font-style: italic; color: var(--texte-doux); margin-top: 0.4mm; }
+
+.bouteille .noms {
+  font-family: var(--script);
+  font-weight: 400;
+  line-height: 1.2;
+  padding: 0 3mm;
+  white-space: nowrap;
+}
+.bouteille .noms .esperluette { color: var(--esperluette); }
+
+.bouteille .trajet { display: flex; align-items: center; gap: 2.5mm; }
+.bouteille .aeroport { display: flex; flex-direction: column; align-items: center; }
+.bouteille .aeroport .code { font-family: var(--serif); font-weight: 700; line-height: 1; letter-spacing: 0.06em; color: var(--code); }
+.bouteille .aeroport .etiquette { margin-top: 0.7mm; }
+.bouteille .ligne-vol { flex: 1; display: flex; align-items: center; gap: 1.2mm; color: var(--accent); margin-top: -2.6mm; }
+.bouteille .ligne-vol span { flex: 1; border-top: 0.3mm dashed var(--ligne); }
+.bouteille .ligne-vol .icone { width: 4.2mm; height: 4.2mm; }
+
+/* ------------------------- Vin : 90 × 120 mm ------------------------- */
+.page.bouteille.vin { width: 90mm; height: 120mm; display: flex; flex-direction: column; }
+.bouteille.vin .bandeau { height: 15mm; flex: none; justify-content: center; gap: 2.4mm; text-align: left; }
+.bouteille.vin .bandeau .icone { width: 5mm; height: 5mm; }
+.bouteille.vin .bandeau .etiquette { font-size: 6.6pt; }
+.bouteille.vin .bandeau .sous-titre { font-size: 9pt; }
+
+.bouteille.vin .corps {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 7mm 6mm 3mm;
+}
+.bouteille.vin .monogramme { width: 34mm; height: 34mm; display: block; flex: none; }
+.bouteille.vin .cuvee {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 15pt;
+  line-height: 1.15;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 0 0 0 0.24em; /* recentre le texte malgré l'espace après la dernière lettre */
+  margin-top: 6mm;
+}
+.bouteille.vin .noms { font-size: 23pt; margin-top: 0.4mm; }
+.bouteille.vin .mention { font-size: 6.4pt; letter-spacing: 0.28em; margin-top: 0.6mm; }
+.bouteille.vin .trajet { width: 62mm; margin-top: auto; }
+.bouteille.vin .aeroport .code { font-size: 13pt; }
+
+.bouteille.vin .pied {
+  flex: none;
+  height: 15mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(90deg, var(--talon-2), var(--talon-1), var(--talon-2));
+  border-top: 0.35mm solid var(--accent);
+}
+.bouteille .date-etiquette { font-family: var(--sans); font-weight: 700; font-size: 8.4pt; letter-spacing: 0.08em; }
+.bouteille .date-etiquette .chiffres { color: var(--code); }
+.bouteille.vin .devise { font-style: italic; font-size: 9pt; color: var(--accent-texte, var(--accent-fort)); margin-top: 0.4mm; }
+
+/* ---------------------- Eau 33 cl : 200 × 50 mm ---------------------- */
+/* Zone de recouvrement : le bord gauche (15 mm) passe sous le bord droit, il ne porte aucun texte. */
+.page.bouteille.eau {
+  width: 200mm;
+  height: 50mm;
+  display: grid;
+  grid-template-columns: 1fr 56mm;
+  background: radial-gradient(ellipse 70% 120% at 40% 50%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);
+}
+.bouteille.eau .principal { position: relative; display: flex; flex-direction: column; }
+/* Bandeau de 13 mm : ses textes restent à plus de 3 mm de la coupe. */
+.bouteille.eau .bandeau { height: 13mm; flex: none; justify-content: space-between; padding: 0 6mm 0 17mm; }
+.bouteille.eau .bandeau-titre { display: flex; align-items: center; gap: 2.2mm; }
+.bouteille.eau .bandeau-titre .icone { width: 4.6mm; height: 4.6mm; }
+.bouteille.eau .bandeau .etiquette { font-size: 6.2pt; }
+.bouteille.eau .bandeau .sous-titre { font-size: 8.6pt; margin-top: 0.2mm; }
+.bouteille.eau .bandeau-infos { display: flex; gap: 5mm; text-align: right; }
+.bouteille.eau .bandeau-infos .etiquette { color: var(--discret); font-size: 6pt; letter-spacing: 0.22em; }
+.bouteille.eau .bandeau-infos .valeur { font-family: var(--sans); font-weight: 600; font-size: 7pt; color: var(--accent-fort); letter-spacing: 0.06em; margin-top: 0.3mm; }
+
+.bouteille.eau .corps {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 27mm 1fr;
+  gap: 6mm;
+  align-items: center;
+  padding: 0 6mm 0 18mm;
+}
+.bouteille.eau .monogramme { width: 27mm; height: 27mm; display: block; }
+.bouteille.eau .texte { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
+.bouteille.eau .noms { font-size: 21pt; margin-left: -3mm; }
+.bouteille.eau .voeu { font-style: italic; font-size: 9.5pt; margin-top: -0.6mm; }
+.bouteille.eau .trajet { width: 78mm; margin-top: 2.2mm; }
+.bouteille.eau .aeroport .code { font-size: 12pt; }
+
+/* Talon */
+/* Le fond du talon est doré sur la hauteur du bandeau : sinon, dans le PDF vectoriel, le fond
+   champagne peint dessous ressort d'un pixel le long du bord haut (anticrénelage). */
+.bouteille.eau .talon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--bande-1) 0, var(--bande-1) 13mm, var(--talon-1) 13mm, var(--talon-2) 100%);
+}
+.bouteille.eau .talon::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  border-left: 0.35mm dashed var(--ligne);
+  z-index: 2;
+}
+.bouteille.eau .encoche {
+  position: absolute;
+  left: -2.2mm;
+  width: 4.4mm; height: 4.4mm;
+  border-radius: 50%;
+  border: 0.3mm solid var(--accent);
+  background: var(--bande-1);
+  z-index: 3;
+}
+.bouteille.eau .encoche.haut { top: -2.2mm; }
+.bouteille.eau .encoche.bas { bottom: -2.2mm; }
+.bouteille.eau .talon .bandeau { justify-content: center; text-align: center; background: var(--bande-1); }
+.bouteille.eau .talon-corps { flex: 1; display: flex; flex-direction: column; align-items: stretch; padding: 2.4mm 6mm 3.6mm; gap: 1.6mm; }
+.bouteille.eau .contenance {
+  align-self: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 19pt;
+  font-variant-numeric: lining-nums;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  padding: 0 1mm;
+}
+.bouteille.eau .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+.bouteille.eau .grille .valeur { font-family: var(--sans); font-weight: 600; font-size: 6.8pt; letter-spacing: 0.04em; margin-top: 0.3mm; white-space: nowrap; }
+.bouteille.eau .code-barres { width: 100%; height: 5.6mm; display: block; color: var(--code-barres); margin-top: auto; }

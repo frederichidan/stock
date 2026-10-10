@@ -1,7 +1,8 @@
 /* ==================================================================
    INFORMATIONS DU MARIAGE
    C'est le seul fichier à modifier pour changer les textes de la pochette
-   passeport, du billet d'invitation et de la carte de menu.
+   passeport, du billet d'invitation, de la carte de menu et des étiquettes
+   de bouteilles.
    Restent à valider (propositions) : les horaires du coutumier et de la
    soirée, le détail du programme du civil après 13h, la date limite et
    les contacts RSVP, et le menu.
@@ -100,6 +101,23 @@ const INFOS = {
     invitation:
       "ont l’immense joie de vous convier à leur union et seraient honorés de votre présence à chacune des escales de ce beau voyage.",
     bonVoyage: "Bon voyage\u202f!",
+  },
+
+  /* --------------------- Étiquettes de bouteilles --------------------- */
+  // Vin : étiquette avant de 90 × 120 mm. Eau 33 cl : étiquette qui fait le tour de la
+  // bouteille, 200 × 50 mm (voir etiquettes.js pour changer les formats).
+  etiquettes: {
+    vin: {
+      classe: "Première classe",
+      titre: "Cuvée",
+      mention: "Grand vin de mariage",
+    },
+    eau: {
+      nom: "Eau minérale",
+      contenance: "33 cl",
+      mention: "Rafraîchissement à bord",
+      voeu: "vous souhaitent un agréable voyage",
+    },
   },
 
   /* ------------------------- Carte de menu ------------------------- */

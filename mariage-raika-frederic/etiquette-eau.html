@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Étiquette d’eau 33 cl</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="etiquettes.css">
+<style>
+  /* Étiquette enveloppante pour bouteille d'eau de 33 cl, 200 × 50 mm, imprimée à taille réelle ;
+     les 15 mm de gauche passent sous le bord droit une fois collée.
+     Pour imprimer, utiliser impression.html?doc=eau : 3 étiquettes par feuille A4 paysage, à 100 %,
+     fond perdu et traits de coupe. */
+  @page { size: 200mm 50mm; margin: 0; }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="etiquettes.js"></script>
+<script>
+  document.getElementById("planches").innerHTML = etiquetteEau();
+</script>
+</body>
+</html>

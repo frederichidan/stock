@@ -8,13 +8,14 @@
 <link rel="stylesheet" href="passeport.css">
 <link rel="stylesheet" href="billet.css">
 <link rel="stylesheet" href="menu.css">
+<link rel="stylesheet" href="etiquettes.css">
 <style id="format-page"></style>
 <style>
   /* Planches d'impression A4 : plusieurs exemplaires par feuille, chacun entouré d'un fond
      perdu de 3 mm (bords prolongés en miroir), traits de coupe sur le pourtour ; page 1 =
      rectos, page 2 = versos, pour un recto verso avec retournement sur le bord long.
      Paramètres d'adresse :
-       ?doc=passeport | billet | menu   (et ?theme= comme ailleurs)
+       ?doc=passeport | billet | menu | vin | eau   (et ?theme= comme ailleurs)
        ?images=["…","…"]  une illustration par face (fond perdu compris, à l'endroit) :
                           c'est ainsi qu'exporter.js produit les PDF « 8K » ;
        ?capture=1         une seule face par feuille, à taille réelle, sans repères ni
@@ -58,6 +59,7 @@
 <script src="passeport.js"></script>
 <script src="billet.js"></script>
 <script src="menu.js"></script>
+<script src="etiquettes.js"></script>
 <script>
   const FOND_PERDU = 3; // mm
   const GOUTTIERE = 2 * FOND_PERDU; // mm entre deux exemplaires : leurs fonds perdus se touchent
@@ -66,32 +68,37 @@
   // que l'arrondi au pixel des bords (≈ 0,3 mm), sinon les deux interstices se superposent.
   const RECOUVREMENT = 1;
   const A4 = [210, 297];
-  // Réduction commune à tous les éléments pour en placer plusieurs par A4 avec fond perdu,
+  // Réduction commune aux supports papier pour en placer plusieurs par A4 avec fond perdu,
   // traits de coupe et 8 mm de marge (3 billets ou 3 menus par feuille, 2 pochettes).
   // Définie dans commun.js : les épaisseurs minimales des traits fins en dépendent.
+  // Les étiquettes de bouteilles, elles, sont imprimées à taille réelle (`echelle: 1`).
   const ECHELLE_A4 = ECHELLE_IMPRESSION;
-  // Le fond perdu est dessiné à l'échelle 1 puis réduit : il est donc prévu un peu plus large
-  // pour mesurer exactement 3 mm une fois imprimé (et les images 8K le contiennent déjà).
-  const FOND_PERDU_DESSIN = FOND_PERDU / ECHELLE_A4;
 
   // `retournement` : axe autour duquel on retourne l'objet pour lire son verso.
   // La pochette s'ouvre comme un livre (axe vertical) ; le billet, en paysage, se retourne de
   // haut en bas (axe horizontal) ; la carte de menu, de gauche à droite (axe vertical).
+  // `rectoSeul` : une seule face à imprimer (étiquettes) ; `echelle` : 1 = taille réelle.
   const DOCUMENTS = {
     passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, retournement: "vertical", pli: true, a4: { paysage: false, colonnes: 1, lignes: 2 }, finition: "coins arrondis 3 mm conseillés" },
     billet: { rendu: billet, nom: "Billet d’invitation", largeur: 210, hauteur: 99, retournement: "horizontal", a4: { paysage: false, colonnes: 1, lignes: 3 } },
     menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, retournement: "vertical", a4: { paysage: true, colonnes: 3, lignes: 1 } },
+    vin: { rendu: etiquetteVin, nom: "Étiquette de vin", largeur: FORMATS_ETIQUETTES.vin[0], hauteur: FORMATS_ETIQUETTES.vin[1], echelle: 1, rectoSeul: true, a4: { paysage: false, colonnes: 2, lignes: 2 }, finition: "papier adhésif" },
+    eau: { rendu: etiquetteEau, nom: "Étiquette d’eau 33 cl", largeur: FORMATS_ETIQUETTES.eau[0], hauteur: FORMATS_ETIQUETTES.eau[1], echelle: 1, rectoSeul: true, a4: { paysage: true, colonnes: 1, lignes: 3 }, finition: "adhésif vinyle résistant à l’eau conseillé" },
   };
 
   const parametres = new URLSearchParams(location.search);
   const doc = DOCUMENTS[parametres.get("doc")] || DOCUMENTS.billet;
   const images = JSON.parse(parametres.get("images") || "null");
   const capture = parametres.has("capture");
+  const ECHELLE_DOC = doc.echelle || ECHELLE_A4;
+  // Le fond perdu est dessiné à l'échelle 1 puis réduit : il est donc prévu un peu plus large
+  // pour mesurer exactement 3 mm une fois imprimé (et les images 8K le contiennent déjà).
+  const FOND_PERDU_DESSIN = FOND_PERDU / ECHELLE_DOC;
 
   // Disposition : en capture, une face à taille réelle par feuille ; sinon la planche A4.
   const L = doc.largeur;
   const H = doc.hauteur;
-  const echelle = capture ? 1 : ECHELLE_A4;
+  const echelle = capture ? 1 : ECHELLE_DOC;
   const [colonnes, lignes] = capture ? [1, 1] : [doc.a4.colonnes, doc.a4.lignes];
   const [largeurFeuille, hauteurFeuille] = capture
     ? [L + 24, H + 24]
@@ -184,10 +191,10 @@
     const morceaux = [
       `${initiale(INFOS.mariee)} & ${initiale(INFOS.marie)}`,
       doc.nom,
-      i === 0 ? "rectos" : `versos${rotationVerso ? " (tournés de 180°)" : ""}`,
-      `${colonnes * lignes} par feuille A4, ${decimale(l)} × ${decimale(h)} mm`,
+      ...(doc.rectoSeul ? [] : [i === 0 ? "rectos" : `versos${rotationVerso ? " (tournés de 180°)" : ""}`]),
+      `${colonnes * lignes} par feuille A4, ${decimale(l)} × ${decimale(h)} mm${echelle === 1 ? " (taille réelle)" : ""}`,
       `fond perdu ${FOND_PERDU} mm`,
-      "imprimer à 100\u00a0%, recto verso bord long",
+      doc.rectoSeul ? "imprimer à 100\u00a0%, recto seul" : "imprimer à 100\u00a0%, recto verso bord long",
     ];
     if (doc.finition && i === 0) morceaux.push(doc.finition);
     if (images) morceaux.push("8K");

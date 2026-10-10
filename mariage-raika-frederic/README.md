@@ -1,4 +1,4 @@
-# Mariage de Raïka & Frédéric — pochette passeport, billet d'invitation et carte de menu
+# Mariage de Raïka & Frédéric — pochette passeport, billet d'invitation, carte de menu et étiquettes de bouteilles
 
 Supports imprimables aux couleurs violet & or du « Passeport de Mariage » (version A,
 Violet améthyste & or). Il n'y a pas de photo du couple : le visuel principal est le
@@ -6,7 +6,8 @@ monogramme **R & F**, avec l'initiale de la mariée placée avant celle du mari�
 
 ## Les fichiers à utiliser : `export/violet/`
 
-Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-menu/`) :
+Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-menu/`,
+`etiquette-vin/`, `etiquette-eau/`) :
 
 | Fichier | Usage |
 |---|---|
@@ -14,7 +15,7 @@ Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-me
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
-| `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) |
+| `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg`, `…-face-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) |
 
 Et `ensemble-maquette-8k.jpg` / `.pdf` : les trois supports réunis sur une même maquette.
 
@@ -48,6 +49,32 @@ vérifiez que l'impression est bien à 100 % et en « bord long ».
 Découpe : suivre les traits de coupe (massicot ou cutter et règle) ; le fond perdu de 3 mm
 absorbe les petits écarts. Conseils : papier 250 à 350 g, finition mate ou soft-touch ;
 coins arrondis de 3 mm conseillés pour la pochette, comme sur la maquette.
+
+## Étiquettes de bouteilles
+
+Dans la charte du billet (carte d'embarquement, monogramme, trajet CLB → MAR, guillochis),
+mais en **or champagne** plutôt qu'en violet : fond ivoire et champagne, bandeaux dorés,
+textes bronze foncé. Le fond clair demande très peu d'encre (35 à 65 % en moyenne) et toutes
+les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
+
+| Étiquette | Format (taille réelle) | Par feuille A4 | Fichier à imprimer |
+|---|---|---|---|
+| Vin (étiquette avant, bouteille de 75 cl) | 90 × 120 mm | 4 (A4 portrait) | `etiquette-vin/etiquette-vin-A4-8k.pdf` |
+| Eau 33 cl (fait le tour de la bouteille) | 200 × 50 mm | 3 (A4 paysage) | `etiquette-eau/etiquette-eau-A4-8k.pdf` |
+
+- Les étiquettes s'impriment **à 100 %** (elles doivent tomber juste sur les bouteilles) et
+  **en recto seul** : chaque PDF n'a qu'une page.
+- **Papier** : vin, papier adhésif A4 brillant ou mat, à découper aux traits de coupe ; eau,
+  **adhésif vinyle résistant à l'eau** (les bouteilles sortent du frais et se couvrent de
+  buée : un papier ordinaire gondole et l'encre jet d'encre coule). Avec une imprimante jet
+  d'encre, prendre un vinyle « jet d'encre » et laisser sécher avant de découper.
+- **Eau** : l'étiquette de 200 mm convient aux bouteilles de 33 cl courantes (environ 6 cm de
+  diamètre, 19 cm de tour). Coller d'abord le bord gauche, faire le tour, puis rabattre le bord
+  droit (le talon « 33 cl ») par-dessus : les 15 premiers millimètres, sans texte, passent
+  dessous. Mesurez le tour de vos bouteilles avec un ruban : s'il dépasse 19,5 cm, le format se
+  change dans `etiquettes.js` (`FORMATS_ETIQUETTES`).
+- Textes des étiquettes (« Première classe », « Cuvée », « Grand vin de mariage »,
+  « Eau minérale », « 33 cl »…) : section `etiquettes` d'`infos.js`.
 
 ## Couleurs et impression
 
@@ -123,6 +150,7 @@ npm install
 npx playwright install chromium
 node exporter.js            # la version choisie dans infos.js (theme)
 node exporter.js --toutes   # les 4 versions de couleurs et un nuancier comparatif
+node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments seulement
 ```
 
 ## Organisation du code
@@ -131,10 +159,10 @@ node exporter.js --toutes   # les 4 versions de couleurs et un nuancier comparat
 |---|---|
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
 | `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
-| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`?theme=minuit`, par exemple, pour une autre version) |
-| `impression.html` | Planches A4 (`?doc=passeport`, `billet` ou `menu`) |
-| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `menu` ou `ensemble`) |
+| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css` | Dessin de chaque élément |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`?theme=minuit`, par exemple, pour une autre version ; les étiquettes restent en or champagne) |
+| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau`) |
+| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `menu`, `ensemble`, `vin` ou `eau`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |
 | `exporter.js` | Génère tout le dossier `export/` |
 

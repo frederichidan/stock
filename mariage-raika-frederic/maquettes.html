@@ -8,10 +8,11 @@
 <link rel="stylesheet" href="passeport.css">
 <link rel="stylesheet" href="billet.css">
 <link rel="stylesheet" href="menu.css">
+<link rel="stylesheet" href="etiquettes.css">
 <link rel="stylesheet" href="maquettes.css">
 </head>
 <body>
-<!-- Une maquette par adresse : ?scene=pochette | billet | menu | ensemble (et ?theme=). -->
+<!-- Une maquette par adresse : ?scene=pochette | billet | menu | ensemble | vin | eau (et ?theme=). -->
 <main id="maquette"></main>
 
 <script src="infos.js"></script>
@@ -20,6 +21,7 @@
 <script src="passeport.js"></script>
 <script src="billet.js"></script>
 <script src="menu.js"></script>
+<script src="etiquettes.js"></script>
 <script src="maquettes.js"></script>
 <script>
   const scene = new URLSearchParams(location.search).get("scene") || "ensemble";

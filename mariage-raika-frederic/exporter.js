@@ -3,7 +3,9 @@
    - <élément>-A4-8k.pdf          : À IMPRIMER. Planche A4 (3 billets, 3 menus ou 2 pochettes
                                     par feuille), fond perdu 3 mm, traits de coupe ; page 1 =
                                     rectos, page 2 = versos, recto verso bord long. Chaque
-                                    exemplaire est une image 8K (≈ 1 000 dpi) ;
+                                    exemplaire est une image 8K (≈ 1 000 dpi). Étiquettes de
+                                    bouteilles : 4 (vin) ou 3 (eau) par feuille, à taille
+                                    réelle, une seule page (recto seul) ;
    - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille) ;
    - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 ;
    - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
@@ -16,6 +18,7 @@
      npx playwright install chromium
      node exporter.js            → la version choisie dans infos.js (theme)
      node exporter.js --toutes   → les 4 versions et le nuancier
+     node exporter.js --seulement=etiquette-vin,etiquette-eau   → ces éléments seulement
 */
 const fs = require("fs");
 const os = require("os");
@@ -26,6 +29,7 @@ const { PDFDocument, PrintScaling, Duplex } = require("pdf-lib");
 const THEMES = require("./themes.js");
 const INFOS = new Function(`${fs.readFileSync(path.join(__dirname, "infos.js"), "utf8")}; return INFOS;`)();
 const TOUTES = process.argv.includes("--toutes");
+const SEULEMENT = (process.argv.find((a) => a.startsWith("--seulement=")) || "").slice("--seulement=".length).split(",").filter(Boolean);
 
 const DOSSIER = __dirname;
 const SORTIE = path.join(DOSSIER, "export");
@@ -38,6 +42,7 @@ const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone im
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
+// `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles, en or champagne).
 const ELEMENTS = [
   {
     dossier: "pochette-passeport",
@@ -69,6 +74,22 @@ const ELEMENTS = [
       ["recto", ".page", 0],
       ["verso", ".page", 1],
     ],
+  },
+  {
+    dossier: "etiquette-vin",
+    page: "etiquette-vin.html",
+    impression: "vin",
+    maquette: "vin",
+    rectoVerso: false,
+    faces: [["face", ".page", 0]],
+  },
+  {
+    dossier: "etiquette-eau",
+    page: "etiquette-eau.html",
+    impression: "eau",
+    maquette: "eau",
+    rectoVerso: false,
+    faces: [["face", ".page", 0]],
   },
 ];
 
@@ -134,12 +155,13 @@ async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fi
   await page.waitForFunction(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0));
   await page.pdf({ path: fichier, preferCSSPageSize: true, printBackground: true });
   await page.close();
-  await finaliserPdf(fichier, { rectoVerso: false });
+  await finaliserPdf(fichier, { rectoVerso: null });
 }
 
 // Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
 // rétablit l'A4 exact, centré sur le contenu, et l'on demande aux lecteurs PDF (Acrobat, Chrome,
-// Edge…) d'imprimer à 100 %, sur le bac A4, et en recto verso bord long pour les planches.
+// Edge…) d'imprimer à 100 %, sur le bac A4, en recto verso bord long pour les planches à deux
+// faces et en recto seul pour les étiquettes (`rectoVerso` : true, false, ou null = sans avis).
 async function finaliserPdf(fichier, { rectoVerso }) {
   const document = await PDFDocument.load(fs.readFileSync(fichier), { updateMetadata: false });
   for (const page of document.getPages()) {
@@ -150,7 +172,8 @@ async function finaliserPdf(fichier, { rectoVerso }) {
   const preferences = document.catalog.getOrCreateViewerPreferences();
   preferences.setPrintScaling(PrintScaling.None);
   preferences.setPickTrayByPDFSize(true);
-  if (rectoVerso) preferences.setDuplex(Duplex.DuplexFlipLongEdge);
+  if (rectoVerso === true) preferences.setDuplex(Duplex.DuplexFlipLongEdge);
+  if (rectoVerso === false) preferences.setDuplex(Duplex.Simplex);
   fs.writeFileSync(fichier, await document.save({ updateFieldAppearances: false }));
 }
 
@@ -159,7 +182,7 @@ async function finaliserPdf(fichier, { rectoVerso }) {
 async function illustrations8K(navigateur, element, theme) {
   const url = adresse("impression.html", { doc: element.impression, theme, capture: 1 });
   const images = [];
-  for (let i = 0; i < 2; i += 1) {
+  for (let i = 0; i < (element.rectoVerso === false ? 1 : 2); i += 1) {
     const image = path.join(TEMPORAIRE, `${element.dossier}-${theme}-${i}.jpg`);
     await capturer8K(navigateur, url, ".fond-perdu", i, image, "planchesPretes", QUALITE_IMPRESSION);
     images.push(image);
@@ -175,7 +198,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
   await charger(page, adresse("impression.html", parametres), "planchesPretes");
   await page.pdf({ path: fichier, preferCSSPageSize: true, printBackground: true });
   await page.close();
-  await finaliserPdf(fichier, { rectoVerso: true });
+  await finaliserPdf(fichier, { rectoVerso: element.rectoVerso !== false });
 }
 
 (async () => {
@@ -183,7 +206,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
   const themes = TOUTES ? Object.keys(THEMES) : [INFOS.theme in THEMES ? INFOS.theme : "violet"];
 
   for (const theme of themes) {
-    for (const element of ELEMENTS) {
+    for (const element of ELEMENTS.filter((e) => !SEULEMENT.length || SEULEMENT.includes(e.dossier))) {
       const dossier = path.join(SORTIE, theme, element.dossier);
       fs.mkdirSync(dossier, { recursive: true });
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);
@@ -206,6 +229,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       }
     }
 
+    if (SEULEMENT.length && !SEULEMENT.includes("ensemble")) continue;
     const ensemble = path.join(SORTIE, theme, "ensemble-maquette-8k.jpg");
     await capturer8K(navigateur, adresse("maquettes.html", { scene: "ensemble", theme }), ".scene", 0, ensemble, "maquettePrete");
     await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [ensemble], ensemble.replace(/\.jpg$/, ".pdf"));

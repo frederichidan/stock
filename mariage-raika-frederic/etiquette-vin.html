@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Étiquette de vin</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="etiquettes.css">
+<style>
+  /* Étiquette avant de bouteille de vin, 90 × 120 mm, imprimée à taille réelle.
+     Pour imprimer, utiliser impression.html?doc=vin : 4 étiquettes par feuille A4, à 100 %,
+     fond perdu et traits de coupe. */
+  @page { size: 90mm 120mm; margin: 0; }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="etiquettes.js"></script>
+<script>
+  document.getElementById("planches").innerHTML = etiquetteVin();
+</script>
+</body>
+</html>

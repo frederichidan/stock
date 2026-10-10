@@ -85,3 +85,47 @@ body { background: #d9d4cc; }
 .couvert { display: block; filter: drop-shadow(0.5mm 0.9mm 0.7mm rgba(30, 20, 10, 0.35)); }
 .alliances { display: block; filter: drop-shadow(0.6mm 1.2mm 1mm rgba(30, 20, 10, 0.35)); }
 .accessoires .ruban-satin { filter: drop-shadow(0.8mm 1.6mm 1.5mm rgba(30, 15, 50, 0.3)); }
+
+/* ------------------------- Bouteilles (vue de face) ------------------------- */
+.scene .mur,
+.scene .halo,
+.scene .table,
+.scene .pied-mur { position: absolute; pointer-events: none; }
+.scene .mur { inset: 0; background: radial-gradient(ellipse 85% 75% at 32% 22%, #fbf8f3 0%, #f0e9df 55%, #e0d6c9 100%); }
+.scene .table { left: 0; right: 0; bottom: 0; overflow: hidden; }
+.scene .table .fond { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Table : plus sombre et plus floue vers le fond, liseré clair au bord. */
+.scene .table .profondeur {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0, rgba(255, 255, 255, 0) 0.8mm),
+    linear-gradient(180deg, rgba(70, 55, 40, 0.2) 0%, rgba(70, 55, 40, 0.06) 35%, rgba(70, 55, 40, 0) 60%, rgba(40, 30, 50, 0.08) 100%);
+}
+.scene .pied-mur { left: 0; right: 0; height: 14mm; background: linear-gradient(180deg, rgba(60, 45, 30, 0), rgba(60, 45, 30, 0.1)); }
+
+.flacon { position: relative; }
+.flacon > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.flacon .habillage { position: absolute; left: 0; }
+/* Une couche de rendu par étiquette enroulée : sans elle, Chromium peint les bandes dans la même
+   couche que la bouteille et laisse un filet clair d'un pixel à chaque jonction. */
+.etiquette-enroulee { position: relative; overflow: hidden; will-change: transform; }
+.etiquette-enroulee .bande { position: absolute; overflow: hidden; transform-origin: 0 0; }
+.etiquette-enroulee .contenu { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.etiquette-enroulee .ombrage { position: absolute; inset: 0; }
+
+.ombre-bouteille { position: absolute; pointer-events: none; }
+.ombre-bouteille.contact { background: radial-gradient(ellipse closest-side, rgba(25, 18, 12, 0.55) 0%, rgba(25, 18, 12, 0.45) 70%, rgba(25, 18, 12, 0.15) 88%, rgba(25, 18, 12, 0) 100%); }
+.ombre-bouteille.portee { background: radial-gradient(ellipse closest-side at 45% 50%, rgba(30, 22, 15, 0.2) 0%, rgba(30, 22, 15, 0.08) 60%, rgba(30, 22, 15, 0) 100%); }
+.ombre-anneaux {
+  position: absolute;
+  left: -4mm; right: -4mm; bottom: -3mm;
+  height: 7mm;
+  z-index: -1;
+  background: radial-gradient(ellipse closest-side, rgba(25, 18, 12, 0.35), rgba(25, 18, 12, 0));
+}
+.scene.de-face .lumiere {
+  background:
+    radial-gradient(ellipse 60% 55% at 22% 12%, rgba(255, 252, 245, 0.25), rgba(255, 252, 245, 0) 70%),
+    radial-gradient(ellipse 80% 70% at 100% 100%, rgba(40, 30, 50, 0.12), rgba(40, 30, 50, 0) 70%);
+}

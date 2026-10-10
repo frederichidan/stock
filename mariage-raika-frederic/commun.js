@@ -13,6 +13,12 @@ function idUnique(prefixe) {
   return `${prefixe}-${compteurIds}`;
 }
 
+// Classe à ajouter aux pages d'un support dessiné dans une palette sans violet (commun.css) :
+// "or" (or champagne) ou "argent" ; toute autre valeur garde les couleurs de la version.
+function palette(couleur) {
+  return ["or", "argent"].includes(couleur) ? ` palette-${couleur}` : "";
+}
+
 function esc(texte) {
   return String(texte)
     .replace(/&/g, "&amp;")

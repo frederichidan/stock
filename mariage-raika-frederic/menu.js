@@ -7,7 +7,7 @@ function carteMenu(theme) {
   const M = I.menu;
 
   const recto = `
-  <section class="page menu recto ${theme.principal}">
+  <section class="page menu recto ${theme.principal}${palette((INFOS.couleurs || {}).menu)}">
     <div class="calque">
       <svg viewBox="0 0 99 210" preserveAspectRatio="none">
         ${bandeGuillochee({ largeur: 99, y: 192, amplitude: 3, periode: 24, nbLignes: 7, couleur: "var(--guilloche)" })}
@@ -37,7 +37,7 @@ function carteMenu(theme) {
   const dateCivil = I.evenements.find((e) => /civil/i.test(e.titre)) || I.evenements[0];
 
   const verso = `
-  <section class="page menu verso ${theme.principal}">
+  <section class="page menu verso ${theme.principal}${palette((INFOS.couleurs || {}).menu)}">
     ${encadrement()}
     <div class="contenu">
       ${monogramme({ halo: true, taille: 54 })}

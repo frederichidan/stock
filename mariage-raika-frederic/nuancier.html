@@ -49,6 +49,10 @@
 <script src="billet.js"></script>
 <script src="menu.js"></script>
 <script>
+  // Le nuancier compare les versions de couleurs : il ignore les couleurs propres au menu et aux
+  // catégories de billets (or, argent), pour montrer chaque support dans chaque version.
+  INFOS.couleurs = {};
+  Object.values(INFOS.billets).forEach((categorie) => (categorie.couleur = ""));
   const PX_PAR_MM = 96 / 25.4;
   const HAUTEUR = 560; // hauteur d'une rangée, en pixels
   const ECART = 14;

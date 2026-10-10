@@ -20,7 +20,8 @@
 <script src="commun.js"></script>
 <script src="billet.js"></script>
 <script>
-  document.getElementById("planches").innerHTML = billet(THEME);
+  // ?categorie=premium (invités VIP, or champagne) ou classique (argent) : voir INFOS.billets.
+  document.getElementById("planches").innerHTML = billet(THEME, new URLSearchParams(location.search).get("categorie") || "premium");
 </script>
 </body>
 </html>

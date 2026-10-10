@@ -4,13 +4,17 @@
    passeport, du billet d'invitation, de la carte de menu et des étiquettes
    de bouteilles.
    Restent à valider (propositions) : les horaires du coutumier et de la
-   soirée, le détail du programme du civil après 13h, la date limite et
-   les contacts RSVP, et le menu.
+   soirée, l'heure du cocktail du civil, et le menu.
    ================================================================== */
 
 const INFOS = {
   // Couleurs : "violet" (version A, retenue), "minuit", "champagne" ou "argent" (voir themes.js).
   theme: "violet",
+  // Couleurs de la carte de menu : "or" = or champagne (fond ivoire, bandeaux dorés, sans violet,
+  // peu d'encre), "argent" = argent, "" = les couleurs de la version ci-dessus. La pochette
+  // passeport garde celles de la version ; les étiquettes de bouteilles sont toujours en or ;
+  // les billets ont une couleur par catégorie (voir `billets` plus bas).
+  couleurs: { menu: "or" },
 
   // Le prénom féminin se place avant le prénom masculin.
   mariee: "Raïka",
@@ -24,8 +28,15 @@ const INFOS = {
   vol: "RF 1812", // initiales R·F + date du mariage civil (18/12)
   depart: { code: "CLB", ville: "Célibat" },
   arrivee: { code: "MAR", ville: "Mariage" },
-  classe: "Invité d’honneur",
+  classe: "Invité d’honneur", // classe affichée sur les étiquettes d'eau
   porte: "Cœur",
+
+  // Deux catégories de billets : premium pour les invités VIP (or champagne) et classique pour
+  // les autres invités (argent). `couleur` : "or", "argent" ou "" (couleurs de la version).
+  billets: {
+    premium: { nom: "Premium", couleur: "or", classe: "Invité d’honneur" },
+    classique: { nom: "Classique", couleur: "argent", classe: "Invité" },
+  },
 
   // Les étapes s'affichent dans cet ordre (ordre chronologique).
   // `precision` (facultatif) s'affiche sous le lieu, en plus petit.
@@ -53,11 +64,12 @@ const INFOS = {
       dateCourte: "18.12.2026",
       lieu: "Hôtel de ville de Libreville",
       programme: [
-        ["13h00", "Arrivée des invités"],
-        ["13h30", "Arrivée du futur marié"],
-        ["13h45", "Arrivée de la future mariée"],
-        ["14h00", "Célébration du mariage"],
-        ["15h00", "Cocktail & séance photos"],
+        // Accueil des invités à 12h, célébration à 13h.
+        ["12h00", "Arrivée des invités"],
+        ["12h30", "Arrivée du futur marié"],
+        ["12h45", "Arrivée de la future mariée"],
+        ["13h00", "Célébration du mariage"],
+        ["14h00", "Cocktail & séance photos"],
       ],
     },
     {
@@ -78,10 +90,6 @@ const INFOS = {
     },
   ],
 
-  rsvp: {
-    avant: "30 novembre 2026",
-    contacts: ["Raïka · XX XX XX XX", "Frédéric · XX XX XX XX"],
-  },
   codeVestimentaire: "Touches de violet & d’or",
 
   /* ----------------------- Pochette passeport ----------------------- */

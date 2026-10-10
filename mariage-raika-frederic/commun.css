@@ -167,6 +167,92 @@
   --guilloche-opacite: 0.14;
 }
 
+/* -------------------- Palettes sans violet : or et argent -------------------- */
+/* Classe `palette-or` ou `palette-argent` sur la page (fonction palette() de commun.js) : elle
+   remplace les couleurs de la version, contextes sombre/clair compris. Toutes les teintes sont
+   dans la gamme d'une imprimante quadri (écart ΔE < 2,5) et les fonds, clairs, ne demandent que
+   2 à 77 % d'encre. `--bandeau-*` : textes posés sur les bandeaux ; `--liseret` : leur filet.
+   - Or champagne (or antique #a07a32 et or champagne #c9a464 de la palette) : fond ivoire et
+     champagne, bandeaux dorés, textes bronze foncé. Billet premium, menu, étiquettes.
+   - Argent (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés, textes graphite.
+     Billet classique. */
+.page.palette-or,
+.palette-or .sombre,
+.palette-or .clair {
+  --fond-1: #fdf9ef; --fond-2: #f5ead0; --fond-3: #e6d2a6;
+  --bande-1: #c39c4a; --bande-2: #d6b46e;
+  --talon-1: #eadbb3; --talon-2: #dcc591;
+  --verso-1: #fdf9ef; --verso-2: #f8f1e0; --verso-3: #ecdcb6;
+  --texte: #463c2d;
+  --texte-doux: #5d4b2d;
+  --accent: #9f7a38;
+  --accent-texte: #7c6134;
+  --accent-fort: #7c6134;
+  --discret: #5d4b2d;
+  --ligne: rgba(159, 122, 56, 0.75);
+  --filet: rgba(159, 122, 56, 0.35);
+  --zone: rgba(159, 122, 56, 0.12);
+  --ligne-ecriture: rgba(70, 60, 45, 0.45);
+  --code: #816636;
+  --esperluette: #463c2d;
+  --let-a: #7c6134; --let-b: #b8913f; --let-c: #9f7a38;
+  --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
+  --guilloche: #9f7a38;
+  --guilloche-opacite: 0.16;
+  --pastille: #c39c4a;
+  --pastille-texte: #3b342a;
+  --titre-etape: #7c6134;
+  --code-barres: #3b342a;
+  --bandeau-texte: #3b342a; --bandeau-doux: #463c2d; --bandeau-reflet: #5d4b2d;
+  --liseret: #9f7a38;
+}
+.page.palette-argent,
+.palette-argent .sombre,
+.palette-argent .clair {
+  --fond-1: #fbfbfc; --fond-2: #eef0f3; --fond-3: #d9dce3;
+  --bande-1: #aeb3be; --bande-2: #c9ccd5;
+  --talon-1: #e4e6eb; --talon-2: #d3d6dd;
+  --verso-1: #fcfcfd; --verso-2: #f3f4f6; --verso-3: #e1e3e8;
+  --texte: #33363d;
+  --texte-doux: #4f535c;
+  --accent: #858a96;
+  --accent-texte: #5c616c;
+  --accent-fort: #5c616c;
+  --discret: #4f535c;
+  --ligne: rgba(133, 138, 150, 0.75);
+  --filet: rgba(133, 138, 150, 0.4);
+  --zone: rgba(133, 138, 150, 0.14);
+  --ligne-ecriture: rgba(51, 54, 61, 0.45);
+  --code: #5c616c;
+  --esperluette: #33363d;
+  --let-a: #4f545e; --let-b: #9ca1ad; --let-c: #6e737e;
+  --orn-a: #5f646f; --orn-b: #c4c8d0; --orn-c: #868b97;
+  --guilloche: #858a96;
+  --guilloche-opacite: 0.18;
+  --pastille: #aeb3be;
+  --pastille-texte: #2a2c31;
+  --titre-etape: #4f545e;
+  --code-barres: #2a2c31;
+  --bandeau-texte: #2a2c31; --bandeau-doux: #33363d; --bandeau-reflet: #4a4e57;
+  --liseret: #858a96;
+}
+.page.palette-or, .palette-or .sombre, .palette-or .clair,
+.page.palette-argent, .palette-argent .sombre, .palette-argent .clair {
+  -webkit-text-stroke: 0;
+  color: var(--texte);
+}
+/* Sur les bandeaux : textes, pictogrammes et textes en dégradé foncés, bien contrastés ; le
+   liseré garde la teinte d'accent. */
+.page.palette-or .bandeau,
+.page.palette-argent .bandeau {
+  --accent: var(--bandeau-texte);
+  --accent-fort: var(--bandeau-texte);
+  --texte-doux: var(--bandeau-texte);
+  --discret: var(--bandeau-doux);
+  --let-a: var(--bandeau-texte); --let-b: var(--bandeau-reflet); --let-c: var(--bandeau-doux);
+  border-bottom-color: var(--liseret);
+}
+
 /* ------------------------------- Base ------------------------------- */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }

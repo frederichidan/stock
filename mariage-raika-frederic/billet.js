@@ -1,13 +1,16 @@
 /* Billet d'invitation façon carte d'embarquement.
    Recto : billet avec talon. Verso : programme des escales.
-   `theme` : une entrée de THEMES (themes.js). */
+   `theme` : une entrée de THEMES (themes.js) ; `categorie` : une clé de INFOS.billets
+   ("premium" pour les invités VIP, "classique" pour les autres), qui fixe la couleur et la classe. */
 
-function billet(theme) {
+function billet(theme, categorie = "premium") {
   const I = INFOS;
+  const C = I.billets[categorie] || I.billets.premium;
+  const couleurs = palette(C.couleur);
   const jourCourt = (jour) => jour.slice(0, 3) + ".";
 
   const recto = `
-  <section class="page billet recto ${theme.principal}">
+  <section class="page billet recto ${theme.principal}${couleurs}">
     <div class="principal">
       <header class="bandeau sombre">
         <div class="bandeau-titre">
@@ -19,7 +22,7 @@ function billet(theme) {
         </div>
         <div class="bandeau-infos">
           <div><div class="etiquette">Vol</div><div class="valeur">${esc(I.vol)}</div></div>
-          <div><div class="etiquette">Classe</div><div class="valeur">${esc(I.classe)}</div></div>
+          <div><div class="etiquette">Classe</div><div class="valeur">${esc(C.classe)}</div></div>
         </div>
       </header>
 
@@ -80,7 +83,7 @@ function billet(theme) {
   </section>`;
 
   const verso = `
-  <section class="page billet verso ${theme.verso}">
+  <section class="page billet verso ${theme.verso}${couleurs}">
     <div class="calque">
       <svg viewBox="0 0 210 99" preserveAspectRatio="none">
         ${bandeGuillochee({ largeur: 210, y: 58, amplitude: 9, periode: 52, nbLignes: 9, couleur: "var(--guilloche)" })}
@@ -108,10 +111,6 @@ function billet(theme) {
 
     <footer class="pied sombre">
       <div>
-        <span class="etiquette">Confirmez votre embarquement avant le ${esc(I.rsvp.avant)}</span>
-        ${I.rsvp.contacts.map(esc).join(" &nbsp;|&nbsp; ")}
-      </div>
-      <div class="droite">
         <span class="etiquette">Code vestimentaire</span>
         <b>${esc(I.codeVestimentaire)}</b>
       </div>

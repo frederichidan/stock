@@ -16,6 +16,7 @@
      rectos, page 2 = versos, pour un recto verso avec retournement sur le bord long.
      Paramètres d'adresse :
        ?doc=passeport | billet | menu | vin | eau   (et ?theme= comme ailleurs)
+       ?categorie=premium | classique   pour le billet (voir INFOS.billets)
        ?images=["…","…"]  une illustration par face (fond perdu compris, à l'endroit) :
                           c'est ainsi qu'exporter.js produit les PDF « 8K » ;
        ?capture=1         une seule face par feuille, à taille réelle, sans repères ni
@@ -78,9 +79,10 @@
   // La pochette s'ouvre comme un livre (axe vertical) ; le billet, en paysage, se retourne de
   // haut en bas (axe horizontal) ; la carte de menu, de gauche à droite (axe vertical).
   // `rectoSeul` : une seule face à imprimer (étiquettes) ; `echelle` : 1 = taille réelle.
+  const CATEGORIE = new URLSearchParams(location.search).get("categorie") || "premium";
   const DOCUMENTS = {
     passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, retournement: "vertical", pli: true, a4: { paysage: false, colonnes: 1, lignes: 2 }, finition: "coins arrondis 3 mm conseillés" },
-    billet: { rendu: billet, nom: "Billet d’invitation", largeur: 210, hauteur: 99, retournement: "horizontal", a4: { paysage: false, colonnes: 1, lignes: 3 } },
+    billet: { rendu: (theme) => billet(theme, CATEGORIE), nom: `Billet d’invitation ${(INFOS.billets[CATEGORIE] || INFOS.billets.premium).nom.toLowerCase()}`, largeur: 210, hauteur: 99, retournement: "horizontal", a4: { paysage: false, colonnes: 1, lignes: 3 } },
     menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, retournement: "vertical", a4: { paysage: true, colonnes: 3, lignes: 1 } },
     vin: { rendu: etiquetteVin, nom: "Étiquette de vin", largeur: FORMATS_ETIQUETTES.vin[0], hauteur: FORMATS_ETIQUETTES.vin[1], echelle: 1, rectoSeul: true, a4: { paysage: false, colonnes: 2, lignes: 2 }, finition: "papier adhésif" },
     eau: { rendu: etiquetteEau, nom: "Étiquette d’eau 33 cl", largeur: FORMATS_ETIQUETTES.eau[0], hauteur: FORMATS_ETIQUETTES.eau[1], echelle: 1, rectoSeul: true, a4: { paysage: true, colonnes: 1, lignes: 3 }, finition: "adhésif vinyle résistant à l’eau conseillé" },

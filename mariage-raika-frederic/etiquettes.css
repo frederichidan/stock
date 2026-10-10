@@ -1,40 +1,7 @@
 /* Étiquettes de bouteilles (etiquettes.js), dans la charte du billet, en or champagne.
    Imprimées à taille réelle (100 %) : elles doivent correspondre aux bouteilles. */
 
-/* Palette « or champagne » (or antique #a07a32 et or champagne #c9a464 de la palette du
-   mariage) : fond ivoire et champagne, bandeaux dorés, textes bronze foncé. Toutes les teintes
-   sont dans la gamme d'une imprimante quadri (écart ΔE < 2) ; le fond, clair, ne demande que
-   7 à 65 % d'encre. */
-.page.bouteille.or {
-  --fond-1: #fdf9ef; --fond-2: #f5ead0; --fond-3: #e6d2a6;
-  --bande-1: #c39c4a; --bande-2: #d6b46e;
-  --talon-1: #eadbb3; --talon-2: #dcc591;
-  --texte: #463c2d;
-  --texte-doux: #5d4b2d;
-  --accent: #9f7a38;
-  --accent-texte: #7c6134;
-  --accent-fort: #7c6134;
-  --discret: #5d4b2d;
-  --ligne: rgba(159, 122, 56, 0.75);
-  --filet: rgba(159, 122, 56, 0.35);
-  --ligne-ecriture: rgba(70, 60, 45, 0.45);
-  --code: #816636;
-  --esperluette: #463c2d;
-  --let-a: #7c6134; --let-b: #b8913f; --let-c: #9f7a38;
-  --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
-  --guilloche: #9f7a38;
-  --guilloche-opacite: 0.16;
-  --code-barres: #3b342a;
-  color: var(--texte);
-}
-/* Sur les bandeaux dorés : textes et pictogrammes bronze foncé, bien contrastés. */
-.page.bouteille.or .bandeau {
-  --accent: #3b342a;
-  --accent-fort: #3b342a;
-  --texte-doux: #3b342a;
-  --discret: #463c2d;
-  border-bottom-color: #9f7a38;
-}
+/* Couleurs : palette « or champagne » de commun.css (classe palette-or). */
 
 .page.bouteille {
   background: radial-gradient(ellipse 85% 75% at 50% 42%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);

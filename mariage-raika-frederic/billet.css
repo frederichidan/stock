@@ -69,11 +69,13 @@
 .billet .escale .titre { font-style: italic; font-size: 10pt; line-height: 1.1; margin-top: 0.3mm; color: var(--accent-fort); }
 
 /* Talon */
+/* Fond du talon de la teinte du bandeau sur sa hauteur (15 mm) : sinon, dans le PDF vectoriel,
+   le fond peint dessous ressort d'un pixel le long du bord haut (anticrénelage). */
 .billet .talon {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, var(--talon-1) 0%, var(--talon-2) 100%);
+  background: linear-gradient(180deg, var(--bande-1) 0, var(--bande-1) 15mm, var(--talon-1) 15mm, var(--talon-2) 100%);
 }
 .billet .talon::before {
   content: "";
@@ -166,7 +168,8 @@
 .billet .pied {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   gap: 4mm;
   height: 13mm;
   padding: 0 7mm;
@@ -176,4 +179,16 @@
 }
 .billet .pied .etiquette { color: var(--accent); font-size: 6pt; display: block; margin-bottom: 0.2mm; }
 .billet .pied b { font-weight: 600; color: var(--accent-fort); }
-.billet .pied .droite { text-align: right; }
+
+/* Palettes or champagne et argent (commun.css) : pied à textes foncés, comme les bandeaux ;
+   petites étiquettes dans la teinte plus foncée des textes, lisible sur le fond clair. */
+.billet.palette-or .pied,
+.billet.palette-argent .pied {
+  --accent: var(--bandeau-texte);
+  --accent-fort: var(--bandeau-texte);
+  border-top-color: var(--liseret);
+}
+.billet.palette-or .principal .escale .etiquette,
+.billet.palette-or .grille .etiquette,
+.billet.palette-argent .principal .escale .etiquette,
+.billet.palette-argent .grille .etiquette { color: var(--accent-texte); }

@@ -56,3 +56,8 @@
 .menu.verso .ornement { width: 46mm; height: 4mm; margin: 6mm 0 4mm; }
 .menu.verso .devise { font-style: italic; font-size: 12.5pt; color: var(--accent-fort); }
 .menu.verso .source { font-size: 9pt; color: var(--texte-doux); margin-top: 0.8mm; }
+
+/* Palettes or champagne et argent (commun.css) : intitulés des rubriques dans la teinte plus
+   foncée des textes, lisible sur le fond clair. */
+.menu.palette-or .rubrique h2,
+.menu.palette-argent .rubrique h2 { color: var(--accent-texte); }

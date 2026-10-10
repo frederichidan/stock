@@ -1,17 +1,21 @@
-# Mariage de Raïka & Frédéric — pochette passeport, billet d'invitation, carte de menu et étiquettes de bouteilles
+# Mariage de Raïka & Frédéric — pochette passeport, billets d'invitation, carte de menu et étiquettes de bouteilles
 
-Supports imprimables aux couleurs violet & or du « Passeport de Mariage » (version A,
-Violet améthyste & or). Il n'y a pas de photo du couple : le visuel principal est le
-monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
+Supports imprimables du « Passeport de Mariage ». La pochette passeport est aux couleurs
+violet & or (version A, Violet améthyste & or). Les billets d'invitation existent en deux
+catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
+autres invités, en **argent**. La carte de menu et les étiquettes de bouteilles sont en or
+champagne. Ces palettes sans violet, à fond clair, sont plus légères à l'impression. Il n'y a
+pas de photo du couple : le visuel
+principal est le monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
 ## Les fichiers à utiliser : `export/violet/`
 
-Un dossier par élément (`pochette-passeport/`, `billet-invitation/`, `carte-menu/`,
-`etiquette-vin/`, `etiquette-eau/`) :
+Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
+`billet-invitation-classique/`, `carte-menu/`, `etiquette-vin/`, `etiquette-eau/`) :
 
 | Fichier | Usage |
 |---|---|
-| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés |
+| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés |
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
@@ -28,7 +32,7 @@ dessin d'origine :
 | Élément | Format fini | Par feuille A4 |
 |---|---|---|
 | Pochette passeport | ouverte 185,9 × 131 mm, pliée en deux : 92,9 × 131 mm | 2 (A4 portrait) |
-| Billet d'invitation | 185,9 × 87,6 mm | 3 (A4 portrait) |
+| Billet d'invitation (premium ou classique) | 185,9 × 87,6 mm | 3 (A4 portrait) |
 | Carte de menu | 87,6 × 185,9 mm | 3 (A4 paysage) |
 
 Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Imprimer en
@@ -68,17 +72,29 @@ les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
   **adhésif vinyle résistant à l'eau** (les bouteilles sortent du frais et se couvrent de
   buée : un papier ordinaire gondole et l'encre jet d'encre coule). Avec une imprimante jet
   d'encre, prendre un vinyle « jet d'encre » et laisser sécher avant de découper.
-- **Eau** : l'étiquette de 200 mm convient aux bouteilles de 33 cl courantes (environ 6 cm de
-  diamètre, 19 cm de tour). Coller d'abord le bord gauche, faire le tour, puis rabattre le bord
-  droit (le talon « 33 cl ») par-dessus : les 15 premiers millimètres, sans texte, passent
-  dessous. Mesurez le tour de vos bouteilles avec un ruban : s'il dépasse 19,5 cm, le format se
-  change dans `etiquettes.js` (`FORMATS_ETIQUETTES`).
+- **Eau** : coller d'abord le bord gauche, faire le tour, puis rabattre le bord droit (le talon
+  « 33 cl ») par-dessus : la bande de gauche, sans texte, passe dessous. Le bord droit doit
+  recouvrir le gauche de 5 à 15 mm : l'étiquette de 200 mm convient donc à un **tour de
+  bouteille de 18,5 à 19,5 cm** (diamètre d'environ 5,9 à 6,2 cm), courant pour les 33 cl.
+  Mesurez le tour de vos bouteilles avec un ruban : en dessous de 18,5 cm, le talon cacherait
+  l'avion et le monogramme ; au-dessus de 19,5 cm, le recouvrement serait trop court. Hors de
+  cette plage, changer la largeur dans `etiquettes.js` (`FORMATS_ETIQUETTES.eau`, largeur =
+  tour + 10 mm).
 - Textes des étiquettes (« Première classe », « Cuvée », « Grand vin de mariage »,
   « Eau minérale », « 33 cl »…) : section `etiquettes` d'`infos.js`.
 
 ## Couleurs et impression
 
-Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
+**Billet premium, menu et étiquettes : or champagne.** Fond ivoire et champagne, bandeaux
+dorés, textes bronze foncé, tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de
+la palette. **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux
+argentés, textes graphite. Ces fonds clairs ne demandent que 2 à 77 % d'encre (contre 160 à
+190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une imprimante
+(écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de chaque
+catégorie : « Invité d'honneur » pour le premium, « Invité » pour le classique) et
+`couleurs: { menu: "or" }` ; `""` revient aux couleurs de la version.
+
+**Pochette passeport : violet.** Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
 l'impression il ressortait terne, presque noir sur les bords, avec beaucoup d'encre. Il est
 remplacé par un **violet améthyste** plus clair, de même teinte, et toutes les couleurs
 (violets, ors, ivoire) ont été choisies dans la gamme d'une imprimante quadri (CMJN) :
@@ -118,7 +134,8 @@ Billets et menus sur **papier couché brillant**, pochettes sur **papier couché
 ## Dates et lieux
 
 - **Escale 1 : mariage coutumier**, mercredi 16 décembre 2026, à La Sablière (entrée Hôtel Onomo)
-- **Escale 2 : mariage civil**, vendredi 18 décembre 2026, à l'Hôtel de ville de Libreville, à partir de 13h
+- **Escale 2 : mariage civil**, vendredi 18 décembre 2026, à l'Hôtel de ville de Libreville : arrivée
+  des invités à 12h, célébration du mariage à 13h
 - **Escale 3 : soirée de gala**, vendredi 18 décembre 2026, aux Anges d'Ema (Charbonnages, avant
   l'école conventionnée), avec la carte de menu
 
@@ -128,15 +145,14 @@ La couverture du passeport ne porte que la date du 18 décembre 2026 (réglage
 ## Modifier les textes
 
 Tous les textes personnalisables sont dans **`infos.js`** (les intitulés fixes comme
-« Carte d'embarquement » restent dans le code) : prénoms, lieux, horaires, contacts RSVP,
-code vestimentaire, textes du passeport (texte du dos, invitation, « Royaume de l'Amour »…)
+« Carte d'embarquement » restent dans le code) : prénoms, lieux, horaires, catégories de
+billets (nom, couleur, classe), code vestimentaire, textes du passeport (texte du dos, invitation, « Royaume de l'Amour »…)
 et plats du menu.
 
 À valider avant l'impression (ce sont encore des propositions) :
 
-- les horaires détaillés du mariage coutumier et de la soirée de gala, et le détail
-  du programme du civil après 13h ;
-- les numéros de téléphone RSVP (`XX XX XX XX`) et la date limite de réponse ;
+- les horaires détaillés du mariage coutumier et de la soirée de gala, et l'heure du
+  cocktail après le mariage civil (proposée à 14h) ;
 - le menu, à valider avec le traiteur.
 
 Le nom du ou des invités (« Passager(s) ») et le numéro de table restent en
@@ -160,9 +176,9 @@ node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
 | `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
 | `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`?theme=minuit`, par exemple, pour une autre version ; les étiquettes restent en or champagne) |
-| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau`) |
-| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `menu`, `ensemble`, `vin` ou `eau`) |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `?theme=minuit`, par exemple, pour une autre version : billets, menu et étiquettes gardent les couleurs réglées dans `infos.js`) |
+| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau` ; `&categorie=classique` pour le billet classique) |
+| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin` ou `eau`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |
 | `exporter.js` | Génère tout le dossier `export/` |
 

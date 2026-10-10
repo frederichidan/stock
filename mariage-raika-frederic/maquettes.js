@@ -5,7 +5,8 @@
 
 const MAQUETTES = {
   pochette: { nom: "Pochette passeport", largeur: 480, construire: scenePochette },
-  billet: { nom: "Billet d’invitation", largeur: 400, construire: sceneBillet },
+  billet: { nom: "Billet d’invitation premium", largeur: 400, construire: (t, l, h) => sceneBillet(t, l, h, "premium") },
+  "billet-classique": { nom: "Billet d’invitation classique", largeur: 400, construire: (t, l, h) => sceneBillet(t, l, h, "classique") },
   menu: { nom: "Carte de menu", largeur: 520, construire: sceneMenu },
   ensemble: { nom: "Ensemble", largeur: 520, construire: sceneEnsemble },
   vin: { nom: "Étiquette de vin", largeur: 640, horizon: 248, construire: sceneVin },
@@ -128,13 +129,19 @@ function marbre(largeur, hauteur) {
   </svg>`;
 }
 
-// Ruban de satin violet qui traverse un coin de la scène.
-function rubanSatin(chemin, largeur, hauteur) {
+// Ruban de satin qui traverse un coin de la scène, assorti au support : violet, or ou argent.
+const TEINTES_RUBAN = {
+  violet: ["#43305c", "#7e5ea9", "#8c6fb1", "#674696", "#513972"],
+  or: ["#8a6a2c", "#d6b46e", "#ecd59d", "#c39c4a", "#9f7a38"],
+  argent: ["#6f7480", "#b9bdc8", "#dfe1e7", "#a3a8b4", "#7d828e"],
+};
+function rubanSatin(chemin, largeur, hauteur, teinte = "violet") {
   const id = idUnique("satin");
+  const [a, b, c, d, e] = TEINTES_RUBAN[teinte] || TEINTES_RUBAN.violet;
   return `<svg class="accessoires" style="z-index:0" viewBox="0 0 ${largeur} ${hauteur}" aria-hidden="true">
     <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#43305c"/><stop offset="0.35" stop-color="#7e5ea9"/>
-      <stop offset="0.55" stop-color="#8c6fb1"/><stop offset="0.75" stop-color="#674696"/><stop offset="1" stop-color="#513972"/>
+      <stop offset="0" stop-color="${a}"/><stop offset="0.35" stop-color="${b}"/>
+      <stop offset="0.55" stop-color="${c}"/><stop offset="0.75" stop-color="${d}"/><stop offset="1" stop-color="${e}"/>
     </linearGradient></defs>
     <g class="ruban-satin" fill="none" stroke-linecap="butt">
       <path d="${chemin}" stroke="url(#${id})" stroke-width="15"/>
@@ -200,10 +207,10 @@ function scenePochette(theme, l, h) {
   ].join("");
 }
 
-function sceneBillet(theme, l, h) {
-  const [recto, verso] = faces(billet(theme));
+function sceneBillet(theme, l, h, categorie) {
+  const [recto, verso] = faces(billet(theme, categorie));
   return [
-    rubanSatin(`M ${l + 20} 30 C ${l - 60} 10, ${l - 80} 90, ${l - 30} 150 S ${l - 20} ${h + 20}, ${l - 90} ${h + 30}`, l, h),
+    rubanSatin(`M ${l + 20} 30 C ${l - 60} 10, ${l - 80} 90, ${l - 30} 150 S ${l - 20} ${h + 20}, ${l - 90} ${h + 30}`, l, h, (INFOS.billets[categorie] || {}).couleur),
     poser(carte(verso, [210, 99]), { x: 242, y: 166, rotation: 3, z: 2 }),
     poser(carte(recto, [210, 99]), { x: 146, y: 58, rotation: -4, z: 3 }),
     confettis(l, h, 24, 11, [[34, 0, 258, 120], [128, 106, 356, 225]]),
@@ -215,7 +222,7 @@ function sceneMenu(theme, l, h) {
   const cx = 210;
   const cy = h / 2;
   return [
-    rubanSatin(`M -20 40 C 30 20, 40 120, 10 ${h - 60} S 40 ${h + 10}, 90 ${h + 30}`, l, h),
+    rubanSatin(`M -20 40 C 30 20, 40 120, 10 ${h - 60} S 40 ${h + 10}, 90 ${h + 30}`, l, h, (INFOS.couleurs || {}).menu),
     poser(assiette(280, "presentation", [[0.4, 0.7, 1, 0.35], [3, 6, 12, 0.25]]), { x: cx, y: cy, z: 1 }),
     poser(assiette(236, "porcelaine", [[0.3, 0.6, 1, 0.25], [2, 4, 7, 0.18]]), { x: cx, y: cy, z: 2 }),
     poser(carte(recto, [99, 210]), { x: cx, y: cy, rotation: -3, z: 3 }),
@@ -231,7 +238,7 @@ function sceneEnsemble(theme, l, h) {
   const [billetRecto] = faces(billet(theme));
   const [menuRecto] = faces(carteMenu(theme));
   return [
-    rubanSatin(`M -20 ${h - 40} C 80 ${h - 90}, 170 ${h + 5}, 300 ${h + 25}`, l, h),
+    rubanSatin(`M -20 ${h - 40} C 80 ${h - 90}, 170 ${h + 5}, 300 ${h + 25}`, l, h, INFOS.billets.premium.couleur),
     poser(carte(billetRecto, [210, 99]), { x: 250, y: 92, rotation: 9, z: 2 }),
     poser(livretFerme(exterieur, "couverture"), { x: 128, y: 150, rotation: -8, z: 3 }),
     poser(carte(menuRecto, [99, 210]), { x: 425, y: 150, rotation: 4, z: 2 }),

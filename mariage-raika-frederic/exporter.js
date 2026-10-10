@@ -56,10 +56,22 @@ const ELEMENTS = [
     ],
   },
   {
-    dossier: "billet-invitation",
+    dossier: "billet-invitation-premium",
     page: "billet-invitation.html",
     impression: "billet",
+    parametres: { categorie: "premium" },
     maquette: "billet",
+    faces: [
+      ["recto", ".page", 0],
+      ["verso", ".page", 1],
+    ],
+  },
+  {
+    dossier: "billet-invitation-classique",
+    page: "billet-invitation.html",
+    impression: "billet",
+    parametres: { categorie: "classique" },
+    maquette: "billet-classique",
     faces: [
       ["recto", ".page", 0],
       ["verso", ".page", 1],
@@ -180,7 +192,7 @@ async function finaliserPdf(fichier, { rectoVerso }) {
 // Illustrations 8K de chaque face, fond perdu compris, à l'endroit, capturées depuis
 // impression.html en mode capture (une face par feuille, à taille réelle).
 async function illustrations8K(navigateur, element, theme) {
-  const url = adresse("impression.html", { doc: element.impression, theme, capture: 1 });
+  const url = adresse("impression.html", { doc: element.impression, theme, capture: 1, ...element.parametres });
   const images = [];
   for (let i = 0; i < (element.rectoVerso === false ? 1 : 2); i += 1) {
     const image = path.join(TEMPORAIRE, `${element.dossier}-${theme}-${i}.jpg`);
@@ -192,7 +204,7 @@ async function illustrations8K(navigateur, element, theme) {
 
 // Planche A4 : vectorielle, ou avec les illustrations 8K à la place du rendu vectoriel.
 async function pdfA4(navigateur, element, theme, illustrations, fichier) {
-  const parametres = { doc: element.impression, theme };
+  const parametres = { doc: element.impression, theme, ...element.parametres };
   if (illustrations) parametres.images = JSON.stringify(illustrations.map((image) => pathToFileURL(image).href));
   const page = await navigateur.newPage();
   await charger(page, adresse("impression.html", parametres), "planchesPretes");
@@ -224,7 +236,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       afficher("maquette-8k.pdf");
 
       for (const [face, selecteur, rang] of element.faces) {
-        await capturer8K(navigateur, adresse(element.page, { theme }), selecteur, rang, nom(`${face}-8k.jpg`));
+        await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, nom(`${face}-8k.jpg`));
         afficher(`${face}-8k.jpg`);
       }
     }

@@ -357,13 +357,7 @@ function refletVerre(id, x, y1, y2, largeur, opacite) {
 }
 
 /* Bouteille de vin type bordelaise, 75 cl : corps de 75 mm de diamètre, 300 mm de haut, capsule
-   assortie aux étiquettes (or antique, or champagne ou argent) à liseré foncé. Étiquette avant
-   de 90 × 120 mm, de 40 à 160 mm au-dessus de la base. */
-const TEINTES_CAPSULE = {
-  antique: [[184, 150, 92], [88, 68, 38]],
-  or: [[205, 170, 100], [110, 84, 40]],
-  argent: [[196, 199, 207], [104, 108, 118]],
-};
+   or champagne à liseré bronze. Étiquette avant de 90 × 120 mm, de 40 à 160 mm au-dessus de la base. */
 function bouteilleVin(etiquette, centre) {
   const [R, H] = [37.5, 300];
   const dz = R * Math.sin(PLONGEE);
@@ -378,14 +372,13 @@ function bouteilleVin(etiquette, centre) {
   const silhouette = `M${cx - R},${Y(0)} L${gauche[0]} ${gauche[1]} L${cx - 14.6},${Y(250)} L${cx + 14.6},${Y(250)} L${cx + 14.6},${Y(246)}
     C${cx + 15.6},${Y(228)} ${cx + R},${Y(226)} ${cx + R},${Y(205)} L${cx + R},${Y(0)} A${R},${dz} 0 0 1 ${cx - R},${Y(0)} Z`;
   const rc = 15.4;
-  const [teinteCapsule, teinteLisere] = TEINTES_CAPSULE[(INFOS.couleurs || {}).etiquettes] || TEINTES_CAPSULE.or;
   return `<div class="flacon vin" style="width:${2 * R}mm;height:${H + dz}mm">
     <svg viewBox="0 0 ${2 * R} ${H + dz}" aria-hidden="true">
       <defs>
         ${degradeCylindre(corps, cx, R, [26, 40, 30], { reflet: 0.55 })}
         ${degradeCylindre(col, cx, 14.6, [26, 40, 30], { reflet: 0.55 })}
-        ${degradeCylindre(capsule, cx, rc, teinteCapsule, { reflet: 0.55 })}
-        ${degradeCylindre(lisere, cx, rc + 0.2, teinteLisere, { reflet: 0.4 })}
+        ${degradeCylindre(capsule, cx, rc, [205, 170, 100], { reflet: 0.55 })}
+        ${degradeCylindre(lisere, cx, rc + 0.2, [110, 84, 40], { reflet: 0.4 })}
       </defs>
       <path d="${silhouette}" fill="url(#${corps})"/>
       <rect x="${cx - 14.6}" y="${Y(252)}" width="29.2" height="8" fill="url(#${col})"/>

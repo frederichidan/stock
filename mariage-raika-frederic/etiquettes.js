@@ -3,10 +3,8 @@
    - Vin : étiquette avant, 90 × 120 mm (bouteille de 75 cl).
    - Eau 33 cl : étiquette qui fait le tour de la bouteille, 200 × 50 mm. Le bord gauche passe
      sous le bord droit une fois collée : les 15 premiers millimètres ne portent aucun texte.
-   Une seule face chacune. Couleurs : INFOS.couleurs.etiquettes, l'or antique (champ or antique,
-   bandeaux crème, textes bronze ; voir commun.css), distinct de l'or champagne des billets
-   premium et du menu. Le champ est un contexte « sombre » : avec "" (couleurs de la version), il
-   prend le fond de la version. */
+   Une seule face chacune. Couleurs : palette « or champagne » (ivoire, champagne, or et bronze),
+   sans violet et quelle que soit la version choisie (classe palette-or, voir commun.css). */
 
 const FORMATS_ETIQUETTES = {
   vin: [90, 120],
@@ -19,10 +17,6 @@ function dateEtiquette() {
   const e = I.evenements[(I.passeport.escaleCouverture || 1) - 1] || I.evenements[0];
   const [jour, mois, annee] = e.date.split(" ");
   return `<span class="chiffres">${esc(jour)}</span> ${esc(mois.toUpperCase())} <span class="chiffres">${esc(annee)}</span>`;
-}
-
-function couleursEtiquette() {
-  return ` sombre${palette((INFOS.couleurs || {}).etiquettes)}`;
 }
 
 function trajetEtiquette() {
@@ -39,7 +33,7 @@ function etiquetteVin() {
   const V = I.etiquettes.vin;
   const [l, h] = FORMATS_ETIQUETTES.vin;
   return `
-  <section class="page bouteille vin${couleursEtiquette()}">
+  <section class="page bouteille vin${palette("or")}">
     <div class="calque">
       <svg viewBox="0 0 ${l} ${h}" preserveAspectRatio="none">
         ${bandeGuillochee({ largeur: l, y: 88, amplitude: 3.6, periode: 26, nbLignes: 7, couleur: "var(--guilloche)" })}
@@ -72,7 +66,7 @@ function etiquetteEau() {
   const [l, h] = FORMATS_ETIQUETTES.eau;
   const dates = [...new Set(I.evenements.map((e) => e.dateCourte.slice(0, 5)))].map(esc).join(" &amp; ");
   return `
-  <section class="page bouteille eau${couleursEtiquette()}">
+  <section class="page bouteille eau${palette("or")}">
     <div class="principal">
       <header class="bandeau">
         <div class="bandeau-titre">

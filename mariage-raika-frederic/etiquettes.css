@@ -1,7 +1,7 @@
-/* Étiquettes de bouteilles (etiquettes.js), dans la charte du billet, en or antique.
+/* Étiquettes de bouteilles (etiquettes.js), dans la charte du billet, en or champagne.
    Imprimées à taille réelle (100 %) : elles doivent correspondre aux bouteilles. */
 
-/* Couleurs : palette de commun.css choisie dans infos.js (couleurs.etiquettes : classe palette-antique). */
+/* Couleurs : palette « or champagne » de commun.css (classe palette-or). */
 
 .page.bouteille {
   background: radial-gradient(ellipse 85% 75% at 50% 42%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);

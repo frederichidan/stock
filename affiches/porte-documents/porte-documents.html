@@ -39,7 +39,9 @@
   .front .top{position:absolute;left:0;right:0;top:20mm;text-align:center;font-size:3.6mm;font-weight:700;letter-spacing:2mm;color:rgba(255,255,255,.75);text-transform:uppercase}
 
   /* dos */
-  .back .crest{position:absolute;left:50%;top:30mm;height:56mm;transform:translateX(-50%)}
+  .back .name small,.back .values span,.back .contact .t,.back .contact li small{color:#fff !important}
+  .back .values div,.back .contact{border-color:rgba(255,255,255,.25) !important}
+  .back .crest{position:absolute;left:50%;top:34mm;height:56mm;transform:translateX(-50%)}
   .back .name{position:absolute;left:0;right:0;top:92mm;text-align:center}
   .back .name b{display:block;font-family:Anton;font-weight:400;font-size:13mm;letter-spacing:.6mm;color:#fff;text-transform:uppercase}
   .back .name small{display:block;margin-top:2mm;font-size:4mm;font-weight:800;letter-spacing:2mm;color:var(--yellow);text-transform:uppercase}
@@ -109,12 +111,12 @@ function exterior(){
   <!-- fonds (avec 3 mm de fond perdu) -->
   <div class="abs navy" style="left:-3mm;top:-3mm;width:446mm;height:316mm"></div>
   <div class="abs navy" style="left:-3mm;top:310mm;width:226mm;height:103mm"></div>
-  <div class="abs flag" style="left:-3mm;top:300mm;width:223mm;height:10mm"><i></i><i></i><i></i></div>
+  <!-- dos : aplat de couleur unique (bleu marine), sans dégradé ni bande -->
+  <div class="abs" style="left:-3mm;top:-3mm;width:223mm;height:313mm;background:var(--navy)"></div>
   <div class="abs flag" style="left:220mm;top:300mm;width:223mm;height:10mm"><i></i><i></i><i></i></div>
 
   <!-- DOS (gauche) -->
-  <div class="panel back" style="left:0;top:0;width:220mm;height:300mm">
-    <div class="frame" style="bottom:0"></div>
+  <div class="panel back" style="left:0;top:0;width:220mm;height:310mm">
     <img class="crest" src="ecusson.png">
     <div class="name"><b>Rugby Club Akanda</b><small>Sevens</small></div>
     <div class="values">

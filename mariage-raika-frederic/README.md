@@ -3,9 +3,9 @@
 Supports imprimables du « Passeport de Mariage ». La pochette passeport est aux couleurs
 violet & or (version A, Violet améthyste & or). Les billets d'invitation existent en deux
 catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
-autres invités, en **argent**. La carte de menu et les étiquettes de bouteilles sont en or
-champagne. Ces palettes sans violet, à fond clair, sont plus légères à l'impression. Il n'y a
-pas de photo du couple : le visuel
+autres invités, en **argent**. La carte de menu et les étiquettes de bouteilles sont en
+**blanc & or** : fond blanc, textes et décors dorés. Ces palettes sans violet, à fond clair,
+sont plus légères à l'impression. Il n'y a pas de photo du couple : le visuel
 principal est le monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
 ## Les fichiers à utiliser : `export/violet/`
@@ -57,9 +57,9 @@ coins arrondis de 3 mm conseillés pour la pochette, comme sur la maquette.
 ## Étiquettes de bouteilles
 
 Dans la charte du billet (carte d'embarquement, monogramme, trajet CLB → MAR, guillochis),
-mais en **or champagne** plutôt qu'en violet : fond ivoire et champagne, bandeaux dorés,
-textes bronze foncé. Le fond clair demande très peu d'encre (35 à 65 % en moyenne) et toutes
-les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
+mais en **blanc & or** plutôt qu'en violet, comme la carte de menu : fond et bandeaux blancs,
+textes, filets et ornements dorés. Seuls les textes et les décors demandent de l'encre, et
+toutes les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
 
 | Étiquette | Format (taille réelle) | Par feuille A4 | Fichier à imprimer |
 |---|---|---|---|
@@ -85,14 +85,18 @@ les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
 
 ## Couleurs et impression
 
-**Billet premium, menu et étiquettes : or champagne.** Fond ivoire et champagne, bandeaux
-dorés, textes bronze foncé, tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de
-la palette. **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux
-argentés, textes graphite. Ces fonds clairs ne demandent que 2 à 77 % d'encre (contre 160 à
-190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une imprimante
-(écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de chaque
-catégorie : « Invité d'honneur » pour le premium, « Invité » pour le classique) et
-`couleurs: { menu: "or" }` ; `""` revient aux couleurs de la version.
+**Billet premium : or champagne.** Fond ivoire et champagne, bandeaux dorés, textes bronze
+foncé, tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de la palette.
+**Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés,
+textes graphite. **Carte de menu et étiquettes de bouteilles : blanc & or.** Fond blanc (le
+papier, sans encre) ; textes courants et petits intitulés en or foncé (#846635, #7c6134),
+lisibles sur le blanc ; filets, pictogrammes et ornements en or vif (#b8913f, #c39c4a) ;
+titres et prénoms en dégradé doré. Ces fonds clairs ne demandent que 0 à 77 % d'encre (contre
+160 à 190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une
+imprimante (écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de
+chaque catégorie : « Invité d'honneur » pour le premium, « Invité » pour le classique) et
+`couleurs: { menu: "blanc", etiquettes: "blanc" }` (`"or"` pour l'or champagne, `"argent"`
+pour l'argent ; pour le menu, `""` revient aux couleurs de la version).
 
 **Pochette passeport : violet.** Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
 l'impression il ressortait terne, presque noir sur les bords, avec beaucoup d'encre. Il est

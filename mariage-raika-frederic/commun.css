@@ -167,13 +167,14 @@
   --guilloche-opacite: 0.14;
 }
 
-/* -------------------- Palettes sans violet : or et argent -------------------- */
-/* Classe `palette-or` ou `palette-argent` sur la page (fonction palette() de commun.js) : elle
-   remplace les couleurs de la version, contextes sombre/clair compris. Toutes les teintes sont
-   dans la gamme d'une imprimante quadri (écart ΔE < 2,5) et les fonds, clairs, ne demandent que
-   2 à 77 % d'encre. `--bandeau-*` : textes posés sur les bandeaux ; `--liseret` : leur filet.
+/* --------------- Palettes sans violet : or champagne, argent, blanc & or --------------- */
+/* Classe `palette-or`, `palette-argent` ou `palette-blanc` sur la page (fonction palette() de
+   commun.js) : elle remplace les couleurs de la version, contextes sombre/clair compris. Toutes
+   les teintes sont dans la gamme d'une imprimante quadri (écart ΔE < 2,5) et les fonds, clairs,
+   ne demandent que 0 à 77 % d'encre. `--bandeau-*` : textes posés sur les bandeaux colorés ;
+   `--liseret` : leur filet.
    - Or champagne (or antique #a07a32 et or champagne #c9a464 de la palette) : fond ivoire et
-     champagne, bandeaux dorés, textes bronze foncé. Billet premium, menu, étiquettes.
+     champagne, bandeaux dorés, textes bronze foncé. Billet premium.
    - Argent (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés, textes graphite.
      Billet classique. */
 .page.palette-or,
@@ -236,8 +237,43 @@
   --bandeau-texte: #2a2c31; --bandeau-doux: #33363d; --bandeau-reflet: #4a4e57;
   --liseret: #858a96;
 }
+/* - Blanc & or : fond blanc (le papier, sans encre), textes et ornements dorés : or foncé pour
+     les textes courants et les petits intitulés, or vif pour les filets et les pictogrammes,
+     dégradé or pour les titres et les prénoms. Bandeaux blancs, séparés par un filet doré.
+     Carte de menu et étiquettes de bouteilles. */
+.page.palette-blanc,
+.palette-blanc .sombre,
+.palette-blanc .clair {
+  --fond-1: #ffffff; --fond-2: #ffffff; --fond-3: #ffffff;
+  --bande-1: #ffffff; --bande-2: #ffffff;
+  --talon-1: #ffffff; --talon-2: #ffffff;
+  --verso-1: #ffffff; --verso-2: #ffffff; --verso-3: #ffffff;
+  --texte: #846635;
+  --texte-doux: #8a6d3b;
+  --accent: #b8913f;
+  --accent-texte: #7c6134;
+  --accent-fort: #7c6134;
+  --discret: #8a6d3b;
+  --ligne: rgba(184, 145, 63, 0.8);
+  --filet: rgba(184, 145, 63, 0.4);
+  --zone: rgba(201, 164, 100, 0.1);
+  --ligne-ecriture: rgba(132, 102, 53, 0.5);
+  --code: #9f7a38;
+  --esperluette: #b8913f;
+  --let-a: #846635; --let-b: #c9a464; --let-c: #a88239;
+  --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
+  --guilloche: #c39c4a;
+  --guilloche-opacite: 0.22;
+  --pastille: #c39c4a;
+  --pastille-texte: #ffffff;
+  --titre-etape: #7c6134;
+  --code-barres: #7c6134;
+  --bandeau-texte: #7c6134; --bandeau-doux: #846635; --bandeau-reflet: #b8913f;
+  --liseret: #b8913f;
+}
 .page.palette-or, .palette-or .sombre, .palette-or .clair,
-.page.palette-argent, .palette-argent .sombre, .palette-argent .clair {
+.page.palette-argent, .palette-argent .sombre, .palette-argent .clair,
+.page.palette-blanc, .palette-blanc .sombre, .palette-blanc .clair {
   -webkit-text-stroke: 0;
   color: var(--texte);
 }

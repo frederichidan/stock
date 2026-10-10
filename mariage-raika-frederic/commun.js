@@ -14,9 +14,10 @@ function idUnique(prefixe) {
 }
 
 // Classe à ajouter aux pages d'un support dessiné dans une palette sans violet (commun.css) :
-// "or" (or champagne) ou "argent" ; toute autre valeur garde les couleurs de la version.
+// "or" (or champagne), "argent" ou "blanc" (blanc & or) ; toute autre valeur garde les couleurs
+// de la version.
 function palette(couleur) {
-  return ["or", "argent"].includes(couleur) ? ` palette-${couleur}` : "";
+  return ["or", "argent", "blanc"].includes(couleur) ? ` palette-${couleur}` : "";
 }
 
 function esc(texte) {

@@ -10,11 +10,11 @@
 const INFOS = {
   // Couleurs : "violet" (version A, retenue), "minuit", "champagne" ou "argent" (voir themes.js).
   theme: "violet",
-  // Couleurs de la carte de menu : "or" = or champagne (fond ivoire, bandeaux dorés, sans violet,
-  // peu d'encre), "argent" = argent, "" = les couleurs de la version ci-dessus. La pochette
-  // passeport garde celles de la version ; les étiquettes de bouteilles sont toujours en or ;
-  // les billets ont une couleur par catégorie (voir `billets` plus bas).
-  couleurs: { menu: "or" },
+  // Couleurs de la carte de menu et des étiquettes de bouteilles : "blanc" = blanc & or (fond
+  // blanc, textes et décors dorés), "or" = or champagne (fond ivoire, bandeaux dorés), "argent"
+  // = argent ; pour le menu, "" = les couleurs de la version ci-dessus. La pochette passeport
+  // garde celles de la version ; les billets ont une couleur par catégorie (`billets` plus bas).
+  couleurs: { menu: "blanc", etiquettes: "blanc" },
 
   // Le prénom féminin se place avant le prénom masculin.
   mariee: "Raïka",

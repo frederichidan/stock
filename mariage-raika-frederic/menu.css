@@ -57,7 +57,8 @@
 .menu.verso .devise { font-style: italic; font-size: 12.5pt; color: var(--accent-fort); }
 .menu.verso .source { font-size: 9pt; color: var(--texte-doux); margin-top: 0.8mm; }
 
-/* Palettes or champagne et argent (commun.css) : intitulés des rubriques dans la teinte plus
-   foncée des textes, lisible sur le fond clair. */
+/* Palettes or champagne, argent et blanc & or (commun.css) : intitulés des rubriques dans la
+   teinte plus foncée des textes, lisible sur le fond clair. */
 .menu.palette-or .rubrique h2,
-.menu.palette-argent .rubrique h2 { color: var(--accent-texte); }
+.menu.palette-argent .rubrique h2,
+.menu.palette-blanc .rubrique h2 { color: var(--accent-texte); }

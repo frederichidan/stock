@@ -129,12 +129,14 @@ function marbre(largeur, hauteur) {
   </svg>`;
 }
 
-// Ruban de satin qui traverse un coin de la scène, assorti au support : violet, or ou argent.
+// Ruban de satin qui traverse un coin de la scène, assorti au support : violet, or ou argent
+// (doré pour les supports blanc & or).
 const TEINTES_RUBAN = {
   violet: ["#43305c", "#7e5ea9", "#8c6fb1", "#674696", "#513972"],
   or: ["#8a6a2c", "#d6b46e", "#ecd59d", "#c39c4a", "#9f7a38"],
   argent: ["#6f7480", "#b9bdc8", "#dfe1e7", "#a3a8b4", "#7d828e"],
 };
+TEINTES_RUBAN.blanc = TEINTES_RUBAN.or;
 function rubanSatin(chemin, largeur, hauteur, teinte = "violet") {
   const id = idUnique("satin");
   const [a, b, c, d, e] = TEINTES_RUBAN[teinte] || TEINTES_RUBAN.violet;
@@ -456,7 +458,7 @@ function decorFace(l, h, horizon) {
     halos += `<div class="halo" style="left:${(x - r).toFixed(1)}mm;top:${(y - r).toFixed(1)}mm;width:${2 * r}mm;height:${2 * r}mm;background:radial-gradient(circle closest-side, rgba(236,213,157,${a}) 0%, rgba(236,213,157,${a}) 55%, rgba(236,213,157,0) 100%)"></div>`;
   }
   return `<div class="mur"></div>${halos}
-    <div class="table" style="top:${horizon}mm">${marbre(l, h - horizon)}<div class="profondeur"></div></div>
+    <div class="table-marbre" style="top:${horizon}mm">${marbre(l, h - horizon)}<div class="profondeur"></div></div>
     <div class="pied-mur" style="top:${horizon - 14}mm"></div>`;
 }
 

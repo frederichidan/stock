@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480">
+  <defs>
+    <path id="shield" d="M58 36 H342 Q360 36 360 54 V262 C360 360 292 420 200 456 C108 420 40 360 40 262 V54 Q40 36 58 36 Z"/>
+    <clipPath id="clip"><use href="#shield"/></clipPath>
+  </defs>
+
+  <!-- Fond -->
+  <use href="#shield" fill="#0f2557"/>
+
+  <g clip-path="url(#clip)">
+    <!-- Terrain : bandes aux couleurs du Gabon -->
+    <path d="M0 372 L400 318 V480 H0 Z" fill="#f4c20d"/>
+    <path d="M0 384 L400 330 V480 H0 Z" fill="#0f2557"/>
+    <path d="M0 392 L400 338 V480 H0 Z" fill="#1f9d4a"/>
+  </g>
+
+  <!-- Filet intérieur -->
+  <use href="#shield" fill="none" stroke="#ffffff" stroke-width="2.5" transform="translate(200 246) scale(.93) translate(-200 -246)"/>
+
+  <!-- Titre -->
+  <g font-family="Inter, sans-serif" font-weight="700" font-size="17" letter-spacing="6.5" fill="#ffffff" text-anchor="middle">
+    <text x="203" y="92">RUGBY CLUB</text>
+  </g>
+  <rect x="80" y="85" width="22" height="3" rx="1.5" fill="#f4c20d"/>
+  <rect x="298" y="85" width="22" height="3" rx="1.5" fill="#f4c20d"/>
+  <text x="200" y="170" font-family="Anton, sans-serif" font-size="74" letter-spacing="3" fill="#ffffff" text-anchor="middle">AKANDA</text>
+
+  <!-- Ballon en mouvement -->
+  <g stroke-linecap="round">
+    <line x1="84"  y1="222" x2="164" y2="222" stroke="#1f9d4a" stroke-width="8"/>
+    <line x1="106" y1="244" x2="166" y2="244" stroke="#f4c20d" stroke-width="8"/>
+    <line x1="128" y1="266" x2="172" y2="266" stroke="#ffffff" stroke-width="8"/>
+  </g>
+  <g transform="translate(244 240) rotate(-28)">
+    <path d="M-66 0 C-44 -46 44 -46 66 0 C44 46 -44 46 -66 0 Z" fill="#ffffff"/>
+    <path d="M-34 -8 C-12 -16 12 -16 34 -8" fill="none" stroke="#0f2557" stroke-width="4" stroke-linecap="round"/>
+    <g stroke="#0f2557" stroke-width="4" stroke-linecap="round">
+      <line x1="-16" y1="-21" x2="-16" y2="-6"/>
+      <line x1="0" y1="-23" x2="0" y2="-8"/>
+      <line x1="16" y1="-21" x2="16" y2="-6"/>
+    </g>
+  </g>
+
+  <!-- Sevens -->
+  <text x="203" y="412" font-family="Inter, sans-serif" font-weight="700" font-size="15" letter-spacing="7" fill="#ffffff" text-anchor="middle">SEVENS</text>
+</svg>

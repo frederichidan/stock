@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Fiche individuelle RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{ --navy:#0a1747; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --ink:#0a1747; --muted:#5b6585; --line:#c9cfdf; --soft:#f3f5fa; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:210mm;height:297mm;background:#fff}
+  .page{position:relative;width:210mm;height:297mm;overflow:hidden;font-family:Inter,sans-serif;color:var(--ink);display:flex;flex-direction:column}
+
+  /* bandeau */
+  .head{position:relative;background:radial-gradient(80% 140% at 90% 0%, #1c3f9e 0%, transparent 60%), var(--navy);color:#fff;
+    padding:7mm 14mm 6mm;display:flex;align-items:center;gap:6mm}
+  .head img{height:27mm;filter:drop-shadow(0 1mm 2mm rgba(0,0,0,.35))}
+  .head .club{font-weight:700;font-size:3.1mm;letter-spacing:1.2mm;text-transform:uppercase}
+  .head .club small{color:var(--yellow);font-weight:600;letter-spacing:1mm;margin-left:2mm}
+  .head h1{font-family:Anton,sans-serif;font-weight:400;font-size:13mm;line-height:1.05;text-transform:uppercase;letter-spacing:.4mm;margin-top:1.5mm}
+  .head h1 span{color:var(--yellow)}
+  .head .season{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:5mm;color:rgba(255,255,255,.85);margin-top:1mm}
+  .head .photo{margin-left:auto;width:27mm;height:32mm;border:.4mm dashed rgba(255,255,255,.6);border-radius:1.5mm;
+    display:grid;place-items:center;text-align:center;font-size:2.4mm;letter-spacing:.8mm;text-transform:uppercase;color:rgba(255,255,255,.75);line-height:1.6}
+  .flag{display:flex;height:2mm;flex:none}.flag i{flex:1}
+
+  .body{padding:5mm 14mm 0;flex:1;display:flex;flex-direction:column;gap:2.7mm}
+
+  /* sections */
+  .sec h2{display:flex;align-items:center;gap:2.5mm;font-size:2.9mm;font-weight:700;letter-spacing:1.3mm;text-transform:uppercase;color:var(--navy);margin-bottom:2.2mm}
+  .sec h2 b{display:grid;place-items:center;width:6mm;height:6mm;border-radius:50%;background:var(--yellow);font-family:Anton;font-weight:400;font-size:3.3mm;letter-spacing:0}
+  .sec h2::after{content:"";flex:1;height:.3mm;background:var(--line)}
+  .grid{display:grid;gap:2.2mm 5mm}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+  .f{display:flex;flex-direction:column}
+  .f label{font-size:2.3mm;font-weight:600;letter-spacing:.5mm;text-transform:uppercase;color:var(--muted);margin-bottom:1mm}
+  .f .l{height:4.6mm;border-bottom:.35mm solid var(--line);background:linear-gradient(transparent 0, transparent)}
+  .span2{grid-column:span 2}.span3{grid-column:span 3}.span4{grid-column:1/-1}
+
+  .checks{display:flex;flex-wrap:wrap;gap:1.8mm 4.5mm;font-size:3mm;padding-top:1mm}
+  .checks span{display:inline-flex;align-items:center;gap:1.5mm}
+  .checks span::before{content:"";width:3.2mm;height:3.2mm;border:.35mm solid var(--navy);border-radius:.6mm}
+  .q{font-size:2.3mm;font-weight:600;letter-spacing:.5mm;text-transform:uppercase;color:var(--muted)}
+  .row{display:flex;align-items:center;gap:4mm;flex-wrap:wrap}
+
+  .box{background:var(--soft);border-radius:2mm;padding:3.5mm 4.5mm}
+  .legal{font-size:2.75mm;line-height:1.5;color:#2c3557}
+  .legal b{color:var(--navy)}
+
+  .sign{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+  .sign .s{border:.35mm solid var(--line);border-radius:2mm;height:17mm;padding:2.5mm 3mm}
+  .sign .s label{font-size:2.3mm;font-weight:600;letter-spacing:.5mm;text-transform:uppercase;color:var(--muted)}
+
+  /* cadre club */
+  .club-box{border:.4mm solid var(--navy);border-radius:2mm;padding:3mm 4.5mm;position:relative}
+  .club-box .tag{position:absolute;top:-2.3mm;left:4mm;background:#fff;padding:0 2mm;font-size:2.4mm;font-weight:700;letter-spacing:1mm;text-transform:uppercase;color:var(--navy)}
+
+  .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:3.5mm 14mm;background:var(--navy);color:#fff;font-size:2.6mm;letter-spacing:.4mm}
+  .foot b{font-family:Anton;font-weight:400;font-size:3.6mm;letter-spacing:.3mm;margin-left:3mm}
+  .foot b small{font-family:Inter;color:var(--yellow);font-size:2.2mm;margin-right:1mm}
+  .foot em{font-family:"Cormorant Garamond",serif;font-size:4.2mm;color:var(--yellow)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="head">
+    <img src="ecusson.png" alt="Écusson du Rugby Club Akanda">
+    <div>
+      <div class="club">Rugby Club Akanda<small>Sevens</small></div>
+      <h1>Fiche <span>individuelle</span></h1>
+      <div class="season">Renseignements du joueur — Saison 2026-2027</div>
+    </div>
+    <div class="photo">Photo<br>d’identité</div>
+  </header>
+  <div class="flag"><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
+
+  <main class="body">
+
+    <section class="sec">
+      <h2><b>1</b>Identité</h2>
+      <div class="grid g3">
+        <div class="f"><label>Nom</label><div class="l"></div></div>
+        <div class="f span2"><label>Prénom(s)</label><div class="l"></div></div>
+        <div class="f"><label>Date de naissance</label><div class="l"></div></div>
+        <div class="f"><label>Lieu de naissance</label><div class="l"></div></div>
+        <div class="f"><label>Nationalité</label><div class="l"></div></div>
+        <div class="f span2"><label>Profession / établissement scolaire</label><div class="l"></div></div>
+        <div class="f"><label>Sexe</label><div class="checks"><span>Masculin</span><span>Féminin</span></div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><b>2</b>Coordonnées</h2>
+      <div class="grid g3">
+        <div class="f span2"><label>Adresse / quartier</label><div class="l"></div></div>
+        <div class="f"><label>Téléphone</label><div class="l"></div></div>
+        <div class="f span2"><label>E-mail</label><div class="l"></div></div>
+        <div class="f"><label>WhatsApp</label><div class="l"></div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><b>3</b>Profil sportif</h2>
+      <div class="grid g4">
+        <div class="f"><label>Taille (cm)</label><div class="l"></div></div>
+        <div class="f"><label>Poids (kg)</label><div class="l"></div></div>
+        <div class="f"><label>Taille maillot</label><div class="l"></div></div>
+        <div class="f"><label>Pointure</label><div class="l"></div></div>
+      </div>
+      <div class="row" style="margin-top:2.4mm"><span class="q">Niveau</span><div class="checks"><span>Débutant</span><span>Intermédiaire</span><span>Confirmé</span></div></div>
+      <div class="row" style="margin-top:1.8mm"><span class="q">Poste souhaité</span><div class="checks"><span>Avant (pilier, talonneur, 2e ligne)</span><span>3e ligne</span><span>Demi</span><span>Trois-quarts</span><span>Arrière</span><span>Indifférent</span></div></div>
+      <div class="grid g2" style="margin-top:2.6mm">
+        <div class="f"><label>Ancien(s) club(s)</label><div class="l"></div></div>
+        <div class="f"><label>Années de pratique</label><div class="l"></div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><b>4</b>Santé &amp; urgence</h2>
+      <div class="grid g3">
+        <div class="f"><label>Groupe sanguin</label><div class="l"></div></div>
+        <div class="f span2"><label>Allergies / traitements en cours</label><div class="l"></div></div>
+        <div class="f span3"><label>Antécédents médicaux ou blessures</label><div class="l"></div></div>
+      </div>
+      <div class="grid g4" style="margin-top:2.2mm">
+        <div class="f"><label>Personne à prévenir</label><div class="l"></div></div>
+        <div class="f"><label>Lien de parenté</label><div class="l"></div></div>
+        <div class="f"><label>Téléphone</label><div class="l"></div></div>
+        <div class="f"><label>Certificat médical</label><div class="checks"><span>Oui</span><span>Non</span></div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2><b>5</b>Engagement</h2>
+      <div class="box legal">
+        Je soussigné(e) certifie l’exactitude des renseignements ci-dessus et m’engage à respecter le règlement intérieur du
+        <b>Rugby Club Akanda</b>, ses valeurs et ses membres. J’autorise le club à utiliser mon image dans le cadre de sa communication.
+        <br><b>Joueur mineur :</b> le parent ou tuteur légal autorise l’enfant à pratiquer le rugby au sein du club et à recevoir les soins nécessaires en cas d’urgence.
+      </div>
+      <div class="sign" style="margin-top:3mm">
+        <div class="s"><label>Date et signature du joueur</label></div>
+        <div class="s"><label>Signature du parent / tuteur (si mineur)</label></div>
+      </div>
+    </section>
+
+    <section class="club-box">
+      <span class="tag">Cadre réservé au club</span>
+      <div class="grid g4" style="margin-top:1mm">
+        <div class="f"><label>N° de licence</label><div class="l"></div></div>
+        <div class="f"><label>Date d’inscription</label><div class="l"></div></div>
+        <div class="f"><label>Cotisation réglée</label><div class="checks"><span>Oui</span><span>Non</span></div></div>
+        <div class="f"><label>Visa du responsable</label><div class="l"></div></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot" style="margin-top:2.5mm">
+    <em>Plus qu’un club, une famille !</em>
+    <span>Infos <b><small>+241</small>077 05 44 13</b><b><small>+241</small>074 85 69 48</b><b><small>+241</small>074 91 40 12</b></span>
+  </footer>
+</div>
+</body>
+</html>

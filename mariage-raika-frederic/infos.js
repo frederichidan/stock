@@ -10,11 +10,12 @@
 const INFOS = {
   // Couleurs : "violet" (version A, retenue), "minuit", "champagne" ou "argent" (voir themes.js).
   theme: "violet",
-  // Couleurs de la carte de menu : "or" = or champagne (fond ivoire, bandeaux dorés, sans violet,
-  // peu d'encre), "argent" = argent, "" = les couleurs de la version ci-dessus. La pochette
-  // passeport garde celles de la version ; les étiquettes de bouteilles sont toujours en or ;
-  // les billets ont une couleur par catégorie (voir `billets` plus bas).
-  couleurs: { menu: "or" },
+  // Couleurs du menu et des étiquettes de bouteilles, tirées de la palette, sans violet : "or" =
+  // or champagne (fond ivoire, bandeaux dorés, très peu d'encre), "antique" = or antique (champ
+  // or antique, textes bronze, bandeaux crème), "argent" = argent, "" = les couleurs de la
+  // version ci-dessus. La pochette passeport garde celles de la version ; les billets ont une
+  // couleur par catégorie (voir `billets` plus bas).
+  couleurs: { menu: "or", etiquettes: "antique" },
 
   // Le prénom féminin se place avant le prénom masculin.
   mariee: "Raïka",
@@ -50,10 +51,11 @@ const INFOS = {
       lieu: "La Sablière",
       precision: "Entrée Hôtel Onomo",
       programme: [
-        ["14h00", "Arrivée des invités"],
-        ["14h30", "Arrivée de la belle-famille"],
-        ["15h00", "Début de la cérémonie"],
-        ["17h30", "Fin de la cérémonie & photos"],
+        // Début de la cérémonie à 12h30.
+        ["11h30", "Arrivée des invités"],
+        ["12h00", "Arrivée de la belle-famille"],
+        ["12h30", "Début de la cérémonie"],
+        ["15h00", "Fin de la cérémonie & photos"],
       ],
     },
     {

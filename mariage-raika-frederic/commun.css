@@ -167,13 +167,14 @@
   --guilloche-opacite: 0.14;
 }
 
-/* -------------------- Palettes sans violet : or et argent -------------------- */
-/* Classe `palette-or` ou `palette-argent` sur la page (fonction palette() de commun.js) : elle
-   remplace les couleurs de la version, contextes sombre/clair compris. Toutes les teintes sont
-   dans la gamme d'une imprimante quadri (écart ΔE < 2,5) et les fonds, clairs, ne demandent que
-   2 à 77 % d'encre. `--bandeau-*` : textes posés sur les bandeaux ; `--liseret` : leur filet.
+/* ------------- Palettes sans violet : or champagne, or antique et argent ------------- */
+/* Classe `palette-or`, `palette-antique` ou `palette-argent` sur la page (fonction palette() de
+   commun.js) : elle remplace les couleurs de la version, contextes sombre/clair compris. Toutes
+   les teintes sont dans la gamme d'une imprimante quadri (écart ΔE < 2,5) ; les fonds clairs (or
+   champagne, argent) ne demandent que 2 à 77 % d'encre. `--bandeau-*` : textes posés sur les
+   bandeaux ; `--liseret` : leur filet.
    - Or champagne (or antique #a07a32 et or champagne #c9a464 de la palette) : fond ivoire et
-     champagne, bandeaux dorés, textes bronze foncé. Billet premium, menu, étiquettes.
+     champagne, bandeaux dorés, textes bronze foncé. Billet premium, menu.
    - Argent (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés, textes graphite.
      Billet classique. */
 .page.palette-or,
@@ -236,15 +237,75 @@
   --bandeau-texte: #2a2c31; --bandeau-doux: #33363d; --bandeau-reflet: #4a4e57;
   --liseret: #858a96;
 }
+/* - Or antique (#a07a32 de la palette, éclairci pour l'impression) : champ or antique, textes
+     bronze foncé, ornements crème, bandeaux crème ; pages claires (contexte « clair ») en
+     parchemin. Étiquettes de bouteilles. Le champ demande 135 à 185 %
+     d'encre, surtout du jaune (l'encre la plus discrète) : moins que les aplats de l'ancien violet. */
+.page.palette-antique,
+.palette-antique .clair {
+  --fond-1: #c3a26a; --fond-2: #b18f55; --fond-3: #a48247;
+  --bande-1: #efdfbf; --bande-2: #f6ead2;
+  --talon-1: #e8d5ac; --talon-2: #dcc595;
+  --verso-1: #fcf5e8; --verso-2: #f6ead4; --verso-3: #e9d5ae;
+  --texte: #45392a;
+  --texte-doux: #5a472b;
+  --accent: #9a7840;
+  --accent-texte: #6e5530;
+  --accent-fort: #52412a;
+  --discret: #5a472b;
+  --ligne: rgba(154, 120, 64, 0.75);
+  --filet: rgba(154, 120, 64, 0.35);
+  --zone: rgba(154, 120, 64, 0.13);
+  --ligne-ecriture: rgba(69, 57, 42, 0.45);
+  --code: #6e5530;
+  --esperluette: #9a7840;
+  --let-a: #52412a; --let-b: #9a7840; --let-c: #6e5530;
+  --orn-a: #6e5530; --orn-b: #d2b277; --orn-c: #9a7840;
+  --guilloche: #8a6a33;
+  --guilloche-opacite: 0.14;
+  --pastille: #b08e54;
+  --pastille-texte: #3b342a;
+  --titre-etape: #52412a;
+  --code-barres: #3b342a;
+  --bandeau-texte: #3b342a; --bandeau-doux: #45392a; --bandeau-reflet: #6e5530;
+  --liseret: #9a7840;
+}
+/* Sur le champ or antique : textes bronze foncé ; ornements (alliances, monogramme, puce) et
+   esperluette crème, comme une dorure à chaud. */
+.page.palette-antique.sombre,
+.palette-antique .sombre {
+  --texte: #3b342a;
+  --texte-doux: #45392a;
+  --accent: #52412a;
+  --accent-texte: #45392a;
+  --accent-fort: #3b342a;
+  --discret: #45392a;
+  --ligne: rgba(59, 52, 42, 0.6);
+  --filet: rgba(59, 52, 42, 0.3);
+  --zone: rgba(252, 245, 232, 0.22);
+  --ligne-ecriture: rgba(59, 52, 42, 0.5);
+  --code: #52412a;
+  --esperluette: #fcf5e8;
+  --let-a: #3b342a; --let-b: #6e5530; --let-c: #45392a;
+  --orn-a: #d9bf8c; --orn-b: #fcf5e8; --orn-c: #efdfbf;
+  --guilloche: #3b342a;
+  --guilloche-opacite: 0.1;
+  --pastille: #45392a;
+  --pastille-texte: #f6ead2;
+  --titre-etape: #3b342a;
+  --liseret: #6e5530;
+}
 .page.palette-or, .palette-or .sombre, .palette-or .clair,
-.page.palette-argent, .palette-argent .sombre, .palette-argent .clair {
+.page.palette-argent, .palette-argent .sombre, .palette-argent .clair,
+.page.palette-antique, .palette-antique .sombre, .palette-antique .clair {
   -webkit-text-stroke: 0;
   color: var(--texte);
 }
 /* Sur les bandeaux : textes, pictogrammes et textes en dégradé foncés, bien contrastés ; le
    liseré garde la teinte d'accent. */
 .page.palette-or .bandeau,
-.page.palette-argent .bandeau {
+.page.palette-argent .bandeau,
+.page.palette-antique .bandeau {
   --accent: var(--bandeau-texte);
   --accent-fort: var(--bandeau-texte);
   --texte-doux: var(--bandeau-texte);

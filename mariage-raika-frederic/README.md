@@ -3,9 +3,9 @@
 Supports imprimables du « Passeport de Mariage ». La pochette passeport est aux couleurs
 violet & or (version A, Violet améthyste & or). Les billets d'invitation existent en deux
 catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
-autres invités, en **argent**. La carte de menu et les étiquettes de bouteilles sont en or
-champagne. Ces palettes sans violet, à fond clair, sont plus légères à l'impression. Il n'y a
-pas de photo du couple : le visuel
+autres invités, en **argent**. La carte de menu est en or champagne, les étiquettes de
+bouteilles (vin et eau) en **or antique**. Ces palettes sans violet sont plus légères à
+l'impression. Il n'y a pas de photo du couple : le visuel
 principal est le monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
 ## Les fichiers à utiliser : `export/violet/`
@@ -57,9 +57,11 @@ coins arrondis de 3 mm conseillés pour la pochette, comme sur la maquette.
 ## Étiquettes de bouteilles
 
 Dans la charte du billet (carte d'embarquement, monogramme, trajet CLB → MAR, guillochis),
-mais en **or champagne** plutôt qu'en violet : fond ivoire et champagne, bandeaux dorés,
-textes bronze foncé. Le fond clair demande très peu d'encre (35 à 65 % en moyenne) et toutes
-les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
+mais en **or antique** plutôt qu'en violet, pour se distinguer de l'or champagne des billets
+premium et du menu : champ or antique, bandeaux crème, textes bronze foncé, ornements crème
+(monogramme, couronne, lauriers). Le champ or antique demande 140 à 155 % d'encre en moyenne,
+surtout du jaune (moins que les fonds violets), et toutes les teintes restent dans la gamme
+d'une imprimante (écart ΔE < 2).
 
 | Étiquette | Format (taille réelle) | Par feuille A4 | Fichier à imprimer |
 |---|---|---|---|
@@ -85,14 +87,19 @@ les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
 
 ## Couleurs et impression
 
-**Billet premium, menu et étiquettes : or champagne.** Fond ivoire et champagne, bandeaux
+**Billet premium et menu : or champagne.** Fond ivoire et champagne, bandeaux
 dorés, textes bronze foncé, tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de
 la palette. **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux
 argentés, textes graphite. Ces fonds clairs ne demandent que 2 à 77 % d'encre (contre 160 à
 190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une imprimante
 (écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de chaque
 catégorie : « Invité d'honneur » pour le premium, « Invité » pour le classique) et
-`couleurs: { menu: "or" }` ; `""` revient aux couleurs de la version.
+`couleurs: { menu: "or", etiquettes: "antique" }` ; `""` revient aux couleurs de la version.
+
+**Étiquettes de bouteilles : or antique** (#a07a32 de la palette, éclairci pour l'impression) :
+champ or antique, bandeaux crème, textes bronze foncé et ornements crème. Le champ, plus
+soutenu, demande 140 à 155 % d'encre en moyenne, surtout du jaune : moins que les fonds
+violets (160 à 190 %) et sans teinte hors de la gamme de l'imprimante.
 
 **Pochette passeport : violet.** Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
 l'impression il ressortait terne, presque noir sur les bords, avec beaucoup d'encre. Il est
@@ -133,7 +140,8 @@ Billets et menus sur **papier couché brillant**, pochettes sur **papier couché
 
 ## Dates et lieux
 
-- **Escale 1 : mariage coutumier**, mercredi 16 décembre 2026, à La Sablière (entrée Hôtel Onomo)
+- **Escale 1 : mariage coutumier**, mercredi 16 décembre 2026, à La Sablière (entrée Hôtel Onomo) :
+  début de la cérémonie à 12h30
 - **Escale 2 : mariage civil**, vendredi 18 décembre 2026, à l'Hôtel de ville de Libreville : arrivée
   des invités à 12h, célébration du mariage à 13h
 - **Escale 3 : soirée de gala**, vendredi 18 décembre 2026, aux Anges d'Ema (Charbonnages, avant
@@ -151,8 +159,9 @@ et plats du menu.
 
 À valider avant l'impression (ce sont encore des propositions) :
 
-- les horaires détaillés du mariage coutumier et de la soirée de gala, et l'heure du
-  cocktail après le mariage civil (proposée à 14h) ;
+- les autres horaires du mariage coutumier (arrivée des invités proposée à 11h30, de la
+  belle-famille à 12h00, fin de la cérémonie à 15h00), ceux de la soirée de gala, et l'heure
+  du cocktail après le mariage civil (proposée à 14h) ;
 - le menu, à valider avec le traiteur.
 
 Le nom du ou des invités (« Passager(s) ») et le numéro de table restent en

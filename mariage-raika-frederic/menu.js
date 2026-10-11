@@ -2,6 +2,11 @@
    Recto : menu. Verso : monogramme, prénoms et devise.
    `theme` : une entrée de THEMES (themes.js). */
 
+// Les précisions entre parenthèses (ingrédients, morceau) s'affichent en italique, plus petites.
+function platDetaille(plat) {
+  return esc(plat).replace(/\s*\(([^)]*)\)/g, ' <span class="precision">($1)</span>');
+}
+
 function carteMenu(theme) {
   const I = INFOS;
   const M = I.menu;
@@ -22,9 +27,9 @@ function carteMenu(theme) {
       ${ornement()}
 
       ${M.rubriques.map((r) => `
-        <section class="rubrique">
+        <section class="rubrique${r.plats.length > 6 ? " colonnes" : ""}">
           <h2>${esc(r.titre)}</h2>
-          ${r.plats.map((p) => `<p class="plat">${esc(p)}</p>`).join("")}
+          <div class="plats">${r.plats.map((p) => `<p class="plat">${platDetaille(p)}</p>`).join("")}</div>
         </section>`).join("")}
 
       <div class="bas">

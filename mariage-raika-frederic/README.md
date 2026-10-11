@@ -152,14 +152,16 @@ La couverture du passeport ne porte que la date du 18 décembre 2026 (réglage
 Tous les textes personnalisables sont dans **`infos.js`** (les intitulés fixes comme
 « Carte d'embarquement » restent dans le code) : prénoms, lieux, horaires, catégories de
 billets (nom, couleur, classe), code vestimentaire, textes du passeport (texte du dos, invitation, « Royaume de l'Amour »…)
-et plats du menu.
+et plats du menu (buffet : entrées, plats chauds, accompagnements, desserts). Sur la carte, une
+rubrique de plus de 6 plats s'affiche sur deux colonnes, et les précisions entre parenthèses
+(ingrédients, morceau) en italique plus petit. Le recto est presque plein : avant d'ajouter
+des plats, vérifier l'aperçu `carte-menu.html`.
 
 À valider avant l'impression (ce sont encore des propositions) :
 
 - les autres horaires du mariage coutumier (arrivée des invités proposée à 11h30, de la
   belle-famille à 12h00, fin de la cérémonie à 15h00), ceux de la soirée de gala, et l'heure
-  du cocktail après le mariage civil (proposée à 14h) ;
-- le menu, à valider avec le traiteur.
+  du cocktail après le mariage civil (proposée à 14h).
 
 Le nom du ou des invités (« Passager(s) ») et le numéro de table restent en
 pointillés pour être écrits à la main.

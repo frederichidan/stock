@@ -17,14 +17,17 @@
 }
 
 /* ------------------------------ Recto ------------------------------ */
-.menu.recto .monogramme { width: 31mm; height: 31mm; display: block; margin-top: 2mm; }
+/* Recto compact (monogramme, titre, marges latérales) : il porte un buffet d'une trentaine de
+   plats. Les rubriques de plus de 6 plats passent sur deux colonnes (menu.js). */
+.menu.recto .contenu { padding-left: 5.5mm; padding-right: 5.5mm; }
+.menu.recto .monogramme { width: 24mm; height: 24mm; display: block; }
 /* Marge intérieure haute : la boucle du « M » dépasse de la ligne et serait coupée par background-clip. */
-.menu .titre-menu { font-family: var(--script); font-weight: 400; font-size: 46pt; line-height: 1.15; padding: 3mm 4mm 0; margin-top: 0; }
+.menu .titre-menu { font-family: var(--script); font-weight: 400; font-size: 38pt; line-height: 1.15; padding: 2mm 4mm 0; margin-top: 0; }
 .menu.recto .etiquette.evenement { color: var(--accent-fort); font-size: 6.4pt; letter-spacing: 0.34em; margin-top: -1mm; }
 .menu.recto .date { font-style: italic; font-size: 10.5pt; margin-top: 0.8mm; }
-.menu.recto .ornement { width: 52mm; height: 4mm; margin: 3.6mm 0 1.6mm; }
+.menu.recto .ornement { width: 52mm; height: 4mm; margin: 2.6mm 0 0.6mm; }
 
-.menu .rubrique { margin-top: 4.6mm; }
+.menu .rubrique { margin-top: 3.6mm; }
 .menu .rubrique h2 {
   display: flex;
   align-items: center;
@@ -36,11 +39,16 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 1.5mm;
+  margin-bottom: 1.1mm;
 }
 .menu .rubrique h2::before,
 .menu .rubrique h2::after { content: ""; width: 5mm; border-top: 0.2mm solid var(--ligne); }
-.menu .plat { font-size: 11pt; font-weight: 500; line-height: 1.32; text-wrap: balance; }
+.menu .plat { font-size: 10pt; font-weight: 500; line-height: 1.22; text-wrap: balance; }
+/* Précision entre parenthèses (menu.js) : en italique, plus petite ; elle passe entière à la
+   ligne si elle ne tient pas à côté du plat. */
+.menu .plat .precision { font-style: italic; font-size: 0.86em; color: var(--texte-doux); white-space: nowrap; }
+.menu .rubrique.colonnes .plats { columns: 2; column-gap: 2.5mm; }
+.menu .rubrique.colonnes .plat { break-inside: avoid; }
 
 .menu.recto .bas { margin-top: auto; width: 100%; }
 .menu.recto .table { display: flex; align-items: flex-end; gap: 2mm; width: 42mm; margin: 0 auto; color: var(--accent-fort); }

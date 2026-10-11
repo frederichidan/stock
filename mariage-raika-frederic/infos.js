@@ -4,7 +4,7 @@
    passeport, du billet d'invitation, de la carte de menu et des étiquettes
    de bouteilles.
    Restent à valider (propositions) : les horaires du coutumier et de la
-   soirée, l'heure du cocktail du civil, et le menu.
+   soirée, et l'heure du cocktail du civil.
    ================================================================== */
 
 const INFOS = {
@@ -135,39 +135,52 @@ const INFOS = {
     titre: "Menu",
     evenement: "Soirée de gala",
     date: "Vendredi 18 décembre 2026",
+    // Une rubrique de plus de 6 plats s'affiche sur deux colonnes.
     rubriques: [
       {
-        titre: "Cocktail de bienvenue",
+        titre: "Entrées",
         plats: [
-          "Cocktail signature «\u202fViolet Royal\u202f»",
-          "Feuilletés, accras & brochettes de crevettes",
+          "Salade 1 (laitue, œuf, tomate, avocat, carotte)",
+          "Salade 2 (pâtes, thon, maïs, olive, concombre)",
         ],
       },
       {
-        titre: "Entrée",
-        plats: ["Salade d’avocat & crevettes, vinaigrette aux agrumes"],
+        titre: "Plats chauds",
+        plats: [
+          "Brochette de poisson",
+          "Brochette de viande",
+          "Brochette de poulet",
+          "Brochette de crevettes",
+          "Cotis braisé",
+          "Poulet braisé (pilon)",
+          "Poisson frit",
+          "Poisson au four",
+          "Poisson salé",
+          "Follong (maquereau fumé, carotte)",
+          "Saucisse de Toulouse",
+          "Aubergine",
+          "Sanglier",
+          "Porc-épic",
+          "Queue de bœuf sautée",
+          "Mini paquet de concombre",
+          "Mini paquet d’arachide",
+        ],
       },
       {
-        titre: "Plats",
+        titre: "Accompagnements",
         plats: [
-          "Poulet braisé, sauce nyembwe",
-          "Filet de capitaine grillé, beurre citronné",
-          "Riz parfumé, bananes plantains & légumes sautés",
+          "Riz cantonais",
+          "Riz rouge / jaune",
+          "Banane vapeur",
+          "Beignet",
+          "Manioc / fang obamba",
+          "Petits pains",
+          "Patates grillées",
         ],
       },
       {
         titre: "Desserts",
-        plats: [
-          "Pièce montée des mariés",
-          "Salade de fruits exotiques & mignardises",
-        ],
-      },
-      {
-        titre: "Boissons",
-        plats: [
-          "Champagne, vins rouges & blancs",
-          "Jus de bissap & de gingembre, sodas, eaux",
-        ],
+        plats: ["Crêpes", "Plateau de fruits", "Gâteaux"],
       },
     ],
   },

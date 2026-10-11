@@ -16,7 +16,7 @@ Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
 
 | Fichier | Usage |
 |---|---|
-| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier). Cartes de table : `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` |
+| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier). Cartes de table : une feuille A4 entière par table, en `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` (voir plus bas) |
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
@@ -35,7 +35,6 @@ dessin d'origine :
 | Pochette passeport | ouverte 185,9 × 131 mm, pliée en deux : 92,9 × 131 mm | 2 (A4 portrait) |
 | Billet d'invitation (premium ou classique) | 185,9 × 87,6 mm | 3 (A4 portrait) |
 | Carte de menu | 87,6 × 185,9 mm | 3 (A4 paysage) |
-| Carte de table | 131 × 185,9 mm | 2 (A4 paysage) |
 
 Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Imprimer en
 **recto verso avec retournement sur le bord long**, à **100 %** (taille réelle, sans
@@ -99,15 +98,20 @@ Une carte par table, **30 en tout**, dans le même design que la carte de menu e
 
 - Noms et nombre de tables : section `tables` d'`infos.js` (l'ordre de la liste donne les
   numéros). Aperçu : `cartes-tables.html` (toutes) ou `cartes-tables.html?table=5`.
-- Format A5 (148 × 210 mm) dessiné, imprimé à 88,5 % : **13,1 × 18,6 cm**, à glisser dans un
-  porte-numéro de table. Le **verso est identique au recto** : la carte se lit des deux
-  côtés de la table.
+- **En chevalet : une feuille A4 par table, pliée en deux.** La moitié basse de la feuille
+  porte la carte à l'endroit, la moitié haute la même carte tournée de 180° : une fois la
+  feuille pliée en deux, pli en haut, et posée en tente, le numéro et le nom se lisent **des
+  deux côtés de la table**. Chaque face mesure 21 × 14,85 cm.
 - À imprimer : `cartes-tables/cartes-tables-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf` et
-  `…-21-a-30.pdf` (10 cartes, 5 feuilles chacun ; découpés pour rester sous 30 Mo), ou
-  `cartes-tables-A4-vectoriel.pdf` (les 30 cartes, 15 feuilles). Deux cartes différentes par
-  feuille A4 paysage, recto verso bord long : chaque verso tombe derrière sa carte. Faire un
-  essai sur papier ordinaire : le verso de la table 1 doit être derrière la table 1.
-- Papier : couché brillant ou mat, 250 à 350 g, comme les menus.
+  `…-21-a-30.pdf` (10 feuilles chacun, découpés pour rester sous 30 Mo), ou
+  `cartes-tables-A4-vectoriel.pdf` (les 30 feuilles). **A4 portrait, à 100 %, recto seul** :
+  rien à découper ni à aligner au verso. Le fond est blanc et le cadre doré reste à 10 mm des
+  bords, dans la zone que toutes les imprimantes de bureau impriment.
+- Pliage : deux petits repères dorés, dans les marges, marquent le milieu de la feuille.
+  Marquer le pli (règle et pointe d'un couteau à beurre, ou plioir) avant de plier, côté
+  imprimé à l'extérieur.
+- Papier : cartonné blanc **200 à 250 g** (lisse, mat ou satiné), pour que le chevalet tienne
+  debout ; vérifier le grammage maximal accepté par l'imprimante.
 
 ## Couleurs et impression
 
@@ -210,8 +214,8 @@ node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
 | `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
 | `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css`, `tables.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `?theme=minuit`, par exemple, pour une autre version : billets, menu et étiquettes gardent les couleurs réglées dans `infos.js`) |
-| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin`, `eau` ou `tables` ; `&categorie=classique` pour le billet classique) |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `cartes-tables.html` : les feuilles A4 à imprimer, `?table=5` pour une seule ; `?theme=minuit`, par exemple, pour une autre version : billets, menu, étiquettes et cartes de table gardent les couleurs réglées dans `infos.js`) |
+| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau` ; `&categorie=classique` pour le billet classique). Les cartes de table, elles, sont déjà des feuilles A4 : `cartes-tables.html` |
 | `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin`, `eau` ou `tables`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |
 | `exporter.js` | Génère tout le dossier `export/` |

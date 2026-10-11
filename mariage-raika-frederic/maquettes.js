@@ -11,7 +11,7 @@ const MAQUETTES = {
   ensemble: { nom: "Ensemble", largeur: 520, construire: sceneEnsemble },
   vin: { nom: "Étiquette de vin", largeur: 640, horizon: 248, construire: sceneVin },
   eau: { nom: "Étiquette d’eau 33 cl", largeur: 480, horizon: 168, construire: sceneEau },
-  tables: { nom: "Cartes de table", largeur: 480, construire: sceneTables },
+  tables: { nom: "Cartes de table", largeur: 520, horizon: 150, construire: sceneTables },
 };
 
 /* ------------------------------ Outils ------------------------------ */
@@ -250,17 +250,40 @@ function sceneEnsemble(theme, l, h) {
   ].join("");
 }
 
-// Les trois premières cartes de table, en éventail.
+/* Chevalet de table posé, en 3D (transformations CSS) : deux pans de 210 × 148,5 mm articulés
+   sur le pli, ouverts de 2 × 18°, vus d'un peu au-dessus (plongée de 7°) et tournés de `lacet`
+   degrés. La base est en (cx, yBase), au milieu du chevalet. */
+const OUVERTURE_CHEVALET = 18;
+function poserChevalet(numero, { cx, yBase, echelle = 1, z = 5, lacet = 0 }) {
+  const [l, h] = FACE_CHEVALET;
+  const a = (OUVERTURE_CHEVALET * Math.PI) / 180;
+  const hauteur = h * Math.cos(a); // du pli à la table
+  const pied = h * Math.sin(a); // du plan du pli au pied de chaque pan
+  const face = `<div class="page face-posee${couleursTable()}">${faceTable(numero, INFOS.tables[numero - 1])}</div>`;
+  // Ombre au sol, dans le plan de la table (elle suit la rotation) : douce sous le chevalet,
+  // plus dense le long des deux pieds.
+  const marge = 14;
+  const sol = `<div class="sol" style="top:${hauteur}mm;left:${-marge}mm;width:${l + 2 * marge}mm;height:${2 * (pied + marge)}mm;transform:rotateX(90deg) translateY(${-(pied + marge)}mm)">
+      <div class="pied" style="top:${marge - 5}mm"></div><div class="pied" style="top:${marge + 2 * pied - 5}mm"></div></div>`;
+  return `
+    <div class="objet chevalet-3d" style="left:${cx - l / 2}mm;top:${yBase - hauteur}mm;width:${l}mm;height:${hauteur}mm;z-index:${z};transform:scale(${echelle});transform-origin:50% 100%">
+      <div class="corps" style="transform:translateZ(${-pied}mm) rotateX(${(-PLONGEE * 180) / Math.PI}deg) rotateY(${lacet}deg)">
+        ${sol}
+        <div class="pan arriere" style="transform:rotateX(${-OUVERTURE_CHEVALET}deg)"></div>
+        <div class="pan avant" style="transform:rotateX(${OUVERTURE_CHEVALET}deg)">${face}</div>
+      </div>
+    </div>`;
+}
+
+// Les trois premières tables, en chevalet sur la table en marbre.
 function sceneTables(theme, l, h) {
-  const [largeur, hauteur] = FORMAT_CARTE_TABLE;
-  const carteN = (n) => carte(carteTable(n, INFOS.tables[n - 1]), [largeur, hauteur]);
+  const horizon = MAQUETTES.tables.horizon;
   return [
-    rubanSatin(`M -20 ${h - 36} C 60 ${h - 80}, 130 ${h + 6}, 220 ${h + 25}`, l, h, (INFOS.couleurs || {}).tables || "blanc"),
-    poser(carteN(1), { x: 106, y: 138, rotation: -7, z: 2 }),
-    poser(carteN(2), { x: 240, y: 130, rotation: 2, z: 3 }),
-    poser(carteN(3), { x: 374, y: 140, rotation: 7, z: 2 }),
-    poser(alliances(30), { x: 452, y: 250, rotation: -16, z: 4 }),
-    confettis(l, h, 24, 23, [[22, 20, 460, 262]]),
+    confettisTable(l, h, horizon, 24, 29, [[40, 0, 480, h - 20]]),
+    poserChevalet(1, { cx: 122, yBase: 214, echelle: 0.86, z: 4, lacet: 28 }),
+    poserChevalet(3, { cx: 398, yBase: 218, echelle: 0.88, z: 5, lacet: -26 }),
+    poserChevalet(2, { cx: 260, yBase: 246, z: 6, lacet: 6 }),
+    `<div class="objet" style="left:446mm;top:252mm;z-index:7">${alliances(30)}<div class="ombre-anneaux"></div></div>`,
   ].join("");
 }
 

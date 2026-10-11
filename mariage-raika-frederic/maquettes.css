@@ -130,3 +130,32 @@ body { background: #d9d4cc; }
     radial-gradient(ellipse 60% 55% at 22% 12%, rgba(255, 252, 245, 0.25), rgba(255, 252, 245, 0) 70%),
     radial-gradient(ellipse 80% 70% at 100% 100%, rgba(40, 30, 50, 0.12), rgba(40, 30, 50, 0) 70%);
 }
+
+/* ------------------------- Chevalets (vue de face) ------------------------- */
+.chevalet-3d { perspective: 2600mm; perspective-origin: 50% -60%; }
+.chevalet-3d .corps { position: absolute; left: 0; top: 0; width: 210mm; height: 148.5mm; transform-style: preserve-3d; transform-origin: 50% 0; }
+.chevalet-3d .pan { position: absolute; left: 0; top: 0; width: 210mm; height: 148.5mm; transform-origin: 50% 0; }
+.chevalet-3d .pan.arriere { background: linear-gradient(180deg, #f3f1ec, #e2ded6); }
+.chevalet-3d .sol {
+  position: absolute;
+  transform-origin: 50% 0;
+  background: radial-gradient(ellipse closest-side, rgba(30, 22, 15, 0.42) 0%, rgba(30, 22, 15, 0.26) 55%, rgba(30, 22, 15, 0) 100%);
+}
+.chevalet-3d .sol .pied {
+  position: absolute;
+  left: 6mm; right: 6mm;
+  height: 10mm;
+  background: radial-gradient(ellipse closest-side, rgba(25, 18, 12, 0.75) 0%, rgba(25, 18, 12, 0.5) 45%, rgba(25, 18, 12, 0) 100%);
+}
+.chevalet-3d .face-posee { position: relative; }
+/* Papier : arête du pli éclairée, léger ombré vers le pied. */
+.chevalet-3d .pan.avant::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0) 0.6mm),
+    linear-gradient(180deg, rgba(90, 70, 40, 0.08) 0.6mm, rgba(90, 70, 40, 0) 3mm),
+    linear-gradient(180deg, rgba(255, 252, 245, 0) 40%, rgba(60, 45, 30, 0.07) calc(100% - 2.5mm), rgba(60, 45, 30, 0.16) 100%);
+}

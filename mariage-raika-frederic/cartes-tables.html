@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="commun.css">
 <link rel="stylesheet" href="tables.css">
 <style>
-  /* Dessin d'origine 148 × 210 mm (A5). Pour imprimer, utiliser impression.html?doc=tables :
-     2 cartes par feuille A4 paysage, à 88,5 % (131 × 186 mm), fond perdu et traits de coupe.
-     ?table=5 : la carte de la table 5 seule. */
-  @page { size: 148mm 210mm; margin: 0; }
+  /* Une feuille A4 par table, à imprimer à 100 %, recto seul, puis à plier en deux (pli en
+     haut). ?table=5 : la feuille de la table 5 seule. ?pdf=1 : textes dorés vectorisés pour
+     l'impression en PDF (voir vectoriserDegrades dans commun.js). */
+  @page { size: 210mm 297mm; margin: 0; }
 </style>
 </head>
 <body>
@@ -21,10 +21,22 @@
 <script src="commun.js"></script>
 <script src="tables.js"></script>
 <script>
-  const numero = Number(new URLSearchParams(location.search).get("table"));
+  const parametres = new URLSearchParams(location.search);
+  const numero = Number(parametres.get("table"));
   document.getElementById("planches").innerHTML = INFOS.tables[numero - 1]
-    ? carteTable(numero, INFOS.tables[numero - 1])
-    : cartesTables();
+    ? chevaletTable(numero, INFOS.tables[numero - 1])
+    : chevaletsTables();
+  // Les textes dorés se vectorisent à plat (la mesure des lettres d'une face tournée serait
+  // fausse), puis la moitié haute reprend sa rotation.
+  Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
+    await document.fonts.ready;
+    if (parametres.has("pdf")) {
+      document.body.classList.add("sans-rotation");
+      vectoriserDegrades(document);
+      document.body.classList.remove("sans-rotation");
+    }
+    window.pagesPretes = true;
+  });
 </script>
 </body>
 </html>

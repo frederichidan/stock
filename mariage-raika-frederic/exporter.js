@@ -6,8 +6,8 @@
                                     exemplaire est une image 8K (≈ 1 000 dpi). Étiquettes de
                                     bouteilles : 4 (vin) ou 3 (eau) par feuille, à taille
                                     réelle, une seule page (recto seul). Cartes de table :
-                                    2 cartes différentes par feuille, en plusieurs PDF
-                                    (<élément>-A4-8k-tables-01-a-10.pdf…) de moins de 30 Mo ;
+                                    une feuille A4 par table, en chevalet (recto seul, pliée
+                                    en deux), en PDF de 10 tables (…-A4-8k-tables-01-a-10.pdf…) ;
    - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille) ;
    - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 ;
    - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
@@ -45,8 +45,8 @@ const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
 // `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles).
-// `serie` : une carte différente par exemplaire (cartes de table), une illustration 8K par
-// carte ; `parPdf` cartes par PDF 8K (fichiers plus légers à envoyer). Pas d'image à plat.
+// `chevalets` : cartes de table, une feuille A4 entière par table (cartes-tables.html), sans
+// planche ; `parPdf` feuilles par PDF 8K, pour des fichiers de moins de 30 Mo.
 const ELEMENTS = [
   {
     dossier: "pochette-passeport",
@@ -110,9 +110,8 @@ const ELEMENTS = [
   {
     dossier: "cartes-tables",
     page: "cartes-tables.html",
-    impression: "tables",
     maquette: "tables",
-    serie: true,
+    chevalets: true,
     parPdf: 10,
     faces: [],
   },
@@ -161,7 +160,7 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qua
 
 // PDF d'une page par image (maquettes) : l'image centrée sur la page, avec une marge blanche.
 // La page (100vw × 100vh) suit le format que Chromium arrondit ; la marge absorbe cet arrondi.
-async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fichier) {
+async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fichier, rectoVerso = null) {
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>
     @page { size: ${largeur}mm ${hauteur}mm; margin: 0; }
     * { margin: 0; padding: 0; }
@@ -180,7 +179,31 @@ async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fi
   await page.waitForFunction(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0));
   await page.pdf({ path: fichier, preferCSSPageSize: true, printBackground: true });
   await page.close();
-  await finaliserPdf(fichier, { rectoVerso: null });
+  await finaliserPdf(fichier, { rectoVerso });
+}
+
+// Cartes de table en chevalet : chaque feuille A4 en image 8K (7680 px de haut), réunies par
+// `parPdf` dans des PDF A4 à imprimer en recto seul ; et toutes les feuilles en vectoriel.
+async function chevalets8K(navigateur, element, nom, afficher) {
+  const images = [];
+  for (let i = 0; i < INFOS.tables.length; i += 1) {
+    const image = path.join(TEMPORAIRE, `${element.dossier}-${i}.jpg`);
+    await capturer8K(navigateur, adresse(element.page, { table: i + 1 }), ".page", 0, image, "pagesPretes", QUALITE_IMPRESSION);
+    images.push(image);
+  }
+  const deux = (n) => String(n).padStart(2, "0");
+  for (let k = 0; k < images.length; k += element.parPdf) {
+    const lot = images.slice(k, k + element.parPdf);
+    const suffixe = `A4-8k-tables-${deux(k + 1)}-a-${deux(k + lot.length)}.pdf`;
+    await pdfDepuisImages(navigateur, [210, 297], 0, lot, nom(suffixe), false);
+    afficher(suffixe);
+  }
+  const page = await navigateur.newPage();
+  await charger(page, adresse(element.page, { pdf: 1 }), "pagesPretes");
+  await page.pdf({ path: nom("A4-vectoriel.pdf"), preferCSSPageSize: true, printBackground: true });
+  await page.close();
+  await finaliserPdf(nom("A4-vectoriel.pdf"), { rectoVerso: false });
+  afficher("A4-vectoriel.pdf");
 }
 
 // Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
@@ -207,8 +230,7 @@ async function finaliserPdf(fichier, { rectoVerso }) {
 async function illustrations8K(navigateur, element, theme) {
   const url = adresse("impression.html", { doc: element.impression, theme, capture: 1, ...element.parametres });
   const images = [];
-  const nombre = element.serie ? INFOS.tables.length : element.rectoVerso === false ? 1 : 2;
-  for (let i = 0; i < nombre; i += 1) {
+  for (let i = 0; i < (element.rectoVerso === false ? 1 : 2); i += 1) {
     const image = path.join(TEMPORAIRE, `${element.dossier}-${theme}-${i}.jpg`);
     await capturer8K(navigateur, url, ".fond-perdu", i, image, "planchesPretes", QUALITE_IMPRESSION);
     images.push(image);
@@ -217,8 +239,8 @@ async function illustrations8K(navigateur, element, theme) {
 }
 
 // Planche A4 : vectorielle, ou avec les illustrations 8K à la place du rendu vectoriel.
-async function pdfA4(navigateur, element, theme, illustrations, fichier, supplement = {}) {
-  const parametres = { doc: element.impression, theme, ...element.parametres, ...supplement };
+async function pdfA4(navigateur, element, theme, illustrations, fichier) {
+  const parametres = { doc: element.impression, theme, ...element.parametres };
   if (illustrations) parametres.images = JSON.stringify(illustrations.map((image) => pathToFileURL(image).href));
   const page = await navigateur.newPage();
   await charger(page, adresse("impression.html", parametres), "planchesPretes");
@@ -238,21 +260,15 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier, supplem
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);
       const afficher = (suffixe) => console.log("✓", `${theme}/${element.dossier}/${element.dossier}-${suffixe}`);
 
-      const illustrations = await illustrations8K(navigateur, element, theme);
-      if (element.serie) {
-        const deux = (n) => String(n).padStart(2, "0");
-        for (let k = 0; k < illustrations.length; k += element.parPdf) {
-          const lot = illustrations.slice(k, k + element.parPdf);
-          const suffixe = `A4-8k-tables-${deux(k + 1)}-a-${deux(k + lot.length)}.pdf`;
-          await pdfA4(navigateur, element, theme, lot, nom(suffixe), { premier: k + 1 });
-          afficher(suffixe);
-        }
+      if (element.chevalets) {
+        await chevalets8K(navigateur, element, nom, afficher);
       } else {
+        const illustrations = await illustrations8K(navigateur, element, theme);
         await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
         afficher("A4-8k.pdf");
+        await pdfA4(navigateur, element, theme, null, nom("A4-vectoriel.pdf"));
+        afficher("A4-vectoriel.pdf");
       }
-      await pdfA4(navigateur, element, theme, null, nom("A4-vectoriel.pdf"));
-      afficher("A4-vectoriel.pdf");
 
       await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
       afficher("maquette-8k.jpg");

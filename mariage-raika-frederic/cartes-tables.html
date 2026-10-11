@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartes de table</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="tables.css">
+<style>
+  /* Dessin d'origine 148 × 210 mm (A5). Pour imprimer, utiliser impression.html?doc=tables :
+     2 cartes par feuille A4 paysage, à 88,5 % (131 × 186 mm), fond perdu et traits de coupe.
+     ?table=5 : la carte de la table 5 seule. */
+  @page { size: 148mm 210mm; margin: 0; }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="tables.js"></script>
+<script>
+  const numero = Number(new URLSearchParams(location.search).get("table"));
+  document.getElementById("planches").innerHTML = INFOS.tables[numero - 1]
+    ? carteTable(numero, INFOS.tables[numero - 1])
+    : cartesTables();
+</script>
+</body>
+</html>

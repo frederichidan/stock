@@ -20,7 +20,7 @@ function carteMenu(theme) {
     </div>
     ${encadrement()}
     <div class="contenu">
-      ${monogramme({ halo: true, taille: 31 })}
+      ${monogramme({ halo: true, taille: 24 })}
       <h1 class="titre-menu texte-degrade">${esc(M.titre)}</h1>
       <div class="etiquette evenement">${esc(M.evenement)}</div>
       <div class="date">${esc(M.date)}</div>

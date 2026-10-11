@@ -5,7 +5,9 @@
                                     rectos, page 2 = versos, recto verso bord long. Chaque
                                     exemplaire est une image 8K (≈ 1 000 dpi). Étiquettes de
                                     bouteilles : 4 (vin) ou 3 (eau) par feuille, à taille
-                                    réelle, une seule page (recto seul) ;
+                                    réelle, une seule page (recto seul). Cartes de table :
+                                    2 cartes différentes par feuille, en plusieurs PDF
+                                    (<élément>-A4-8k-tables-01-a-10.pdf…) de moins de 30 Mo ;
    - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille) ;
    - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 ;
    - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
@@ -43,6 +45,8 @@ const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
 // `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles).
+// `serie` : une carte différente par exemplaire (cartes de table), une illustration 8K par
+// carte ; `parPdf` cartes par PDF 8K (fichiers plus légers à envoyer). Pas d'image à plat.
 const ELEMENTS = [
   {
     dossier: "pochette-passeport",
@@ -102,6 +106,15 @@ const ELEMENTS = [
     maquette: "eau",
     rectoVerso: false,
     faces: [["face", ".page", 0]],
+  },
+  {
+    dossier: "cartes-tables",
+    page: "cartes-tables.html",
+    impression: "tables",
+    maquette: "tables",
+    serie: true,
+    parPdf: 10,
+    faces: [],
   },
 ];
 
@@ -194,7 +207,8 @@ async function finaliserPdf(fichier, { rectoVerso }) {
 async function illustrations8K(navigateur, element, theme) {
   const url = adresse("impression.html", { doc: element.impression, theme, capture: 1, ...element.parametres });
   const images = [];
-  for (let i = 0; i < (element.rectoVerso === false ? 1 : 2); i += 1) {
+  const nombre = element.serie ? INFOS.tables.length : element.rectoVerso === false ? 1 : 2;
+  for (let i = 0; i < nombre; i += 1) {
     const image = path.join(TEMPORAIRE, `${element.dossier}-${theme}-${i}.jpg`);
     await capturer8K(navigateur, url, ".fond-perdu", i, image, "planchesPretes", QUALITE_IMPRESSION);
     images.push(image);
@@ -203,8 +217,8 @@ async function illustrations8K(navigateur, element, theme) {
 }
 
 // Planche A4 : vectorielle, ou avec les illustrations 8K à la place du rendu vectoriel.
-async function pdfA4(navigateur, element, theme, illustrations, fichier) {
-  const parametres = { doc: element.impression, theme, ...element.parametres };
+async function pdfA4(navigateur, element, theme, illustrations, fichier, supplement = {}) {
+  const parametres = { doc: element.impression, theme, ...element.parametres, ...supplement };
   if (illustrations) parametres.images = JSON.stringify(illustrations.map((image) => pathToFileURL(image).href));
   const page = await navigateur.newPage();
   await charger(page, adresse("impression.html", parametres), "planchesPretes");
@@ -225,8 +239,18 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       const afficher = (suffixe) => console.log("✓", `${theme}/${element.dossier}/${element.dossier}-${suffixe}`);
 
       const illustrations = await illustrations8K(navigateur, element, theme);
-      await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
-      afficher("A4-8k.pdf");
+      if (element.serie) {
+        const deux = (n) => String(n).padStart(2, "0");
+        for (let k = 0; k < illustrations.length; k += element.parPdf) {
+          const lot = illustrations.slice(k, k + element.parPdf);
+          const suffixe = `A4-8k-tables-${deux(k + 1)}-a-${deux(k + lot.length)}.pdf`;
+          await pdfA4(navigateur, element, theme, lot, nom(suffixe), { premier: k + 1 });
+          afficher(suffixe);
+        }
+      } else {
+        await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
+        afficher("A4-8k.pdf");
+      }
       await pdfA4(navigateur, element, theme, null, nom("A4-vectoriel.pdf"));
       afficher("A4-vectoriel.pdf");
 

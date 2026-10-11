@@ -11,6 +11,7 @@ const MAQUETTES = {
   ensemble: { nom: "Ensemble", largeur: 520, construire: sceneEnsemble },
   vin: { nom: "Étiquette de vin", largeur: 640, horizon: 248, construire: sceneVin },
   eau: { nom: "Étiquette d’eau 33 cl", largeur: 480, horizon: 168, construire: sceneEau },
+  tables: { nom: "Cartes de table", largeur: 480, construire: sceneTables },
 };
 
 /* ------------------------------ Outils ------------------------------ */
@@ -246,6 +247,20 @@ function sceneEnsemble(theme, l, h) {
     poser(carte(menuRecto, [99, 210]), { x: 425, y: 150, rotation: 4, z: 2 }),
     poser(alliances(32), { x: 272, y: 222, rotation: 14, z: 4 }),
     confettis(l, h, 26, 19, [[55, 60, 205, 245], [135, 25, 365, 160], [355, 25, 495, 275], [248, 200, 298, 246]]),
+  ].join("");
+}
+
+// Les trois premières cartes de table, en éventail.
+function sceneTables(theme, l, h) {
+  const [largeur, hauteur] = FORMAT_CARTE_TABLE;
+  const carteN = (n) => carte(carteTable(n, INFOS.tables[n - 1]), [largeur, hauteur]);
+  return [
+    rubanSatin(`M -20 ${h - 36} C 60 ${h - 80}, 130 ${h + 6}, 220 ${h + 25}`, l, h, (INFOS.couleurs || {}).tables || "blanc"),
+    poser(carteN(1), { x: 106, y: 138, rotation: -7, z: 2 }),
+    poser(carteN(2), { x: 240, y: 130, rotation: 2, z: 3 }),
+    poser(carteN(3), { x: 374, y: 140, rotation: 7, z: 2 }),
+    poser(alliances(30), { x: 452, y: 250, rotation: -16, z: 4 }),
+    confettis(l, h, 24, 23, [[22, 20, 460, 262]]),
   ].join("");
 }
 

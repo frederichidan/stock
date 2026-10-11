@@ -1,25 +1,26 @@
-# Mariage de Raïka & Frédéric — pochette passeport, billets d'invitation, carte de menu et étiquettes de bouteilles
+# Mariage de Raïka & Frédéric — pochette passeport, billets d'invitation, carte de menu, étiquettes de bouteilles et cartes de table
 
 Supports imprimables du « Passeport de Mariage ». La pochette passeport est aux couleurs
 violet & or (version A, Violet améthyste & or). Les billets d'invitation existent en deux
 catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
-autres invités, en **argent**. La carte de menu et les étiquettes de bouteilles sont en
-**blanc & or** : fond blanc, textes et décors dorés. Ces palettes sans violet, à fond clair,
+autres invités, en **argent**. La carte de menu, les étiquettes de bouteilles et les 30
+cartes de table sont en **blanc & or** : fond blanc, textes et décors dorés. Ces palettes sans violet, à fond clair,
 sont plus légères à l'impression. Il n'y a pas de photo du couple : le visuel
 principal est le monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
 ## Les fichiers à utiliser : `export/violet/`
 
 Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
-`billet-invitation-classique/`, `carte-menu/`, `etiquette-vin/`, `etiquette-eau/`) :
+`billet-invitation-classique/`, `carte-menu/`, `etiquette-vin/`, `etiquette-eau/`,
+`cartes-tables/`) :
 
 | Fichier | Usage |
 |---|---|
-| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur le menu et les étiquettes blanc & or, dont le fond reste le blanc pur du papier) |
+| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier). Cartes de table : `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` |
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
-| `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg`, `…-face-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) |
+| `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg`, `…-face-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) ; pas pour les cartes de table |
 
 Et `ensemble-maquette-8k.jpg` / `.pdf` : les trois supports réunis sur une même maquette.
 
@@ -34,6 +35,7 @@ dessin d'origine :
 | Pochette passeport | ouverte 185,9 × 131 mm, pliée en deux : 92,9 × 131 mm | 2 (A4 portrait) |
 | Billet d'invitation (premium ou classique) | 185,9 × 87,6 mm | 3 (A4 portrait) |
 | Carte de menu | 87,6 × 185,9 mm | 3 (A4 paysage) |
+| Carte de table | 131 × 185,9 mm | 2 (A4 paysage) |
 
 Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Imprimer en
 **recto verso avec retournement sur le bord long**, à **100 %** (taille réelle, sans
@@ -83,19 +85,44 @@ toutes les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
 - Textes des étiquettes (« Première classe », « Cuvée », « Grand vin de mariage »,
   « Eau minérale », « 33 cl »…) : section `etiquettes` d'`infos.js`.
 
+## Cartes de table
+
+Une carte par table, **30 en tout**, dans le même design que la carte de menu et les
+étiquettes (blanc & or, cadre doré, monogramme, guillochis). Chaque table porte le nom d'une
+**destination**, dans l'esprit du vol RF 1812 : grand numéro, nom de la destination en
+écriture dorée et trajet **MAR → code de l'aéroport** (Mariage → LBV, CDG…), avec le pays.
+
+1 Libreville · 2 Paris · 3 Venise · 4 Santorin · 5 Marrakech · 6 Zanzibar · 7 Le Cap ·
+8 Île Maurice · 9 Seychelles · 10 Maldives · 11 Bali · 12 Dubaï · 13 Rome · 14 Lisbonne ·
+15 Barcelone · 16 Rio de Janeiro · 17 New York · 18 Bora-Bora · 19 Tokyo · 20 Bangkok ·
+21 Dakar · 22 Abidjan · 23 Nairobi · 24 Istanbul · 25 Athènes · 26 Londres · 27 Prague ·
+28 Vienne · 29 Cancún · 30 Montréal.
+
+- Noms, codes, pays et nombre de tables : section `tables` d'`infos.js` (l'ordre de la liste
+  donne les numéros). Aperçu : `cartes-tables.html` (toutes) ou `cartes-tables.html?table=5`.
+- Format A5 (148 × 210 mm) dessiné, imprimé à 88,5 % : **13,1 × 18,6 cm**, à glisser dans un
+  porte-numéro de table. Le **verso est identique au recto** : la carte se lit des deux
+  côtés de la table.
+- À imprimer : `cartes-tables/cartes-tables-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf` et
+  `…-21-a-30.pdf` (10 cartes, 5 feuilles chacun ; découpés pour rester sous 30 Mo), ou
+  `cartes-tables-A4-vectoriel.pdf` (les 30 cartes, 15 feuilles). Deux cartes différentes par
+  feuille A4 paysage, recto verso bord long : chaque verso tombe derrière sa carte. Faire un
+  essai sur papier ordinaire : le verso de la table 1 doit être derrière la table 1.
+- Papier : couché brillant ou mat, 250 à 350 g, comme les menus.
+
 ## Couleurs et impression
 
 **Billet premium : or champagne.** Fond ivoire et champagne, bandeaux dorés, textes bronze
 foncé, tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de la palette.
 **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés,
-textes graphite. **Carte de menu et étiquettes de bouteilles : blanc & or.** Fond blanc (le
+textes graphite. **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
 papier, sans encre) ; textes courants et petits intitulés en or foncé (#846635, #7c6134),
 lisibles sur le blanc ; filets, pictogrammes et ornements en or vif (#b8913f, #c39c4a) ;
 titres et prénoms en dégradé doré. Ces fonds clairs ne demandent que 0 à 77 % d'encre (contre
 160 à 190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une
 imprimante (écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de
 chaque catégorie : « Invité d'honneur » pour le premium, « Invité » pour le classique) et
-`couleurs: { menu: "blanc", etiquettes: "blanc" }` (`"or"` pour l'or champagne, `"argent"`
+`couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc" }` (`"or"` pour l'or champagne, `"argent"`
 pour l'argent ; pour le menu, `""` revient aux couleurs de la version).
 
 **Pochette passeport : violet.** Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
@@ -183,10 +210,10 @@ node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments
 |---|---|
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
 | `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
-| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `?theme=minuit`, par exemple, pour une autre version : billets, menu et étiquettes gardent les couleurs réglées dans `infos.js`) |
-| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau` ; `&categorie=classique` pour le billet classique) |
-| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin` ou `eau`) |
+| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css`, `tables.js/.css` | Dessin de chaque élément |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `?theme=minuit`, par exemple, pour une autre version : billets, menu et étiquettes gardent les couleurs réglées dans `infos.js`) |
+| `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin`, `eau` ou `tables` ; `&categorie=classique` pour le billet classique) |
+| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin`, `eau` ou `tables`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |
 | `exporter.js` | Génère tout le dossier `export/` |
 

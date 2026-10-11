@@ -9,16 +9,19 @@
 <link rel="stylesheet" href="billet.css">
 <link rel="stylesheet" href="menu.css">
 <link rel="stylesheet" href="etiquettes.css">
+<link rel="stylesheet" href="tables.css">
 <style id="format-page"></style>
 <style>
   /* Planches d'impression A4 : plusieurs exemplaires par feuille, chacun entouré d'un fond
      perdu de 3 mm (bords prolongés en miroir), traits de coupe sur le pourtour ; page 1 =
-     rectos, page 2 = versos, pour un recto verso avec retournement sur le bord long.
+     rectos, page 2 = versos, pour un recto verso avec retournement sur le bord long. Cartes de
+     table : une carte différente par emplacement, deux pages (rectos, versos) par paire.
      Paramètres d'adresse :
-       ?doc=passeport | billet | menu | vin | eau   (et ?theme= comme ailleurs)
+       ?doc=passeport | billet | menu | vin | eau | tables   (et ?theme= comme ailleurs)
        ?categorie=premium | classique   pour le billet (voir INFOS.billets)
        ?images=["…","…"]  une illustration par face (fond perdu compris, à l'endroit) :
-                          c'est ainsi qu'exporter.js produit les PDF « 8K » ;
+                          c'est ainsi qu'exporter.js produit les PDF « 8K » ; cartes de
+                          table : une par carte, et ?premier= numéro de la première ;
        ?capture=1         une seule face par feuille, à taille réelle, sans repères ni
                           vectorisation des textes dorés, voilé d'un grain très fin :
                           sert à capturer chaque illustration en image 8K. */
@@ -63,6 +66,7 @@
 <script src="billet.js"></script>
 <script src="menu.js"></script>
 <script src="etiquettes.js"></script>
+<script src="tables.js"></script>
 <script>
   const FOND_PERDU = 3; // mm
   const GOUTTIERE = 2 * FOND_PERDU; // mm entre deux exemplaires : leurs fonds perdus se touchent
@@ -81,12 +85,15 @@
   // La pochette s'ouvre comme un livre (axe vertical) ; le billet, en paysage, se retourne de
   // haut en bas (axe horizontal) ; la carte de menu, de gauche à droite (axe vertical).
   // `rectoSeul` : une seule face à imprimer (étiquettes) ; `echelle` : 1 = taille réelle.
+  // `serie` : un exemplaire différent par emplacement (cartes de table), le verso identique au
+  // recto ; `rendu` renvoie alors une page par exemplaire.
   const CATEGORIE = new URLSearchParams(location.search).get("categorie") || "premium";
   const DOCUMENTS = {
     passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, retournement: "vertical", pli: true, a4: { paysage: false, colonnes: 1, lignes: 2 }, finition: "coins arrondis 3 mm conseillés" },
     billet: { rendu: (theme) => billet(theme, CATEGORIE), nom: `Billet d’invitation ${(INFOS.billets[CATEGORIE] || INFOS.billets.premium).nom.toLowerCase()}`, largeur: 210, hauteur: 99, retournement: "horizontal", a4: { paysage: false, colonnes: 1, lignes: 3 } },
     menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, retournement: "vertical", a4: { paysage: true, colonnes: 3, lignes: 1 } },
     vin: { rendu: etiquetteVin, nom: "Étiquette de vin", largeur: FORMATS_ETIQUETTES.vin[0], hauteur: FORMATS_ETIQUETTES.vin[1], echelle: 1, rectoSeul: true, a4: { paysage: false, colonnes: 2, lignes: 2 }, finition: "papier adhésif" },
+    tables: { rendu: cartesTables, nom: "Cartes de table", largeur: FORMAT_CARTE_TABLE[0], hauteur: FORMAT_CARTE_TABLE[1], retournement: "vertical", serie: true, a4: { paysage: true, colonnes: 2, lignes: 1 } },
     eau: { rendu: etiquetteEau, nom: "Étiquette d’eau 33 cl", largeur: FORMATS_ETIQUETTES.eau[0], hauteur: FORMATS_ETIQUETTES.eau[1], echelle: 1, rectoSeul: true, a4: { paysage: true, colonnes: 1, lignes: 3 }, finition: "adhésif vinyle résistant à l’eau conseillé" },
   };
 
@@ -181,22 +188,43 @@
 
   // Une image est tournée elle-même : tourner son conteneur en ferait, dans le PDF, un groupe de
   // transparence, que certains pilotes d'imprimante rendent moins bien.
-  function exemplaires(face, rotation) {
+  function exemplaire(face, x, y, rotation) {
     const image = typeof face === "string";
     const tourner = rotation ? `transform:rotate(${rotation}deg)` : "";
     const contenu = image ? `<img src="${esc(face)}" alt="" style="${tourner}">` : fondPerdu(face);
     const fp = FOND_PERDU_DESSIN * echelle; // 3 mm sur la planche A4
-    return xs
-      .flatMap((x) => ys.map((y) => `<div class="exemplaire" style="left:${mm(x - fp)};top:${mm(y - fp)};width:${mm(l + 2 * fp)};height:${mm(h + 2 * fp)};${image ? "" : tourner}">${contenu}</div>`))
+    return `<div class="exemplaire" style="left:${mm(x - fp)};top:${mm(y - fp)};width:${mm(l + 2 * fp)};height:${mm(h + 2 * fp)};${image ? "" : tourner}">${contenu}</div>`;
+  }
+
+  // La même face à chaque emplacement de la planche.
+  function exemplaires(face, rotation) {
+    return xs.flatMap((x) => ys.map((y) => exemplaire(face, x, y, rotation))).join("");
+  }
+
+  // Série : la face n° i du lot à l'emplacement n° i (ligne par ligne). Au verso, l'emplacement
+  // est retourné comme la feuille (colonnes inversées si elle tourne sur son axe vertical,
+  // lignes inversées sur son axe horizontal) pour que chaque verso tombe derrière son recto.
+  function serie(lot, verso) {
+    return lot
+      .map((face, i) => {
+        let [colonne, ligne] = [i % colonnes, Math.floor(i / colonnes)];
+        if (verso && axeFeuille === "vertical") colonne = colonnes - 1 - colonne;
+        if (verso && axeFeuille === "horizontal") ligne = lignes - 1 - ligne;
+        return exemplaire(face, xs[colonne], ys[ligne], verso ? rotationVerso : 0);
+      })
       .join("");
   }
 
-  function legende(i) {
+  // `numeros` (série) : premier et dernier exemplaire de la feuille.
+  function legende(i, numeros) {
+    const [premier, dernier] = numeros || [];
     const morceaux = [
       `${initiale(INFOS.mariee)} & ${initiale(INFOS.marie)}`,
       doc.nom,
+      ...(numeros ? [dernier === premier ? `table ${premier}` : `tables ${premier} ${dernier === premier + 1 ? "et" : "à"} ${dernier}`] : []),
       ...(doc.rectoSeul ? [] : [i === 0 ? "rectos" : `versos${rotationVerso ? " (tournés de 180°)" : ""}`]),
       `${colonnes * lignes} par feuille A4, ${decimale(l)} × ${decimale(h)} mm${echelle === 1 ? " (taille réelle)" : ""}`,
+      ...(doc.serie && i === 1 ? ["verso identique au recto"] : []),
       `fond perdu ${FOND_PERDU} mm`,
       doc.rectoSeul ? "imprimer à 100\u00a0%, recto seul" : "imprimer à 100\u00a0%, recto verso bord long",
     ];
@@ -221,13 +249,24 @@
       if (!capture) vectoriserDegrades(preparation);
       faces = [...preparation.querySelectorAll(".page")];
     }
-    document.getElementById("planches").innerHTML = faces
-      .map((face, i) => `
+    const feuille = (contenu, i, numeros) => `
         <section class="feuille">
-          ${exemplaires(face, rotationFace(i))}
-          ${capture ? "" : reperes() + legende(i)}
-        </section>`)
-      .join("");
+          ${contenu}
+          ${capture ? "" : reperes() + legende(i, numeros)}
+        </section>`;
+    let feuilles = faces.map((face, i) => feuille(exemplaires(face, rotationFace(i)), i));
+    if (doc.serie && !capture) {
+      // `premier` : numéro du premier exemplaire de la liste (PDF découpés en plusieurs parties).
+      const premier = Number(parametres.get("premier")) || 1;
+      const parFeuille = colonnes * lignes;
+      feuilles = [];
+      for (let k = 0; k < faces.length; k += parFeuille) {
+        const lot = faces.slice(k, k + parFeuille);
+        const numeros = [premier + k, premier + k + lot.length - 1];
+        feuilles.push(feuille(serie(lot, false), 0, numeros), feuille(serie(lot, true), 1, numeros));
+      }
+    }
+    document.getElementById("planches").innerHTML = feuilles.join("");
     preparation.remove();
     await Promise.all([...document.images].map((image) =>
       image.complete ? null : new Promise((fin) => image.addEventListener("load", fin, { once: true })),

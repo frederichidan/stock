@@ -132,25 +132,11 @@ body { background: #d9d4cc; }
 }
 
 /* ------------------------- Chevalets (vue de face) ------------------------- */
-.chevalet-3d { perspective: 2600mm; perspective-origin: 50% -60%; }
-.chevalet-3d .corps { position: absolute; left: 0; top: 0; width: 210mm; height: 148.5mm; transform-style: preserve-3d; transform-origin: 50% 0; }
-.chevalet-3d .pan { position: absolute; left: 0; top: 0; width: 210mm; height: 148.5mm; transform-origin: 50% 0; }
-.chevalet-3d .pan.arriere { background: linear-gradient(180deg, #f3f1ec, #e2ded6); }
-.chevalet-3d .sol {
-  position: absolute;
-  transform-origin: 50% 0;
-  background: radial-gradient(ellipse closest-side, rgba(30, 22, 15, 0.42) 0%, rgba(30, 22, 15, 0.26) 55%, rgba(30, 22, 15, 0) 100%);
-}
-.chevalet-3d .sol .pied {
-  position: absolute;
-  left: 6mm; right: 6mm;
-  height: 10mm;
-  background: radial-gradient(ellipse closest-side, rgba(25, 18, 12, 0.75) 0%, rgba(25, 18, 12, 0.5) 45%, rgba(25, 18, 12, 0) 100%);
-}
-.chevalet-3d .face-posee { position: relative; }
+/* Projection calculée dans maquettes.js (poserChevalet) : pas de 3D CSS. */
+.chevalet-fond { position: absolute; overflow: visible; pointer-events: none; }
+.chevalet-face .face-posee { position: relative; }
 /* Papier : arête du pli éclairée, léger ombré vers le pied. */
-.chevalet-3d .pan.avant::after {
-  content: "";
+.eclairage-chevalet {
   position: absolute;
   inset: 0;
   pointer-events: none;

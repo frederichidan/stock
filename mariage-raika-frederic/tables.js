@@ -62,7 +62,7 @@ function chevaletTable(numero, nom) {
   </section>`;
 }
 
-// Toutes les feuilles, dans l'ordre des tables. `theme` est ignoré (couleurs : couleursTable).
+// Toutes les feuilles, dans l'ordre des tables (couleurs : couleursTable).
 function chevaletsTables() {
   return INFOS.tables.map((nom, i) => chevaletTable(i + 1, nom)).join("");
 }

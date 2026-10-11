@@ -1,7 +1,8 @@
 /* Maquettes de présentation de chaque support, mises en scène vues de dessus (format 16:9,
-   exportées en 8K : 7680 × 4320) ; les étiquettes, sur des bouteilles vues de face. Les supports
-   sont dessinés par les mêmes fonctions que les fichiers d'impression (passeport.js, billet.js,
-   menu.js, etiquettes.js). Toutes les mesures en mm. */
+   exportées en 8K : 7680 × 4320) ; les étiquettes, sur des bouteilles vues de face, et les
+   cartes de table, en chevalets vus de face. Les supports sont dessinés par les mêmes fonctions
+   que les fichiers d'impression (passeport.js, billet.js, menu.js, etiquettes.js, tables.js).
+   Toutes les mesures en mm. */
 
 const MAQUETTES = {
   pochette: { nom: "Pochette passeport", largeur: 480, construire: scenePochette },
@@ -250,29 +251,59 @@ function sceneEnsemble(theme, l, h) {
   ].join("");
 }
 
-/* Chevalet de table posé, en 3D (transformations CSS) : deux pans de 210 × 148,5 mm articulés
-   sur le pli, ouverts de 2 × 18°, vus d'un peu au-dessus (plongée de 7°) et tournés de `lacet`
-   degrés. La base est en (cx, yBase), au milieu du chevalet. */
-const OUVERTURE_CHEVALET = 18;
+/* Chevalet de table posé : deux pans de 210 × 148,5 mm articulés sur le pli, ouverts de
+   2 × 18°, tournés de `lacet` degrés, vus d'un peu au-dessus (plongée de 7°). Projection
+   orthogonale calculée ici, sans 3D CSS (à 7680 px, la composition 3D de Chromium trie mal
+   certains pans) : la face avant est la carte transformée (transformation affine, exacte en
+   projection orthogonale), le pan arrière et l'ombre au sol sont des polygones SVG.
+   (cx, yBase) : milieu de la base du chevalet, à l'écran. Plans : 2z (fond) et 2z + 1 (face). */
+const OUVERTURE_CHEVALET = (18 * Math.PI) / 180;
 function poserChevalet(numero, { cx, yBase, echelle = 1, z = 5, lacet = 0 }) {
   const [l, h] = FACE_CHEVALET;
-  const a = (OUVERTURE_CHEVALET * Math.PI) / 180;
-  const hauteur = h * Math.cos(a); // du pli à la table
-  const pied = h * Math.sin(a); // du plan du pli au pied de chaque pan
-  const face = `<div class="page face-posee${couleursTable()}">${faceTable(numero, INFOS.tables[numero - 1])}</div>`;
-  // Ombre au sol, dans le plan de la table (elle suit la rotation) : douce sous le chevalet,
-  // plus dense le long des deux pieds.
-  const marge = 14;
-  const sol = `<div class="sol" style="top:${hauteur}mm;left:${-marge}mm;width:${l + 2 * marge}mm;height:${2 * (pied + marge)}mm;transform:rotateX(90deg) translateY(${-(pied + marge)}mm)">
-      <div class="pied" style="top:${marge - 5}mm"></div><div class="pied" style="top:${marge + 2 * pied - 5}mm"></div></div>`;
-  return `
-    <div class="objet chevalet-3d" style="left:${cx - l / 2}mm;top:${yBase - hauteur}mm;width:${l}mm;height:${hauteur}mm;z-index:${z};transform:scale(${echelle});transform-origin:50% 100%">
-      <div class="corps" style="transform:translateZ(${-pied}mm) rotateX(${(-PLONGEE * 180) / Math.PI}deg) rotateY(${lacet}deg)">
-        ${sol}
-        <div class="pan arriere" style="transform:rotateX(${-OUVERTURE_CHEVALET}deg)"></div>
-        <div class="pan avant" style="transform:rotateX(${OUVERTURE_CHEVALET}deg)">${face}</div>
-      </div>
-    </div>`;
+  const phi = (lacet * Math.PI) / 180;
+  const [hc, hs] = [h * Math.cos(OUVERTURE_CHEVALET), h * Math.sin(OUVERTURE_CHEVALET)];
+  // (x, y, z) du chevalet en mm : x le long du pli, y vers le bas depuis le pli, z vers
+  // l'observateur. Rotation de lacet autour de la verticale, puis vue plongeante.
+  const projeter = ([x, y, zz]) => {
+    const xr = x * Math.cos(phi) + zz * Math.sin(phi);
+    const zr = -x * Math.sin(phi) + zz * Math.cos(phi);
+    return [cx + echelle * xr, yBase + echelle * ((y - hc) * Math.cos(PLONGEE) + zr * Math.sin(PLONGEE))];
+  };
+  const [hg, hd] = [projeter([-l / 2, 0, 0]), projeter([l / 2, 0, 0])]; // pli
+  const [avg, avd] = [projeter([-l / 2, hc, hs]), projeter([l / 2, hc, hs])]; // pied avant
+  const [arg, ard] = [projeter([-l / 2, hc, -hs]), projeter([l / 2, hc, -hs])]; // pied arrière
+  const points = (...p) => p.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
+
+  // Fond : ombre au sol (empreinte floue et ligne de contact des deux pieds), puis pan arrière,
+  // vu de l'intérieur (plus sombre vers le pied).
+  const [ombre, papier] = [idUnique("ombre-chevalet"), idUnique("pan-arriere")];
+  const marge = 20 * echelle;
+  const tous = [hg, hd, avg, avd, arg, ard];
+  const [x0, y0] = [Math.min(...tous.map((p) => p[0])) - marge, Math.min(...tous.map((p) => p[1])) - marge];
+  const [x1, y1] = [Math.max(...tous.map((p) => p[0])) + marge, Math.max(...tous.map((p) => p[1])) + marge];
+  const fond = `<svg class="chevalet-fond" style="left:${x0}mm;top:${y0}mm;width:${x1 - x0}mm;height:${y1 - y0}mm;z-index:${2 * z}"
+      viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" aria-hidden="true">
+    <defs>
+      <filter id="${ombre}-large" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="${3.2 * echelle}"/></filter>
+      <filter id="${ombre}-fin" x="-10%" y="-200%" width="120%" height="500%"><feGaussianBlur stdDeviation="${0.7 * echelle}"/></filter>
+      <linearGradient id="${papier}" gradientUnits="userSpaceOnUse" x1="0" y1="${hg[1]}" x2="0" y2="${arg[1]}">
+        <stop offset="0" stop-color="#f1eee8"/><stop offset="1" stop-color="#d6d0c5"/>
+      </linearGradient>
+    </defs>
+    <polygon points="${points(avg, avd, ard, arg)}" fill="rgba(30, 22, 15, 0.34)" filter="url(#${ombre}-large)"/>
+    <g stroke="rgba(25, 18, 12, 0.6)" stroke-width="${1.6 * echelle}" stroke-linecap="round" filter="url(#${ombre}-fin)">
+      <line x1="${avg[0]}" y1="${avg[1]}" x2="${avd[0]}" y2="${avd[1]}"/>
+      <line x1="${arg[0]}" y1="${arg[1]}" x2="${ard[0]}" y2="${ard[1]}"/>
+    </g>
+    <polygon points="${points(hg, hd, ard, arg)}" fill="url(#${papier})"/>
+  </svg>`;
+
+  // Face avant : la carte, posée sur le parallélogramme pli → pied avant.
+  const [ax, ay] = [(hd[0] - hg[0]) / l, (hd[1] - hg[1]) / l];
+  const [bx, by] = [(avg[0] - hg[0]) / h, (avg[1] - hg[1]) / h];
+  const carte = `<div class="page face-posee${couleursTable()}">${faceTable(numero, INFOS.tables[numero - 1])}</div>`;
+  const face = `<div class="objet chevalet-face" style="left:${hg[0]}mm;top:${hg[1]}mm;width:${l}mm;height:${h}mm;z-index:${2 * z + 1};transform-origin:0 0;transform:matrix(${[ax, ay, bx, by].map((v) => v.toFixed(6)).join(",")},0,0)">${carte}<div class="eclairage-chevalet"></div></div>`;
+  return fond + face;
 }
 
 // Les trois premières tables, en chevalet sur la table en marbre.
@@ -283,7 +314,7 @@ function sceneTables(theme, l, h) {
     poserChevalet(1, { cx: 122, yBase: 214, echelle: 0.86, z: 4, lacet: 28 }),
     poserChevalet(3, { cx: 398, yBase: 218, echelle: 0.88, z: 5, lacet: -26 }),
     poserChevalet(2, { cx: 260, yBase: 246, z: 6, lacet: 6 }),
-    `<div class="objet" style="left:446mm;top:252mm;z-index:7">${alliances(30)}<div class="ombre-anneaux"></div></div>`,
+    `<div class="objet" style="left:446mm;top:252mm;z-index:14">${alliances(30)}<div class="ombre-anneaux"></div></div>`,
   ].join("");
 }
 

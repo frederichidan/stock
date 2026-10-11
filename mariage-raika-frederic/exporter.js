@@ -158,7 +158,8 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qua
   await page.close();
 }
 
-// PDF d'une page par image (maquettes) : l'image centrée sur la page, avec une marge blanche.
+// PDF d'une page par image (maquettes, avec une marge blanche ; feuilles A4 des cartes de table,
+// sans marge) : l'image centrée sur la page.
 // La page (100vw × 100vh) suit le format que Chromium arrondit ; la marge absorbe cet arrondi.
 async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fichier, rectoVerso = null) {
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -209,7 +210,8 @@ async function chevalets8K(navigateur, element, nom, afficher) {
 // Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
 // rétablit l'A4 exact, centré sur le contenu, et l'on demande aux lecteurs PDF (Acrobat, Chrome,
 // Edge…) d'imprimer à 100 %, sur le bac A4, en recto verso bord long pour les planches à deux
-// faces et en recto seul pour les étiquettes (`rectoVerso` : true, false, ou null = sans avis).
+// faces et en recto seul pour les étiquettes et les cartes de table (`rectoVerso` : true,
+// false, ou null = sans avis).
 async function finaliserPdf(fichier, { rectoVerso }) {
   const document = await PDFDocument.load(fs.readFileSync(fichier), { updateMetadata: false });
   for (const page of document.getPages()) {

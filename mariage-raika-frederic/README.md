@@ -16,7 +16,7 @@ Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
 
 | Fichier | Usage |
 |---|---|
-| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier). Cartes de table : une feuille A4 entière par table, en `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` (voir plus bas) |
+| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi ; ≈ 650 dpi pour les feuilles A4 des cartes de table), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier). Cartes de table : une feuille A4 entière par table, en `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` (voir plus bas) |
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
@@ -102,10 +102,12 @@ Une carte par table, **30 en tout**, dans le même design que la carte de menu e
   porte la carte à l'endroit, la moitié haute la même carte tournée de 180° : une fois la
   feuille pliée en deux, pli en haut, et posée en tente, le numéro et le nom se lisent **des
   deux côtés de la table**. Chaque face mesure 21 × 14,85 cm.
-- À imprimer : `cartes-tables/cartes-tables-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf` et
-  `…-21-a-30.pdf` (10 feuilles chacun, découpés pour rester sous 30 Mo), ou
-  `cartes-tables-A4-vectoriel.pdf` (les 30 feuilles). **A4 portrait, à 100 %, recto seul** :
-  rien à découper ni à aligner au verso. Le fond est blanc et le cadre doré reste à 10 mm des
+- À imprimer sur l'imprimante de bureau : `cartes-tables/cartes-tables-A4-8k-tables-01-a-10.pdf`,
+  `…-11-a-20.pdf` et `…-21-a-30.pdf` (10 feuilles chacun, découpés pour rester sous 30 Mo ;
+  chaque feuille est une image 8K, ≈ 650 dpi). `cartes-tables-A4-vectoriel.pdf` (les 30
+  feuilles) est plutôt pour un imprimeur professionnel : sa moitié tournée y forme un groupe de
+  transparence, que certains pilotes d'imprimante de bureau rendent moins bien. **A4 portrait,
+  à 100 %, recto seul** : rien à découper ni à aligner au verso. Le fond est blanc et le cadre doré reste à 10 mm des
   bords, dans la zone que toutes les imprimantes de bureau impriment.
 - Pliage : deux petits repères dorés, dans les marges, marquent le milieu de la feuille.
   Marquer le pli (règle et pointe d'un couteau à beurre, ou plioir) avant de plier, côté

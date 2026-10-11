@@ -133,39 +133,14 @@ const INFOS = {
 
   /* ------------------------- Cartes de table ------------------------- */
   // Une carte par table, numérotée dans l'ordre de la liste (1 à 30) : chaque table porte le
-  // nom d'une destination, avec le code de son aéroport (IATA) et son pays ou sa région.
-  // Pour changer un nom, un code ou le nombre de tables, modifier la liste.
+  // nom d'une fleur. Pour changer un nom ou le nombre de tables, modifier la liste.
   tables: [
-    { nom: "Libreville", code: "LBV", pays: "Gabon" },
-    { nom: "Paris", code: "CDG", pays: "France" },
-    { nom: "Venise", code: "VCE", pays: "Italie" },
-    { nom: "Santorin", code: "JTR", pays: "Grèce" },
-    { nom: "Marrakech", code: "RAK", pays: "Maroc" },
-    { nom: "Zanzibar", code: "ZNZ", pays: "Tanzanie" },
-    { nom: "Le Cap", code: "CPT", pays: "Afrique du Sud" },
-    { nom: "Île Maurice", code: "MRU", pays: "Océan Indien" },
-    { nom: "Seychelles", code: "SEZ", pays: "Océan Indien" },
-    { nom: "Maldives", code: "MLE", pays: "Océan Indien" },
-    { nom: "Bali", code: "DPS", pays: "Indonésie" },
-    { nom: "Dubaï", code: "DXB", pays: "Émirats arabes unis" },
-    { nom: "Rome", code: "FCO", pays: "Italie" },
-    { nom: "Lisbonne", code: "LIS", pays: "Portugal" },
-    { nom: "Barcelone", code: "BCN", pays: "Espagne" },
-    { nom: "Rio de Janeiro", code: "GIG", pays: "Brésil" },
-    { nom: "New York", code: "JFK", pays: "États-Unis" },
-    { nom: "Bora-Bora", code: "BOB", pays: "Polynésie française" },
-    { nom: "Tokyo", code: "HND", pays: "Japon" },
-    { nom: "Bangkok", code: "BKK", pays: "Thaïlande" },
-    { nom: "Dakar", code: "DSS", pays: "Sénégal" },
-    { nom: "Abidjan", code: "ABJ", pays: "Côte d’Ivoire" },
-    { nom: "Nairobi", code: "NBO", pays: "Kenya" },
-    { nom: "Istanbul", code: "IST", pays: "Turquie" },
-    { nom: "Athènes", code: "ATH", pays: "Grèce" },
-    { nom: "Londres", code: "LHR", pays: "Royaume-Uni" },
-    { nom: "Prague", code: "PRG", pays: "Tchéquie" },
-    { nom: "Vienne", code: "VIE", pays: "Autriche" },
-    { nom: "Cancún", code: "CUN", pays: "Mexique" },
-    { nom: "Montréal", code: "YUL", pays: "Canada" },
+    "Rose", "Pivoine", "Orchidée", "Lys", "Tulipe",
+    "Magnolia", "Camélia", "Jasmin", "Hibiscus", "Gardénia",
+    "Lavande", "Iris", "Dahlia", "Hortensia", "Marguerite",
+    "Tournesol", "Lilas", "Muguet", "Glycine", "Anémone",
+    "Renoncule", "Freesia", "Amaryllis", "Azalée", "Mimosa",
+    "Jacinthe", "Lotus", "Bougainvillée", "Frangipanier", "Coquelicot",
   ],
 
   /* ------------------------- Carte de menu ------------------------- */

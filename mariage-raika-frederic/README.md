@@ -88,18 +88,17 @@ toutes les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
 ## Cartes de table
 
 Une carte par table, **30 en tout**, dans le même design que la carte de menu et les
-étiquettes (blanc & or, cadre doré, monogramme, guillochis). Chaque table porte le nom d'une
-**destination**, dans l'esprit du vol RF 1812 : grand numéro, nom de la destination en
-écriture dorée et trajet **MAR → code de l'aéroport** (Mariage → LBV, CDG…), avec le pays.
+étiquettes (blanc & or, cadre doré, vol RF 1812, monogramme, guillochis) : grand numéro et
+**nom d'une fleur** en écriture dorée.
 
-1 Libreville · 2 Paris · 3 Venise · 4 Santorin · 5 Marrakech · 6 Zanzibar · 7 Le Cap ·
-8 Île Maurice · 9 Seychelles · 10 Maldives · 11 Bali · 12 Dubaï · 13 Rome · 14 Lisbonne ·
-15 Barcelone · 16 Rio de Janeiro · 17 New York · 18 Bora-Bora · 19 Tokyo · 20 Bangkok ·
-21 Dakar · 22 Abidjan · 23 Nairobi · 24 Istanbul · 25 Athènes · 26 Londres · 27 Prague ·
-28 Vienne · 29 Cancún · 30 Montréal.
+1 Rose · 2 Pivoine · 3 Orchidée · 4 Lys · 5 Tulipe · 6 Magnolia · 7 Camélia · 8 Jasmin ·
+9 Hibiscus · 10 Gardénia · 11 Lavande · 12 Iris · 13 Dahlia · 14 Hortensia · 15 Marguerite ·
+16 Tournesol · 17 Lilas · 18 Muguet · 19 Glycine · 20 Anémone · 21 Renoncule · 22 Freesia ·
+23 Amaryllis · 24 Azalée · 25 Mimosa · 26 Jacinthe · 27 Lotus · 28 Bougainvillée ·
+29 Frangipanier · 30 Coquelicot.
 
-- Noms, codes, pays et nombre de tables : section `tables` d'`infos.js` (l'ordre de la liste
-  donne les numéros). Aperçu : `cartes-tables.html` (toutes) ou `cartes-tables.html?table=5`.
+- Noms et nombre de tables : section `tables` d'`infos.js` (l'ordre de la liste donne les
+  numéros). Aperçu : `cartes-tables.html` (toutes) ou `cartes-tables.html?table=5`.
 - Format A5 (148 × 210 mm) dessiné, imprimé à 88,5 % : **13,1 × 18,6 cm**, à glisser dans un
   porte-numéro de table. Le **verso est identique au recto** : la carte se lit des deux
   côtés de la table.

@@ -1,7 +1,7 @@
 /* Cartes de table : une par table (infos.js : tables), numérotée dans l'ordre de la liste et
-   nommée d'après une destination, dans la charte de la carte de menu et des étiquettes :
-   cadre doré, monogramme couronné, grand numéro, destination en écriture dorée, trajet
-   MAR → code de l'aéroport, guillochis.
+   nommée d'après une fleur, dans la charte de la carte de menu et des étiquettes : cadre doré,
+   vol RF 1812, monogramme couronné, grand numéro, nom de la fleur en écriture dorée,
+   guillochis.
    Format A5 (148 × 210 mm), imprimé à 88,5 % (131 × 186 mm) : deux cartes par feuille A4,
    le verso identique au recto (la carte se lit des deux côtés de la table).
    Couleurs : INFOS.couleurs.tables, blanc & or par défaut (classe palette-blanc, commun.css). */
@@ -14,7 +14,7 @@ function couleursTable() {
   return palette((INFOS.couleurs || {}).tables) || palette("blanc");
 }
 
-function carteTable(numero, table) {
+function carteTable(numero, nom) {
   const I = INFOS;
   const [l, h] = FORMAT_CARTE_TABLE;
   return `
@@ -32,12 +32,7 @@ function carteTable(numero, table) {
         <div class="etiquette intitule">Table</div>
         <div class="numero texte-degrade">${numero}</div>
         ${ornement()}
-        <div class="destination texte-degrade">${esc(table.nom)}</div>
-        <div class="trajet">
-          <div class="aeroport"><span class="code">${esc(I.arrivee.code)}</span><span class="etiquette">${esc(I.arrivee.ville)}</span></div>
-          <div class="ligne-vol"><span></span>${icone("avion", { rotation: 90 })}<span></span></div>
-          <div class="aeroport"><span class="code">${esc(table.code)}</span><span class="etiquette">${esc(table.pays)}</span></div>
-        </div>
+        <div class="nom texte-degrade">${esc(nom)}</div>
       </div>
       <div class="signature texte-degrade">${esc(I.mariee)} &amp; ${esc(I.marie)}</div>
     </div>
@@ -46,5 +41,5 @@ function carteTable(numero, table) {
 
 // Toutes les cartes, dans l'ordre des tables. `theme` est ignoré (couleurs : couleursTable).
 function cartesTables() {
-  return INFOS.tables.map((table, i) => carteTable(i + 1, table)).join("");
+  return INFOS.tables.map((nom, i) => carteTable(i + 1, nom)).join("");
 }

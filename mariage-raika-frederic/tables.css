@@ -19,7 +19,8 @@
   overflow: hidden;
   background: radial-gradient(ellipse 80% 75% at 50% 45%, var(--fond-1) 0%, var(--fond-2) 45%, var(--fond-3) 100%);
 }
-.face-table .cadre { inset: 10mm; }
+.face-table .cadre,
+.face-table .calque { inset: 10mm; }
 .face-table .losange.hg { top: 8.7mm; left: 8.7mm; }
 .face-table .losange.hd { top: 8.7mm; right: 8.7mm; }
 .face-table .losange.bg { bottom: 8.7mm; left: 8.7mm; }

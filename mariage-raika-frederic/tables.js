@@ -10,6 +10,7 @@
 
 const FORMAT_CHEVALET = [210, 297];
 const FACE_CHEVALET = [210, 148.5];
+const MARGE_CADRE_CHEVALET = 10; // mm, comme .face-table .cadre (tables.css)
 
 // Toute valeur autre que "or", "argent" ou "blanc" revient au blanc & or : sans palette, la page
 // n'aurait aucune couleur de texte.
@@ -17,14 +18,16 @@ function couleursTable() {
   return palette((INFOS.couleurs || {}).tables) || palette("blanc");
 }
 
-// Une face du chevalet (210 × 148,5 mm), à l'endroit.
+// Une face du chevalet (210 × 148,5 mm), à l'endroit. Le guillochis s'arrête au cadre : la
+// feuille n'est pas massicotée, et la marge non imprimée le couperait net au bord.
 function faceTable(numero, nom) {
   const [l, h] = FACE_CHEVALET;
+  const [lc, hc] = [l - 2 * MARGE_CADRE_CHEVALET, h - 2 * MARGE_CADRE_CHEVALET];
   return `
     <div class="face-table">
       <div class="calque">
-        <svg viewBox="0 0 ${l} ${h}" preserveAspectRatio="none">
-          ${bandeGuillochee({ largeur: l, y: 131, amplitude: 2.6, periode: 32, nbLignes: 7, couleur: "var(--guilloche)" })}
+        <svg viewBox="0 0 ${lc} ${hc}" preserveAspectRatio="none">
+          ${bandeGuillochee({ largeur: lc, y: hc - 7.5, amplitude: 2.6, periode: 32, nbLignes: 7, couleur: "var(--guilloche)" })}
         </svg>
       </div>
       ${encadrement()}

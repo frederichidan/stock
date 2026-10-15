@@ -301,6 +301,122 @@ function vectoriserDegrades(racine = document) {
   }
 }
 
+/* Calque de texte vectoriel d'une face, pour les PDF « 8K » : le fond et les dessins y sont une
+   image 8K, mais un texte en image s'estompe dès qu'une imprimante ou une application réduit la
+   résolution de l'image. Tous les textes de la face (texte HTML et textes des dessins SVG) sont
+   donc recopiés, à leur place exacte, dans un SVG en coordonnées de la face (px CSS), posé sur
+   l'image : ils restent nets à toute résolution. Couleurs pleines ou dégradés, sans
+   transparence ni transformation CSS (la rotation éventuelle se fait dans le SVG).
+   À appeler sur une face mise en page, polices chargées, après vectoriserDegrades. Renvoie le
+   contenu du SVG (<defs> et textes). */
+function calqueTexte(face) {
+  const contexte = document.createElement("canvas").getContext("2d");
+  const plage = document.createRange();
+  const origine = face.getBoundingClientRect();
+  const nombre = (v) => +v.toFixed(3);
+  const visible = (element) => element.getClientRects().length > 0 && getComputedStyle(element).visibility === "visible";
+  let defs = "";
+  let textes = "";
+  const copies = new Set();
+
+  // Copie d'un élément de <defs> référencé (dégradé, tracé de textPath) : couleurs des arrêts
+  // fixées (elles viennent des variables CSS de la palette, absentes hors de la page).
+  const copierDef = (id) => {
+    if (!id || copies.has(id)) return;
+    const source = document.getElementById(id);
+    if (!source) return;
+    copies.add(id);
+    const copie = source.cloneNode(true);
+    const sources = [source, ...source.querySelectorAll("*")];
+    [copie, ...copie.querySelectorAll("*")].forEach((noeud, i) => {
+      if (noeud.localName === "stop") {
+        const style = getComputedStyle(sources[i]);
+        noeud.setAttribute("stop-color", style.stopColor);
+        noeud.setAttribute("stop-opacity", style.stopOpacity);
+        noeud.removeAttribute("style");
+      }
+    });
+    const lien = copie.getAttribute("href") || copie.getAttribute("xlink:href");
+    if (lien) copierDef(lien.slice(1));
+    defs += copie.outerHTML;
+  };
+  const peinture = (valeur) => {
+    const lien = /url\("?#([^")]+)"?\)/.exec(valeur);
+    if (lien) {
+      copierDef(lien[1]);
+      return `url(#${lien[1]})`;
+    }
+    return valeur;
+  };
+
+  // 1. Textes HTML (hors dessins SVG), par segments d'une même ligne et d'un même style.
+  const marcheur = document.createTreeWalker(face, NodeFilter.SHOW_TEXT, {
+    acceptNode: (noeud) => (!noeud.parentElement.closest("svg") && noeud.data.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+  });
+  for (let noeud = marcheur.nextNode(); noeud; noeud = marcheur.nextNode()) {
+    const parent = noeud.parentElement;
+    if (!visible(parent)) continue;
+    const style = getComputedStyle(parent);
+    const couleur = style.webkitTextFillColor && style.webkitTextFillColor !== style.color ? style.webkitTextFillColor : style.color;
+    if (/rgba\(.*, 0\)$/.test(couleur) || couleur === "transparent") continue;
+    const segments = [];
+    for (let i = 0; i < noeud.data.length; i += 1) {
+      plage.setStart(noeud, i);
+      plage.setEnd(noeud, i + 1);
+      const r = plage.getClientRects()[0];
+      if (!r || r.width < 0.1) continue;
+      const dernier = segments[segments.length - 1];
+      if (dernier && Math.abs(dernier.haut - r.top) < r.height / 2 && Math.abs(dernier.droite - r.left) < 1.5) {
+        dernier.texte += noeud.data[i];
+        dernier.droite = r.right;
+      } else {
+        segments.push({ texte: noeud.data[i], gauche: r.left, droite: r.right, haut: r.top });
+      }
+    }
+    contexte.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const montee = contexte.measureText("Hg").fontBoundingBoxAscent;
+    const contour = parseFloat(style.webkitTextStrokeWidth) > 0
+      ? ` stroke="${style.webkitTextStrokeColor}" stroke-width="${parseFloat(style.webkitTextStrokeWidth)}"` : "";
+    const chiffres = style.fontVariantNumeric !== "normal" ? ` font-variant-numeric: ${style.fontVariantNumeric};` : "";
+    for (const s of segments) {
+      if (!s.texte.trim()) continue;
+      const texte = style.textTransform === "uppercase" ? s.texte.toUpperCase() : s.texte;
+      textes += `<text x="${nombre(s.gauche - origine.left)}" y="${nombre(s.haut + montee - origine.top)}" textLength="${nombre(s.droite - s.gauche)}" lengthAdjust="spacing"
+        font-family='${style.fontFamily}' font-size="${style.fontSize}" font-weight="${style.fontWeight}" font-style="${style.fontStyle}"
+        letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre; font-synthesis: none;${chiffres}" fill="${couleur}"${contour}>${esc(texte)}</text>`;
+    }
+  }
+
+  // 2. Textes des dessins SVG (monogramme, ruban, tampons, textes dorés vectorisés) : recopiés
+  // avec leur matrice jusqu'à la page, et leurs couleurs et polices calculées.
+  for (const texte of face.querySelectorAll("svg text")) {
+    if (!visible(texte)) continue;
+    const m = texte.getScreenCTM();
+    const copie = texte.cloneNode(true);
+    const sources = [texte, ...texte.querySelectorAll("*")];
+    [copie, ...copie.querySelectorAll("*")].forEach((noeud, i) => {
+      const style = getComputedStyle(sources[i]);
+      noeud.setAttribute("fill", peinture(style.fill));
+      noeud.setAttribute("stroke", peinture(style.stroke));
+      if (style.stroke !== "none") noeud.setAttribute("stroke-width", style.strokeWidth);
+      // Propriétés héritées des groupes parents (non recopiés) : fixées sur chaque nœud.
+      for (const [attribut, valeur] of [
+        ["font-family", style.fontFamily], ["font-size", style.fontSize], ["font-weight", style.fontWeight],
+        ["font-style", style.fontStyle], ["text-anchor", style.textAnchor], ["dominant-baseline", style.dominantBaseline],
+        ["letter-spacing", style.letterSpacing === "normal" ? "0" : style.letterSpacing],
+      ]) {
+        noeud.setAttribute(attribut, valeur);
+      }
+      noeud.removeAttribute("class");
+      if (noeud.localName === "textPath") copierDef((noeud.getAttribute("href") || noeud.getAttribute("xlink:href") || "").slice(1));
+    });
+    copie.setAttribute("style", "white-space: pre; font-synthesis: none");
+    textes += `<g transform="matrix(${[m.a, m.b, m.c, m.d, m.e - origine.left, m.f - origine.top].map(nombre).join(" ")})">${copie.outerHTML}</g>`;
+  }
+
+  return `<defs>${defs}</defs>${textes}`;
+}
+
 /* ------------------------------ Ornements ------------------------------ */
 
 // Double filet doré avec un losange à chaque coin (styles .cadre et .losange).

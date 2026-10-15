@@ -8,9 +8,17 @@
 <link rel="stylesheet" href="tables.css">
 <style>
   /* Une feuille A4 par table, à imprimer à 100 %, recto seul, puis à plier en deux (pli en
-     haut). ?table=5 : la feuille de la table 5 seule. ?pdf=1 : textes dorés vectorisés pour
-     l'impression en PDF (voir vectoriserDegrades dans commun.js). */
+     haut). Paramètres d'adresse :
+       ?table=5        la feuille de la table 5 seule ;
+       ?pdf=1          textes dorés vectorisés pour l'impression en PDF (vectoriserDegrades) ;
+       ?capture=1      fond et dessins seuls, sans les textes (illustrations 8K) ;
+       ?images=[…]&premier=11   une feuille par image 8K (tables 11, 12…), les textes posés
+                       par-dessus en vectoriel : c'est ainsi qu'exporter.js produit les PDF 8K. */
   @page { size: 210mm 297mm; margin: 0; }
+  .feuille-8k { position: relative; width: 210mm; height: 297mm; overflow: hidden; break-after: page; }
+  .feuille-8k:last-child { break-after: auto; }
+  .feuille-8k img, .feuille-8k svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  @media screen { .feuille-8k { margin: 0 auto 10mm; box-shadow: 0 2mm 8mm rgba(28, 16, 54, 0.35); } }
 </style>
 </head>
 <body>
@@ -23,16 +31,37 @@
 <script>
   const parametres = new URLSearchParams(location.search);
   const numero = Number(parametres.get("table"));
-  document.getElementById("planches").innerHTML = INFOS.tables[numero - 1]
-    ? chevaletTable(numero, INFOS.tables[numero - 1])
-    : chevaletsTables();
-  // Les textes dorés se vectorisent à plat (la mesure des lettres d'une face tournée serait
-  // fausse), puis la moitié haute reprend sa rotation.
+  const images = JSON.parse(parametres.get("images") || "null");
+  const premier = Number(parametres.get("premier")) || 1;
+  const planches = document.getElementById("planches");
+  if (parametres.has("capture")) document.body.classList.add("sans-texte");
+  planches.innerHTML = images
+    ? images.map((_, i) => chevaletTable(premier + i, INFOS.tables[premier + i - 1])).join("")
+    : INFOS.tables[numero - 1] ? chevaletTable(numero, INFOS.tables[numero - 1]) : chevaletsTables();
+  // Les textes se mesurent à plat (la mesure des lettres d'une face tournée serait fausse) ;
+  // la moitié haute reprend ensuite sa rotation.
   Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
     await document.fonts.ready;
-    if (parametres.has("pdf")) {
+    if (parametres.has("pdf") || images) {
       document.body.classList.add("sans-rotation");
       vectoriserDegrades(document);
+      if (images) {
+        // Feuille 8K : l'image (fond et dessins), puis les textes des deux faces en vectoriel,
+        // la face du haut tournée de 180° dans le SVG (sans transformation CSS).
+        const PX = 96 / 25.4;
+        const [l, h] = FORMAT_CHEVALET.map((v) => v * PX);
+        const feuilles = [...planches.querySelectorAll(".chevalet")].map((feuille, i) => {
+          const textes = calqueTexte(feuille.querySelector(".moitie.bas .face-table"));
+          return `<section class="feuille-8k"><img src="${esc(images[i])}" alt="">
+            <svg viewBox="0 0 ${l} ${h}" aria-hidden="true">
+              <g transform="translate(0 ${h / 2})">${textes}</g>
+              <g transform="rotate(180 ${l / 2} ${h / 4})">${textes}</g>
+            </svg></section>`;
+        });
+        planches.innerHTML = feuilles.join("");
+        await Promise.all([...document.images].map((image) =>
+          image.complete ? null : new Promise((fin) => image.addEventListener("load", fin, { once: true }))));
+      }
       document.body.classList.remove("sans-rotation");
     }
     window.pagesPretes = true;

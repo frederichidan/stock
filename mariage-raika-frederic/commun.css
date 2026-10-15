@@ -174,35 +174,36 @@
    ne demandent que 0 à 77 % d'encre. `--bandeau-*` : textes posés sur les bandeaux colorés ;
    `--liseret` : leur filet.
    - Or champagne (or antique #a07a32 et or champagne #c9a464 de la palette) : fond ivoire et
-     champagne, bandeaux dorés, textes bronze foncé. Billet premium.
+     champagne, bandeaux dorés, textes bronze foncé. Billet premium. Teintes atténuées (bandeaux
+     à 87 % d'encre au lieu de 157 %) : les ors saturés sortaient mal sur imprimante de bureau.
    - Argent (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés, textes graphite.
      Billet classique. */
 .page.palette-or,
 .palette-or .sombre,
 .palette-or .clair {
-  --fond-1: #fdf9ef; --fond-2: #f5ead0; --fond-3: #e6d2a6;
-  --bande-1: #c39c4a; --bande-2: #d6b46e;
-  --talon-1: #eadbb3; --talon-2: #dcc591;
-  --verso-1: #fdf9ef; --verso-2: #f8f1e0; --verso-3: #ecdcb6;
-  --texte: #463c2d;
-  --texte-doux: #5d4b2d;
+  --fond-1: #fefcf6; --fond-2: #f9f1df; --fond-3: #efe2c2;
+  --bande-1: #dcc58f; --bande-2: #e8d6ab;
+  --talon-1: #f2e8cf; --talon-2: #e9dab6;
+  --verso-1: #fefcf6; --verso-2: #faf5e8; --verso-3: #f1e6cb;
+  --texte: #3f3628;
+  --texte-doux: #54452c;
   --accent: #9f7a38;
-  --accent-texte: #7c6134;
-  --accent-fort: #7c6134;
-  --discret: #5d4b2d;
+  --accent-texte: #6e5530;
+  --accent-fort: #6e5530;
+  --discret: #54452c;
   --ligne: rgba(159, 122, 56, 0.75);
   --filet: rgba(159, 122, 56, 0.35);
   --zone: rgba(159, 122, 56, 0.12);
   --ligne-ecriture: rgba(70, 60, 45, 0.45);
-  --code: #816636;
+  --code: #6e5530;
   --esperluette: #463c2d;
-  --let-a: #7c6134; --let-b: #b8913f; --let-c: #9f7a38;
+  --let-a: #6e5530; --let-b: #a88239; --let-c: #8a6d3b;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
   --guilloche: #9f7a38;
-  --guilloche-opacite: 0.16;
-  --pastille: #c39c4a;
+  --guilloche-opacite: 0.11;
+  --pastille: #dcc58f;
   --pastille-texte: #3b342a;
-  --titre-etape: #7c6134;
+  --titre-etape: #6e5530;
   --code-barres: #3b342a;
   --bandeau-texte: #3b342a; --bandeau-doux: #463c2d; --bandeau-reflet: #5d4b2d;
   --liseret: #9f7a38;
@@ -214,32 +215,33 @@
   --bande-1: #aeb3be; --bande-2: #c9ccd5;
   --talon-1: #e4e6eb; --talon-2: #d3d6dd;
   --verso-1: #fcfcfd; --verso-2: #f3f4f6; --verso-3: #e1e3e8;
-  --texte: #33363d;
-  --texte-doux: #4f535c;
+  --texte: #26292f;
+  --texte-doux: #3a3e46;
   --accent: #858a96;
-  --accent-texte: #5c616c;
-  --accent-fort: #5c616c;
-  --discret: #4f535c;
+  --accent-texte: #484c55;
+  --accent-fort: #3a3e46;
+  --discret: #3a3e46;
   --ligne: rgba(133, 138, 150, 0.75);
   --filet: rgba(133, 138, 150, 0.4);
   --zone: rgba(133, 138, 150, 0.14);
   --ligne-ecriture: rgba(51, 54, 61, 0.45);
-  --code: #5c616c;
-  --esperluette: #33363d;
-  --let-a: #4f545e; --let-b: #9ca1ad; --let-c: #6e737e;
+  --code: #3f434b;
+  --esperluette: #26292f;
+  --let-a: #3a3e46; --let-b: #6c717c; --let-c: #4d515a;
   --orn-a: #5f646f; --orn-b: #c4c8d0; --orn-c: #868b97;
   --guilloche: #858a96;
-  --guilloche-opacite: 0.18;
+  --guilloche-opacite: 0.12;
   --pastille: #aeb3be;
   --pastille-texte: #2a2c31;
-  --titre-etape: #4f545e;
+  --titre-etape: #3a3e46;
   --code-barres: #2a2c31;
-  --bandeau-texte: #2a2c31; --bandeau-doux: #33363d; --bandeau-reflet: #4a4e57;
+  --bandeau-texte: #1f2126; --bandeau-doux: #26292f; --bandeau-reflet: #3a3e46;
   --liseret: #858a96;
 }
-/* - Blanc & or : fond blanc (le papier, sans encre), textes et ornements dorés : or foncé pour
-     les textes courants et les petits intitulés, or vif pour les filets et les pictogrammes,
-     dégradé or pour les titres et les prénoms. Bandeaux blancs, séparés par un filet doré.
+/* - Blanc & or : fond blanc (le papier, sans encre), textes et ornements dorés : or foncé (bronze)
+     pour les textes courants et les petits intitulés, assez sombre pour rester net et lisible une
+     fois imprimé, or vif pour les filets et les pictogrammes, dégradé or pour les titres et les
+     prénoms. Bandeaux blancs, séparés par un filet doré.
      Carte de menu et étiquettes de bouteilles. */
 .page.palette-blanc,
 .palette-blanc .sombre,
@@ -248,27 +250,27 @@
   --bande-1: #ffffff; --bande-2: #ffffff;
   --talon-1: #ffffff; --talon-2: #ffffff;
   --verso-1: #ffffff; --verso-2: #ffffff; --verso-3: #ffffff;
-  --texte: #846635;
-  --texte-doux: #8a6d3b;
+  --texte: #6e5530;
+  --texte-doux: #72592c;
   --accent: #b8913f;
-  --accent-texte: #7c6134;
-  --accent-fort: #7c6134;
-  --discret: #8a6d3b;
+  --accent-texte: #5e4a24;
+  --accent-fort: #5e4a24;
+  --discret: #72592c;
   --ligne: rgba(184, 145, 63, 0.8);
   --filet: rgba(184, 145, 63, 0.4);
   --zone: rgba(201, 164, 100, 0.1);
-  --ligne-ecriture: rgba(132, 102, 53, 0.5);
-  --code: #9f7a38;
+  --ligne-ecriture: rgba(110, 85, 48, 0.55);
+  --code: #846635;
   --esperluette: #b8913f;
-  --let-a: #846635; --let-b: #c9a464; --let-c: #a88239;
+  --let-a: #6e5530; --let-b: #ad8a46; --let-c: #8a6d3b;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
   --guilloche: #c39c4a;
-  --guilloche-opacite: 0.22;
+  --guilloche-opacite: 0.16;
   --pastille: #c39c4a;
   --pastille-texte: #ffffff;
-  --titre-etape: #7c6134;
-  --code-barres: #7c6134;
-  --bandeau-texte: #7c6134; --bandeau-doux: #846635; --bandeau-reflet: #b8913f;
+  --titre-etape: #5e4a24;
+  --code-barres: #5e4a24;
+  --bandeau-texte: #5e4a24; --bandeau-doux: #6e5530; --bandeau-reflet: #a88239;
   --liseret: #b8913f;
 }
 .page.palette-or, .palette-or .sombre, .palette-or .clair,
@@ -303,10 +305,17 @@ body {
   background: #e7e3ec;
 }
 
+/* Graisse par défaut 600 : le Cormorant Garamond des textes courants a des déliés d'environ
+   0,1 mm en 400, qui pâlissent et s'estompent sur une imprimante jet d'encre ; en 600 (et en
+   italique 500, la graisse la plus forte de l'italique), les traits restent pleins. Les autres
+   polices ont leur graisse propre ; font-synthesis: none évite un faux gras sur Great Vibes
+   (une seule graisse). */
 .page {
   position: relative;
   overflow: hidden;
   break-after: page;
+  font-weight: 600;
+  font-synthesis: none;
 }
 .page:last-child { break-after: auto; }
 
@@ -322,6 +331,13 @@ body {
 @media print {
   body { background: none; }
 }
+
+/* Capture des illustrations 8K (classe sans-texte sur body) : le fond et les dessins seuls ; les
+   textes sont posés par-dessus en vectoriel (calqueTexte, commun.js) et restent nets à toute
+   résolution. */
+.sans-texte .page, .sans-texte .page * { -webkit-text-fill-color: transparent !important; -webkit-text-stroke-color: transparent !important; }
+.sans-texte .page svg text { visibility: hidden !important; }
+.sans-texte .page .texte-degrade { background: none !important; }
 
 /* Texte en dégradé (or sur fond sombre, violet sur fond clair). */
 .texte-degrade {

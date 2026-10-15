@@ -16,7 +16,7 @@ Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
 
 | Fichier | Usage |
 |---|---|
-| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Chaque exemplaire est une image 8K (≈ 1 000 dpi ; ≈ 650 dpi pour les feuilles A4 des cartes de table), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier). Cartes de table : une feuille A4 entière par table, en `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` (voir plus bas) |
+| `…-A4-8k.pdf` | **À imprimer sur A4** (imprimante de bureau), recto verso bord long (étiquettes de bouteilles : recto seul, une page) : plusieurs exemplaires par feuille, fond perdu 3 mm, traits de coupe. Le fond et les dessins de chaque exemplaire sont une image 8K (≈ 1 000 dpi ; ≈ 650 dpi pour les feuilles A4 des cartes de table), sans transparence, avec un grain invisible qui évite les bandes dans les dégradés (sauf sur les supports blanc & or, dont le fond reste le blanc pur du papier) ; **tous les textes sont posés par-dessus en vectoriel** : l'imprimante les trace à sa pleine résolution, aussi nets que dans un traitement de texte, au lieu d'en imprimer une photo. Cartes de table : une feuille A4 entière par table, en `…-A4-8k-tables-01-a-10.pdf`, `…-11-a-20.pdf`, `…-21-a-30.pdf` (voir plus bas) |
 | `…-A4-vectoriel.pdf` | La même planche en vectoriel (fichier léger, textes nets à toute taille), plutôt pour un imprimeur professionnel : elle contient des transparences que certains pilotes d'imprimante de bureau rendent moins bien |
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
@@ -34,10 +34,11 @@ dessin d'origine :
 |---|---|---|
 | Pochette passeport | ouverte 185,9 × 131 mm, pliée en deux : 92,9 × 131 mm | 2 (A4 portrait) |
 | Billet d'invitation (premium ou classique) | 185,9 × 87,6 mm | 3 (A4 portrait) |
-| Carte de menu | 87,6 × 185,9 mm | 3 (A4 paysage) |
+| Carte de menu | 87,6 × 185,9 mm | 3 (A4 portrait, cartes couchées l'une sous l'autre) |
 
-Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Imprimer en
-**recto verso avec retournement sur le bord long**, à **100 %** (taille réelle, sans
+Chaque PDF A4 a deux pages : **page 1 = rectos, page 2 = versos**. Toutes ces planches sont
+en **A4 portrait**, pour l'impression **recto verso avec retournement sur le bord long**
+(la feuille se retourne comme la page d'un livre), à **100 %** (taille réelle, sans
 « ajuster à la page »). Les PDF sont au format A4 exact et demandent eux-mêmes ces réglages
 (Acrobat Reader, Chrome et Edge les présélectionnent) : vérifiez-les tout de même dans la
 fenêtre d'impression. Les versos sont placés et orientés pour tomber derrière les rectos :
@@ -46,7 +47,9 @@ fenêtre d'impression. Les versos sont placés et orientés pour tomber derrièr
   pointillés), l'invitation se trouve derrière la couverture et la page d'identité derrière
   le dos, à l'endroit.
 - **Billet** : le verso se lit à l'endroit en retournant le billet de haut en bas.
-- **Carte de menu** : le verso se lit à l'endroit en retournant la carte de gauche à droite.
+- **Carte de menu** : les cartes sont couchées sur la feuille (le haut des rectos vers la
+  droite) ; une fois découpée, la carte se lit à l'endroit, et son verso aussi en la
+  retournant de gauche à droite.
 
 Faites un essai sur papier ordinaire avant le tirage final : si le verso est décalé,
 vérifiez que l'impression est bien à 100 % et en « bord long ».
@@ -104,7 +107,7 @@ Une carte par table, **30 en tout**, dans le même design que la carte de menu e
   deux côtés de la table**. Chaque face mesure 21 × 14,85 cm.
 - À imprimer sur l'imprimante de bureau : `cartes-tables/cartes-tables-A4-8k-tables-01-a-10.pdf`,
   `…-11-a-20.pdf` et `…-21-a-30.pdf` (10 feuilles chacun, découpés pour rester sous 30 Mo ;
-  chaque feuille est une image 8K, ≈ 650 dpi). `cartes-tables-A4-vectoriel.pdf` (les 30
+  fond et dessins de chaque feuille en image 8K, ≈ 650 dpi, textes en vectoriel). `cartes-tables-A4-vectoriel.pdf` (les 30
   feuilles) est plutôt pour un imprimeur professionnel : sa moitié tournée y forme un groupe de
   transparence, que certains pilotes d'imprimante de bureau rendent moins bien. **A4 portrait,
   à 100 %, recto seul** : rien à découper ni à aligner au verso. Le fond est blanc et le cadre doré reste à 10 mm des
@@ -117,12 +120,15 @@ Une carte par table, **30 en tout**, dans le même design que la carte de menu e
 
 ## Couleurs et impression
 
-**Billet premium : or champagne.** Fond ivoire et champagne, bandeaux dorés, textes bronze
-foncé, tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de la palette.
+**Billet premium : or champagne, atténué pour l'impression.** Fond ivoire et champagne
+pâle, bandeaux d'un doré léger (#dcc58f → #e8d6ab, 87 % d'encre au lieu de 157 % : les ors
+saturés d'avant sortaient lourds et brouillés sur imprimante de bureau), guillochis plus
+discrets, textes bronze foncé (#3f3628, #6e5530), tirés de l'or antique (#a07a32) et de l'or
+champagne (#c9a464) de la palette.
 **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés,
-textes graphite. **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
-papier, sans encre) ; textes courants et petits intitulés en or foncé (#846635, #7c6134),
-lisibles sur le blanc ; filets, pictogrammes et ornements en or vif (#b8913f, #c39c4a) ;
+textes graphite foncé (#26292f). **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
+papier, sans encre) ; textes courants et petits intitulés en or foncé, presque bronze
+(#6e5530, #5e4a24), bien lisibles sur le blanc ; filets, pictogrammes et ornements en or vif (#b8913f, #c39c4a) ;
 titres et prénoms en dégradé doré. Ces fonds clairs ne demandent que 0 à 77 % d'encre (contre
 160 à 190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une
 imprimante (écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de
@@ -140,6 +146,11 @@ remplacé par un **violet améthyste** plus clair, de même teinte, et toutes le
 - au plus 186 % d'encre sur les aplats violets (250 % pour les petits textes), contre près de
   300 % avant : sur papier couché, l'encre ne pénètre pas ; moins chargée, elle sèche sans
   perler ni marbrer.
+
+**Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
+des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : tous
+les textes sont désormais en semi-gras (600), dans les teintes foncées ci-dessus, et posés en
+vectoriel dans les PDF 8K (voir plus haut).
 
 Les détails fins sont dessinés pour tenir à l'impression (mesures sur l'imprimé, à 88,5 %) :
 traits dorés d'au moins 0,18 mm, guillochis et halos en traits d'au moins 0,2 mm, petits textes

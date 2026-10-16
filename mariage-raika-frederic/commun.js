@@ -150,8 +150,8 @@ function monogramme({ classe = "", halo = false, taille = 40 } = {}) {
     <path d="${ICONES.coeur}" transform="translate(93.4,184.6) scale(0.55)" fill="${remplissage}"/>
     ${laurier(100, 100, 74, 104, 236, 8, remplissage, +trait(1.1, 0.2))}
     ${laurier(100, 100, 74, 76, -56, 8, remplissage, +trait(1.1, 0.2))}
-    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke="${lettres}" stroke-width="0" stroke-linejoin="round">${esc(f)}</text>
-    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke="${lettres}" stroke-width="0" stroke-linejoin="round">${esc(m)}</text>
+    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke-width="0" stroke-linejoin="round" style="stroke: var(--let-c)">${esc(f)}</text>
+    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke-width="0" stroke-linejoin="round" style="stroke: var(--let-c)">${esc(m)}</text>
     <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" stroke-width="0" stroke-linejoin="round" style="fill: var(--esperluette); stroke: var(--esperluette)">&amp;</text>
   </svg>`;
 }
@@ -291,9 +291,13 @@ function vectoriserDegrades(racine = document, zoom = 1) {
         const ligneDeBase = (s.haut - boite.top) / zoom + montee(contexte, style, zoom);
         const texte = style.textTransform === "uppercase" ? s.texte.toUpperCase() : s.texte;
         const remplissage = s.parent === element ? `url(#${id})` : style.color;
-        // Épaississement (-webkit-text-stroke, voir commun.css) : même contour, même peinture.
+        // Épaississement (-webkit-text-stroke, voir commun.css) : même contour, en couleur unie
+        // (l'or moyen du dégradé, --let-c) : un contour peint d'un dégradé devient dans le PDF
+        // un glyphe Type 3 rempli d'un motif, qu'un moteur (pdfium : Chrome, Edge) ignore et
+        // qu'un autre (poppler : Okular, filtres CUPS) imprime en bloc doré plein.
         const trait = parseFloat(style.webkitTextStrokeWidth) || 0;
-        const contour = trait > 0 ? ` stroke="${remplissage}" stroke-width="${trait}" stroke-linejoin="round"` : "";
+        const teinteContour = s.parent === element ? getComputedStyle(element).getPropertyValue("--let-c").trim() || style.color : style.color;
+        const contour = trait > 0 ? ` stroke="${teinteContour}" stroke-width="${trait}" stroke-linejoin="round"` : "";
         contenu += `<text x="${(s.gauche - boite.left) / zoom}" y="${ligneDeBase}" textLength="${(s.droite - s.gauche) / zoom}" lengthAdjust="spacing"
           font-family='${style.fontFamily}' font-size="${style.fontSize}" font-weight="${style.fontWeight}" font-style="${style.fontStyle}"
           letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre" fill="${remplissage}"${contour}>${esc(texte)}</text>`;

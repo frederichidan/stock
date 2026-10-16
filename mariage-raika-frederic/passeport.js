@@ -50,7 +50,7 @@ function ruban(texte) {
       <path d="M168,12 L195,15 L187,22.5 L195,30 L168,29 Z" style="fill: var(--accent); fill-opacity: 0.28"/>
       <path d="M24,8 Q100,30 176,8 L176,26 Q100,48 24,26 Z" style="fill: var(--accent); fill-opacity: 0.1"/>
     </g>
-    <text font-family="Great Vibes" font-size="15.5" fill="url(#${lettres})" stroke="url(#${lettres})" stroke-width="0" stroke-linejoin="round">
+    <text font-family="Great Vibes" font-size="15.5" fill="url(#${lettres})" stroke-width="0" stroke-linejoin="round" style="stroke: var(--let-c)">
       <textPath href="#${chemin}" startOffset="50%" text-anchor="middle">${esc(texte)}</textPath>
     </text>
   </svg>`;

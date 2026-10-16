@@ -42,8 +42,9 @@
    date et l'écriture, 0,14 mm pour le titre « PASSEPORT » et les grandes initiales du
    monogramme, restées en Great Vibes (seul, le F de Satisfy se lirait 7). Le contour
    transparent des textes en dégradé élargit leur dégradé à l'écran ; vectoriserDegrades le
-   reprend dans les PDF. Monogramme et devise : contour en unités de leur dessin (47 mm et
-   74 mm pour 200 unités). */
+   reprend dans les PDF, en or uni (--let-c) : un contour en dégradé s'imprimerait mal (voir
+   vectoriserDegrades). Monogramme et devise : contour --let-c, en unités de leur dessin (47 mm
+   et 74 mm pour 200 unités). */
 .page.passeport.exterieur .sous-titre-passeport,
 .page.passeport.exterieur .noms,
 .page.passeport.exterieur .verset,

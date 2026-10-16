@@ -36,15 +36,31 @@
 /* ----------------- Extérieur (couverture et dos) : lisibilité ----------------- */
 /* Lettres claires sur le violet : à l'impression, l'encre du fond déborde de quelques
    centièmes de millimètre dans la réserve et ronge les déliés, au point d'effacer ceux, très
-   fins (≈ 0,1 mm), de l'écriture Great Vibes. Les textes de l'extérieur sont donc épaissis
-   d'un contour de leur propre couleur : 0,08 mm pour les capitales et la date, 0,14 mm pour
-   l'écriture et les titres dorés (le contour transparent des textes en dégradé élargit leur
-   dégradé à l'écran ; vectoriserDegrades le reprend dans les PDF). Monogramme et devise du
-   ruban : même épaisseur, en unités de leur dessin (47 mm et 74 mm pour 200 unités). */
+   fins (≈ 0,1 mm), de l'écriture Great Vibes. L'extérieur est donc écrit en Satisfy, aux pleins
+   et déliés épais (prénoms, « de Mariage », devise, verset), dans un or clair (commun.css), et
+   ses textes sont épaissis d'un contour de leur propre couleur : 0,08 mm pour les capitales, la
+   date et l'écriture, 0,14 mm pour le titre « PASSEPORT » et les grandes initiales du
+   monogramme, restées en Great Vibes (seul, le F de Satisfy se lirait 7). Le contour
+   transparent des textes en dégradé élargit leur dégradé à l'écran ; vectoriserDegrades le
+   reprend dans les PDF. Monogramme et devise : contour en unités de leur dessin (47 mm et
+   74 mm pour 200 unités). */
+.page.passeport.exterieur .sous-titre-passeport,
+.page.passeport.exterieur .noms,
+.page.passeport.exterieur .verset,
+.page.passeport.exterieur .verset-source,
+.page.passeport.exterieur .ruban text { font-family: var(--script-epais); }
+/* Satisfy est plus large que la Great Vibes : la devise reste dans le ruban. Ses accents et
+   trémas montent au-dessus de la ligne, où background-clip couperait le dégradé : marge
+   intérieure en haut, compensée. */
+.page.passeport.exterieur .ruban text { font-size: 12.5px; }
+.page.passeport.exterieur .couverture .noms { padding-top: 2.5mm; margin-top: 1.5mm; }
+.page.passeport.exterieur .sous-titre-passeport { padding-top: 2mm; margin-top: -1.4mm; }
+.page.passeport.exterieur .verset { padding-top: 2mm; margin-top: 8mm; }
+.page.passeport.exterieur .verset-source { padding-top: 2mm; margin-top: 2mm; }
 [data-theme="violet"] .passeport.exterieur { -webkit-text-stroke: 0.08mm currentColor; }
-[data-theme="violet"] .passeport.exterieur .texte-degrade { -webkit-text-stroke-width: 0.14mm; }
+[data-theme="violet"] .passeport.exterieur .titre-passeport { -webkit-text-stroke-width: 0.14mm; }
 [data-theme="violet"] .passeport.exterieur .monogramme text { stroke-width: 0.6; }
-[data-theme="violet"] .passeport.exterieur .ruban text { stroke-width: 0.38; }
+[data-theme="violet"] .passeport.exterieur .ruban text { stroke-width: 0.22; }
 
 /* ---------------------------- Couverture ---------------------------- */
 .passeport .couverture .contenu { padding: 10mm 8mm 9mm; }

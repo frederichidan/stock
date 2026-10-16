@@ -17,7 +17,7 @@
   @page { size: 210mm 297mm; margin: 0; }
   .feuille-8k { position: relative; width: 210mm; height: 297mm; overflow: hidden; break-after: page; }
   .feuille-8k:last-child { break-after: auto; }
-  .feuille-8k img, .feuille-8k svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .feuille-8k svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   @media screen { .feuille-8k { margin: 0 auto 10mm; box-shadow: 0 2mm 8mm rgba(28, 16, 54, 0.35); } }
 </style>
 </head>
@@ -43,25 +43,35 @@
   Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
     await document.fonts.ready;
     if (parametres.has("pdf") || images) {
+      const PX = 96 / 25.4;
+      const [l, h] = FORMAT_CHEVALET.map((v) => v * PX);
+      // Feuilles 8K : textes mesurés au zoom de la capture (voir calqueTexte dans commun.js).
+      const zoom = images ? (await tailleImage(images[0]))[1] / h : 1;
+      planches.style.zoom = zoom;
       document.body.classList.add("sans-rotation");
-      vectoriserDegrades(document);
+      vectoriserDegrades(document, zoom);
       if (images) {
         // Feuille 8K : l'image (fond et dessins), puis les textes des deux faces en vectoriel,
-        // la face du haut tournée de 180° dans le SVG (sans transformation CSS).
-        const PX = 96 / 25.4;
-        const [l, h] = FORMAT_CHEVALET.map((v) => v * PX);
+        // la face du haut tournée de 180°, dans un même SVG : une image HTML serait calée au
+        // pixel CSS entier dans le PDF, pas les textes (voir exemplaire8K dans impression.html).
+        await Promise.all([...new Set(images)].map(tailleImage));
         const feuilles = [...planches.querySelectorAll(".chevalet")].map((feuille, i) => {
-          const textes = calqueTexte(feuille.querySelector(".moitie.bas .face-table"));
-          return `<section class="feuille-8k"><img src="${esc(images[i])}" alt="">
+          const textes = calqueTexte(feuille.querySelector(".moitie.bas .face-table"), zoom);
+          return `<section class="feuille-8k">
             <svg viewBox="0 0 ${l} ${h}" aria-hidden="true">
+              <image href="${esc(images[i])}" x="0" y="0" width="${l}" height="${h}" preserveAspectRatio="none"/>
               <g transform="translate(0 ${h / 2})">${textes}</g>
               <g transform="rotate(180 ${l / 2} ${h / 4})">${textes}</g>
             </svg></section>`;
         });
         planches.innerHTML = feuilles.join("");
-        await Promise.all([...document.images].map((image) =>
-          image.complete ? null : new Promise((fin) => image.addEventListener("load", fin, { once: true }))));
+        await Promise.all([...planches.querySelectorAll("image")].map((image) =>
+          new Promise((fin) => {
+            image.addEventListener("load", fin, { once: true });
+            image.addEventListener("error", fin, { once: true });
+          })));
       }
+      planches.style.zoom = "";
       document.body.classList.remove("sans-rotation");
     }
     window.pagesPretes = true;

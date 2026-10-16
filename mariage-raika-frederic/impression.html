@@ -30,8 +30,8 @@
   .fond-perdu { position: absolute; left: 0; top: 0; overflow: hidden; contain: strict; }
   .copie { position: absolute; }
   .copie .page { margin: 0 !important; box-shadow: none !important; }
-  .exemplaire > img, .exemplaire > .tourne { position: absolute; display: block; }
-  .calque-texte { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .exemplaire > .tourne { position: absolute; display: block; }
+  .exemplaire-8k { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   /* Grain monochrome très fin (0,05 mm, ± 2 niveaux) posé sur les illustrations 8K : invisible
      à l'œil, il empêche les imprimantes laser de dessiner des bandes dans les grands dégradés.
      Pas de grain sur les faces blanc & or (palette-blanc) : sans grand dégradé, leur fond reste
@@ -192,20 +192,26 @@
     return `<div class="fond-perdu" style="width:${mm(L + 2 * FOND_PERDU_DESSIN)};height:${mm(H + 2 * FOND_PERDU_DESSIN)};zoom:${echelle}">${copies.join("")}${grain}</div>`;
   }
 
-  // Calque de texte vectoriel d'un exemplaire (PDF 8K) : les textes de la face (calqueTexte),
-  // tournés comme l'image, dans un SVG qui couvre l'emplacement fond perdu compris. La rotation
-  // se fait dans le SVG : une transformation CSS ferait un groupe de transparence dans le PDF.
+  // Exemplaire d'un PDF 8K : l'image 8K de la face (fond perdu compris) et ses textes
+  // vectoriels (calqueTexte), dans un même SVG qui couvre l'emplacement, en coordonnées de la
+  // face (px CSS). Dans un PDF, Chromium cale une image HTML (<img>) sur des pixels CSS entiers
+  // (jusqu'à 0,13 mm d'écart de place et de taille) mais pas le texte vectoriel : dans le même
+  // SVG, image et textes restent superposés exactement. La rotation se fait aussi dans le SVG :
+  // une transformation CSS ferait un groupe de transparence dans le PDF.
   const PX = 96 / 25.4;
-  function calqueExemplaire(textes, rotation) {
+  function exemplaire8K(image, textes, rotation) {
     const [lb, hb] = (rotation % 180 ? [H, L] : [L, H]).map((v) => (v + 2 * FOND_PERDU_DESSIN) * PX);
-    return `<svg class="calque-texte" viewBox="0 0 ${lb} ${hb}" aria-hidden="true">
-      <g transform="translate(${lb / 2} ${hb / 2}) rotate(${rotation}) translate(${(-L * PX) / 2} ${(-H * PX) / 2})">${textes}</g></svg>`;
+    const fp = FOND_PERDU_DESSIN * PX;
+    return `<svg class="exemplaire-8k" viewBox="0 0 ${lb} ${hb}" aria-hidden="true">
+      <g transform="translate(${lb / 2} ${hb / 2}) rotate(${rotation}) translate(${(-L * PX) / 2} ${(-H * PX) / 2})">
+        <image href="${esc(image)}" x="${-fp}" y="${-fp}" width="${L * PX + 2 * fp}" height="${H * PX + 2 * fp}" preserveAspectRatio="none"/>
+        ${textes}
+      </g></svg>`;
   }
 
   // Un exemplaire par emplacement. Le contenu (L × H, fond perdu compris) est centré dans
-  // l'emplacement et tourné sur lui-même. Une image est tournée elle-même : tourner son
-  // conteneur en ferait, dans le PDF, un groupe de transparence, que certains pilotes
-  // d'imprimante rendent moins bien. `textes` : calque de texte posé sur l'image.
+  // l'emplacement et tourné sur lui-même ; une face en image (PDF 8K) l'est dans son SVG, avec
+  // ses `textes` (exemplaire8K).
   // Un exemplaire couché a une boîte (avant rotation) plus haute que son emplacement : elle est
   // placée dans la feuille puis amenée à sa place par translation, car une boîte qui déborde de
   // la feuille serait coupée et reportée sur la page suivante à l'impression en PDF.
@@ -220,9 +226,7 @@
         const deplacement = g !== gauche || t !== haut ? `translate(${mm(gauche - g)}, ${mm(haut - t)}) ` : "";
         const transformation = deplacement || rotation ? `transform:${deplacement}rotate(${rotation}deg)` : "";
         const place = `left:${mm(g - (x - fp))};top:${mm(t - (y - fp))};width:${mm(lc)};height:${mm(hc)};${transformation}`;
-        const contenu = image
-          ? `<img src="${esc(face)}" alt="" style="${place}">${textes ? calqueExemplaire(textes, rotation) : ""}`
-          : `<div class="tourne" style="${place}">${fondPerdu(face)}</div>`;
+        const contenu = image ? exemplaire8K(face, textes || "", rotation) : `<div class="tourne" style="${place}">${fondPerdu(face)}</div>`;
         return `<div class="exemplaire" style="left:${mm(x - fp)};top:${mm(y - fp)};width:${mm(le + 2 * fp)};height:${mm(he + 2 * fp)}">${contenu}</div>`;
       }))
       .join("");
@@ -254,10 +258,15 @@
     const preparation = document.getElementById("preparation");
     if (capture) document.body.classList.add("sans-texte");
     preparation.innerHTML = doc.rendu(THEME);
-    if (!capture) vectoriserDegrades(preparation);
+    // Calques de texte mesurés au zoom de la capture 8K (voir calqueTexte) : celui qui donne
+    // à la face, fond perdu compris, la largeur en pixels de son image.
+    const tailles = images ? await Promise.all([...new Set(images)].map(tailleImage)) : [];
+    const zoom = images ? tailles[0][0] / ((L + 2 * FOND_PERDU_DESSIN) * PX) : 1;
+    preparation.style.zoom = zoom;
+    if (!capture) vectoriserDegrades(preparation, zoom);
     const pages = [...preparation.querySelectorAll(".page")];
     const faces = images || pages;
-    const textes = images ? pages.map(calqueTexte) : [];
+    const textes = images ? pages.map((page) => calqueTexte(page, zoom)) : [];
     document.getElementById("planches").innerHTML = faces
       .map((face, i) => `
         <section class="feuille">
@@ -266,8 +275,13 @@
         </section>`)
       .join("");
     preparation.remove();
-    await Promise.all([...document.images].map((image) =>
-      image.complete ? null : new Promise((fin) => image.addEventListener("load", fin, { once: true })),
+    // Images des PDF 8K (SVG <image>, sans propriété complete) : chargées d'avance ci-dessus,
+    // puis attendues ici, écouteurs posés avant tout événement (même tâche que l'insertion).
+    await Promise.all([...document.querySelectorAll(".exemplaire-8k image")].map((image) =>
+      new Promise((fin) => {
+        image.addEventListener("load", fin, { once: true });
+        image.addEventListener("error", fin, { once: true });
+      }),
     ));
     window.planchesPretes = true;
   });

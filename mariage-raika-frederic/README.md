@@ -148,15 +148,28 @@ remplacé par un **violet améthyste** plus clair, de même teinte, et toutes le
   perler ni marbrer.
 
 **Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
-des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : tous
-les textes sont désormais en semi-gras (600), dans les teintes foncées ci-dessus, et posés en
-vectoriel dans les PDF 8K (voir plus haut).
+des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : les
+textes courants (Cormorant droit, capitales Montserrat) sont désormais en semi-gras (600),
+l'italique en 500 (sa graisse la plus forte) ; écriture, titres et chiffres gardent leur
+police propre (Great Vibes, Playfair Display). Tous sont dans les teintes foncées ci-dessus et
+posés en vectoriel dans les PDF 8K (voir plus haut).
+
+**Couverture et dos de la pochette.** Sur le violet, les lettres claires sont « en réserve » :
+l'encre du fond déborde de quelques centièmes de millimètre dans les lettres et ronge les
+déliés, au point d'effacer ceux, très fins, de l'écriture Great Vibes. Toute l'écriture de
+l'extérieur (prénoms, « de Mariage », devise du ruban, monogramme, verset du dos) et le titre
+« PASSEPORT » sont épaissis d'un contour de 0,14 mm de leur propre couleur, les capitales et
+la date de 0,08 mm ; l'or des lettres est éclairci (contraste avec le violet porté de 2,7:1 à
+3,3:1 au plus sombre du dégradé) ; « ROYAUME DE L'AMOUR » passe de 6 à 7 pt en gras, la date
+de 10 à 11 pt et les prénoms de 25 à 27 pt. Comparées en simulant ce débord d'encre, d'autres
+écritures (Pinyon Script, Allura, Parisienne, Alex Brush…) tenaient moins bien que la Great
+Vibes épaissie, qui garde le style des billets, du menu et des cartes de table.
 
 Les détails fins sont dessinés pour tenir à l'impression (mesures sur l'imprimé, à 88,5 %) :
 traits dorés d'au moins 0,18 mm, guillochis et halos en traits d'au moins 0,2 mm, petits textes
-d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet très légèrement épaissis
-(0,04 mm) pour compenser l'encre du fond ; petites étiquettes dorées des pages claires dans un
-or plus foncé, lisible.
+d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet épaissis pour compenser
+l'encre du fond (voir ci-dessus) ; petites étiquettes dorées des pages claires dans un or plus
+foncé, lisible.
 
 Couleurs principales : fond #7e5ea9 → #6f4e9d → #61438d, bandeaux #61438d / #6a4998, or
 #e2c487. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte

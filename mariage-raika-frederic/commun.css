@@ -119,8 +119,10 @@
   --discret: #d4d6de;
   --ligne: rgba(226, 196, 135, 0.8);
   --filet: rgba(226, 196, 135, 0.4);
-  --code: #e6c98a;
-  --let-a: #c8a252; --let-b: #f3dfa6; --let-c: #d6b46e;
+  --code: #ecd197;
+  /* Lettres dorées : dégradé éclairci (l'ancien or foncé #c8a252 ne contrastait qu'à 2,7:1 avec
+     le violet et s'y fondait à l'impression ; 3,3:1 au plus sombre désormais). */
+  --let-a: #d8b664; --let-b: #f6e4b0; --let-c: #e2c27d;
   --orn-a: #c8a252; --orn-b: #f3dfa6; --orn-c: #d6b46e;
   --guilloche: #e2c487;
   --pastille: #e2c487;

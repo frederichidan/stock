@@ -150,9 +150,9 @@ function monogramme({ classe = "", halo = false, taille = 40 } = {}) {
     <path d="${ICONES.coeur}" transform="translate(93.4,184.6) scale(0.55)" fill="${remplissage}"/>
     ${laurier(100, 100, 74, 104, 236, 8, remplissage, +trait(1.1, 0.2))}
     ${laurier(100, 100, 74, 76, -56, 8, remplissage, +trait(1.1, 0.2))}
-    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}">${esc(f)}</text>
-    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}">${esc(m)}</text>
-    <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" style="fill: var(--esperluette)">&amp;</text>
+    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke="${lettres}" stroke-width="0" stroke-linejoin="round">${esc(f)}</text>
+    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke="${lettres}" stroke-width="0" stroke-linejoin="round">${esc(m)}</text>
+    <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" stroke-width="0" stroke-linejoin="round" style="fill: var(--esperluette); stroke: var(--esperluette)">&amp;</text>
   </svg>`;
 }
 
@@ -226,13 +226,22 @@ function codeBarres(texte, { largeur = 100, hauteur = 20, couleur = "currentColo
 
 /* -------------------- Textes en dégradé pour les PDF -------------------- */
 
+// Distance du haut de la ligne à la ligne de base d'un texte, en px CSS. Chromium arrondit au
+// pixel l'ascendante de la police à la taille affichée (zoom compris) : elle est donc mesurée à
+// cette taille, puis ramenée en px CSS.
+function montee(contexte, style, zoom = 1) {
+  contexte.font = `${style.fontStyle} ${style.fontWeight} ${parseFloat(style.fontSize) * zoom}px ${style.fontFamily}`;
+  return contexte.measureText("Hg").fontBoundingBoxAscent / zoom;
+}
+
 /* Dans un PDF, Chromium rend le dégradé des textes (.texte-degrade, background-clip: text)
    avec des masques de transparence dont les bords laissent de fines coutures visibles.
    Pour les PDF, chaque ligne de ces textes est redessinée en texte SVG rempli d'un dégradé
    vectoriel identique, et le texte d'origine est masqué (sa place dans la mise en page
    est conservée). À appeler une fois les polices chargées et la page mise en page ;
-   un élément déjà traité est ignoré. */
-function vectoriserDegrades(racine = document) {
+   un élément déjà traité est ignoré. `zoom` : le zoom CSS de la mise en page (voir
+   calqueTexte), dont les mesures sont ramenées en px CSS. */
+function vectoriserDegrades(racine = document, zoom = 1) {
   const NS = "http://www.w3.org/2000/svg";
   const contexte = document.createElement("canvas").getContext("2d");
   const plage = document.createRange();
@@ -240,6 +249,7 @@ function vectoriserDegrades(racine = document) {
   for (const element of racine.querySelectorAll(".texte-degrade:not([data-vectorise])")) {
     element.dataset.vectorise = "";
     const boite = element.getBoundingClientRect();
+    const [largeur, hauteur] = [boite.width / zoom, boite.height / zoom];
     const lignes = [];
 
     // Position de chaque caractère, regroupés par ligne puis en segments contigus de même style.
@@ -250,11 +260,11 @@ function vectoriserDegrades(racine = document) {
         plage.setStart(noeud, i);
         plage.setEnd(noeud, i + 1);
         const r = plage.getClientRects()[0];
-        if (!r || r.width < 0.1) continue; // espace repliée en fin de ligne
+        if (!r || r.width < 0.1 * zoom) continue; // espace repliée en fin de ligne
         let ligne = lignes.find((l) => Math.abs(l.haut - r.top) < r.height / 2);
         if (!ligne) lignes.push((ligne = { haut: r.top, segments: [] }));
         const dernier = ligne.segments[ligne.segments.length - 1];
-        if (dernier && dernier.parent === parent && Math.abs(dernier.droite - r.left) < 1.5) {
+        if (dernier && dernier.parent === parent && Math.abs(dernier.droite - r.left) < 1.5 * zoom) {
           dernier.texte += noeud.data[i];
           dernier.droite = r.right;
         } else {
@@ -267,8 +277,8 @@ function vectoriserDegrades(racine = document) {
     const id = idUnique("degrade-texte");
     const a = (115 * Math.PI) / 180;
     const [dx, dy] = [Math.sin(a), -Math.cos(a)];
-    const longueur = Math.abs(boite.width * dx) + Math.abs(boite.height * dy);
-    const [cx, cy] = [boite.width / 2, boite.height / 2];
+    const longueur = Math.abs(largeur * dx) + Math.abs(hauteur * dy);
+    const [cx, cy] = [largeur / 2, hauteur / 2];
     const arret = (position, teinte) => `<stop offset="${position}" style="stop-color: var(--let-${teinte})"/>`;
     let contenu = `<defs><linearGradient id="${id}" gradientUnits="userSpaceOnUse"
       x1="${cx - (dx * longueur) / 2}" y1="${cy - (dy * longueur) / 2}" x2="${cx + (dx * longueur) / 2}" y2="${cy + (dy * longueur) / 2}">
@@ -278,20 +288,22 @@ function vectoriserDegrades(racine = document) {
       for (const s of ligne.segments) {
         if (!s.texte.trim()) continue;
         const style = getComputedStyle(s.parent);
-        contexte.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-        const ligneDeBase = s.haut + contexte.measureText("Hg").fontBoundingBoxAscent - boite.top;
+        const ligneDeBase = (s.haut - boite.top) / zoom + montee(contexte, style, zoom);
         const texte = style.textTransform === "uppercase" ? s.texte.toUpperCase() : s.texte;
         const remplissage = s.parent === element ? `url(#${id})` : style.color;
-        contenu += `<text x="${s.gauche - boite.left}" y="${ligneDeBase}" textLength="${s.droite - s.gauche}" lengthAdjust="spacing"
+        // Épaississement (-webkit-text-stroke, voir commun.css) : même contour, même peinture.
+        const trait = parseFloat(style.webkitTextStrokeWidth) || 0;
+        const contour = trait > 0 ? ` stroke="${remplissage}" stroke-width="${trait}" stroke-linejoin="round"` : "";
+        contenu += `<text x="${(s.gauche - boite.left) / zoom}" y="${ligneDeBase}" textLength="${(s.droite - s.gauche) / zoom}" lengthAdjust="spacing"
           font-family='${style.fontFamily}' font-size="${style.fontSize}" font-weight="${style.fontWeight}" font-style="${style.fontStyle}"
-          letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre" fill="${remplissage}">${esc(texte)}</text>`;
+          letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre" fill="${remplissage}"${contour}>${esc(texte)}</text>`;
       }
     }
 
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("class", "texte-vectorise");
-    svg.setAttribute("width", boite.width);
-    svg.setAttribute("height", boite.height);
+    svg.setAttribute("width", largeur);
+    svg.setAttribute("height", hauteur);
     svg.setAttribute("aria-hidden", "true");
     svg.setAttribute("style", "position: absolute; left: 0; top: 0; overflow: visible; visibility: visible; pointer-events: none");
     svg.innerHTML = contenu;
@@ -301,19 +313,40 @@ function vectoriserDegrades(racine = document) {
   }
 }
 
+// Largeur et hauteur en pixels d'une image, une fois chargée.
+function tailleImage(adresse) {
+  return new Promise((fin, echec) => {
+    const image = new Image();
+    image.onload = () => fin([image.naturalWidth, image.naturalHeight]);
+    image.onerror = () => echec(new Error(`Image illisible : ${adresse}`));
+    image.src = adresse;
+  });
+}
+
 /* Calque de texte vectoriel d'une face, pour les PDF « 8K » : le fond et les dessins y sont une
    image 8K, mais un texte en image s'estompe dès qu'une imprimante ou une application réduit la
    résolution de l'image. Tous les textes de la face (texte HTML et textes des dessins SVG) sont
    donc recopiés, à leur place exacte, dans un SVG en coordonnées de la face (px CSS), posé sur
-   l'image : ils restent nets à toute résolution. Couleurs pleines ou dégradés, sans
-   transparence ni transformation CSS (la rotation éventuelle se fait dans le SVG).
-   À appeler sur une face mise en page, polices chargées, après vectoriserDegrades. Renvoie le
-   contenu du SVG (<defs> et textes). */
-function calqueTexte(face) {
+   l'image : ils restent nets à toute résolution. Couleurs de la face telles quelles (pleines
+   dans les palettes retenues) ou dégradés, sans transformation CSS (la rotation éventuelle se
+   fait dans le SVG).
+   À appeler sur une face mise en page, polices chargées, après vectoriserDegrades. `zoom` : le
+   zoom CSS sous lequel la face est mise en page, celui de sa capture 8K. Chromium arrondit au
+   pixel la hauteur des lignes (line-height: normal) au zoom courant : mesurés à zoom 1, les
+   textes glisseraient jusqu'à 0,7 mm par rapport aux filets de l'image. Positions et matrices
+   mesurées (zoomées) sont ramenées en px CSS ; les styles calculés, eux, ne sont pas zoomés.
+   Renvoie le contenu du SVG (<defs> et textes). */
+function calqueTexte(face, zoom = 1) {
   const contexte = document.createElement("canvas").getContext("2d");
   const plage = document.createRange();
   const origine = face.getBoundingClientRect();
   const nombre = (v) => +v.toFixed(3);
+  const x = (v) => nombre((v - origine.left) / zoom);
+  const y = (v) => nombre((v - origine.top) / zoom);
+  // Chiffres alignés, réglages OpenType : non hérités hors de la page, donc recopiés.
+  const variantes = (style) =>
+    (style.fontVariantNumeric !== "normal" ? ` font-variant-numeric: ${style.fontVariantNumeric};` : "") +
+    (style.fontFeatureSettings !== "normal" ? ` font-feature-settings: ${style.fontFeatureSettings};` : "");
   const visible = (element) => element.getClientRects().length > 0 && getComputedStyle(element).visibility === "visible";
   let defs = "";
   let textes = "";
@@ -364,26 +397,24 @@ function calqueTexte(face) {
       plage.setStart(noeud, i);
       plage.setEnd(noeud, i + 1);
       const r = plage.getClientRects()[0];
-      if (!r || r.width < 0.1) continue;
+      if (!r || r.width < 0.1 * zoom) continue;
       const dernier = segments[segments.length - 1];
-      if (dernier && Math.abs(dernier.haut - r.top) < r.height / 2 && Math.abs(dernier.droite - r.left) < 1.5) {
+      if (dernier && Math.abs(dernier.haut - r.top) < r.height / 2 && Math.abs(dernier.droite - r.left) < 1.5 * zoom) {
         dernier.texte += noeud.data[i];
         dernier.droite = r.right;
       } else {
         segments.push({ texte: noeud.data[i], gauche: r.left, droite: r.right, haut: r.top });
       }
     }
-    contexte.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    const montee = contexte.measureText("Hg").fontBoundingBoxAscent;
+    const ascendante = montee(contexte, style, zoom);
     const contour = parseFloat(style.webkitTextStrokeWidth) > 0
       ? ` stroke="${style.webkitTextStrokeColor}" stroke-width="${parseFloat(style.webkitTextStrokeWidth)}"` : "";
-    const chiffres = style.fontVariantNumeric !== "normal" ? ` font-variant-numeric: ${style.fontVariantNumeric};` : "";
     for (const s of segments) {
       if (!s.texte.trim()) continue;
       const texte = style.textTransform === "uppercase" ? s.texte.toUpperCase() : s.texte;
-      textes += `<text x="${nombre(s.gauche - origine.left)}" y="${nombre(s.haut + montee - origine.top)}" textLength="${nombre(s.droite - s.gauche)}" lengthAdjust="spacing"
+      textes += `<text x="${x(s.gauche)}" y="${nombre(y(s.haut) + ascendante)}" textLength="${nombre((s.droite - s.gauche) / zoom)}" lengthAdjust="spacing"
         font-family='${style.fontFamily}' font-size="${style.fontSize}" font-weight="${style.fontWeight}" font-style="${style.fontStyle}"
-        letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre; font-synthesis: none;${chiffres}" fill="${couleur}"${contour}>${esc(texte)}</text>`;
+        letter-spacing="${style.letterSpacing === "normal" ? 0 : style.letterSpacing}" style="white-space: pre; font-synthesis: none;${variantes(style)}" fill="${couleur}"${contour}>${esc(texte)}</text>`;
     }
   }
 
@@ -403,15 +434,17 @@ function calqueTexte(face) {
       for (const [attribut, valeur] of [
         ["font-family", style.fontFamily], ["font-size", style.fontSize], ["font-weight", style.fontWeight],
         ["font-style", style.fontStyle], ["text-anchor", style.textAnchor], ["dominant-baseline", style.dominantBaseline],
+        ["stroke-linejoin", style.strokeLinejoin],
         ["letter-spacing", style.letterSpacing === "normal" ? "0" : style.letterSpacing],
       ]) {
         noeud.setAttribute(attribut, valeur);
       }
       noeud.removeAttribute("class");
+      noeud.setAttribute("style", `${noeud === copie ? "white-space: pre; font-synthesis: none;" : noeud.getAttribute("style") || ""}${variantes(style)}`);
       if (noeud.localName === "textPath") copierDef((noeud.getAttribute("href") || noeud.getAttribute("xlink:href") || "").slice(1));
     });
-    copie.setAttribute("style", "white-space: pre; font-synthesis: none");
-    textes += `<g transform="matrix(${[m.a, m.b, m.c, m.d, m.e - origine.left, m.f - origine.top].map(nombre).join(" ")})">${copie.outerHTML}</g>`;
+    const echelles = [m.a, m.b, m.c, m.d].map((v) => +(v / zoom).toFixed(6));
+    textes += `<g transform="matrix(${[...echelles, x(m.e), y(m.f)].join(" ")})">${copie.outerHTML}</g>`;
   }
 
   return `<defs>${defs}</defs>${textes}`;

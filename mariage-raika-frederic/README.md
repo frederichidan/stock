@@ -120,11 +120,12 @@ Une carte par table, **30 en tout**, dans le même design que la carte de menu e
 
 ## Couleurs et impression
 
-**Billet premium : or champagne, atténué pour l'impression.** Fond ivoire et champagne
-pâle, bandeaux d'un doré léger (#dcc58f → #e8d6ab, 87 % d'encre au lieu de 157 % : les ors
-saturés d'avant sortaient lourds et brouillés sur imprimante de bureau), guillochis plus
-discrets, textes bronze foncé (#3f3628, #6e5530), tirés de l'or antique (#a07a32) et de l'or
-champagne (#c9a464) de la palette.
+**Billet premium : or champagne, très atténué pour l'impression.** Fond presque blanc,
+ivoire et champagne pâle, bandeaux d'un doré léger (#eadcb7 → #f2e8cf : environ deux fois
+moins d'encre que la version précédente et trois fois moins qu'à l'origine ; les ors saturés
+sortaient lourds et brouillés sur imprimante de bureau), guillochis très discrets, textes bronze
+foncé (#3a3125, #5b4626), tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de la
+palette.
 **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés,
 textes graphite foncé (#26292f). **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
 papier, sans encre) ; textes courants et petits intitulés en or foncé, presque bronze
@@ -149,23 +150,33 @@ remplacé par un **violet améthyste** plus clair, de même teinte, et toutes le
 
 **Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
 des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : les
-textes courants (Cormorant droit, capitales Montserrat) sont désormais en semi-gras (600),
-l'italique en 500 (sa graisse la plus forte) ; écriture, titres et chiffres gardent leur
-police propre (Great Vibes, Playfair Display). Tous sont dans les teintes foncées ci-dessus et
-posés en vectoriel dans les PDF 8K (voir plus haut).
+textes courants (Cormorant droit et italique, capitales Montserrat) sont désormais en
+semi-gras (600). Tous sont dans les teintes foncées ci-dessus et posés en vectoriel dans les
+PDF 8K (voir plus haut).
+
+**Pochette (les deux faces) et billets (premium et classique).** Ce sont les supports dont les
+textes sortaient flous ou pâles. En plus de ce qui précède :
+- toute l'écriture manuscrite y passe de la Great Vibes, aux déliés très fins, à la
+  **Satisfy**, aux pleins épais (prénoms, « de Mariage », « Programme du voyage », signature,
+  « Bon voyage ! », devise, verset) ; les initiales du monogramme sont en **Norican**, épaisse
+  elle aussi (seul, le F de Satisfy se lirait 7) ;
+- les lettres sont en **aplat** d'une seule teinte, au lieu du dégradé doré dont la partie
+  claire pâlissait le texte : bronze foncé sur le billet premium, graphite sur le classique,
+  violet profond à l'intérieur de la pochette, or clair sur son violet ; un texte uni
+  s'imprime net sur tout pilote d'imprimante ;
+- les petites capitales (« ESCALE 1 », « PASSAGER(S) »…) passent de 6 à 6,5 pt, en gras ;
+- les guillochis et la rosace derrière les textes sont plus discrets ;
+- titre « PASSEPORT » en Playfair Display noir (900).
 
 **Couverture et dos de la pochette.** Sur le violet, les lettres claires sont « en réserve » :
 l'encre du fond déborde de quelques centièmes de millimètre dans les lettres et ronge les
-déliés, au point d'effacer ceux, très fins, de l'écriture Great Vibes. L'extérieur de la
-pochette est donc écrit en **Satisfy**, une écriture aux pleins épais (prénoms, « de Mariage »,
-devise du ruban, verset du dos), dans un **or clair et lumineux** (#eccf8c → #fbefc9 : contraste
-avec le violet porté de 2,7:1 à 4,3:1 au plus sombre du dégradé). Tous ses textes sont en outre
-épaissis d'un contour de leur propre couleur (0,08 mm ; 0,14 mm pour le titre « PASSEPORT » et
-les initiales du monogramme, restées en Great Vibes : seul, le F de Satisfy se lirait 7) ;
-« ROYAUME DE L'AMOUR » passe de 6 à 7 pt en gras, la date de 10 à 11 pt. Comparées en simulant
-ce débord d'encre, Satisfy garde 77 % de la lettre contre 64 % pour la Great Vibes ; d'autres
-écritures épaisses (Norican, Playball, Kaushan) ont été écartées car le tréma de « Raïka » s'y
-colle au k.
+déliés, au point d'effacer ceux, très fins, de l'écriture Great Vibes. Les lettres y sont d'un
+**or clair uni** (#f2dba0 : contraste 4,8:1 avec le violet, contre 2,7:1 pour l'ancien or foncé)
+et tous les textes sont épaissis d'un contour de 0,08 mm de leur propre couleur ; « ROYAUME DE
+L'AMOUR » passe de 6 à 7 pt en gras, la date de 10 à 11 pt. Comparées en simulant ce débord
+d'encre, Satisfy garde 77 % de la lettre contre 64 % pour la Great Vibes ; d'autres écritures
+épaisses (Norican, Playball, Kaushan) ont été écartées pour les mots car le tréma de « Raïka »
+s'y colle au k (Norican ne sert qu'aux initiales).
 
 Les détails fins sont dessinés pour tenir à l'impression (mesures sur l'imprimé, à 88,5 %) :
 traits dorés d'au moins 0,18 mm, guillochis et halos en traits d'au moins 0,2 mm, petits textes
@@ -250,7 +261,7 @@ node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments
 
 ## Polices
 
-Great Vibes, Playfair Display, Cormorant Garamond, Montserrat et Space Mono sont incluses
+Great Vibes, Playfair Display, Cormorant Garamond, Montserrat, Space Mono et Norican sont incluses
 dans `polices/` (licence SIL Open Font License, voir `polices/LICENCE-OFL.txt` ; Satisfy, de
 l'extérieur de la pochette : licence Apache 2.0, voir `polices/LICENCE-APACHE-2.0-satisfy.txt`).
 Il n'y a donc pas besoin d'Internet pour afficher ou imprimer les fichiers.

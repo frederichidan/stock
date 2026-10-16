@@ -150,8 +150,8 @@ function monogramme({ classe = "", halo = false, taille = 40 } = {}) {
     <path d="${ICONES.coeur}" transform="translate(93.4,184.6) scale(0.55)" fill="${remplissage}"/>
     ${laurier(100, 100, 74, 104, 236, 8, remplissage, +trait(1.1, 0.2))}
     ${laurier(100, 100, 74, 76, -56, 8, remplissage, +trait(1.1, 0.2))}
-    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke-width="0" stroke-linejoin="round" style="stroke: var(--let-c)">${esc(f)}</text>
-    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke-width="0" stroke-linejoin="round" style="stroke: var(--let-c)">${esc(m)}</text>
+    <text x="72" y="120" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke-width="0" stroke-linejoin="round" style="fill: var(--lettres-svg, ${lettres}); stroke: var(--let-c)">${esc(f)}</text>
+    <text x="126" y="128" text-anchor="middle" font-family="Great Vibes" font-size="64" fill="${lettres}" stroke-width="0" stroke-linejoin="round" style="fill: var(--lettres-svg, ${lettres}); stroke: var(--let-c)">${esc(m)}</text>
     <text x="100" y="101" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="26" stroke-width="0" stroke-linejoin="round" style="fill: var(--esperluette); stroke: var(--esperluette)">&amp;</text>
   </svg>`;
 }
@@ -247,6 +247,8 @@ function vectoriserDegrades(racine = document, zoom = 1) {
   const plage = document.createRange();
 
   for (const element of racine.querySelectorAll(".texte-degrade:not([data-vectorise])")) {
+    // Texte remis en aplat (pochette et billets, commun.css) : rien à vectoriser.
+    if (getComputedStyle(element).backgroundImage === "none") continue;
     element.dataset.vectorise = "";
     const boite = element.getBoundingClientRect();
     const [largeur, hauteur] = [boite.width / zoom, boite.height / zoom];

@@ -2,14 +2,19 @@
 
 @font-face { font-family: "Great Vibes"; font-weight: 400; src: url("polices/great-vibes-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Satisfy"; font-weight: 400; src: url("polices/satisfy-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Norican"; font-weight: 400; src: url("polices/norican-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Playfair Display"; font-weight: 400; src: url("polices/playfair-display-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Playfair Display"; font-weight: 700; src: url("polices/playfair-display-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Playfair Display"; font-weight: 900; src: url("polices/playfair-display-latin-900-normal.woff2") format("woff2"); }
 @font-face { font-family: "Playfair Display"; font-weight: 400; font-style: italic; src: url("polices/playfair-display-latin-400-italic.woff2") format("woff2"); }
 @font-face { font-family: "Cormorant Garamond"; font-weight: 400; src: url("polices/cormorant-garamond-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Cormorant Garamond"; font-weight: 500; src: url("polices/cormorant-garamond-latin-500-normal.woff2") format("woff2"); }
 @font-face { font-family: "Cormorant Garamond"; font-weight: 600; src: url("polices/cormorant-garamond-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 700; src: url("polices/cormorant-garamond-latin-700-normal.woff2") format("woff2"); }
 @font-face { font-family: "Cormorant Garamond"; font-weight: 400; font-style: italic; src: url("polices/cormorant-garamond-latin-400-italic.woff2") format("woff2"); }
 @font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: italic; src: url("polices/cormorant-garamond-latin-500-italic.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 600; font-style: italic; src: url("polices/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 700; font-style: italic; src: url("polices/cormorant-garamond-latin-700-italic.woff2") format("woff2"); }
 @font-face { font-family: "Montserrat"; font-weight: 400; src: url("polices/montserrat-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "Montserrat"; font-weight: 500; src: url("polices/montserrat-latin-500-normal.woff2") format("woff2"); }
 @font-face { font-family: "Montserrat"; font-weight: 600; src: url("polices/montserrat-latin-600-normal.woff2") format("woff2"); }
@@ -21,6 +26,8 @@
   /* Écriture aux pleins épais, pour les lettres claires sur fond foncé (extérieur de la
      pochette) : les déliés de la Great Vibes y disparaissent à l'impression. */
   --script-epais: "Satisfy", cursive;
+  /* Initiales du monogramme en écriture épaisse : seul, le F de Satisfy se lirait 7. */
+  --initiales: "Norican", cursive;
   --serif: "Playfair Display", Georgia, serif;
   --texte-police: "Cormorant Garamond", Georgia, serif;
   --sans: "Montserrat", Arial, sans-serif;
@@ -127,6 +134,7 @@
   /* Lettres dorées : or clair et lumineux (l'ancien or foncé #c8a252 ne contrastait qu'à 2,7:1
      avec le violet et s'y fondait à l'impression ; 4,3:1 au plus sombre du dégradé désormais). */
   --let-a: #eccf8c; --let-b: #fbefc9; --let-c: #f0d797;
+  --lettres: #f2dba0;
   --orn-a: #c8a252; --orn-b: #f3dfa6; --orn-c: #d6b46e;
   --guilloche: #e2c487;
   --pastille: #e2c487;
@@ -136,11 +144,12 @@
   -webkit-text-stroke: 0.04mm currentColor;
 }
 [data-theme="violet"] .clair {
-  --texte: #463260;
-  --texte-doux: #54397a;
+  --texte: #3f2b59;
+  --texte-doux: #46306a;
   --accent: #9f7a38;
-  --accent-texte: #7c6134;
-  --accent-fort: #54397a;
+  --accent-texte: #67502a;
+  --accent-fort: #46306a;
+  --lettres: #3f2b59;
   --discret: #726187;
   --ligne: rgba(159, 122, 56, 0.7);
   --filet: rgba(84, 57, 122, 0.3);
@@ -151,7 +160,7 @@
   --let-a: #463260; --let-b: #6f4e9e; --let-c: #54397a;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
   --guilloche: #54397a;
-  --guilloche-opacite: 0.12;
+  --guilloche-opacite: 0.07;
   --pastille: #61438d;
   --titre-etape: #54397a;
   --code-barres: #463260;
@@ -180,36 +189,38 @@
    ne demandent que 0 à 77 % d'encre. `--bandeau-*` : textes posés sur les bandeaux colorés ;
    `--liseret` : leur filet.
    - Or champagne (or antique #a07a32 et or champagne #c9a464 de la palette) : fond ivoire et
-     champagne, bandeaux dorés, textes bronze foncé. Billet premium. Teintes atténuées (bandeaux
-     à 87 % d'encre au lieu de 157 %) : les ors saturés sortaient mal sur imprimante de bureau.
+     champagne pâle, bandeaux d'un doré léger, textes bronze foncé. Billet premium. Teintes
+     très atténuées (bandeaux #eadcb7, deux fois moins d'encre qu'en #dcc58f, trois fois moins
+     qu'à l'origine) : les ors saturés sortaient lourds et brouillés sur imprimante de bureau.
    - Argent (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés, textes graphite.
      Billet classique. */
 .page.palette-or,
 .palette-or .sombre,
 .palette-or .clair {
-  --fond-1: #fefcf6; --fond-2: #f9f1df; --fond-3: #efe2c2;
-  --bande-1: #dcc58f; --bande-2: #e8d6ab;
-  --talon-1: #f2e8cf; --talon-2: #e9dab6;
-  --verso-1: #fefcf6; --verso-2: #faf5e8; --verso-3: #f1e6cb;
-  --texte: #3f3628;
-  --texte-doux: #54452c;
+  --fond-1: #fffdf9; --fond-2: #fbf6ea; --fond-3: #f4ead5;
+  --bande-1: #eadcb7; --bande-2: #f2e8cf;
+  --talon-1: #f8f2e4; --talon-2: #f1e7d1;
+  --verso-1: #fffdf9; --verso-2: #fcf8ef; --verso-3: #f5eddc;
+  --texte: #3a3125;
+  --texte-doux: #4a3c27;
   --accent: #9f7a38;
-  --accent-texte: #6e5530;
-  --accent-fort: #6e5530;
-  --discret: #54452c;
+  --accent-texte: #5b4626;
+  --accent-fort: #5b4626;
+  --discret: #4a3c27;
+  --lettres: #4f3d22;
   --ligne: rgba(159, 122, 56, 0.75);
   --filet: rgba(159, 122, 56, 0.35);
   --zone: rgba(159, 122, 56, 0.12);
   --ligne-ecriture: rgba(70, 60, 45, 0.45);
-  --code: #6e5530;
+  --code: #5b4626;
   --esperluette: #463c2d;
-  --let-a: #6e5530; --let-b: #a88239; --let-c: #8a6d3b;
+  --let-a: #5b4626; --let-b: #a88239; --let-c: #7a5f30;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
   --guilloche: #9f7a38;
-  --guilloche-opacite: 0.11;
-  --pastille: #dcc58f;
+  --guilloche-opacite: 0.08;
+  --pastille: #eadcb7;
   --pastille-texte: #3b342a;
-  --titre-etape: #6e5530;
+  --titre-etape: #5b4626;
   --code-barres: #3b342a;
   --bandeau-texte: #3b342a; --bandeau-doux: #463c2d; --bandeau-reflet: #5d4b2d;
   --liseret: #9f7a38;
@@ -224,19 +235,20 @@
   --texte: #26292f;
   --texte-doux: #3a3e46;
   --accent: #858a96;
-  --accent-texte: #484c55;
-  --accent-fort: #3a3e46;
-  --discret: #3a3e46;
+  --accent-texte: #3d4149;
+  --accent-fort: #33363d;
+  --discret: #33363d;
+  --lettres: #2b2e35;
   --ligne: rgba(133, 138, 150, 0.75);
   --filet: rgba(133, 138, 150, 0.4);
   --zone: rgba(133, 138, 150, 0.14);
   --ligne-ecriture: rgba(51, 54, 61, 0.45);
   --code: #3f434b;
   --esperluette: #26292f;
-  --let-a: #3a3e46; --let-b: #6c717c; --let-c: #4d515a;
+  --let-a: #33363d; --let-b: #6c717c; --let-c: #4d515a;
   --orn-a: #5f646f; --orn-b: #c4c8d0; --orn-c: #868b97;
   --guilloche: #858a96;
-  --guilloche-opacite: 0.12;
+  --guilloche-opacite: 0.08;
   --pastille: #aeb3be;
   --pastille-texte: #2a2c31;
   --titre-etape: #3a3e46;
@@ -392,3 +404,26 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .losange.hd { top: 3.7mm; right: 3.7mm; }
 .losange.bg { bottom: 3.7mm; left: 3.7mm; }
 .losange.bd { bottom: 3.7mm; right: 3.7mm; }
+
+/* ---------------- Pochette et billets : netteté des textes à l'impression ---------------- */
+/* Sur une imprimante de bureau, les textes de la pochette et des billets sortaient flous ou
+   pâles : déliés très fins de l'écriture Great Vibes et de l'italique Cormorant, petites
+   capitales, lettres en dégradé dont la partie claire se fondait dans le fond. Ici :
+   - écriture Satisfy, aux pleins épais (--script), initiales du monogramme en Norican ;
+   - lettres en aplat d'une teinte foncée (fond clair) ou d'un or clair (fond violet), --lettres
+     de la palette, au lieu du dégradé : un texte uni s'imprime net sur tout pilote ;
+   - petites capitales en gras ; l'italique Cormorant prend la graisse 600 (.page). */
+.page.passeport,
+.page.billet {
+  --script: var(--script-epais);
+  --lettres-svg: var(--lettres, var(--let-a));
+}
+.page.passeport .texte-degrade,
+.page.billet .texte-degrade {
+  background: none;
+  color: var(--lettres, var(--let-a));
+}
+.page.passeport .etiquette,
+.page.billet .etiquette { font-weight: 700; }
+.page.passeport .monogramme text[font-family="Great Vibes"],
+.page.billet .monogramme text[font-family="Great Vibes"] { font-family: var(--initiales); }

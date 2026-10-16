@@ -35,40 +35,30 @@
 
 /* ----------------- Extérieur (couverture et dos) : lisibilité ----------------- */
 /* Lettres claires sur le violet : à l'impression, l'encre du fond déborde de quelques
-   centièmes de millimètre dans la réserve et ronge les déliés, au point d'effacer ceux, très
-   fins (≈ 0,1 mm), de l'écriture Great Vibes. L'extérieur est donc écrit en Satisfy, aux pleins
-   et déliés épais (prénoms, « de Mariage », devise, verset), dans un or clair (commun.css), et
-   ses textes sont épaissis d'un contour de leur propre couleur : 0,08 mm pour les capitales, la
-   date et l'écriture, 0,14 mm pour le titre « PASSEPORT » et les grandes initiales du
-   monogramme, restées en Great Vibes (seul, le F de Satisfy se lirait 7). Le contour
-   transparent des textes en dégradé élargit leur dégradé à l'écran ; vectoriserDegrades le
-   reprend dans les PDF, en or uni (--let-c) : un contour en dégradé s'imprimerait mal (voir
-   vectoriserDegrades). Monogramme et devise : contour --let-c, en unités de leur dessin (47 mm
-   et 74 mm pour 200 unités). */
-.page.passeport.exterieur .sous-titre-passeport,
-.page.passeport.exterieur .noms,
-.page.passeport.exterieur .verset,
-.page.passeport.exterieur .verset-source,
-.page.passeport.exterieur .ruban text { font-family: var(--script-epais); }
-/* Satisfy est plus large que la Great Vibes : la devise reste dans le ruban. Ses accents et
-   trémas montent au-dessus de la ligne, où background-clip couperait le dégradé : marge
-   intérieure en haut, compensée. */
-.page.passeport.exterieur .ruban text { font-size: 12.5px; }
+   centièmes de millimètre dans la réserve et ronge les déliés. L'écriture est donc la Satisfy,
+   aux pleins épais, les initiales du monogramme en Norican (commun.css, « Pochette et
+   billets »), les lettres d'un or clair uni (--lettres), et tous les textes sont épaissis d'un
+   contour de 0,08 mm de leur propre couleur ; titre « PASSEPORT » en Playfair Display 900.
+   Monogramme et devise : contour en or uni (--let-c, voir vectoriserDegrades), en unités de
+   leur dessin (47 mm et 74 mm pour 200 unités). */
+.page.passeport .ruban text { font-family: var(--script); }
+[data-theme="violet"] .passeport.exterieur { -webkit-text-stroke: 0.08mm currentColor; }
+[data-theme="violet"] .passeport.exterieur .monogramme text { stroke-width: 0.34; }
+[data-theme="violet"] .passeport.exterieur .ruban text { stroke-width: 0.22; }
+/* Satisfy est plus large que la Great Vibes : la devise reste dans le ruban. Marges
+   intérieures en haut pour les accents et trémas, qui montent au-dessus de la ligne. */
+.page.passeport .ruban text { font-size: 12.5px; }
 .page.passeport.exterieur .couverture .noms { padding-top: 2.5mm; margin-top: 1.5mm; }
 .page.passeport.exterieur .sous-titre-passeport { padding-top: 2mm; margin-top: -1.4mm; }
 .page.passeport.exterieur .verset { padding-top: 2mm; margin-top: 8mm; }
 .page.passeport.exterieur .verset-source { padding-top: 2mm; margin-top: 2mm; }
-[data-theme="violet"] .passeport.exterieur { -webkit-text-stroke: 0.08mm currentColor; }
-[data-theme="violet"] .passeport.exterieur .titre-passeport { -webkit-text-stroke-width: 0.14mm; }
-[data-theme="violet"] .passeport.exterieur .monogramme text { stroke-width: 0.6; }
-[data-theme="violet"] .passeport.exterieur .ruban text { stroke-width: 0.22; }
 
 /* ---------------------------- Couverture ---------------------------- */
 .passeport .couverture .contenu { padding: 10mm 8mm 9mm; }
 .passeport .emetteur { color: var(--accent-fort); font-weight: 700; font-size: 7pt; letter-spacing: 0.32em; }
 .passeport .titre-passeport {
   font-family: var(--serif);
-  font-weight: 700;
+  font-weight: 900;
   font-size: 31pt;
   line-height: 1.1;
   letter-spacing: 0.03em;
@@ -95,7 +85,7 @@
 
 /* ------------------------ Intérieur : invitation ------------------------ */
 .passeport .invitation-page .contenu { padding: 11mm 10mm 9mm; }
-.passeport .invitation-page .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.34em; }
+.passeport .invitation-page .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.34em; }
 .passeport .invitation-page .ornement { width: 46mm; height: 4mm; margin-top: 1.6mm; }
 .passeport .invitation-page .noms { font-family: var(--script); font-size: 25pt; line-height: 1.25; padding: 0 3mm; margin-top: 2.4mm; white-space: nowrap; }
 .passeport .texte-invitation { font-style: italic; font-size: 11.5pt; line-height: 1.35; margin-top: 1.4mm; text-wrap: pretty; }
@@ -116,7 +106,7 @@
 /* ---------------------- Intérieur : page d'identité ---------------------- */
 .passeport .identite .contenu { align-items: stretch; text-align: left; padding: 9mm 8mm 0; }
 .passeport .identite .entete { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.3mm solid var(--accent); padding-bottom: 1.6mm; }
-.passeport .identite .entete .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.3em; }
+.passeport .identite .entete .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.3em; }
 .passeport .identite .entete .pays { font-family: var(--serif); font-style: italic; font-size: 9.5pt; color: var(--accent-fort); }
 .passeport .identite .donnees { display: grid; grid-template-columns: 35mm 1fr; gap: 4.5mm; margin-top: 6mm; }
 .passeport .photo {
@@ -130,15 +120,15 @@
   background: var(--zone);
 }
 .passeport .photo .monogramme { width: 30mm; height: 30mm; display: block; margin-top: -3mm; }
-.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent-texte); font-size: 6pt; }
+.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent-texte); font-size: 6.5pt; }
 .passeport .champs { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm 3mm; align-content: start; }
 .passeport .champs .large { grid-column: 1 / -1; }
-.passeport .champs .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.16em; }
+.passeport .champs .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.16em; }
 .passeport .champs .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.8pt; margin-top: 0.6mm; white-space: nowrap; }
 .passeport .champs .titulaires .valeur { font-family: var(--script); font-weight: 400; font-size: 15pt; line-height: 1.1; color: var(--accent-fort); }
 .passeport .signature-bloc { margin-top: 7mm; border-bottom: 0.25mm dotted var(--ligne-ecriture); }
 .passeport .signature-bloc .etiquette,
-.passeport .observations .etiquette { color: var(--accent-texte); font-size: 6pt; letter-spacing: 0.16em; }
+.passeport .observations .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.16em; }
 .passeport .signature-bloc .signature {
   font-family: var(--script);
   font-size: 19pt;

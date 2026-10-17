@@ -252,7 +252,9 @@ function enNiveauxDeGris(fichier) {
   const gris = `${fichier}.gris.pdf`;
   try {
     execFileSync("gs", [
-      "-q", "-dNOPAUSE", "-dBATCH", "-dSAFER", "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.7",
+      // AutoRotatePages=/None : sinon gs tourne d'office les pages dont le texte est couché ou
+      // retourné (menus, versos des billets), ce qui fausserait le recto verso.
+      "-q", "-dNOPAUSE", "-dBATCH", "-dSAFER", "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.7", "-dAutoRotatePages=/None",
       "-sColorConversionStrategy=Gray", "-dProcessColorModel=/DeviceGray",
       "-dAutoFilterGrayImages=false", "-dGrayImageFilter=/FlateEncode", "-dDownsampleGrayImages=false",
       "-dAutoFilterColorImages=false", "-dColorImageFilter=/FlateEncode", "-dDownsampleColorImages=false",

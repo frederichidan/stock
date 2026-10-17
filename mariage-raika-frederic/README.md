@@ -153,9 +153,10 @@ presque noir (#2b2117, #3f3020), tirés de l'or antique (#a07a32) et de l'or cha
 palette.
 **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés,
 textes graphite presque noir (#15171b). **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
-papier, sans encre) ; textes courants et petits intitulés en or foncé, presque bronze
-(#6e5530, #5e4a24), bien lisibles sur le blanc ; filets, pictogrammes et ornements en or vif (#b8913f, #c39c4a) ;
-titres et prénoms en dégradé doré. Ces fonds clairs ne demandent que 0 à 77 % d'encre (contre
+papier, sans encre) ; textes en brun presque noir (#2b2117) sur le menu et les étiquettes, en or
+foncé presque bronze (#6e5530, #5e4a24) sur les cartes de table ; filets, pictogrammes et
+ornements en or vif (#b8913f, #c39c4a) ; sur les cartes de table, titres et prénoms en dégradé
+doré. Ces fonds clairs ne demandent que 0 à 77 % d'encre (contre
 160 à 190 % pour les fonds violets) et toutes les teintes restent dans la gamme d'une
 imprimante (écart ΔE < 2,5). Réglages dans `infos.js` : `billets` (nom, couleur et classe de
 chaque catégorie : « Invité d'honneur » pour le premium, « Invité » pour le classique) et
@@ -176,21 +177,24 @@ textes courants (Cormorant droit et italique, capitales Montserrat) sont désorm
 semi-gras (600). Tous sont dans les teintes foncées ci-dessus et posés en vectoriel dans les
 PDF 8K (voir plus haut).
 
-**Pochette (les deux faces) et billets (premium et classique).** Ce sont les supports dont les
-textes sortaient flous ou pâles. En plus de ce qui précède :
-- toute l'écriture manuscrite y passe de la Great Vibes, aux déliés très fins, à la
-  **Satisfy**, aux pleins épais (prénoms, « de Mariage », « Programme du voyage », signature,
+**Menu, pochette (les deux faces), billets (premium et classique) et étiquettes de vin et
+d'eau.** Ce sont les supports dont les textes sortaient flous ou peu visibles. En plus de ce
+qui précède :
+- texte courant en **Lora** demi-gras (600, droit et italique) au lieu du Cormorant Garamond :
+  son œil (la hauteur des minuscules) est bien plus grand et ses traits plus solides ; en
+  9,5 pt, les plats du menu sont aussi lisibles qu'en Cormorant de 12 pt ;
+- toute l'écriture manuscrite passe de la Great Vibes, aux déliés très fins, à la **Satisfy**,
+  aux pleins épais (« Menu », prénoms, « de Mariage », « Programme du voyage », signature,
   « Bon voyage ! », devise, verset) ; les initiales du monogramme sont en **Norican**, épaisse
   elle aussi (seul, le F de Satisfy se lirait 7) ;
-- les lettres sont en **aplat** d'une seule teinte presque noire, au lieu du dégradé doré
-  dont la partie claire pâlissait le texte : brun sur le billet premium, graphite sur le
-  classique, violet très foncé (#2b1a45) sur la pochette ; un texte uni s'imprime net sur
-  tout pilote d'imprimante ;
-- les textes courants sont en **Cormorant gras** (700, droit et italique), les valeurs en
-  Montserrat gras ;
-- les petites capitales (« ESCALE 1 », « PASSAGER(S) »…) passent de 6 à 6,5 pt, en gras ;
-- les guillochis et la rosace derrière les textes sont plus discrets ;
-- titre « PASSEPORT » en Playfair Display noir (900).
+- les lettres sont en **aplat** d'une seule teinte presque noire, au lieu du dégradé doré dont
+  la partie claire pâlissait le texte : brun (#2b2117) sur le menu, les étiquettes et le billet
+  premium, graphite (#15171b) sur le classique, violet très foncé (#2b1a45) sur la pochette ; l'or
+  reste aux filets, cadres et ornements ; un texte uni s'imprime net sur tout pilote ;
+- petites capitales (« ESCALE 1 », « ENTRÉES »…) et valeurs Montserrat en gras ;
+- guillochis et rosace derrière les textes plus discrets ; titre « PASSEPORT » en Playfair
+  Display noir (900).
+Les cartes de table gardent leur dessin d'origine.
 
 **Couverture et dos de la pochette.** « ROYAUME DE L'AMOUR » passe de 6 à 7 pt en gras, la date
 de 10 à 11 pt. Comparées en simulant le débord d'encre d'un fond foncé dans des lettres
@@ -284,7 +288,7 @@ node exporter.js --xerox-b7035   # édition noir et blanc pour laser monochrome 
 
 ## Polices
 
-Great Vibes, Playfair Display, Cormorant Garamond, Montserrat, Space Mono et Norican sont incluses
+Great Vibes, Playfair Display, Cormorant Garamond, Montserrat, Space Mono, Norican et Lora sont incluses
 dans `polices/` (licence SIL Open Font License, voir `polices/LICENCE-OFL.txt` ; Satisfy, de
 l'extérieur de la pochette : licence Apache 2.0, voir `polices/LICENCE-APACHE-2.0-satisfy.txt`).
 Il n'y a donc pas besoin d'Internet pour afficher ou imprimer les fichiers.

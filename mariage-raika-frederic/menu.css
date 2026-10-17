@@ -43,8 +43,9 @@
 }
 .menu .rubrique h2::before,
 .menu .rubrique h2::after { content: ""; width: 5mm; border-top: 0.2mm solid var(--ligne); }
-/* Chiffres alignés : le « 1 » elzévirien de Cormorant se lit comme un « I » (« Salade 1 »). */
-.menu .plat { font-size: 10pt; font-weight: 600; line-height: 1.22; text-wrap: balance; font-variant-numeric: lining-nums; }
+/* Chiffres alignés : le « 1 » elzévirien se lirait comme un « I » (« Salade 1 »). Lora (commun.css),
+   à l'œil plus grand que le Cormorant, est aussi lisible en 9,5 pt que lui en 12 pt. */
+.menu .plat { font-size: 9.5pt; font-weight: 600; line-height: 1.26; text-wrap: balance; font-variant-numeric: lining-nums; }
 /* Précision entre parenthèses (menu.js) : en italique, plus petite ; elle passe entière à la
    ligne si elle ne tient pas à côté du plat. */
 .menu .plat .precision { font-style: italic; font-size: 0.86em; color: var(--texte-doux); white-space: nowrap; }

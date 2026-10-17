@@ -144,18 +144,18 @@
   -webkit-text-stroke: 0.04mm currentColor;
 }
 [data-theme="violet"] .clair {
-  --texte: #3f2b59;
-  --texte-doux: #46306a;
+  --texte: #2b1a45;
+  --texte-doux: #33204f;
   --accent: #9f7a38;
-  --accent-texte: #67502a;
-  --accent-fort: #46306a;
-  --lettres: #3f2b59;
+  --accent-texte: #5a4422;
+  --accent-fort: #33204f;
+  --lettres: #2b1a45;
   --discret: #726187;
   --ligne: rgba(159, 122, 56, 0.7);
   --filet: rgba(84, 57, 122, 0.3);
   --zone: rgba(84, 57, 122, 0.12);
   --ligne-ecriture: rgba(70, 50, 96, 0.45);
-  --code: #54397a;
+  --code: #33204f;
   --esperluette: #9f7a38;
   --let-a: #463260; --let-b: #6f4e9e; --let-c: #54397a;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
@@ -201,26 +201,26 @@
   --bande-1: #eadcb7; --bande-2: #f2e8cf;
   --talon-1: #f8f2e4; --talon-2: #f1e7d1;
   --verso-1: #fffdf9; --verso-2: #fcf8ef; --verso-3: #f5eddc;
-  --texte: #3a3125;
-  --texte-doux: #4a3c27;
+  --texte: #2b2117;
+  --texte-doux: #33271a;
   --accent: #9f7a38;
-  --accent-texte: #5b4626;
-  --accent-fort: #5b4626;
-  --discret: #4a3c27;
-  --lettres: #4f3d22;
+  --accent-texte: #3f3020;
+  --accent-fort: #3f3020;
+  --discret: #33271a;
+  --lettres: #3a2a14;
   --ligne: rgba(159, 122, 56, 0.75);
   --filet: rgba(159, 122, 56, 0.35);
   --zone: rgba(159, 122, 56, 0.12);
   --ligne-ecriture: rgba(70, 60, 45, 0.45);
-  --code: #5b4626;
-  --esperluette: #463c2d;
-  --let-a: #5b4626; --let-b: #a88239; --let-c: #7a5f30;
+  --code: #3f3020;
+  --esperluette: #3f3020;
+  --let-a: #3f3020; --let-b: #a88239; --let-c: #7a5f30;
   --orn-a: #846635; --orn-b: #d9b977; --orn-c: #a88239;
   --guilloche: #9f7a38;
   --guilloche-opacite: 0.08;
   --pastille: #eadcb7;
-  --pastille-texte: #3b342a;
-  --titre-etape: #5b4626;
+  --pastille-texte: #2b2117;
+  --titre-etape: #3f3020;
   --code-barres: #3b342a;
   --bandeau-texte: #3b342a; --bandeau-doux: #463c2d; --bandeau-reflet: #5d4b2d;
   --liseret: #9f7a38;
@@ -232,27 +232,27 @@
   --bande-1: #aeb3be; --bande-2: #c9ccd5;
   --talon-1: #e4e6eb; --talon-2: #d3d6dd;
   --verso-1: #fcfcfd; --verso-2: #f3f4f6; --verso-3: #e1e3e8;
-  --texte: #26292f;
-  --texte-doux: #3a3e46;
+  --texte: #15171b;
+  --texte-doux: #23262c;
   --accent: #858a96;
-  --accent-texte: #3d4149;
-  --accent-fort: #33363d;
-  --discret: #33363d;
-  --lettres: #2b2e35;
+  --accent-texte: #2b2e35;
+  --accent-fort: #23262c;
+  --discret: #23262c;
+  --lettres: #1c1e23;
   --ligne: rgba(133, 138, 150, 0.75);
   --filet: rgba(133, 138, 150, 0.4);
   --zone: rgba(133, 138, 150, 0.14);
   --ligne-ecriture: rgba(51, 54, 61, 0.45);
-  --code: #3f434b;
-  --esperluette: #26292f;
-  --let-a: #33363d; --let-b: #6c717c; --let-c: #4d515a;
+  --code: #23262c;
+  --esperluette: #15171b;
+  --let-a: #23262c; --let-b: #6c717c; --let-c: #4d515a;
   --orn-a: #5f646f; --orn-b: #c4c8d0; --orn-c: #868b97;
   --guilloche: #858a96;
   --guilloche-opacite: 0.08;
   --pastille: #aeb3be;
   --pastille-texte: #2a2c31;
-  --titre-etape: #3a3e46;
-  --code-barres: #2a2c31;
+  --titre-etape: #23262c;
+  --code-barres: #15171b;
   --bandeau-texte: #1f2126; --bandeau-doux: #26292f; --bandeau-reflet: #3a3e46;
   --liseret: #858a96;
 }
@@ -412,7 +412,8 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
    - écriture Satisfy, aux pleins épais (--script), initiales du monogramme en Norican ;
    - lettres en aplat d'une teinte foncée (fond clair) ou d'un or clair (fond violet), --lettres
      de la palette, au lieu du dégradé : un texte uni s'imprime net sur tout pilote ;
-   - petites capitales en gras ; l'italique Cormorant prend la graisse 600 (.page). */
+   - petites capitales en gras, textes courants en Cormorant gras (700, droit et italique),
+     dans des teintes presque noires de la palette (brun, graphite, violet). */
 .page.passeport,
 .page.billet {
   --script: var(--script-epais);
@@ -425,6 +426,16 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 }
 .page.passeport .etiquette,
 .page.billet .etiquette { font-weight: 700; }
+/* Textes courants en gras (Cormorant 700, droit et italique) et valeurs Montserrat en gras :
+   plus de matière, donc plus visibles une fois imprimés. */
+.page.passeport,
+.page.billet { font-weight: 700; }
+.page.passeport .valeur,
+.page.passeport .date-couverture,
+.page.billet .valeur,
+.page.billet .date,
+.page.billet .horaires b,
+.page.billet .pied b { font-weight: 700; }
 .page.passeport .monogramme text[font-family="Great Vibes"],
 .page.billet .monogramme text[font-family="Great Vibes"] { font-family: var(--initiales); }
 

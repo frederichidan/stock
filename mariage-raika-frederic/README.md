@@ -148,11 +148,11 @@ Une carte par table, **30 en tout**, dans le même design que la carte de menu e
 **Billet premium : or champagne, très atténué pour l'impression.** Fond presque blanc,
 ivoire et champagne pâle, bandeaux d'un doré léger (#eadcb7 → #f2e8cf : environ deux fois
 moins d'encre que la version précédente et trois fois moins qu'à l'origine ; les ors saturés
-sortaient lourds et brouillés sur imprimante de bureau), guillochis très discrets, textes bronze
-foncé (#3a3125, #5b4626), tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de la
+sortaient lourds et brouillés sur imprimante de bureau), guillochis très discrets, textes brun
+presque noir (#2b2117, #3f3020), tirés de l'or antique (#a07a32) et de l'or champagne (#c9a464) de la
 palette.
 **Billet classique : argent** (#bcbec9 de la palette) : fond blanc nacré, bandeaux argentés,
-textes graphite foncé (#26292f). **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
+textes graphite presque noir (#15171b). **Carte de menu, étiquettes de bouteilles et cartes de table : blanc & or.** Fond blanc (le
 papier, sans encre) ; textes courants et petits intitulés en or foncé, presque bronze
 (#6e5530, #5e4a24), bien lisibles sur le blanc ; filets, pictogrammes et ornements en or vif (#b8913f, #c39c4a) ;
 titres et prénoms en dégradé doré. Ces fonds clairs ne demandent que 0 à 77 % d'encre (contre
@@ -182,10 +182,12 @@ textes sortaient flous ou pâles. En plus de ce qui précède :
   **Satisfy**, aux pleins épais (prénoms, « de Mariage », « Programme du voyage », signature,
   « Bon voyage ! », devise, verset) ; les initiales du monogramme sont en **Norican**, épaisse
   elle aussi (seul, le F de Satisfy se lirait 7) ;
-- les lettres sont en **aplat** d'une seule teinte, au lieu du dégradé doré dont la partie
-  claire pâlissait le texte : bronze foncé sur le billet premium, graphite sur le classique,
-  violet profond à l'intérieur de la pochette, or clair sur son violet ; un texte uni
-  s'imprime net sur tout pilote d'imprimante ;
+- les lettres sont en **aplat** d'une seule teinte presque noire, au lieu du dégradé doré
+  dont la partie claire pâlissait le texte : brun sur le billet premium, graphite sur le
+  classique, violet très foncé (#2b1a45) sur la pochette ; un texte uni s'imprime net sur
+  tout pilote d'imprimante ;
+- les textes courants sont en **Cormorant gras** (700, droit et italique), les valeurs en
+  Montserrat gras ;
 - les petites capitales (« ESCALE 1 », « PASSAGER(S) »…) passent de 6 à 6,5 pt, en gras ;
 - les guillochis et la rosace derrière les textes sont plus discrets ;
 - titre « PASSEPORT » en Playfair Display noir (900).

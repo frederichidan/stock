@@ -2,7 +2,7 @@
    INFORMATIONS DU MARIAGE
    C'est le seul fichier à modifier pour changer les textes de la pochette
    passeport, du billet d'invitation, de la carte de menu, des étiquettes
-   de bouteilles et des cartes de table.
+   de bouteilles, des cartes de table et des affiches A5.
    Restent à valider (propositions) : les horaires du coutumier et de la
    soirée, et l'heure du cocktail du civil.
    ================================================================== */
@@ -16,7 +16,7 @@ const INFOS = {
   // ci-dessus (pour les étiquettes et les cartes de table, toute autre valeur revient au
   // blanc & or). La pochette passeport garde celles de la version ; les billets ont une
   // couleur par catégorie (`billets` plus bas).
-  couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc" },
+  couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc", affiches: "blanc" },
 
   // Le prénom féminin se place avant le prénom masculin.
   mariee: "Raïka",
@@ -142,6 +142,11 @@ const INFOS = {
     "Renoncule", "Freesia", "Amaryllis", "Azalée", "Mimosa",
     "Jacinthe", "Lotus", "Bougainvillée", "Frangipanier", "Coquelicot",
   ],
+
+  /* -------------------------- Affiches A5 -------------------------- */
+  // Une affiche A5 par nom, dans l'ordre de la liste (affiches.html) ; deux par feuille A4 à
+  // imprimer. Pour ajouter, retirer ou corriger un nom, modifier la liste.
+  affiches: ["Merveille", "Karen", "Elhiska", "Moreen", "Wilfrida", "Judith"],
 
   /* ------------------------- Carte de menu ------------------------- */
   menu: {

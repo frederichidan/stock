@@ -47,8 +47,13 @@ const SORTIE = path.join(DOSSIER, "export");
 const HUIT_K = 7680;
 const QUALITE_JPG = 90;
 const QUALITE_IMPRESSION = 95;
+// Images pour WhatsApp (`whatsapp: true`) : 2048 px sur le grand côté, la taille que WhatsApp
+// garde nette (qualité HD), rendues directement à cette taille (textes nets), JPEG léger.
+const WHATSAPP = 2048;
+const QUALITE_WHATSAPP = 88;
 const FORMAT_MAQUETTE_PDF = [297, 210]; // mm : A4 paysage
 const A4_PT = [595.276, 841.89];
+const A5_PT = [419.528, 595.276];
 const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone imprimable
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
@@ -117,6 +122,14 @@ const ELEMENTS = [
     faces: [["face", ".page", 0]],
   },
   {
+    dossier: "affiches",
+    page: "affiches.html",
+    maquette: "affiches",
+    affiches: true,
+    whatsapp: true,
+    faces: INFOS.affiches.map((nom, i) => [nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-"), ".feuille", i]),
+  },
+  {
     dossier: "cartes-tables",
     page: "cartes-tables.html",
     maquette: "tables",
@@ -143,14 +156,14 @@ async function charger(page, url, signal) {
 
 // Agrandit l'élément (zoom CSS, donc rendu vectoriel net) pour que son grand côté mesure
 // exactement 7680 pixels, puis le capture seul, sans le fond autour.
-async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qualite = QUALITE_JPG) {
+async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qualite = QUALITE_JPG, cible = HUIT_K) {
   const page = await navigateur.newPage({ viewport: { width: 1200, height: 1000 } });
   await charger(page, url, signal);
   const zone = await page.evaluate(
     ({ selecteur, rang, cible }) => {
       const element = document.querySelectorAll(selecteur)[rang];
       const feuille = element.closest(".page, .feuille") || element;
-      document.querySelectorAll("#planches > *").forEach((p) => p !== feuille && (p.style.display = "none"));
+      document.querySelectorAll("#planches > *").forEach((p) => p !== feuille && !p.contains(feuille) && (p.style.display = "none"));
       document.body.style.padding = "0";
       Object.assign(feuille.style, { margin: "0", boxShadow: "none" });
       const avant = element.getBoundingClientRect();
@@ -158,7 +171,7 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qua
       const { x, y, width, height } = element.getBoundingClientRect();
       return { x, y, width, height };
     },
-    { selecteur, rang, cible: HUIT_K },
+    { selecteur, rang, cible },
   );
   await page.setViewportSize({ width: Math.ceil(zone.x + zone.width), height: Math.ceil(zone.y + zone.height) });
   await page.evaluate(() => document.fonts.ready);
@@ -221,17 +234,44 @@ async function chevalets8K(navigateur, element, nom, afficher) {
   afficher("A4-vectoriel.pdf");
 }
 
+// Affiches A5 (affiches.html) : planches A4 paysage de deux affiches, à couper en deux, et
+// affiches A5 seules, une par page ; chaque feuille en image 8K (fond et dessins, sans les
+// textes), les textes posés par-dessus en vectoriel ; et les mêmes PDF en vectoriel. Recto seul.
+async function affiches8K(navigateur, element, nom, afficher) {
+  for (const [format, taille, parFeuille] of [["a4", A4_PT, 2], ["a5", A5_PT, 1]]) {
+    const feuilles = Math.ceil(INFOS.affiches.length / parFeuille);
+    const images = [];
+    for (let i = 0; i < feuilles; i += 1) {
+      const image = path.join(TEMPORAIRE, `${element.dossier}-${format}-${i}.${NB ? "png" : "jpg"}`);
+      await capturer8K(navigateur, adresse(element.page, { format, capture: 1 }), ".feuille", i, image, "pagesPretes", QUALITE_IMPRESSION);
+      images.push(image);
+    }
+    const sorties = [
+      [`${format.toUpperCase()}-8k.pdf`, { format, images: JSON.stringify(images.map((image) => pathToFileURL(image).href)), premier: 1 }],
+      [`${format.toUpperCase()}-vectoriel.pdf`, { format, pdf: 1 }],
+    ];
+    for (const [suffixe, parametres] of sorties) {
+      const page = await navigateur.newPage();
+      await charger(page, adresse(element.page, parametres), "pagesPretes");
+      await page.pdf({ path: nom(suffixe), preferCSSPageSize: true, printBackground: true });
+      await page.close();
+      await finaliserPdf(nom(suffixe), { rectoVerso: false, format: taille });
+      afficher(suffixe);
+    }
+  }
+}
+
 // Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
 // rétablit l'A4 exact, centré sur le contenu, et l'on demande aux lecteurs PDF (Acrobat, Chrome,
 // Edge…) d'imprimer à 100 %, sur le bac A4, en recto verso bord long pour les planches à deux
 // faces et en recto seul pour les étiquettes et les cartes de table (`rectoVerso` : true,
 // false, ou null = sans avis).
-async function finaliserPdf(fichier, { rectoVerso }) {
+async function finaliserPdf(fichier, { rectoVerso, format = A4_PT }) {
   if (NB) enNiveauxDeGris(fichier);
   const document = await PDFDocument.load(fs.readFileSync(fichier), { updateMetadata: false });
   for (const page of document.getPages()) {
     const { width, height } = page.getMediaBox();
-    const [largeur, hauteur] = width > height ? [A4_PT[1], A4_PT[0]] : A4_PT;
+    const [largeur, hauteur] = width > height ? [format[1], format[0]] : format;
     page.setMediaBox((width - largeur) / 2, (height - hauteur) / 2, largeur, hauteur);
   }
   const preferences = document.catalog.getOrCreateViewerPreferences();
@@ -307,6 +347,8 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
       if (element.chevalets) {
         await chevalets8K(navigateur, element, nom, afficher);
+      } else if (element.affiches) {
+        await affiches8K(navigateur, element, nom, afficher);
       } else {
         const illustrations = await illustrations8K(navigateur, element, theme);
         await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
@@ -324,6 +366,18 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       for (const [face, selecteur, rang] of element.faces) {
         await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, nom(`${face}-8k.jpg`));
         afficher(`${face}-8k.jpg`);
+      }
+
+      if (element.whatsapp) {
+        // Dossier whatsapp/ : chaque face et la maquette, prêtes à partager.
+        const whatsapp = path.join(dossier, "whatsapp");
+        fs.mkdirSync(whatsapp, { recursive: true });
+        const image = (suffixe) => path.join(whatsapp, `${element.dossier}-${suffixe}-whatsapp.jpg`);
+        for (const [face, selecteur, rang] of element.faces) {
+          await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, image(face), null, QUALITE_WHATSAPP, WHATSAPP);
+        }
+        await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, image("maquette"), "maquettePrete", QUALITE_WHATSAPP, WHATSAPP);
+        console.log("✓", `${edition}/${element.dossier}/whatsapp/ (${element.faces.length + 1} images)`);
       }
     }
 

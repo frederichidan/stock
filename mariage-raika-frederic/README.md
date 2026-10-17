@@ -112,6 +112,28 @@ toutes les teintes restent dans la gamme d'une imprimante (écart ΔE < 2).
 - Textes des étiquettes (« Première classe », « Cuvée », « Grand vin de mariage »,
   « Eau minérale », « 33 cl »…) : section `etiquettes` d'`infos.js`.
 
+## Affiches A5 : `export/violet/affiches/`
+
+Une affiche A5 (148 × 210 mm) par nom de la liste `affiches` de `infos.js` (Merveille, Karen,
+Elhiska, Moreen, Wilfrida, Judith), dans la charte du menu et des cartes de table : fond blanc,
+cadre doré, vol RF 1812, monogramme couronné, le nom en grande écriture (Satisfy, brun presque
+noir), et en bas les prénoms des mariés et la date. Aperçu : `affiches.html` (une affiche par
+page) ou `affiches.html?format=a4` (les feuilles A4 à imprimer), `?nom=Karen` pour une seule.
+
+| Fichier | Usage |
+|---|---|
+| `affiches-A4-8k.pdf` | **À imprimer sur A4** : deux affiches par feuille A4 paysage (3 feuilles), à 100 %, recto seul, puis à couper en deux au milieu (repères en haut et en bas). Fond et dessins en image 8K, textes vectoriels |
+| `affiches-A5-8k.pdf` | Les mêmes affiches une par page A5 (6 pages), pour une imprimante chargée en A5 ou un imprimeur |
+| `affiches-A4-vectoriel.pdf`, `affiches-A5-vectoriel.pdf` | Les mêmes, entièrement vectorielles |
+| `affiches-<nom>-8k.jpg`, `affiches-maquette-8k.jpg` / `.pdf` | Chaque affiche et la maquette en 8K |
+| `whatsapp/` | Chaque affiche et la maquette en 2048 px sur le grand côté, JPEG léger (150 à 210 Ko) : nettes sur WhatsApp, y compris en qualité HD |
+
+Fond blanc : ni fond perdu ni traits de coupe autour ; le cadre reste à 10 mm des bords, dans
+la zone que toutes les imprimantes impriment. Papier conseillé : cartonné blanc 200 à 250 g
+(216 g au plus sur la Xerox B7035). Édition noir et blanc : `export/xerox-b7035/affiches/`.
+Pour ajouter, retirer ou corriger un nom : modifier la liste `affiches` de `infos.js`, puis
+`node exporter.js --seulement=affiches` (et `--xerox-b7035 --seulement=affiches`).
+
 ## Cartes de table
 
 Une carte par table, **30 en tout**, dans le même design que la carte de menu et les
@@ -279,10 +301,10 @@ node exporter.js --xerox-b7035   # édition noir et blanc pour laser monochrome 
 |---|---|
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
 | `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
-| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css`, `tables.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `cartes-tables.html` : les feuilles A4 à imprimer, `?table=5` pour une seule ; `?theme=minuit`, par exemple, pour une autre version : billets, menu, étiquettes et cartes de table gardent les couleurs réglées dans `infos.js`) |
+| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css`, `tables.js/.css`, `affiches.js/.css` | Dessin de chaque élément |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html`, `affiches.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `cartes-tables.html` : les feuilles A4 à imprimer, `?table=5` pour une seule ; `?theme=minuit`, par exemple, pour une autre version : billets, menu, étiquettes et cartes de table gardent les couleurs réglées dans `infos.js`) |
 | `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau` ; `&categorie=classique` pour le billet classique). Les cartes de table, elles, sont déjà des feuilles A4 : `cartes-tables.html` |
-| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin`, `eau` ou `tables`) |
+| `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin`, `eau`, `tables` ou `affiches`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |
 | `exporter.js` | Génère tout le dossier `export/` |
 

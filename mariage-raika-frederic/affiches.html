@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Affiches A5</title>
+<link rel="stylesheet" href="commun.css">
+<link rel="stylesheet" href="affiches.css">
+<style>
+  /* Affiches A5 nominatives (infos.js : affiches). Paramètres d'adresse :
+       ?format=a4      feuilles A4 paysage de deux affiches, à couper en deux (sinon : une
+                       affiche A5 par page) ;
+       ?nom=Karen      cette affiche seule ;
+       ?pdf=1          textes dorés vectorisés pour l'impression en PDF (vectoriserDegrades) ;
+       ?capture=1      fond et dessins seuls, sans les textes (illustrations 8K) ;
+       ?images=[…]&premier=3   une feuille par image 8K (affiches 3, 4…), les textes posés
+                       par-dessus en vectoriel : c'est ainsi qu'exporter.js produit les PDF 8K. */
+  .feuille-8k { position: relative; overflow: hidden; break-after: page; }
+  .feuille-8k:last-child { break-after: auto; }
+  .feuille-8k svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  @media screen {
+    body { padding: 10mm 0; }
+    .feuille, .feuille-8k { margin: 0 auto 10mm; box-shadow: 0 2mm 8mm rgba(28, 16, 54, 0.35); }
+  }
+</style>
+</head>
+<body>
+<main id="planches"></main>
+
+<script src="infos.js"></script>
+<script src="themes.js"></script>
+<script src="commun.js"></script>
+<script src="affiches.js"></script>
+<script>
+  const parametres = new URLSearchParams(location.search);
+  const format = parametres.get("format") === "a4" ? "a4" : "a5";
+  const [largeurFeuille, hauteurFeuille] = format === "a4" ? FEUILLE_A4_AFFICHES : FORMAT_AFFICHE;
+  const images = JSON.parse(parametres.get("images") || "null");
+  const premier = Number(parametres.get("premier")) || 1;
+  const parFeuille = format === "a4" ? 2 : 1;
+  const seul = INFOS.affiches.find((nom) => nom === parametres.get("nom"));
+  const noms = images
+    ? INFOS.affiches.slice(premier - 1, premier - 1 + images.length * parFeuille)
+    : seul ? [seul] : INFOS.affiches;
+  // Format de page selon le mode (A5 portrait, ou A4 paysage).
+  const page = document.createElement("style");
+  page.textContent = `@page { size: ${largeurFeuille}mm ${hauteurFeuille}mm; margin: 0; } .feuille-8k { width: ${largeurFeuille}mm; height: ${hauteurFeuille}mm; }`;
+  document.head.append(page);
+
+  const planches = document.getElementById("planches");
+  if (parametres.has("capture")) document.body.classList.add("sans-texte");
+  planches.innerHTML = feuillesAffiches(format, noms, images ? premier : INFOS.affiches.indexOf(noms[0]) + 1);
+  Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
+    await document.fonts.ready;
+    if (parametres.has("pdf") || images) {
+      const PX = 96 / 25.4;
+      const [l, h] = [largeurFeuille * PX, hauteurFeuille * PX];
+      // Feuilles 8K : textes mesurés au zoom de la capture (voir calqueTexte dans commun.js).
+      const zoom = images ? (await tailleImage(images[0]))[0] / l : 1;
+      planches.style.zoom = zoom;
+      vectoriserDegrades(document, zoom);
+      if (images) {
+        // Feuille 8K : l'image (fond et dessins) et, dans le même SVG, les textes de chaque
+        // affiche en vectoriel, à sa place (une image HTML serait calée au pixel CSS entier dans
+        // le PDF, pas les textes : voir exemplaire8K dans impression.html).
+        await Promise.all([...new Set(images)].map(tailleImage));
+        const feuilles = [...planches.querySelectorAll(".feuille")].map((feuille, i) => {
+          const origine = feuille.getBoundingClientRect();
+          const textes = [...feuille.querySelectorAll(".place-affiche")].map((place) => {
+            const r = place.getBoundingClientRect();
+            const [dx, dy] = [(r.left - origine.left) / zoom, (r.top - origine.top) / zoom];
+            return `<g transform="translate(${dx} ${dy})">${calqueTexte(place.querySelector(".page"), zoom)}</g>`;
+          });
+          return `<section class="feuille-8k">
+            <svg viewBox="0 0 ${l} ${h}" aria-hidden="true">
+              <image href="${esc(images[i])}" x="0" y="0" width="${l}" height="${h}" preserveAspectRatio="none"/>
+              ${textes.join("")}
+            </svg></section>`;
+        });
+        planches.innerHTML = feuilles.join("");
+        await Promise.all([...planches.querySelectorAll("image")].map((image) =>
+          new Promise((fin) => {
+            image.addEventListener("load", fin, { once: true });
+            image.addEventListener("error", fin, { once: true });
+          })));
+      }
+      planches.style.zoom = "";
+    }
+    window.pagesPretes = true;
+  });
+</script>
+</body>
+</html>

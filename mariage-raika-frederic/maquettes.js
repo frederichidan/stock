@@ -1,7 +1,8 @@
 /* Maquettes de présentation de chaque support, mises en scène vues de dessus (format 16:9,
    exportées en 8K : 7680 × 4320) ; les étiquettes, sur des bouteilles vues de face, et les
    cartes de table, en chevalets vus de face. Les supports sont dessinés par les mêmes fonctions
-   que les fichiers d'impression (passeport.js, billet.js, menu.js, etiquettes.js, tables.js).
+   que les fichiers d'impression (passeport.js, billet.js, menu.js, etiquettes.js, tables.js,
+   affiches.js).
    Toutes les mesures en mm. */
 
 const MAQUETTES = {
@@ -13,6 +14,7 @@ const MAQUETTES = {
   vin: { nom: "Étiquette de vin", largeur: 640, horizon: 248, construire: sceneVin },
   eau: { nom: "Étiquette d’eau 33 cl", largeur: 480, horizon: 168, construire: sceneEau },
   tables: { nom: "Cartes de table", largeur: 520, horizon: 150, construire: sceneTables },
+  affiches: { nom: "Affiches A5", largeur: 520, construire: sceneAffiches },
 };
 
 /* ------------------------------ Outils ------------------------------ */
@@ -315,6 +317,19 @@ function sceneTables(theme, l, h) {
     poserChevalet(3, { cx: 398, yBase: 218, echelle: 0.88, z: 5, lacet: -26 }),
     poserChevalet(2, { cx: 260, yBase: 246, z: 6, lacet: 6 }),
     `<div class="objet" style="left:446mm;top:252mm;z-index:14">${alliances(30)}<div class="ombre-anneaux"></div></div>`,
+  ].join("");
+}
+
+// Affiches A5 posées en éventail : les trois premières de la liste, avec ruban et alliances.
+function sceneAffiches(theme, l, h) {
+  const [a, b, c] = INFOS.affiches.slice(0, 3).map((nom) => affiche(nom));
+  return [
+    rubanSatin(`M ${l + 20} 40 C ${l - 50} 20, ${l - 70} 110, ${l - 25} 170 S ${l - 15} ${h + 20}, ${l - 80} ${h + 30}`, l, h, (INFOS.couleurs || {}).affiches),
+    poser(carte(a, [148, 210]), { x: 112, y: 150, rotation: -7, z: 2 }),
+    c ? poser(carte(c, [148, 210]), { x: 398, y: 146, rotation: 6, z: 2 }) : "",
+    b ? poser(carte(b, [148, 210]), { x: 255, y: 148, rotation: -1, z: 3 }) : "",
+    poser(alliances(30), { x: 470, y: 262, rotation: 14, z: 4 }),
+    confettis(l, h, 22, 37, [[30, 35, 480, 270]]),
   ].join("");
 }
 

@@ -414,7 +414,7 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .losange.bg { bottom: 3.7mm; left: 3.7mm; }
 .losange.bd { bottom: 3.7mm; right: 3.7mm; }
 
-/* -------- Menu, pochette, billets et étiquettes : textes visibles à l'impression -------- */
+/* ---- Menu, pochette, billets, étiquettes et affiches : textes visibles à l'impression ---- */
 /* Sur une imprimante de bureau, ces textes sortaient pâles et peu lisibles : Cormorant
    Garamond au très petit œil (minuscules minuscules) et aux déliés fins, écriture Great Vibes
    aux déliés de 0,1 mm, petites capitales, lettres en dégradé doré dont la partie claire se
@@ -428,7 +428,8 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .page.passeport,
 .page.billet,
 .page.menu,
-.page.bouteille {
+.page.bouteille,
+.page.affiche {
   --script: var(--script-epais);
   --lettres-svg: var(--lettres, var(--let-a));
   font-family: var(--texte-lisible);
@@ -437,7 +438,8 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .page.passeport .texte-degrade,
 .page.billet .texte-degrade,
 .page.menu .texte-degrade,
-.page.bouteille .texte-degrade {
+.page.bouteille .texte-degrade,
+.page.affiche .texte-degrade {
   background: none;
   color: var(--lettres, var(--let-a));
 }
@@ -445,6 +447,7 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .page.billet .etiquette,
 .page.menu .etiquette,
 .page.bouteille .etiquette,
+.page.affiche .etiquette,
 .page.passeport .valeur,
 .page.passeport .date-couverture,
 .page.billet .valeur,
@@ -457,11 +460,13 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .page.passeport .monogramme text[font-family="Great Vibes"],
 .page.billet .monogramme text[font-family="Great Vibes"],
 .page.menu .monogramme text[font-family="Great Vibes"],
-.page.bouteille .monogramme text[font-family="Great Vibes"] { font-family: var(--initiales); }
-/* Blanc & or (menu, étiquettes) : textes brun presque noir, l'or reste aux filets, ornements
+.page.bouteille .monogramme text[font-family="Great Vibes"],
+.page.affiche .monogramme text[font-family="Great Vibes"] { font-family: var(--initiales); }
+/* Blanc & or (menu, étiquettes, affiches) : textes brun presque noir, l'or reste aux filets, ornements
    et cadres. */
 .page.menu.palette-blanc, .page.menu.palette-blanc .sombre, .page.menu.palette-blanc .clair,
-.page.bouteille.palette-blanc, .page.bouteille.palette-blanc .sombre, .page.bouteille.palette-blanc .clair {
+.page.bouteille.palette-blanc, .page.bouteille.palette-blanc .sombre, .page.bouteille.palette-blanc .clair,
+.page.affiche.palette-blanc, .page.affiche.palette-blanc .sombre, .page.affiche.palette-blanc .clair {
   --texte: #2b2117; --texte-doux: #33271a; --discret: #33271a;
   --accent-texte: #3f3020; --accent-fort: #3f3020; --code: #3f3020; --titre-etape: #3f3020;
   --bandeau-texte: #3f3020; --bandeau-doux: #3f3020; --code-barres: #2b2117;

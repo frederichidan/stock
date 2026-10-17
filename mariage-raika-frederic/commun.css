@@ -37,16 +37,16 @@
 /* --fond-* : recto du billet et carte de menu ; --bande-* : bandeaux et pied ;
    --talon-* : talon du billet ; --verso-* : verso du billet. */
 
-/* Violet améthyste : un violet plus clair que le violet royal d'origine, choisi dans la gamme
-   d'une imprimante quadri (l'ancien, trop saturé, ressortait terne et presque noir sur les
-   bords). Même teinte ; écart à l'impression ΔE < 2 et au plus 186 % d'encre sur les
-   aplats (contre près de 300 % avant) : sur papier couché, brillant ou mat, l'encre ne
-   pénètre pas et les aplats trop chargés perlent ou marbrent. */
+/* Violet : l'extérieur de la pochette (fond-*) est un lilas pâle, de la même teinte que le
+   violet royal d'origine, portant des lettres violet profond et des ornements dorés (contexte
+   « clair », themes.js). L'aplat violet foncé d'avant (#6f4e9d, 180 % d'encre) chargeait le
+   papier et rendait les lettres claires difficiles à imprimer nettement ; le lilas en demande
+   environ quatre fois moins (#e8dff1 au centre, #dccfea aux bords). */
 :root,
 [data-theme="violet"] {
-  --fond-1: #7e5ea9; --fond-2: #6f4e9d; --fond-3: #61438d;
-  --bande-1: #61438d; --bande-2: #6a4998;
-  --talon-1: #6a4998; --talon-2: #61438d;
+  --fond-1: #f3eef8; --fond-2: #e8dff1; --fond-3: #dccfea;
+  --bande-1: #cdbde2; --bande-2: #d6c8e8;
+  --talon-1: #d6c8e8; --talon-2: #cdbde2;
   --verso-1: #fdf9f1; --verso-2: #f8f3ea; --verso-3: #efe7f5;
 }
 
@@ -427,3 +427,36 @@ svg.icone { display: inline-block; vertical-align: middle; fill: currentColor; }
 .page.billet .etiquette { font-weight: 700; }
 .page.passeport .monogramme text[font-family="Great Vibes"],
 .page.billet .monogramme text[font-family="Great Vibes"] { font-family: var(--initiales); }
+
+/* ------------- Noir et blanc : imprimante laser monochrome (Xerox VersaLink B7035) ------------- */
+/* Une imprimante laser noir et blanc traduit toute couleur en gris, et tout gris en trame de
+   points : un texte doré, bronze ou violet y sort tramé, aux bords crénelés et flous, et un
+   aplat foncé consomme beaucoup de toner. Seul le noir plein s'imprime net. L'édition « nb »
+   (?nb, exporter.js --xerox-b7035) met donc tous les textes, filets, ornements et monogrammes
+   en noir plein sur fond blanc ; seuls les bandeaux et les pastilles gardent une trame gris
+   clair (≈ 8 %), sur de grandes surfaces où elle reste invisible ; guillochis et rosaces,
+   qui ne seraient que des pointillés gris, sont retirés. */
+:root.nb .page,
+:root.nb .page * {
+  --fond-1: #fff !important; --fond-2: #fff !important; --fond-3: #fff !important;
+  --verso-1: #fff !important; --verso-2: #fff !important; --verso-3: #fff !important;
+  --talon-1: #fff !important; --talon-2: #fff !important;
+  --bande-1: #ebebeb !important; --bande-2: #ebebeb !important;
+  --pastille: #ebebeb !important; --pastille-texte: #000 !important;
+  --zone: #f2f2f2 !important;
+  --texte: #000 !important; --texte-doux: #000 !important; --discret: #000 !important;
+  --accent: #000 !important; --accent-texte: #000 !important; --accent-fort: #000 !important;
+  --ligne: #000 !important; --filet: #000 !important; --ligne-ecriture: #000 !important;
+  --code: #000 !important; --esperluette: #000 !important; --titre-etape: #000 !important;
+  --code-barres: #000 !important; --liseret: #000 !important;
+  --bandeau-texte: #000 !important; --bandeau-doux: #000 !important; --bandeau-reflet: #000 !important;
+  --let-a: #000 !important; --let-b: #000 !important; --let-c: #000 !important;
+  --orn-a: #000 !important; --orn-b: #000 !important; --orn-c: #000 !important;
+  --lettres: #000 !important; --lettres-svg: #000 !important;
+  --guilloche: #000 !important; --guilloche-opacite: 0 !important;
+  -webkit-text-stroke: 0 !important;
+}
+:root.nb .page .texte-degrade { background: none !important; color: #000 !important; }
+/* Pierre de la bague, seul dessin en gris fixe : contour noir. */
+:root.nb .page .anneaux-dores [stroke="#a9adb8"] { stroke: #000; }
+

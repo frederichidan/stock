@@ -6,6 +6,9 @@
 const THEME_ID = [new URLSearchParams(location.search).get("theme"), INFOS.theme].find((id) => id in THEMES) || "violet";
 const THEME = THEMES[THEME_ID];
 document.documentElement.dataset.theme = THEME_ID;
+// « ?nb » : édition noir et blanc pour imprimante laser monochrome (commun.css, « Noir et blanc »).
+const NOIR_ET_BLANC = new URLSearchParams(location.search).has("nb");
+document.documentElement.classList.toggle("nb", NOIR_ET_BLANC);
 
 let compteurIds = 0;
 function idUnique(prefixe) {

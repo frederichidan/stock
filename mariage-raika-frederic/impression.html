@@ -188,7 +188,7 @@
       const y = FOND_PERDU_DESSIN + dy * (H - RECOUVREMENT);
       return `<div class="copie" style="left:${mm(x)};top:${mm(y)};transform:scale(${dx ? -1 : 1}, ${dy ? -1 : 1})">${face.outerHTML}</div>`;
     });
-    const grain = GRAIN && !face.matches(".palette-blanc") ? `<div class="grain" style="background-image:url(${GRAIN.url});background-size:${mm(GRAIN.taille)}"></div>` : "";
+    const grain = GRAIN && !face.matches(".palette-blanc") && !NOIR_ET_BLANC ? `<div class="grain" style="background-image:url(${GRAIN.url});background-size:${mm(GRAIN.taille)}"></div>` : "";
     return `<div class="fond-perdu" style="width:${mm(L + 2 * FOND_PERDU_DESSIN)};height:${mm(H + 2 * FOND_PERDU_DESSIN)};zoom:${echelle}">${copies.join("")}${grain}</div>`;
   }
 

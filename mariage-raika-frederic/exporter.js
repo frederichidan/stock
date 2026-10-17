@@ -22,17 +22,25 @@
      node exporter.js            → la version choisie dans infos.js (theme)
      node exporter.js --toutes   → les 4 versions et le nuancier
      node exporter.js --seulement=etiquette-vin,etiquette-eau   → ces éléments seulement
+     node exporter.js --xerox-b7035  → édition noir et blanc pour imprimante laser monochrome
+                                       (Xerox VersaLink B7035), dans export/xerox-b7035/ : textes,
+                                       filets et ornements en noir plein, fonds blancs (commun.css,
+                                       « Noir et blanc ») ; illustrations 8K sans perte (PNG) ; PDF
+                                       convertis en niveaux de gris par Ghostscript (gs) s'il est
+                                       installé ; ni maquettes ni faces à plat.
 */
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { pathToFileURL } = require("url");
+const { execFileSync } = require("child_process");
 const { chromium } = require("playwright");
 const { PDFDocument, PrintScaling, Duplex } = require("pdf-lib");
 const THEMES = require("./themes.js");
 const INFOS = new Function(`${fs.readFileSync(path.join(__dirname, "infos.js"), "utf8")}; return INFOS;`)();
 const TOUTES = process.argv.includes("--toutes");
 const SEULEMENT = (process.argv.find((a) => a.startsWith("--seulement=")) || "").slice("--seulement=".length).split(",").filter(Boolean);
+const NB = process.argv.includes("--xerox-b7035");
 
 const DOSSIER = __dirname;
 const SORTIE = path.join(DOSSIER, "export");
@@ -119,7 +127,7 @@ const ELEMENTS = [
 ];
 
 const adresse = (fichier, parametres = {}) => {
-  const requete = new URLSearchParams(parametres).toString();
+  const requete = new URLSearchParams(NB ? { ...parametres, nb: 1 } : parametres).toString();
   return `file://${path.join(DOSSIER, fichier)}${requete ? `?${requete}` : ""}`;
 };
 
@@ -155,7 +163,7 @@ async function capturer8K(navigateur, url, selecteur, rang, fichier, signal, qua
   await page.setViewportSize({ width: Math.ceil(zone.x + zone.width), height: Math.ceil(zone.y + zone.height) });
   await page.evaluate(() => document.fonts.ready);
   const clip = { x: Math.round(zone.x), y: Math.round(zone.y), width: Math.floor(zone.width + 0.01), height: Math.floor(zone.height + 0.01) };
-  await page.screenshot({ path: fichier, type: "jpeg", quality: qualite, clip });
+  await page.screenshot({ path: fichier, clip, ...(fichier.endsWith(".png") ? { type: "png" } : { type: "jpeg", quality: qualite }) });
   await page.close();
 }
 
@@ -190,7 +198,7 @@ async function pdfDepuisImages(navigateur, [largeur, hauteur], marge, images, fi
 async function chevalets8K(navigateur, element, nom, afficher) {
   const images = [];
   for (let i = 0; i < INFOS.tables.length; i += 1) {
-    const image = path.join(TEMPORAIRE, `${element.dossier}-${i}.jpg`);
+    const image = path.join(TEMPORAIRE, `${element.dossier}-${i}.${NB ? "png" : "jpg"}`);
     await capturer8K(navigateur, adresse(element.page, { table: i + 1, capture: 1 }), ".page", 0, image, "pagesPretes", QUALITE_IMPRESSION);
     images.push(image);
   }
@@ -219,6 +227,7 @@ async function chevalets8K(navigateur, element, nom, afficher) {
 // faces et en recto seul pour les étiquettes et les cartes de table (`rectoVerso` : true,
 // false, ou null = sans avis).
 async function finaliserPdf(fichier, { rectoVerso }) {
+  if (NB) enNiveauxDeGris(fichier);
   const document = await PDFDocument.load(fs.readFileSync(fichier), { updateMetadata: false });
   for (const page of document.getPages()) {
     const { width, height } = page.getMediaBox();
@@ -233,13 +242,38 @@ async function finaliserPdf(fichier, { rectoVerso }) {
   fs.writeFileSync(fichier, await document.save({ updateFieldAppearances: false }));
 }
 
+// Édition noir et blanc : PDF converti en niveaux de gris (DeviceGray) par Ghostscript, images
+// comprises, sans perte ni réduction de résolution. Le noir des textes devient un noir pur à
+// 100 % (toner seul), et l'imprimante n'a plus de conversion de couleurs à faire. Sans gs, le
+// PDF reste en RVB (noir et gris neutres, convertis de même par l'imprimante).
+let ghostscript = true;
+function enNiveauxDeGris(fichier) {
+  if (!ghostscript) return;
+  const gris = `${fichier}.gris.pdf`;
+  try {
+    execFileSync("gs", [
+      "-q", "-dNOPAUSE", "-dBATCH", "-dSAFER", "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.7",
+      "-sColorConversionStrategy=Gray", "-dProcessColorModel=/DeviceGray",
+      "-dAutoFilterGrayImages=false", "-dGrayImageFilter=/FlateEncode", "-dDownsampleGrayImages=false",
+      "-dAutoFilterColorImages=false", "-dColorImageFilter=/FlateEncode", "-dDownsampleColorImages=false",
+      "-dDownsampleMonoImages=false", "-dEmbedAllFonts=true", "-dSubsetFonts=true",
+      `-sOutputFile=${gris}`, fichier,
+    ]);
+    fs.renameSync(gris, fichier);
+  } catch (erreur) {
+    ghostscript = false;
+    fs.rmSync(gris, { force: true });
+    console.warn("⚠ Ghostscript (gs) indisponible : PDF laissés en RVB.", erreur.message.split("\n")[0]);
+  }
+}
+
 // Illustrations 8K de chaque face, fond perdu compris, à l'endroit, capturées depuis
 // impression.html en mode capture (une face par feuille, à taille réelle).
 async function illustrations8K(navigateur, element, theme) {
   const url = adresse("impression.html", { doc: element.impression, theme, capture: 1, ...element.parametres });
   const images = [];
   for (let i = 0; i < (element.rectoVerso === false ? 1 : 2); i += 1) {
-    const image = path.join(TEMPORAIRE, `${element.dossier}-${theme}-${i}.jpg`);
+    const image = path.join(TEMPORAIRE, `${element.dossier}-${theme}-${i}.${NB ? "png" : "jpg"}`);
     await capturer8K(navigateur, url, ".fond-perdu", i, image, "planchesPretes", QUALITE_IMPRESSION);
     images.push(image);
   }
@@ -259,14 +293,15 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
 (async () => {
   const navigateur = await chromium.launch();
-  const themes = TOUTES ? Object.keys(THEMES) : [INFOS.theme in THEMES ? INFOS.theme : "violet"];
+  const themes = TOUTES && !NB ? Object.keys(THEMES) : [INFOS.theme in THEMES ? INFOS.theme : "violet"];
 
   for (const theme of themes) {
+    const edition = NB ? "xerox-b7035" : theme;
     for (const element of ELEMENTS.filter((e) => !SEULEMENT.length || SEULEMENT.includes(e.dossier))) {
-      const dossier = path.join(SORTIE, theme, element.dossier);
+      const dossier = path.join(SORTIE, edition, element.dossier);
       fs.mkdirSync(dossier, { recursive: true });
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);
-      const afficher = (suffixe) => console.log("✓", `${theme}/${element.dossier}/${element.dossier}-${suffixe}`);
+      const afficher = (suffixe) => console.log("✓", `${edition}/${element.dossier}/${element.dossier}-${suffixe}`);
 
       if (element.chevalets) {
         await chevalets8K(navigateur, element, nom, afficher);
@@ -277,6 +312,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
         await pdfA4(navigateur, element, theme, null, nom("A4-vectoriel.pdf"));
         afficher("A4-vectoriel.pdf");
       }
+      if (NB) continue; // pas de maquettes ni de faces à plat en noir et blanc
 
       await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
       afficher("maquette-8k.jpg");
@@ -289,7 +325,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       }
     }
 
-    if (SEULEMENT.length && !SEULEMENT.includes("ensemble")) continue;
+    if (NB || (SEULEMENT.length && !SEULEMENT.includes("ensemble"))) continue;
     const ensemble = path.join(SORTIE, theme, "ensemble-maquette-8k.jpg");
     await capturer8K(navigateur, adresse("maquettes.html", { scene: "ensemble", theme }), ".scene", 0, ensemble, "maquettePrete");
     await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [ensemble], ensemble.replace(/\.jpg$/, ".pdf"));

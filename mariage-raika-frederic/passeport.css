@@ -34,17 +34,16 @@
 .passeport .verset-source { font-family: var(--script); font-size: 17pt; line-height: 1.3; padding: 0 2mm; margin-top: 4mm; }
 
 /* ----------------- Extérieur (couverture et dos) : lisibilité ----------------- */
-/* Lettres claires sur le violet : à l'impression, l'encre du fond déborde de quelques
-   centièmes de millimètre dans la réserve et ronge les déliés. L'écriture est donc la Satisfy,
-   aux pleins épais, les initiales du monogramme en Norican (commun.css, « Pochette et
-   billets »), les lettres d'un or clair uni (--lettres), et tous les textes sont épaissis d'un
-   contour de 0,08 mm de leur propre couleur ; titre « PASSEPORT » en Playfair Display 900.
-   Monogramme et devise : contour en or uni (--let-c, voir vectoriserDegrades), en unités de
-   leur dessin (47 mm et 74 mm pour 200 unités). */
+/* Écriture Satisfy, aux pleins épais, initiales du monogramme en Norican (commun.css,
+   « Pochette et billets »), lettres en aplat (--lettres) ; titre « PASSEPORT » en Playfair
+   Display 900. Sur un fond foncé (thème minuit), les lettres claires sont épaissies d'un
+   contour de 0,08 mm de leur propre couleur : l'encre du fond déborde dans les lettres en
+   réserve et en ronge les déliés. Monogramme et devise : contour en or uni (--let-c, voir
+   vectoriserDegrades), en unités de leur dessin (47 mm et 74 mm pour 200 unités). */
 .page.passeport .ruban text { font-family: var(--script); }
-[data-theme="violet"] .passeport.exterieur { -webkit-text-stroke: 0.08mm currentColor; }
-[data-theme="violet"] .passeport.exterieur .monogramme text { stroke-width: 0.34; }
-[data-theme="violet"] .passeport.exterieur .ruban text { stroke-width: 0.22; }
+.passeport.exterieur.sombre { -webkit-text-stroke: 0.08mm currentColor; }
+.passeport.exterieur.sombre .monogramme text { stroke-width: 0.34; }
+.passeport.exterieur.sombre .ruban text { stroke-width: 0.22; }
 /* Satisfy est plus large que la Great Vibes : la devise reste dans le ruban. Marges
    intérieures en haut pour les accents et trémas, qui montent au-dessus de la ligne. */
 .page.passeport .ruban text { font-size: 12.5px; }

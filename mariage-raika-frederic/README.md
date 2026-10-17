@@ -1,14 +1,39 @@
 # Mariage de Raïka & Frédéric — pochette passeport, billets d'invitation, carte de menu, étiquettes de bouteilles et cartes de table
 
-Supports imprimables du « Passeport de Mariage ». La pochette passeport est aux couleurs
-violet & or (version A, Violet améthyste & or). Les billets d'invitation existent en deux
+Supports imprimables du « Passeport de Mariage ». La pochette passeport est en **lilas, violet
+& or** : fond lilas pâle, lettres violet profond, ornements dorés. Les billets d'invitation existent en deux
 catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
 autres invités, en **argent**. La carte de menu, les étiquettes de bouteilles et les 30
 cartes de table sont en **blanc & or** : fond blanc, textes et décors dorés. Ces palettes sans violet, à fond clair,
 sont plus légères à l'impression. Il n'y a pas de photo du couple : le visuel
 principal est le monogramme **R & F**, avec l'initiale de la mariée placée avant celle du marié.
 
-## Les fichiers à utiliser : `export/violet/`
+## Imprimer sur la Xerox VersaLink B7035 : `export/xerox-b7035/`
+
+La VersaLink B7035 est une imprimante **laser noir et blanc** (1200 × 1200 dpi). Elle traduit
+toute couleur en gris, et tout gris en trame de points : un texte doré, bronze, argent ou violet
+y sort tramé, aux bords crénelés et flous, et un fond foncé consomme beaucoup de toner. Seul le
+noir plein s'imprime parfaitement net. Le dossier `export/xerox-b7035/` contient donc une
+**édition noir et blanc** de tous les supports, conçue pour elle :
+
+- textes, filets, ornements et monogrammes en **noir plein**, sur fond blanc ; seuls les
+  bandeaux et les pastilles gardent un gris très clair (≈ 8 %) ; guillochis et rosaces, qui
+  n'y seraient que des pointillés gris, sont retirés ;
+- PDF en **niveaux de gris** (le noir des textes y est un noir pur, toner seul) ; dans les
+  `…-A4-8k.pdf`, dessins en image 8K sans perte (≈ 1 000 dpi) et textes vectoriels ;
+  les `…-A4-vectoriel.pdf` sont entièrement vectoriels ;
+- mêmes planches, mêmes formats et mêmes réglages qu'en couleur (A4 portrait, recto verso bord
+  long ; cartes de table et étiquettes en recto seul).
+
+Réglages sur la B7035 : imprimer le PDF à **100 %** (taille réelle), qualité / résolution la plus
+haute (1200 dpi), recto verso **bord long**. Papier : **compatible laser** uniquement — jamais de
+papier photo jet d'encre, dont le couchage ne supporte pas la chaleur du four ; bristol ou carte
+mat ou satiné **jusqu'à 216 g/m²** par le départ manuel, en choisissant le type « Carte »
+(« Cardstock ») dans le pilote. Les cartes de table, prévues en 200 à 250 g, restent donc à
+216 g au plus sur cette machine. (Sources : fiche technique Xerox VersaLink B7025/B7030/B7035 et
+article d'assistance Xerox KB0129600 sur les supports.)
+
+## Les fichiers à utiliser en couleur : `export/violet/`
 
 Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
 `billet-invitation-classique/`, `carte-menu/`, `etiquette-vin/`, `etiquette-eau/`,
@@ -137,16 +162,13 @@ chaque catégorie : « Invité d'honneur » pour le premium, « Invité » pour 
 `couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc" }` (`"or"` pour l'or champagne, `"argent"`
 pour l'argent ; pour le menu, `""` revient aux couleurs de la version).
 
-**Pochette passeport : violet.** Le violet royal d'origine, très foncé et très saturé, sortait de la gamme des imprimantes : à
-l'impression il ressortait terne, presque noir sur les bords, avec beaucoup d'encre. Il est
-remplacé par un **violet améthyste** plus clair, de même teinte, et toutes les couleurs
-(violets, ors, ivoire) ont été choisies dans la gamme d'une imprimante quadri (CMJN) :
-
-- écart entre l'écran et l'impression inférieur à 2 (ΔE), soit invisible à l'œil, contre 25
-  en moyenne pour l'ancien violet ;
-- au plus 186 % d'encre sur les aplats violets (250 % pour les petits textes), contre près de
-  300 % avant : sur papier couché, l'encre ne pénètre pas ; moins chargée, elle sèche sans
-  perler ni marbrer.
+**Pochette passeport : lilas, violet & or.** L'extérieur (couverture et dos) était un aplat
+violet foncé (#6f4e9d, environ 180 % d'encre) : il chargeait le papier, et ses lettres claires,
+« en réserve », s'imprimaient mal. Il devient un **lilas pâle**, de la même teinte (#f3eef8 au
+centre, #e8dff1, #dccfea aux bords), environ quatre fois moins gourmand en encre, qui porte des
+lettres **violet profond** (#3f2b59) et des ornements **dorés** : la même logique que
+l'intérieur (ivoire, violet et or) et que le code vestimentaire « touches de violet & d'or ».
+Toutes ces teintes sont dans la gamme d'une imprimante quadri (CMJN).
 
 **Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
 des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : les
@@ -168,15 +190,12 @@ textes sortaient flous ou pâles. En plus de ce qui précède :
 - les guillochis et la rosace derrière les textes sont plus discrets ;
 - titre « PASSEPORT » en Playfair Display noir (900).
 
-**Couverture et dos de la pochette.** Sur le violet, les lettres claires sont « en réserve » :
-l'encre du fond déborde de quelques centièmes de millimètre dans les lettres et ronge les
-déliés, au point d'effacer ceux, très fins, de l'écriture Great Vibes. Les lettres y sont d'un
-**or clair uni** (#f2dba0 : contraste 4,8:1 avec le violet, contre 2,7:1 pour l'ancien or foncé)
-et tous les textes sont épaissis d'un contour de 0,08 mm de leur propre couleur ; « ROYAUME DE
-L'AMOUR » passe de 6 à 7 pt en gras, la date de 10 à 11 pt. Comparées en simulant ce débord
-d'encre, Satisfy garde 77 % de la lettre contre 64 % pour la Great Vibes ; d'autres écritures
+**Couverture et dos de la pochette.** « ROYAUME DE L'AMOUR » passe de 6 à 7 pt en gras, la date
+de 10 à 11 pt. Comparées en simulant le débord d'encre d'un fond foncé dans des lettres
+claires, Satisfy garde 77 % de la lettre contre 64 % pour la Great Vibes ; d'autres écritures
 épaisses (Norican, Playball, Kaushan) ont été écartées pour les mots car le tréma de « Raïka »
-s'y colle au k (Norican ne sert qu'aux initiales).
+s'y colle au k (Norican ne sert qu'aux initiales). Sur un fond foncé (thème minuit), les
+lettres claires restent épaissies d'un contour de 0,08 mm de leur propre couleur.
 
 Les détails fins sont dessinés pour tenir à l'impression (mesures sur l'imprimé, à 88,5 %) :
 traits dorés d'au moins 0,18 mm, guillochis et halos en traits d'au moins 0,2 mm, petits textes
@@ -184,8 +203,8 @@ d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet épaissis pou
 l'encre du fond (voir ci-dessus) ; petites étiquettes dorées des pages claires dans un or plus
 foncé, lisible.
 
-Couleurs principales : fond #7e5ea9 → #6f4e9d → #61438d, bandeaux #61438d / #6a4998, or
-#e2c487. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
+Couleurs principales de la pochette : fond lilas #f3eef8 → #e8dff1 → #dccfea, lettres
+#3f2b59, ornements or #9f7a38 → #d9b977. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
 visible. Pour un tirage chez un imprimeur, une épreuve couleur reste conseillée.
 
 ### Réglages selon le papier
@@ -244,6 +263,8 @@ npx playwright install chromium
 node exporter.js            # la version choisie dans infos.js (theme)
 node exporter.js --toutes   # les 4 versions de couleurs et un nuancier comparatif
 node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments seulement
+node exporter.js --xerox-b7035   # édition noir et blanc pour laser monochrome (export/xerox-b7035/ ;
+                                 # PDF convertis en niveaux de gris si Ghostscript, gs, est installé)
 ```
 
 ## Organisation du code

@@ -43,13 +43,14 @@ function affiche(nom) {
   </section>`;
 }
 
-// Repères de coupe d'une feuille A4 de deux affiches : traits courts dans les marges blanches,
-// sur le milieu de la feuille.
+// Repères de coupe d'une feuille A4 de deux affiches : traits dans les marges blanches, sur le
+// milieu de la feuille, jusqu'à 9 mm du bord (au-delà des 4 à 5 mm que les imprimantes
+// n'impriment pas ; les cadres des affiches sont à 10 mm de part et d'autre).
 function reperesCoupeAffiches() {
   const [l, h] = FEUILLE_A4_AFFICHES;
   const x = l / 2;
   return `<svg class="reperes-coupe" viewBox="0 0 ${l} ${h}" aria-hidden="true">
-    <g stroke="#000" stroke-width="0.2"><line x1="${x}" y1="1.5" x2="${x}" y2="6"/><line x1="${x}" y1="${h - 6}" x2="${x}" y2="${h - 1.5}"/></g>
+    <g stroke="#000" stroke-width="0.2"><line x1="${x}" y1="1.5" x2="${x}" y2="9"/><line x1="${x}" y1="${h - 9}" x2="${x}" y2="${h - 1.5}"/></g>
   </svg>`;
 }
 

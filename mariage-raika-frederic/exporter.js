@@ -8,11 +8,17 @@
                                     bouteilles : 4 (vin) ou 3 (eau) par feuille, à taille
                                     réelle, une seule page (recto seul). Cartes de table :
                                     une feuille A4 par table, en chevalet (recto seul, pliée
-                                    en deux), en PDF de 10 tables (…-A4-8k-tables-01-a-10.pdf…) ;
-   - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille) ;
+                                    en deux), en PDF de 10 tables (…-A4-8k-tables-01-a-10.pdf…).
+                                    Affiches : deux affiches A5 par feuille A4 paysage (recto
+                                    seul, sans fond perdu, repères de coupe au milieu), et
+                                    affiches-A5-8k.pdf, une affiche par page A5 ;
+   - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille)
+                                    (affiches : aussi affiches-A5-vectoriel.pdf) ;
    - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 ;
    - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
-   - <élément>-<face>-8k.jpg      : chaque face à plat, 7680 px sur le grand côté.
+   - <élément>-<face>-8k.jpg      : chaque face à plat, 7680 px sur le grand côté (affiches : une
+                                    par nom) ;
+   - whatsapp/                    : affiches seulement, chaque affiche et la maquette en 2048 px.
    S'y ajoute export/<version>/ensemble-maquette-8k.jpg / .pdf (les trois supports réunis),
    et avec --toutes, export/nuancier.jpg (comparatif des 4 versions).
 
@@ -262,8 +268,9 @@ async function affiches8K(navigateur, element, nom, afficher) {
 }
 
 // Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
-// rétablit l'A4 exact, centré sur le contenu, et l'on demande aux lecteurs PDF (Acrobat, Chrome,
-// Edge…) d'imprimer à 100 %, sur le bac A4, en recto verso bord long pour les planches à deux
+// rétablit le format exact (A4, ou `format`, A5 pour les affiches), centré sur le contenu, et
+// l'on demande aux lecteurs PDF (Acrobat, Chrome, Edge…) d'imprimer à 100 %, sur le bac du
+// format, en recto verso bord long pour les planches à deux
 // faces et en recto seul pour les étiquettes et les cartes de table (`rectoVerso` : true,
 // false, ou null = sans avis).
 async function finaliserPdf(fichier, { rectoVerso, format = A4_PT }) {
@@ -345,6 +352,13 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);
       const afficher = (suffixe) => console.log("✓", `${edition}/${element.dossier}/${element.dossier}-${suffixe}`);
 
+      if (element.affiches && !NB) {
+        // Images nommées d'après les affiches : celles d'un nom corrigé ou retiré disparaissent.
+        for (const fichier of fs.readdirSync(dossier)) {
+          if (/-8k\.jpg$/.test(fichier) && !/-maquette-8k\.jpg$/.test(fichier)) fs.rmSync(path.join(dossier, fichier));
+        }
+        fs.rmSync(path.join(dossier, "whatsapp"), { recursive: true, force: true });
+      }
       if (element.chevalets) {
         await chevalets8K(navigateur, element, nom, afficher);
       } else if (element.affiches) {

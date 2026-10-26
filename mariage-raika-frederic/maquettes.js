@@ -7,6 +7,7 @@
 
 const MAQUETTES = {
   pochette: { nom: "Pochette passeport", largeur: 480, construire: scenePochette },
+  "pochette-royal": { nom: "Pochette passeport violet royal", largeur: 480, construire: (t, l, h) => scenePochette(t, l, h, "royal") },
   billet: { nom: "Billet d’invitation premium", largeur: 400, construire: (t, l, h) => sceneBillet(t, l, h, "premium") },
   "billet-classique": { nom: "Billet d’invitation classique", largeur: 400, construire: (t, l, h) => sceneBillet(t, l, h, "classique") },
   menu: { nom: "Carte de menu", largeur: 520, construire: sceneMenu },
@@ -201,8 +202,8 @@ function grainDonnees() {
 
 /* ------------------------------ Scènes ------------------------------ */
 
-function scenePochette(theme, l, h) {
-  const [exterieur, interieur] = faces(passeport(theme));
+function scenePochette(theme, l, h, couleurExterieur) {
+  const [exterieur, interieur] = faces(passeport(theme, couleurExterieur));
   return [
     rubanSatin(`M -20 ${h - 30} C 60 ${h - 70}, 120 ${h + 10}, 210 ${h + 25}`, l, h),
     poser(carte(interieur, [210, 148], "livret-ouvert", 3), { x: 127, y: 136, rotation: -3, z: 2 }),

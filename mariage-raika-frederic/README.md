@@ -1,7 +1,7 @@
 # Mariage de Raïka & Frédéric — pochette passeport, billets d'invitation, carte de menu, étiquettes de bouteilles et cartes de table
 
 Supports imprimables du « Passeport de Mariage ». La pochette passeport est en **lilas, violet
-& or** : fond lavande, lettres violet profond, ornements or antique. Les billets d'invitation existent en deux
+& or** : extérieur violet améthyste, lettres violet presque noir, ornements or antique ; intérieur ivoire et lilas très pâle. Les billets d'invitation existent en deux
 catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
 autres invités, en **argent**. La carte de menu, les étiquettes de bouteilles et les 30
 cartes de table sont en **blanc & or** : fond blanc, textes et décors dorés. Ces palettes sans violet, à fond clair,
@@ -35,7 +35,8 @@ article d'assistance Xerox KB0129600 sur les supports.)
 
 ## Les fichiers à utiliser en couleur : `export/violet/`
 
-Un dossier par élément (`pochette-passeport/`, `billet-invitation-premium/`,
+Un dossier par élément (`pochette-passeport/` et `pochette-passeport-violet-royal/` : les deux
+versions de la pochette, voir plus bas ; `billet-invitation-premium/`,
 `billet-invitation-classique/`, `carte-menu/`, `etiquette-vin/`, `etiquette-eau/`,
 `cartes-tables/`) :
 
@@ -196,14 +197,26 @@ Toutes ces teintes sont dans la gamme d'une imprimante quadri (CMJN).
 **Extérieur de la pochette sur papier cartonné, laser couleur.** Imprimé sur carton par une
 laser couleur, ce lilas très pâle (9 à 26 % d'encre) sortait presque blanc : le toner rend les
 teintes aussi claires en points épars, et l'or clair des ornements (contraste 1,3 à 1,7:1 avec
-le lilas) s'y effaçait. La couverture et le dos passent donc à une **lavande soutenue**
-(#ddcff0 au centre, #cfbbe9, #c0a7e1 aux bords ; 20 à 45 % d'encre, deux fois plus que le lilas
-mais quatre fois moins que l'ancien violet foncé, sans aplat lourd qui marbre ou casse au pli) :
-textes violet profond (#24143d et #2b1754 : 7:1 au moins sur le fond le plus foncé), cadre
-**or antique** en aplat plein (#7d5a1c), alliances, monogramme et puce en dégradé d'or antique
-à or vif (#654710 → #c9a14a), ruban de la devise **or pâle** en aplat (#f2e3b9), guillochis plus
-marqués. L'intérieur garde ses couleurs (ivoire, violet et or). Réglages : `passeport.css`,
-« Version violet, extérieur : laser couleur sur papier cartonné ».
+le lilas) s'y effaçait. La couverture et le dos passent donc à un **violet améthyste** franc
+(#b596dc au centre, #a886d3, #9a76ca aux bords ; 60 à 85 % d'encre, environ quatre fois le
+lilas mais moitié moins que l'ancien violet foncé, sans aplat lourd qui marbre ou casse au
+pli) : textes violet presque noir (#1a0c30 et #1f0d40 : 5:1 au moins jusqu'au bord, 6 à 7:1 là
+où ils sont posés), cadre et esperluette **or antique** en aplat plein (#5a3f0e, #4f370b),
+alliances, monogramme et puce en dégradé d'or antique à or vif (#4f370b → #d4ae55), ruban de la
+devise **or pâle** en aplat (#f2e3b9), guillochis plus marqués. L'intérieur garde ses couleurs
+(ivoire, violet et or). Réglages : `passeport.css`, « Version violet, extérieur : laser couleur
+sur papier cartonné ».
+
+**Deux versions de la pochette.** L'extérieur existe en deux couleurs, au même intérieur :
+
+| Dossier | Extérieur (couverture et dos) |
+|---|---|
+| `pochette-passeport/` | **violet améthyste** (ci-dessus) : lettres violet presque noir, ornements or antique ; 60 à 85 % d'encre |
+| `pochette-passeport-violet-royal/` | **violet royal** (#6a46a6 au centre à #4a2c80 aux bords) : lettres or clair et ivoire (5:1 au centre, 8:1 aux bords), ornements or clair, ruban or pâle ; la couleur la plus soutenue, 130 à 160 % d'encre : rainer le pli avant de plier |
+
+Aperçu : `pochette-passeport.html?exterieur=royal` (planche : `impression.html?doc=passeport&exterieur=royal`,
+maquette : `maquettes.html?scene=pochette-royal`). L'édition noir et blanc n'a qu'une pochette :
+en noir, les deux versions sont presque identiques.
 
 **Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
 des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : les
@@ -243,8 +256,8 @@ d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet épaissis pou
 l'encre du fond (voir ci-dessus) ; petites étiquettes dorées des pages claires dans un or plus
 foncé, lisible.
 
-Couleurs principales de la pochette : extérieur lavande #ddcff0 → #cfbbe9 → #c0a7e1, lettres
-#24143d et #2b1754, ornements or #654710 → #c9a14a ; intérieur ivoire #fdf9f1 → lilas très pâle
+Couleurs principales de la pochette : extérieur améthyste #b596dc → #a886d3 → #9a76ca, lettres
+#1a0c30 et #1f0d40, ornements or #4f370b → #d4ae55 ; intérieur ivoire #fdf9f1 → lilas très pâle
 #efe7f5, lettres #2b1a45. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
 visible. Pour un tirage chez un imprimeur, une épreuve couleur reste conseillée.
 
@@ -260,8 +273,8 @@ Billets et menus sur **papier couché brillant**, pochettes sur **papier couché
 - **Imprimante laser** : choisir le type « brillant » / « épais » (ou « cartonné ») selon le
   grammage, pour que le toner soit bien fixé.
 - **Pochettes sur carton, laser couleur** : carton **blanc et lisse** (satiné ou couché laser,
-  200 à 250 g, dans la limite du bac manuel de l'imprimante) ; un carton crème jaunit la
-  lavande, et sur un carton à grain (vergé, toilé, martelé) le toner ne descend pas dans les
+  200 à 250 g, dans la limite du bac manuel de l'imprimante) ; un carton crème ternit le
+  violet, et sur un carton à grain (vergé, toilé, martelé) le toner ne descend pas dans les
   creux : aplats marbrés, petits textes troués. Passer les feuilles par le **bac manuel**, type
   de papier « épais » / « carte » correspondant au grammage (sinon le toner, mal cuit, sort
   pâle et s'efface au doigt), mode **couleur** forcé, qualité la plus haute, **économie de

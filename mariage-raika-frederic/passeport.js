@@ -1,7 +1,12 @@
 /* Pochette passeport, sans photo : le monogramme R & F tient lieu de portrait.
    Extérieur : dos (alliances et texte) | couverture (titre, blason, prénoms, date de passeport.escaleCouverture).
    Intérieur : invitation et tampons des escales | page d'identité des « titulaires ».
-   `theme` : une entrée de THEMES (themes.js). */
+   `theme` : une entrée de THEMES (themes.js).
+   `couleurExterieur` : couleurs de la couverture et du dos, en deux versions (passeport.css) :
+     "amethyste" (par défaut) : contexte du thème, violet améthyste pour la version violet,
+                  lettres foncées et ornements or antique ;
+     "royal"    : violet royal, lettres or clair et ivoire (contexte « sombre »).
+   L'intérieur est le même dans les deux versions. */
 
 /* ------------------------------ Dessins ------------------------------ */
 
@@ -139,7 +144,7 @@ function escaleCouverture() {
 
 /* ------------------------------ Pages ------------------------------ */
 
-function passeport(theme) {
+function passeport(theme, couleurExterieur = "amethyste") {
   const I = INFOS;
   const P = I.passeport;
 
@@ -154,7 +159,7 @@ function passeport(theme) {
   const rotations = [-11, 6, 8];
 
   const exterieur = `
-  <section class="page passeport exterieur ${theme.principal}">
+  <section class="page passeport exterieur ${couleurExterieur === "royal" ? "sombre royal" : theme.principal}">
     <div class="face dos">
       ${encadrement()}
       <div class="contenu">

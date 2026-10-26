@@ -19,6 +19,8 @@
    - <élément>-<face>-8k.jpg      : chaque face à plat, 7680 px sur le grand côté (affiches : une
                                     par nom) ;
    - whatsapp/                    : affiches seulement, chaque affiche et la maquette en 2048 px.
+   La pochette existe en deux versions : pochette-passeport/ (extérieur améthyste) et
+   pochette-passeport-violet-royal/ (extérieur violet royal), au même intérieur.
    S'y ajoute export/<version>/ensemble-maquette-8k.jpg / .pdf (les trois supports réunis),
    et avec --toutes, export/nuancier.jpg (comparatif des 4 versions).
 
@@ -33,7 +35,8 @@
                                        filets et ornements en noir plein, fonds blancs (commun.css,
                                        « Noir et blanc ») ; illustrations 8K sans perte (PNG) ; PDF
                                        convertis en niveaux de gris par Ghostscript (gs) s'il est
-                                       installé ; ni maquettes ni faces à plat.
+                                       installé ; ni maquettes ni faces à plat ; une seule pochette
+                                       (en noir, ses deux versions sont presque identiques).
 */
 const fs = require("fs");
 const os = require("os");
@@ -65,6 +68,7 @@ const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
 // `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles).
+// `couleurSeule` : pas d'édition noir et blanc (--xerox-b7035).
 // `chevalets` : cartes de table, une feuille A4 entière par table (cartes-tables.html), sans
 // planche ; `parPdf` feuilles par PDF 8K, pour des fichiers de moins de 30 Mo.
 const ELEMENTS = [
@@ -73,6 +77,19 @@ const ELEMENTS = [
     page: "pochette-passeport.html",
     impression: "passeport",
     maquette: "pochette",
+    faces: [
+      ["exterieur", ".page", 0],
+      ["interieur", ".page", 1],
+      ["couverture", ".couverture", 0],
+    ],
+  },
+  {
+    dossier: "pochette-passeport-violet-royal",
+    page: "pochette-passeport.html",
+    impression: "passeport",
+    parametres: { exterieur: "royal" },
+    maquette: "pochette-royal",
+    couleurSeule: true,
     faces: [
       ["exterieur", ".page", 0],
       ["interieur", ".page", 1],
@@ -346,7 +363,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
   for (const theme of themes) {
     const edition = NB ? "xerox-b7035" : theme;
-    for (const element of ELEMENTS.filter((e) => !SEULEMENT.length || SEULEMENT.includes(e.dossier))) {
+    for (const element of ELEMENTS.filter((e) => (!SEULEMENT.length || SEULEMENT.includes(e.dossier)) && !(NB && e.couleurSeule))) {
       const dossier = path.join(SORTIE, edition, element.dossier);
       fs.mkdirSync(dossier, { recursive: true });
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);

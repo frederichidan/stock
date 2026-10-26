@@ -9,7 +9,8 @@
 <style>
   /* Dessin d'origine : 210 × 148 mm à plat, plié en deux au milieu.
      Page 1 = extérieur (dos | couverture), page 2 = intérieur. Pour imprimer, utiliser
-     impression.html?doc=passeport : 2 pochettes par feuille A4, à 88,5 % (185,9 × 131 mm). */
+     impression.html?doc=passeport : 2 pochettes par feuille A4, à 88,5 % (185,9 × 131 mm).
+     ?exterieur=royal : couverture et dos en violet royal (sinon améthyste, voir passeport.js). */
   @page { size: 210mm 148mm; margin: 0; }
   /* Recto verso avec retournement sur le bord long : l'intérieur s'imprime tête-bêche. */
   @media print { #planches > .page:nth-child(2) { transform: rotate(180deg); } }
@@ -23,7 +24,7 @@
 <script src="commun.js"></script>
 <script src="passeport.js"></script>
 <script>
-  document.getElementById("planches").innerHTML = passeport(THEME);
+  document.getElementById("planches").innerHTML = passeport(THEME, new URLSearchParams(location.search).get("exterieur") || undefined);
 </script>
 </body>
 </html>

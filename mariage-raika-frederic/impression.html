@@ -17,6 +17,7 @@
      Paramètres d'adresse :
        ?doc=passeport | billet | menu | vin | eau   (et ?theme= comme ailleurs)
        ?categorie=premium | classique   pour le billet (voir INFOS.billets)
+       ?exterieur=royal   pochette en violet royal (sinon améthyste, voir passeport.js)
        ?images=["…","…"]  une illustration par face (fond perdu compris, à l'endroit), et
                           par-dessus les textes en vectoriel : c'est ainsi qu'exporter.js
                           produit les PDF « 8K » ;
@@ -88,8 +89,9 @@
   // en A4 portrait : le recto verso « bord long » y retourne la feuille comme une page de livre,
   // sans dépendre de la façon dont l'imprimante tourne les pages en paysage.
   const CATEGORIE = new URLSearchParams(location.search).get("categorie") || "premium";
+  const EXTERIEUR = new URLSearchParams(location.search).get("exterieur") === "royal" ? "royal" : "amethyste";
   const DOCUMENTS = {
-    passeport: { rendu: passeport, nom: "Pochette passeport", largeur: 210, hauteur: 148, retournement: "vertical", pli: true, a4: { paysage: false, colonnes: 1, lignes: 2 }, finition: "coins arrondis 3 mm conseillés" },
+    passeport: { rendu: (theme) => passeport(theme, EXTERIEUR), nom: `Pochette passeport${EXTERIEUR === "royal" ? " violet royal" : ""}`, largeur: 210, hauteur: 148, retournement: "vertical", pli: true, a4: { paysage: false, colonnes: 1, lignes: 2 }, finition: "coins arrondis 3 mm conseillés" },
     billet: { rendu: (theme) => billet(theme, CATEGORIE), nom: `Billet d’invitation ${(INFOS.billets[CATEGORIE] || INFOS.billets.premium).nom.toLowerCase()}`, largeur: 210, hauteur: 99, retournement: "horizontal", a4: { paysage: false, colonnes: 1, lignes: 3 } },
     menu: { rendu: carteMenu, nom: "Carte de menu", largeur: 99, hauteur: 210, retournement: "vertical", rotation: 90, a4: { paysage: false, colonnes: 1, lignes: 3 } },
     vin: { rendu: etiquetteVin, nom: "Étiquette de vin", largeur: FORMATS_ETIQUETTES.vin[0], hauteur: FORMATS_ETIQUETTES.vin[1], echelle: 1, rectoSeul: true, a4: { paysage: false, colonnes: 2, lignes: 2 }, finition: "papier adhésif" },

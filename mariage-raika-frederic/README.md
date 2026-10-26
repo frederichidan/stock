@@ -193,18 +193,17 @@ lettres **violet profond** (#3f2b59) et des ornements **dorés** : la même logi
 l'intérieur (ivoire, violet et or) et que le code vestimentaire « touches de violet & d'or ».
 Toutes ces teintes sont dans la gamme d'une imprimante quadri (CMJN).
 
-**Pochette sur papier cartonné, laser couleur.** Imprimé sur carton par une laser couleur, ce
-lilas très pâle (9 à 26 % d'encre) sortait presque blanc : le toner rend les teintes aussi
-claires en points épars, et l'or clair des ornements (contraste 1,3 à 1,7:1 avec le lilas) s'y
-effaçait. La pochette passe donc à une **lavande soutenue** (#ddcff0 au centre, #cfbbe9,
-#c0a7e1 aux bords ; 20 à 45 % d'encre, deux fois plus que le lilas mais quatre fois moins que
-l'ancien violet foncé, sans aplat lourd qui marbre ou casse au pli) et l'intérieur à une
-lavande claire (#f3ecf9 → #d9c7ee). Textes violet profond (#24143d et #2b1754 : 7:1 au moins
-sur le fond le plus foncé, 9:1 à l'intérieur), cadres et filets **or antique** en aplat plein
-(#7d5a1c), alliances, monogramme et puce en dégradé d'or antique à or vif (#654710 → #c9a14a),
-ruban de la devise **or pâle** en aplat (#f2e3b9), guillochis plus marqués, petites capitales
-en 7 pt (6,2 pt imprimés). Réglages : `passeport.css`, « Version violet : laser couleur sur
-papier cartonné ».
+**Extérieur de la pochette sur papier cartonné, laser couleur.** Imprimé sur carton par une
+laser couleur, ce lilas très pâle (9 à 26 % d'encre) sortait presque blanc : le toner rend les
+teintes aussi claires en points épars, et l'or clair des ornements (contraste 1,3 à 1,7:1 avec
+le lilas) s'y effaçait. La couverture et le dos passent donc à une **lavande soutenue**
+(#ddcff0 au centre, #cfbbe9, #c0a7e1 aux bords ; 20 à 45 % d'encre, deux fois plus que le lilas
+mais quatre fois moins que l'ancien violet foncé, sans aplat lourd qui marbre ou casse au pli) :
+textes violet profond (#24143d et #2b1754 : 7:1 au moins sur le fond le plus foncé), cadre
+**or antique** en aplat plein (#7d5a1c), alliances, monogramme et puce en dégradé d'or antique
+à or vif (#654710 → #c9a14a), ruban de la devise **or pâle** en aplat (#f2e3b9), guillochis plus
+marqués. L'intérieur garde ses couleurs (ivoire, violet et or). Réglages : `passeport.css`,
+« Version violet, extérieur : laser couleur sur papier cartonné ».
 
 **Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
 des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : les
@@ -244,8 +243,9 @@ d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet épaissis pou
 l'encre du fond (voir ci-dessus) ; petites étiquettes dorées des pages claires dans un or plus
 foncé, lisible.
 
-Couleurs principales de la pochette : fond lavande #ddcff0 → #cfbbe9 → #c0a7e1 (intérieur
-#f3ecf9 → #d9c7ee), lettres #24143d et #2b1754, ornements or #654710 → #c9a14a. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
+Couleurs principales de la pochette : extérieur lavande #ddcff0 → #cfbbe9 → #c0a7e1, lettres
+#24143d et #2b1754, ornements or #654710 → #c9a14a ; intérieur ivoire #fdf9f1 → lilas très pâle
+#efe7f5, lettres #2b1a45. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
 visible. Pour un tirage chez un imprimeur, une épreuve couleur reste conseillée.
 
 ### Réglages selon le papier

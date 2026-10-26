@@ -50,8 +50,8 @@
    violet royal d'origine, portant des lettres violet profond et des ornements dorés (contexte
    « clair », themes.js). L'aplat violet foncé d'avant (#6f4e9d, 180 % d'encre) chargeait le
    papier et rendait les lettres claires difficiles à imprimer nettement ; le lilas en demande
-   environ quatre fois moins (#e8dff1 au centre, #dccfea aux bords). La pochette elle-même,
-   imprimée sur carton, prend une lavande plus soutenue (passeport.css). */
+   environ quatre fois moins (#e8dff1 au centre, #dccfea aux bords). L'extérieur de la pochette,
+   imprimé sur carton, prend une lavande plus soutenue (passeport.css). */
 :root,
 [data-theme="violet"] {
   --fond-1: #f3eef8; --fond-2: #e8dff1; --fond-3: #dccfea;

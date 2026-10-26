@@ -46,9 +46,9 @@ function ruban(texte) {
       <path id="${chemin}" d="M24,21 Q100,43 176,21"/>
     </defs>
     <g stroke="url(#${or})" stroke-width="0.9" stroke-linejoin="round">
-      <path d="M32,12 L5,15 L13,22.5 L5,30 L32,29 Z" style="fill: var(--accent); fill-opacity: 0.28"/>
-      <path d="M168,12 L195,15 L187,22.5 L195,30 L168,29 Z" style="fill: var(--accent); fill-opacity: 0.28"/>
-      <path d="M24,8 Q100,30 176,8 L176,26 Q100,48 24,26 Z" style="fill: var(--accent); fill-opacity: 0.1"/>
+      <path class="pointe" d="M32,12 L5,15 L13,22.5 L5,30 L32,29 Z"/>
+      <path class="pointe" d="M168,12 L195,15 L187,22.5 L195,30 L168,29 Z"/>
+      <path class="bande" d="M24,8 Q100,30 176,8 L176,26 Q100,48 24,26 Z"/>
     </g>
     <text font-family="Great Vibes" font-size="15.5" fill="url(#${lettres})" stroke-width="0" stroke-linejoin="round" style="fill: var(--lettres-svg, url(#${lettres})); stroke: var(--let-c)">
       <textPath href="#${chemin}" startOffset="50%" text-anchor="middle">${esc(texte)}</textPath>

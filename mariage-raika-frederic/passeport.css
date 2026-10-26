@@ -54,7 +54,7 @@
 
 /* ---------------------------- Couverture ---------------------------- */
 .passeport .couverture .contenu { padding: 10mm 8mm 9mm; }
-.passeport .emetteur { color: var(--accent-fort); font-weight: 700; font-size: 7pt; letter-spacing: 0.32em; }
+.passeport .emetteur { color: var(--accent-fort); font-weight: 700; font-size: 7.5pt; letter-spacing: 0.32em; }
 .passeport .titre-passeport {
   font-family: var(--serif);
   font-weight: 900;
@@ -69,6 +69,8 @@
 .passeport .blason { position: relative; margin-top: 6mm; display: flex; flex-direction: column; align-items: center; }
 .passeport .blason .monogramme { width: 47mm; height: 47mm; display: block; }
 .passeport .ruban { width: 74mm; height: 16.3mm; display: block; margin-top: -4mm; }
+.passeport .ruban .pointe { fill: var(--accent); fill-opacity: 0.28; }
+.passeport .ruban .bande { fill: var(--accent); fill-opacity: 0.1; }
 .passeport .couverture .noms {
   font-family: var(--script);
   font-size: 27pt;
@@ -84,7 +86,7 @@
 
 /* ------------------------ Intérieur : invitation ------------------------ */
 .passeport .invitation-page .contenu { padding: 11mm 10mm 9mm; }
-.passeport .invitation-page .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.34em; }
+.passeport .invitation-page .etiquette { color: var(--accent-texte); font-size: 7pt; letter-spacing: 0.34em; }
 .passeport .invitation-page .ornement { width: 46mm; height: 4mm; margin-top: 1.6mm; }
 .passeport .invitation-page .noms { font-family: var(--script); font-size: 25pt; line-height: 1.25; padding: 0 3mm; margin-top: 2.4mm; white-space: nowrap; }
 .passeport .texte-invitation { font-style: italic; font-size: 11.5pt; line-height: 1.35; margin-top: 1.4mm; text-wrap: pretty; }
@@ -105,7 +107,7 @@
 /* ---------------------- Intérieur : page d'identité ---------------------- */
 .passeport .identite .contenu { align-items: stretch; text-align: left; padding: 9mm 8mm 0; }
 .passeport .identite .entete { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.3mm solid var(--accent); padding-bottom: 1.6mm; }
-.passeport .identite .entete .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.3em; }
+.passeport .identite .entete .etiquette { color: var(--accent-texte); font-size: 7pt; letter-spacing: 0.3em; }
 .passeport .identite .entete .pays { font-family: var(--serif); font-style: italic; font-size: 9.5pt; color: var(--accent-fort); }
 .passeport .identite .donnees { display: grid; grid-template-columns: 35mm 1fr; gap: 4.5mm; margin-top: 6mm; }
 .passeport .photo {
@@ -119,15 +121,15 @@
   background: var(--zone);
 }
 .passeport .photo .monogramme { width: 30mm; height: 30mm; display: block; margin-top: -3mm; }
-.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent-texte); font-size: 6.5pt; }
+.passeport .photo .etiquette { position: absolute; bottom: 1.4mm; left: 0; right: 0; text-align: center; color: var(--accent-texte); font-size: 7pt; }
 .passeport .champs { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm 3mm; align-content: start; }
 .passeport .champs .large { grid-column: 1 / -1; }
-.passeport .champs .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.16em; }
+.passeport .champs .etiquette { color: var(--accent-texte); font-size: 7pt; letter-spacing: 0.16em; }
 .passeport .champs .valeur { font-family: var(--sans); font-weight: 600; font-size: 7.8pt; margin-top: 0.6mm; white-space: nowrap; }
 .passeport .champs .titulaires .valeur { font-family: var(--script); font-weight: 400; font-size: 15pt; line-height: 1.1; color: var(--accent-fort); }
 .passeport .signature-bloc { margin-top: 7mm; border-bottom: 0.25mm dotted var(--ligne-ecriture); }
 .passeport .signature-bloc .etiquette,
-.passeport .observations .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.16em; }
+.passeport .observations .etiquette { color: var(--accent-texte); font-size: 7pt; letter-spacing: 0.16em; }
 .passeport .signature-bloc .signature {
   font-family: var(--script);
   font-size: 19pt;
@@ -156,3 +158,45 @@
   white-space: nowrap;
   color: var(--texte);
 }
+
+/* ------------ Version violet : laser couleur sur papier cartonné ------------ */
+/* Le lilas très pâle (#e8dff1, 9 à 26 % d'encre) sortait presque blanc d'une laser couleur sur
+   carton : les teintes aussi claires s'y impriment en points épars, que la surface du carton
+   pâlit encore, et l'or clair des ornements (#d9b977, contraste 1,3 à 1,7:1 avec le lilas) s'y
+   effaçait. Ici, toutes les couleurs restent dans les tons que le toner rend en aplat régulier :
+   - fond lavande soutenu, 20 à 45 % d'encre (deux fois plus que le lilas, quatre fois moins que
+     l'ancien violet foncé : pas d'aplat lourd qui marbre ou casse au pli du carton) ;
+   - intérieur lavande plus clair, pour garder les petits textes très contrastés ;
+   - textes violet profond : 7:1 au moins sur le fond le plus foncé, 9:1 à l'intérieur ;
+   - or antique foncé (près de 3:1 au bord, 4:1 au centre) pour les cadres et filets, en aplat
+     plein au lieu de semi-transparent ; alliances, monogramme et puce en dégradé de cet or à un
+     or vif ; ruban de la devise en aplat or pâle, sans transparence ;
+   - petites capitales en 7 pt au lieu de 6,5 (6,2 pt imprimés à 88,5 %) ;
+   - guillochis plus marqués. */
+[data-theme="violet"] .page.passeport.clair {
+  --fond-1: #ddcff0; --fond-2: #cfbbe9; --fond-3: #c0a7e1;
+  --verso-1: #f3ecf9; --verso-2: #e9def5; --verso-3: #d9c7ee;
+  --texte: #24143d;
+  --texte-doux: #2e1a4f;
+  --lettres: #2b1754;
+  --accent: #7d5a1c;
+  --accent-texte: #45300f;
+  --accent-fort: #2e1a4f;
+  --discret: #46325f;
+  --code: #2e1a4f;
+  --esperluette: #6e4e14;
+  --ligne: #7d5a1c;
+  --filet: rgba(46, 26, 79, 0.35);
+  --zone: #cdb9e7;
+  --ligne-ecriture: rgba(46, 26, 79, 0.6);
+  --let-a: #2b1754; --let-b: #5a3a8f; --let-c: #3d2470;
+  --orn-a: #654710; --orn-b: #c9a14a; --orn-c: #876420;
+  --guilloche: #4a2c7a;
+  --guilloche-opacite: 0.2;
+}
+[data-theme="violet"] .page.passeport.interieur.clair { --guilloche-opacite: 0.12; }
+[data-theme="violet"] .page.passeport.clair .ruban .pointe { fill: #e2c886; fill-opacity: 1; }
+[data-theme="violet"] .page.passeport.clair .ruban .bande { fill: #f2e3b9; fill-opacity: 1; }
+/* Édition noir et blanc (commun.css) : ruban gris clair, comme les autres aplats. */
+:root.nb .page.passeport .ruban .pointe { fill: #000; fill-opacity: 0.28; }
+:root.nb .page.passeport .ruban .bande { fill: #000; fill-opacity: 0.1; }

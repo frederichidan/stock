@@ -1,7 +1,8 @@
 /* Déclinaisons de couleurs, toutes tirées de la palette du mariage :
    nuit #1c1036 · violet royal #4a2384 · or antique #a07a32 · or champagne #c9a464 · argent #bcbec9.
-   La version retenue (violet) habille la pochette d'un lilas pâle (#e8dff1), lettres violet
-   profond et ornements dorés : peu d'encre, lettres foncées nettes à l'impression.
+   La version retenue (violet) habille la pochette d'une lavande soutenue (#cfbbe9, voir
+   passeport.css : impression laser couleur sur carton), lettres violet profond et ornements or
+   antique : encre modérée, lettres foncées nettes à l'impression.
 
    `principal` : fond du recto du billet et de la carte de menu ;
    `verso`     : fond du verso du billet (programme).

@@ -1,7 +1,7 @@
 # Mariage de Raïka & Frédéric — pochette passeport, billets d'invitation, carte de menu, étiquettes de bouteilles et cartes de table
 
 Supports imprimables du « Passeport de Mariage ». La pochette passeport est en **lilas, violet
-& or** : fond lilas pâle, lettres violet profond, ornements dorés. Les billets d'invitation existent en deux
+& or** : fond lavande, lettres violet profond, ornements or antique. Les billets d'invitation existent en deux
 catégories : **premium** pour les invités VIP, en **or champagne**, et **classique** pour les
 autres invités, en **argent**. La carte de menu, les étiquettes de bouteilles et les 30
 cartes de table sont en **blanc & or** : fond blanc, textes et décors dorés. Ces palettes sans violet, à fond clair,
@@ -193,6 +193,19 @@ lettres **violet profond** (#3f2b59) et des ornements **dorés** : la même logi
 l'intérieur (ivoire, violet et or) et que le code vestimentaire « touches de violet & d'or ».
 Toutes ces teintes sont dans la gamme d'une imprimante quadri (CMJN).
 
+**Pochette sur papier cartonné, laser couleur.** Imprimé sur carton par une laser couleur, ce
+lilas très pâle (9 à 26 % d'encre) sortait presque blanc : le toner rend les teintes aussi
+claires en points épars, et l'or clair des ornements (contraste 1,3 à 1,7:1 avec le lilas) s'y
+effaçait. La pochette passe donc à une **lavande soutenue** (#ddcff0 au centre, #cfbbe9,
+#c0a7e1 aux bords ; 20 à 45 % d'encre, deux fois plus que le lilas mais quatre fois moins que
+l'ancien violet foncé, sans aplat lourd qui marbre ou casse au pli) et l'intérieur à une
+lavande claire (#f3ecf9 → #d9c7ee). Textes violet profond (#24143d et #2b1754 : 7:1 au moins
+sur le fond le plus foncé, 9:1 à l'intérieur), cadres et filets **or antique** en aplat plein
+(#7d5a1c), alliances, monogramme et puce en dégradé d'or antique à or vif (#654710 → #c9a14a),
+ruban de la devise **or pâle** en aplat (#f2e3b9), guillochis plus marqués, petites capitales
+en 7 pt (6,2 pt imprimés). Réglages : `passeport.css`, « Version violet : laser couleur sur
+papier cartonné ».
+
 **Netteté des textes.** Le Cormorant Garamond des textes courants a, dans sa graisse normale,
 des déliés d'environ 0,1 mm qui pâlissent et s'estompent à l'impression jet d'encre : les
 textes courants (Cormorant droit et italique, capitales Montserrat) sont désormais en
@@ -231,8 +244,8 @@ d'au moins 5,3 pt, sans transparence ; textes clairs sur le violet épaissis pou
 l'encre du fond (voir ci-dessus) ; petites étiquettes dorées des pages claires dans un or plus
 foncé, lisible.
 
-Couleurs principales de la pochette : fond lilas #f3eef8 → #e8dff1 → #dccfea, lettres
-#3f2b59, ornements or #9f7a38 → #d9b977. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
+Couleurs principales de la pochette : fond lavande #ddcff0 → #cfbbe9 → #c0a7e1 (intérieur
+#f3ecf9 → #d9c7ee), lettres #24143d et #2b1754, ornements or #654710 → #c9a14a. Les PDF restent en RVB ; l'imprimante (ou l'imprimeur) les convertit sans perte
 visible. Pour un tirage chez un imprimeur, une épreuve couleur reste conseillée.
 
 ### Réglages selon le papier
@@ -246,6 +259,14 @@ Billets et menus sur **papier couché brillant**, pochettes sur **papier couché
   pochettes) et la qualité la plus haute ; désactiver tout mode économie d'encre.
 - **Imprimante laser** : choisir le type « brillant » / « épais » (ou « cartonné ») selon le
   grammage, pour que le toner soit bien fixé.
+- **Pochettes sur carton, laser couleur** : carton **blanc et lisse** (satiné ou couché laser,
+  200 à 250 g, dans la limite du bac manuel de l'imprimante) ; un carton crème jaunit la
+  lavande, et sur un carton à grain (vergé, toilé, martelé) le toner ne descend pas dans les
+  creux : aplats marbrés, petits textes troués. Passer les feuilles par le **bac manuel**, type
+  de papier « épais » / « carte » correspondant au grammage (sinon le toner, mal cuit, sort
+  pâle et s'efface au doigt), mode **couleur** forcé, qualité la plus haute, **économie de
+  toner désactivée**, taille réelle (100 %). **Rainer** le pli avant de plier : sur le carton,
+  le toner se fendille sur un pli non rainé. Imprimer une feuille d'essai avant le tirage.
 - **Recto verso sur papier brillant** : laisser sécher le recto 10 à 15 minutes avant le verso.
   Si l'imprimante ne fait pas le recto verso sur ce papier, imprimer la page 1, puis remettre
   la feuille retournée sur le bord long et imprimer la page 2 (faire un essai sur papier

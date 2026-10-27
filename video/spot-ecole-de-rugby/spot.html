@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Spot école de rugby RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  :root{ --navy:#0a1747; --navy2:#0b1a52; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --paper:#f4f1ea; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy)}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--navy);font-family:Inter,sans-serif;color:#fff}
+  .scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+  .full{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .glow{position:absolute;inset:0;background:radial-gradient(60% 70% at 70% 40%, rgba(28,63,158,.9) 0%, transparent 70%), radial-gradient(60% 70% at 0% 100%, #06102f 0%, transparent 70%)}
+  .anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;line-height:.95;letter-spacing:2px}
+  .serif{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500}
+  .y{color:var(--yellow)}
+
+  #grain{position:absolute;inset:-50%;background:url(src/grain.png);opacity:.06;mix-blend-mode:overlay;pointer-events:none;z-index:50}
+  #vignette{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 50%, transparent 58%, rgba(0,0,0,.4) 100%);pointer-events:none;z-index:49}
+  #flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:48;pointer-events:none}
+  .wipe{position:absolute;top:-300px;height:1680px;width:1500px;transform:skewX(-18deg);z-index:40;left:-2200px}
+  #wipeY{background:var(--yellow)} #wipeN{background:var(--navy2)}
+
+  #bug{position:absolute;left:64px;top:52px;display:flex;align-items:center;gap:22px;z-index:45;opacity:0}
+  #bug img{height:116px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+  #bug div{font-weight:700;font-size:22px;letter-spacing:7px;text-transform:uppercase;line-height:1.4;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  #bug small{display:block;font-weight:700;font-size:16px;letter-spacing:6px;color:var(--yellow)}
+  #credit{position:absolute;right:40px;bottom:30px;z-index:45;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:#fff;opacity:0;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+
+  .streaks{position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none}
+
+  /* S1 titre */
+  #s1 .crest{position:absolute;left:50%;top:120px;height:330px;transform:translateX(-50%);filter:drop-shadow(0 18px 36px rgba(0,0,0,.5))}
+  #s1 .k{position:absolute;left:0;right:0;top:488px;text-align:center;font-size:30px;font-weight:800;letter-spacing:16px;color:var(--yellow);text-transform:uppercase}
+  #s1 .t{position:absolute;left:0;right:0;top:540px;text-align:center;font-size:250px}
+  #s1 .s{position:absolute;left:0;right:0;top:810px;text-align:center;font-size:66px}
+
+  /* scènes photo */
+  .ph .shade{position:absolute;inset:0;background:linear-gradient(90deg, rgba(10,23,71,.9) 0%, rgba(10,23,71,.55) 36%, rgba(10,23,71,0) 62%), linear-gradient(0deg, rgba(10,23,71,.65) 0%, transparent 42%)}
+  .ph.right .shade{background:linear-gradient(270deg, rgba(10,23,71,.9) 0%, rgba(10,23,71,.55) 36%, rgba(10,23,71,0) 62%), linear-gradient(0deg, rgba(10,23,71,.65) 0%, transparent 42%)}
+  .ph .num{position:absolute;left:150px;top:560px;font-size:32px;font-weight:800;letter-spacing:10px;color:var(--yellow)}
+  .ph .word{position:absolute;left:142px;top:608px;font-size:200px}
+  .ph .sub{position:absolute;left:150px;top:830px;font-size:52px;max-width:900px;line-height:1.1}
+  .ph .bar{position:absolute;left:150px;top:808px;height:12px;width:420px;background:var(--yellow);transform-origin:left center}
+  .ph.right .num,.ph.right .word,.ph.right .sub{left:auto;right:150px;text-align:right}
+  .ph.right .bar{left:auto;right:150px;transform-origin:right center}
+  .ph img{filter:contrast(1.04) saturate(1.06)}
+  .ph.low .shade{background:linear-gradient(0deg, rgba(10,23,71,.92) 0%, rgba(10,23,71,.55) 30%, rgba(10,23,71,0) 55%)}
+  .ph.low .num{top:700px}.ph.low .word{top:742px;font-size:180px}.ph.low .bar{top:920px}.ph.low .sub{top:942px;font-size:48px}
+
+  /* S5 famille */
+  #s5 .shade{position:absolute;inset:0;background:linear-gradient(0deg, rgba(10,23,71,.9) 0%, rgba(10,23,71,.6) 38%, rgba(10,23,71,.15) 62%)}
+  #s5 .a{position:absolute;left:0;right:0;top:640px;text-align:center;font-size:140px;text-shadow:0 4px 24px rgba(0,0,0,.5)}
+  #s5 .b{position:absolute;left:0;right:0;top:770px;text-align:center;font-size:200px;text-shadow:0 4px 24px rgba(0,0,0,.5)}
+
+  /* S6 valeurs */
+  #s6 .head{position:absolute;left:0;right:0;top:170px;text-align:center;font-size:30px;font-weight:800;letter-spacing:14px;color:var(--yellow);text-transform:uppercase}
+  #s6 .title{position:absolute;left:0;right:0;top:225px;text-align:center;font-size:120px}
+  #s6 .cards{position:absolute;left:150px;right:150px;top:470px;display:grid;grid-template-columns:repeat(4,1fr)}
+  #s6 .card{padding:44px 30px;border-top:2px solid rgba(255,255,255,.25);border-bottom:2px solid rgba(255,255,255,.25);text-align:center}
+  #s6 .card + .card{border-left:2px solid rgba(255,255,255,.25)}
+  #s6 .card svg{width:96px;height:96px;stroke:var(--yellow);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:26px}
+  #s6 .card h3{font-family:Anton,sans-serif;font-weight:400;font-size:78px;text-transform:uppercase;line-height:1}
+
+  /* S7 appel */
+  #s7 .shade{position:absolute;inset:0;background:linear-gradient(90deg, rgba(10,23,71,.92) 0%, rgba(10,23,71,.6) 45%, rgba(10,23,71,0) 72%)}
+  #s7 .a{position:absolute;left:150px;top:330px;font-size:150px}
+  #s7 .b{position:absolute;left:142px;top:500px;font-size:205px}
+  #s7 .c{position:absolute;left:150px;top:770px;font-size:60px}
+
+  /* S8 signature */
+  #s8 .crest{position:absolute;left:210px;top:130px;height:820px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.5))}
+  #s8 .shine{position:absolute;left:210px;top:130px;width:684px;height:820px;overflow:hidden;
+    -webkit-mask:url(src/ecusson.png) center/contain no-repeat;mask:url(src/ecusson.png) center/contain no-repeat}
+  #s8 .shine i{position:absolute;top:-10%;left:-60%;width:40%;height:120%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg)}
+  #s8 .info{position:absolute;left:1010px;top:170px;width:800px}
+  #s8 .name{font-size:30px;font-weight:800;letter-spacing:12px;text-transform:uppercase}
+  #s8 .name small{display:block;color:var(--yellow);font-size:22px;letter-spacing:10px;margin-top:6px}
+  #s8 .cta{margin-top:44px;font-size:118px;line-height:1}
+  #s8 .how{margin-top:24px;font-size:46px;color:rgba(255,255,255,.92)}
+  #s8 .how b{color:var(--yellow);font-weight:500}
+  #s8 ul{list-style:none;margin-top:40px;border-top:2px solid rgba(255,255,255,.25);padding-top:28px}
+  #s8 li{font-family:Anton,sans-serif;font-size:80px;line-height:1.2;letter-spacing:3px;display:flex;align-items:center;gap:22px}
+  #s8 li svg{width:44px;height:44px;stroke:var(--yellow);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  #s8 li small{font-family:Inter;font-size:30px;color:var(--yellow);font-weight:700;letter-spacing:2px}
+  #s8 .cr{position:absolute;right:40px;bottom:40px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:26px;color:rgba(255,255,255,.75)}
+  #s8 .flag{position:absolute;left:0;bottom:0;height:18px;width:1920px;display:flex;transform-origin:left center}
+  #s8 .flag i{flex:1}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <section class="scene" id="s1">
+    <div class="glow"></div>
+    <svg class="streaks" id="st1" viewBox="0 0 1920 1080"></svg>
+    <img class="crest" src="src/ecusson.png">
+    <div class="k">Rugby Club Akanda</div>
+    <div class="t anton">École de <span class="y">rugby</span></div>
+    <div class="s serif">Le rugby, ça s’apprend dès le plus jeune âge&nbsp;!</div>
+  </section>
+
+  <section class="scene ph" id="p1"><img class="full" src="src/photo1.jpg" style="object-position:55% 40%"><div class="shade"></div>
+    <div class="num">01</div><div class="word anton">Apprendre</div><div class="bar"></div><div class="sub serif">les bases du rugby en s’amusant</div></section>
+  <section class="scene ph right low" id="p2"><img class="full" src="src/photo4.jpg" style="object-position:40% 45%"><div class="shade"></div>
+    <div class="num">02</div><div class="word anton">Progresser</div><div class="bar"></div><div class="sub serif">avec des éducateurs passionnés</div></section>
+  <section class="scene ph" id="p3"><img class="full" src="src/photo2.jpg" style="object-position:50% 38%"><div class="shade"></div>
+    <div class="num">03</div><div class="word anton">S’épanouir</div><div class="bar"></div><div class="sub serif">confiance, respect et esprit d’équipe</div></section>
+
+  <section class="scene" id="s5"><img class="full" src="src/photo4.jpg" style="object-position:45% 50%"><div class="shade"></div>
+    <div class="a serif">Plus qu’un club,</div>
+    <div class="b serif y">une famille&nbsp;!</div>
+  </section>
+
+  <section class="scene" id="s6">
+    <div class="glow"></div>
+    <div class="head">À l’école de rugby du RCA</div>
+    <div class="title anton">On grandit ensemble</div>
+    <div class="cards">
+      <div class="card" id="c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.4 2.2 2 3.5 2s2.5-.6 3.5-2M9 9.5h.01M15 9.5h.01"/></svg><h3>Plaisir</h3></div>
+      <div class="card" id="c2"><svg viewBox="0 0 24 24"><path d="M7 11l3-3 3 2 4-4"/><path d="M3 13l4 4 3-1 3 3 3-1 4-5-3-4"/><path d="M3 13l4-5 3 0"/></svg><h3>Respect</h3></div>
+      <div class="card" id="c3"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6"/><path d="M16 11.5a3 3 0 1 0 0-6"/><path d="M17.5 14.3c2.1.7 3.5 2.8 3.5 5.7"/></svg><h3>Solidarité</h3></div>
+      <div class="card" id="c4"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><h3>Confiance</h3></div>
+    </div>
+  </section>
+
+  <section class="scene" id="s7"><img class="full" src="src/photo2.jpg" style="object-position:50% 38%"><div class="shade"></div>
+    <div class="a anton">Inscris</div>
+    <div class="b anton y">ton enfant&nbsp;!</div>
+    <div class="c serif">Rejoins l’école de rugby du RCA</div>
+  </section>
+
+  <section class="scene" id="s8">
+    <div class="glow"></div>
+    <svg class="streaks" id="st8" viewBox="0 0 1920 1080"></svg>
+    <img class="crest" src="src/ecusson.png">
+    <div class="shine"><i></i></div>
+    <div class="info">
+      <div class="name" id="nm">École de rugby<small>Rugby Club Akanda</small></div>
+      <div class="cta serif" id="cta">Inscriptions ouvertes&nbsp;!</div>
+      <div class="how" id="how">Infos et inscriptions <b>au</b></div>
+      <ul>
+        <li id="ph1"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><small>+241</small>077 05 44 13</li>
+        <li id="ph2"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><small>+241</small>074 85 69 48</li>
+        <li id="ph3"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a1.5 1.5 0 0 1-1.5 1.5A16 16 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><small>+241</small>074 91 40 12</li>
+      </ul>
+    </div>
+    <div class="cr">Photos ©Mélaine</div>
+    <div class="flag"><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
+  </section>
+
+  <div id="bug"><img src="src/ecusson.png"><div>École de rugby<small>RCA · Akanda</small></div></div>
+  <div id="credit">©Mélaine</div>
+  <div class="wipe" id="wipeN"></div>
+  <div class="wipe" id="wipeY"></div>
+  <div id="flash"></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+</div>
+
+<script src="lib/gsap.min.js"></script>
+<script>
+function streaks(svgId, seed, n){
+  const svg=document.getElementById(svgId); let s=seed;
+  const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};
+  const cols=['#f5c400','#22a34a','#ffffff','#f5c400'];
+  for(let i=0;i<n;i++){
+    const y=120+rnd()*840, len=500+rnd()*900, th=6+rnd()*18, c=cols[i%4];
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','sk');
+    g.innerHTML=`<path d="M0 0 L${len-th/2} ${-th/2} A${th/2} ${th/2} 0 0 1 ${len-th/2} ${th/2} Z" fill="${c}" opacity="${c==='#ffffff'?.8:1}"/>`;
+    g.dataset.y=y; g.dataset.len=len; g.dataset.d=rnd();
+    svg.appendChild(g);
+  }
+  return [...svg.querySelectorAll('.sk')];
+}
+const sk1=streaks('st1',5,14), sk8=streaks('st8',29,12);
+
+const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
+const show=(id,at)=>tl.set('#'+id,{visibility:'visible'},at);
+const hide=(id,at)=>tl.set('#'+id,{visibility:'hidden'},at);
+const E='expo.out';
+function wipe(at){
+  tl.fromTo('#wipeN',{x:0},{x:4400,duration:.62,ease:'power2.inOut'},at-.31);
+  tl.fromTo('#wipeY',{x:-300},{x:4300,duration:.62,ease:'power2.inOut'},at-.36);
+}
+function flash(at,o=.9){ tl.fromTo('#flash',{opacity:o},{opacity:0,duration:.5,ease:'power2.out',immediateRender:false},at); }
+function streakPass(list,at,dur,rot){
+  list.forEach(g=>{
+    const y=+g.dataset.y, len=+g.dataset.len, d=+g.dataset.d;
+    tl.fromTo(g,{attr:{transform:`translate(${-len-200} ${y}) rotate(${rot})`}},
+      {attr:{transform:`translate(${2100} ${y-260*Math.tan(-rot*Math.PI/180)}) rotate(${rot})`},duration:dur*(0.7+d*0.6),ease:'power2.inOut'},at+d*0.8);
+  });
+}
+
+// ===== S1 : 0 → 4 s =====
+show('s1',0);
+streakPass(sk1,0.0,2.2,-9); streakPass(sk1,2.0,1.8,-9);
+tl.fromTo('#s1 .crest',{opacity:0,scale:.6,xPercent:-50},{opacity:1,scale:1,xPercent:-50,duration:.9,ease:'back.out(1.6)'},0.1);
+tl.fromTo('#s1 .k',{opacity:0,y:20},{opacity:1,y:0,duration:.5},0.6);
+tl.fromTo('#s1 .t',{opacity:0,scale:1.3},{opacity:1,scale:1,duration:.5,ease:E},0.9);
+tl.fromTo('#s1 .s',{opacity:0,y:30},{opacity:1,y:0,duration:.6},1.7);
+tl.to('#s1 .crest, #s1 .k, #s1 .t, #s1 .s',{opacity:0,y:-30,duration:.35,ease:'power2.in'},3.6);
+hide('s1',4.0); flash(4.0,1);
+
+// ===== Photos : 4 → 16 s (3 plans de 4 s) =====
+[['p1',4,[260,200,0,-20,1.27,1.36]],['p2',8,[0,-40,-40,-70,1.12,1.22]],['p3',12,[300,240,40,0,1.3,1.4]]].forEach(([id,at,pan],i)=>{
+  show(id,at); hide(id,at+4);
+  const right=document.getElementById(id).classList.contains('right');
+  tl.fromTo(`#${id} img`,{scale:pan[4],x:pan[0],y:pan[2]},{scale:pan[5],x:pan[1],y:pan[3],duration:4.3,ease:'none'},at);
+  tl.fromTo(`#${id} .num`,{opacity:0,y:20},{opacity:1,y:0,duration:.4},at+.2);
+  tl.fromTo(`#${id} .word`,{opacity:0,x:right?80:-80},{opacity:1,x:0,duration:.55,ease:E},at+.3);
+  tl.fromTo(`#${id} .bar`,{scaleX:0},{scaleX:1,duration:.7,ease:E},at+.5);
+  tl.fromTo(`#${id} .sub`,{opacity:0,y:20},{opacity:1,y:0,duration:.6},at+.9);
+  tl.to(`#${id} .word`,{x:right?-30:30,duration:2.6,ease:'none'},at+.9);
+  if(i>0) wipe(at);
+});
+tl.to('#bug, #credit',{opacity:1,duration:.4},4.2);
+
+// ===== S5 : 16 → 20 s =====
+wipe(16); show('s5',16); hide('s5',20);
+tl.fromTo('#s5 img',{scale:1.3,y:60},{scale:1.15,y:40,duration:4.2,ease:'none'},16);
+tl.fromTo('#s5 .a',{opacity:0,y:40,filter:'blur(8px)'},{opacity:1,y:0,filter:'blur(0px)',duration:.9},16.35);
+tl.fromTo('#s5 .b',{opacity:0,y:40,filter:'blur(8px)'},{opacity:1,y:0,filter:'blur(0px)',duration:.9},17.2);
+tl.to('#bug, #credit',{opacity:0,duration:.25},19.75);
+
+// ===== S6 : 20 → 24 s =====
+wipe(20); show('s6',20); hide('s6',24);
+tl.fromTo('#s6 .head',{opacity:0,y:-20},{opacity:1,y:0,duration:.5},20.15);
+tl.fromTo('#s6 .title',{opacity:0,scale:1.15},{opacity:1,scale:1,duration:.5,ease:E},20.3);
+['#c1','#c2','#c3','#c4'].forEach((c,i)=>{
+  tl.fromTo(c,{opacity:0,y:60},{opacity:1,y:0,duration:.55,ease:E},20.8+i*.5);
+  tl.fromTo(c+' svg',{scale:0,transformOrigin:'50% 50%'},{scale:1,duration:.5,ease:'back.out(2)'},20.9+i*.5);
+});
+
+// ===== S7 : 24 → 26 s =====
+wipe(24); show('s7',24); hide('s7',26);
+tl.to('#credit',{opacity:1,duration:.2},24.1);
+tl.fromTo('#s7 img',{scale:1.36,x:400},{scale:1.5,x:430,duration:2.1,ease:'power1.in'},24);
+tl.fromTo('#s7 .a',{opacity:0,x:-80},{opacity:1,x:0,duration:.45,ease:E},24.2);
+tl.fromTo('#s7 .b',{opacity:0,scale:1.5,transformOrigin:'left center'},{opacity:1,scale:1,duration:.4,ease:E},24.6);
+tl.fromTo('#s7 .c',{opacity:0,y:20},{opacity:1,y:0,duration:.4},25.0);
+tl.to('#credit',{opacity:0,duration:.15},25.8);
+
+// ===== S8 : 26 → 30 s =====
+show('s8',26); flash(26,1);
+streakPass(sk8,25.9,1.6,-9);
+tl.fromTo('#s8 .crest',{opacity:0,scale:.6,rotation:-6,transformOrigin:'50% 55%'},{opacity:1,scale:1,rotation:0,duration:.9,ease:'back.out(1.6)'},26.0);
+tl.fromTo('#s8 .shine i',{left:'-60%'},{left:'130%',duration:.9,ease:'power2.inOut'},26.9);
+tl.fromTo('#nm',{opacity:0,x:40},{opacity:1,x:0,duration:.5},26.35);
+tl.fromTo('#cta',{opacity:0,x:40},{opacity:1,x:0,duration:.5},26.6);
+tl.fromTo('#how',{opacity:0,x:40},{opacity:1,x:0,duration:.5},26.85);
+['#ph1','#ph2','#ph3'].forEach((p,i)=>tl.fromTo(p,{opacity:0,x:60},{opacity:1,x:0,duration:.5,ease:E},27.1+i*.22));
+tl.fromTo('#s8 .cr',{opacity:0},{opacity:1,duration:.5},27.4);
+tl.fromTo('#s8 .flag',{scaleX:0},{scaleX:1,duration:1.0,ease:'power3.inOut'},26.3);
+tl.to('#s8 .crest',{scale:1.035,duration:.12,yoyo:true,repeat:1,ease:'power1.out'},29.0);
+flash(29.0,.35);
+tl.to('#s8',{opacity:0,duration:.35,ease:'power1.in'},29.62);
+tl.set({}, {}, 30);
+
+window.seek=(t)=>{
+  tl.seek(t,false);
+  const f=Math.round(t*30), a=(f*7919)%512, b=(f*104729)%512;
+  document.getElementById('grain').style.transform=`translate(${-a/4}px,${-b/4}px)`;
+};
+window.ready=()=>Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))]);
+window.seek(0);
+</script>
+</body>
+</html>

@@ -5,7 +5,8 @@
 - coffret : logo Bernabé sur le petit polo.
 
 Entrée : photo agrandie x4 (EDSR) du modèle. Coordonnées données dans la photo d'origine (1080 x 986).
-Usage : python3 compose.py modele-x4.png logo-rouge-blanc.png sortie.png
+Usage : python3 compose.py modele-x4.png logo-bernabe-1200.png sortie.png
+(modele-x4.png : modele-polo.jpg agrandi x4 avec EDSR ; logo-bernabe-1200.png : bernabe.svg rendu en 1200 px, fond transparent)
 """
 import sys, cv2, numpy as np
 
@@ -27,9 +28,12 @@ def erase_text(x0, y0, x1, y1, ring=6):
     inside = (xx >= R) & (xx < ww - R) & (yy >= R) & (yy < hh - R)
     u, v = xx / ww - .5, yy / hh - .5
     A = np.stack([np.ones_like(u), u, v, u * u, u * v, v * v], -1)
+    # bordure : seulement les pixels de tissu marine (exclut le fond de la photo au bord de la casquette)
+    navy = (big[..., 0] - big[..., 2] > 20) & (big[..., 0] < 120)
+    ring = ~inside & navy
     fit = np.zeros_like(big)
     for c in range(3):
-        coef, *_ = np.linalg.lstsq(A[~inside], big[..., c][~inside], rcond=None)
+        coef, *_ = np.linalg.lstsq(A[ring], big[..., c][ring], rcond=None)
         fit[..., c] = A @ coef
     grain = cv2.GaussianBlur(rng.normal(0, 3.0, (hh, ww)).astype(np.float32), (0, 0), S / 3)[..., None]
     m = inside.astype(np.float32)

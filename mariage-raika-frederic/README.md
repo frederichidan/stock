@@ -150,7 +150,7 @@ fin). **C'est une demande surprise** : l'invitation vient de Frédéric (« Invi
 surprise », « … à sa demande en mariage surprise à Raïka », « Chut… Raïka ne se doute de
 rien ! ») ; ne pas l'envoyer à Raïka, ni dans un groupe où se trouve Raïka. **Une carte par
 invité** (liste `invites` : Nanette, Mère Irène, Petula, Audrey, Martine, Judith, Lady, Andréa,
-Abu, Maestro, Mathurin, Olivier, Marco, Dominique, Guylaine, Linda), son nom en tête du texte
+Abu, Maestro, Mathurin, Olivier, Marco, Dominique, Guylaine, Linda, Sabrina), son nom en tête du texte
 (« Nanette, ») ; liste vide : une carte sans nom. **Date, heure ou lieu
 laissés vides : la carte porte une ligne pointillée, à remplir à la main** ; tenue,
 confirmation et précision vides ne s'affichent pas (la précision, seulement avec un lieu).
@@ -161,8 +161,8 @@ une seule.
 
 | Fichier | Usage |
 |---|---|
-| `invitation-demande-A4-8k.pdf` | **À imprimer sur A4** : quatre cartes par feuille (4 feuilles pour 16 invités, dans l'ordre de la liste), à 100 %, recto seul, puis à couper en quatre (repères au milieu de chaque bord et petite croix au centre). Fond et dessins en image 8K, textes vectoriels |
-| `invitation-demande-A6-8k.pdf` | Les mêmes cartes une par page A6 (16 pages), pour une imprimante chargée en A6 ou un imprimeur |
+| `invitation-demande-A4-8k.pdf` | **À imprimer sur A4** : quatre cartes par feuille (5 feuilles pour 17 invités, dans l'ordre de la liste ; la dernière ne porte que la carte de Sabrina), à 100 %, recto seul, puis à couper en quatre (repères au milieu de chaque bord et petite croix au centre). Fond et dessins en image 8K, textes vectoriels |
+| `invitation-demande-A6-8k.pdf` | Les mêmes cartes une par page A6 (17 pages), pour une imprimante chargée en A6 ou un imprimeur |
 | `invitation-demande-A4-vectoriel.pdf`, `invitation-demande-A6-vectoriel.pdf` | Les mêmes, entièrement vectorielles |
 | `invitation-demande-<invité>-8k.jpg` | La carte de chaque invité en 8K (`…-nanette-8k.jpg`, `…-mere-irene-8k.jpg`…) |
 | `whatsapp/invitation-demande-<invité>-whatsapp.jpg` | La carte de chaque invité en 2048 px, JPEG léger (190 Ko environ), à envoyer à chacun sur WhatsApp |

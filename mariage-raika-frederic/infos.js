@@ -2,7 +2,8 @@
    INFORMATIONS DU MARIAGE
    C'est le seul fichier à modifier pour changer les textes de la pochette
    passeport, du billet d'invitation, de la carte de menu, des étiquettes
-   de bouteilles, des cartes de table et des affiches A5.
+   de bouteilles, des cartes de table, des affiches A5 et de l'invitation à la
+   demande en mariage.
    Restent à valider (propositions) : les horaires du coutumier et de la
    soirée, et l'heure du cocktail du civil.
    ================================================================== */
@@ -16,7 +17,7 @@ const INFOS = {
   // ci-dessus (pour les étiquettes et les cartes de table, toute autre valeur revient au
   // blanc & or). La pochette passeport garde celles de la version ; les billets ont une
   // couleur par catégorie (`billets` plus bas).
-  couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc", affiches: "blanc" },
+  couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc", affiches: "blanc", demande: "blanc" },
 
   // Le prénom féminin se place avant le prénom masculin.
   mariee: "Raïka",
@@ -147,6 +148,22 @@ const INFOS = {
   // Une affiche A5 par nom, dans l'ordre de la liste (affiches.html) ; deux par feuille A4 à
   // imprimer. Pour ajouter, retirer ou corriger un nom, modifier la liste.
   affiches: ["Merveille", "Karen", "Elhiska", "Moreen", "Wilfrida", "Judith"],
+
+  /* ----------------- Invitation à la demande en mariage ----------------- */
+  // Carte A6 (105 × 148 mm), quatre par feuille A4 (invitation-demande.html). Date, heure et
+  // lieu vides : la carte porte une ligne pointillée, à remplir à la main. `precision`,
+  // `tenue` et `confirmation` sont facultatifs (vides = non affichés).
+  demande: {
+    titre: "Demande en mariage",
+    invitation: "Les familles des futurs mariés ont la joie de vous convier à la cérémonie de demande en mariage de",
+    date: "", // ex. "Samedi 5 décembre 2026"
+    heure: "", // ex. "15h00"
+    lieu: "", // ex. "Domicile familial, Libreville"
+    precision: "", // sous le lieu, ex. "Quartier Louis, près de la pharmacie"
+    tenue: "", // ex. "Touches de violet & d’or"
+    confirmation: "", // ex. "Merci de confirmer votre présence au 077 00 00 00"
+    mot: "Votre présence nous honorera",
+  },
 
   /* ------------------------- Carte de menu ------------------------- */
   menu: {

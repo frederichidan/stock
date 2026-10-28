@@ -135,6 +135,31 @@ la zone que toutes les imprimantes impriment. Papier conseillé : cartonné blan
 Pour ajouter, retirer ou corriger un nom : modifier la liste `affiches` de `infos.js`, puis
 `node exporter.js --seulement=affiches` (et `--xerox-b7035 --seulement=affiches`).
 
+## Invitation à la demande en mariage : `export/violet/invitation-demande/`
+
+Un modèle simple de carte d'invitation à la cérémonie de demande en mariage, format A6
+(105 × 148 mm), dans la même charte : fond blanc, cadre doré, monogramme couronné, « Demande en
+mariage » et les prénoms en écriture, le texte d'invitation, puis la date, l'heure et le lieu.
+Tous ses textes sont dans `infos.js`, rubrique `demande` (titre, texte d'invitation, date,
+heure, lieu, précision sous le lieu, tenue, confirmation, mot de la fin). **Date, heure ou lieu
+laissés vides : la carte porte une ligne pointillée, à remplir à la main** ; tenue,
+confirmation et précision vides ne s'affichent pas. Aperçu : `invitation-demande.html` (la
+carte) ou `invitation-demande.html?format=a4` (la feuille à imprimer).
+
+| Fichier | Usage |
+|---|---|
+| `invitation-demande-A4-8k.pdf` | **À imprimer sur A4** : quatre cartes par feuille, à 100 %, recto seul, puis à couper en quatre (repères au milieu de chaque bord). Fond et dessins en image 8K, textes vectoriels |
+| `invitation-demande-A6-8k.pdf` | La carte seule sur une page A6, pour une imprimante chargée en A6 ou un imprimeur |
+| `invitation-demande-A4-vectoriel.pdf`, `invitation-demande-A6-vectoriel.pdf` | Les mêmes, entièrement vectorielles |
+| `invitation-demande-carte-8k.jpg` | La carte en 8K |
+| `whatsapp/invitation-demande-carte-whatsapp.jpg` | La carte en 2048 px, JPEG léger, à envoyer sur WhatsApp |
+
+Fond blanc : ni fond perdu ni traits de coupe autour ; le cadre reste à 7 mm des bords.
+Papier conseillé : cartonné blanc 200 à 250 g (216 g au plus sur la Xerox B7035). Édition noir
+et blanc : `export/xerox-b7035/invitation-demande/`. Après avoir rempli la date, l'heure et le
+lieu dans `infos.js` : `node exporter.js --seulement=invitation-demande` (et `--xerox-b7035
+--seulement=invitation-demande`).
+
 ## Cartes de table
 
 Une carte par table, **30 en tout**, dans le même design que la carte de menu et les
@@ -335,8 +360,8 @@ node exporter.js --xerox-b7035   # édition noir et blanc pour laser monochrome 
 |---|---|
 | `infos.js` | Tous les textes (le seul fichier à modifier) |
 | `themes.js`, `commun.css` | Les 4 versions de couleurs, avec leur identifiant : A `violet` (retenue), B `minuit`, C `champagne`, D `argent` |
-| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css`, `tables.js/.css`, `affiches.js/.css` | Dessin de chaque élément |
-| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html`, `affiches.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `cartes-tables.html` : les feuilles A4 à imprimer, `?table=5` pour une seule ; `?theme=minuit`, par exemple, pour une autre version : billets, menu, étiquettes et cartes de table gardent les couleurs réglées dans `infos.js`) |
+| `passeport.js/.css`, `billet.js/.css`, `menu.js/.css`, `etiquettes.js/.css`, `tables.js/.css`, `affiches.js/.css`, `demande.js/.css` | Dessin de chaque élément (`demande` : invitation à la demande en mariage) |
+| `pochette-passeport.html`, `billet-invitation.html`, `carte-menu.html`, `etiquette-vin.html`, `etiquette-eau.html`, `cartes-tables.html`, `affiches.html`, `invitation-demande.html` | Aperçu de chaque élément dans le navigateur, au format d'origine (`billet-invitation.html?categorie=classique` pour le billet classique ; `cartes-tables.html` : les feuilles A4 à imprimer, `?table=5` pour une seule ; `?theme=minuit`, par exemple, pour une autre version : billets, menu, étiquettes et cartes de table gardent les couleurs réglées dans `infos.js`) |
 | `impression.html` | Planches A4 (`?doc=passeport`, `billet`, `menu`, `vin` ou `eau` ; `&categorie=classique` pour le billet classique). Les cartes de table, elles, sont déjà des feuilles A4 : `cartes-tables.html` |
 | `maquettes.html` | Maquettes (`?scene=pochette`, `billet`, `billet-classique`, `menu`, `ensemble`, `vin`, `eau`, `tables` ou `affiches`) |
 | `nuancier.html` | Les 4 versions de couleurs côte à côte |

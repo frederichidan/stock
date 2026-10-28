@@ -459,6 +459,49 @@ function calqueTexte(face, zoom = 1) {
   return `<defs>${defs}</defs>${textes}`;
 }
 
+/* Feuilles à imprimer sans fond perdu (affiches, invitation à la demande en mariage) : un ou
+   plusieurs supports (`.page`) posés sur chaque `.feuille` de `planches` ; `format` : largeur et
+   hauteur de la feuille en mm. Selon l'adresse (`parametres`) :
+     ?pdf=1        textes dorés vectorisés pour l'impression en PDF (vectoriserDegrades) ;
+     ?images=[…]   une image 8K par feuille (fond et dessins) et, dans le même SVG, les textes
+                   de chacun de ses supports en vectoriel, à leur place (une image HTML serait
+                   calée au pixel CSS entier dans le PDF, pas les textes : voir exemplaire8K dans
+                   impression.html) : c'est ainsi qu'exporter.js produit les PDF 8K.
+   Styles .feuille-8k : dans la page. */
+async function preparerFeuilles(planches, parametres, [largeur, hauteur]) {
+  const images = JSON.parse(parametres.get("images") || "null");
+  if (!parametres.has("pdf") && !images) return;
+  const PX = 96 / 25.4;
+  const [l, h] = [largeur * PX, hauteur * PX];
+  // Feuilles 8K : textes mesurés au zoom de la capture (voir calqueTexte).
+  const zoom = images ? (await tailleImage(images[0]))[0] / l : 1;
+  planches.style.zoom = zoom;
+  vectoriserDegrades(document, zoom);
+  if (images) {
+    await Promise.all([...new Set(images)].map(tailleImage));
+    const feuilles = [...planches.querySelectorAll(".feuille")].map((feuille, i) => {
+      const origine = feuille.getBoundingClientRect();
+      const textes = [...feuille.querySelectorAll(".page")].map((page) => {
+        const r = page.getBoundingClientRect();
+        const [dx, dy] = [(r.left - origine.left) / zoom, (r.top - origine.top) / zoom];
+        return `<g transform="translate(${dx} ${dy})">${calqueTexte(page, zoom)}</g>`;
+      });
+      return `<section class="feuille-8k">
+        <svg viewBox="0 0 ${l} ${h}" aria-hidden="true">
+          <image href="${esc(images[i])}" x="0" y="0" width="${l}" height="${h}" preserveAspectRatio="none"/>
+          ${textes.join("")}
+        </svg></section>`;
+    });
+    planches.innerHTML = feuilles.join("");
+    await Promise.all([...planches.querySelectorAll("image")].map((image) =>
+      new Promise((fin) => {
+        image.addEventListener("load", fin, { once: true });
+        image.addEventListener("error", fin, { once: true });
+      })));
+  }
+  planches.style.zoom = "";
+}
+
 /* ------------------------------ Ornements ------------------------------ */
 
 // Double filet doré avec un losange à chaque coin (styles .cadre et .losange).

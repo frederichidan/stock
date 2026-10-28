@@ -1,0 +1,62 @@
+/* Invitation à la demande en mariage (demande.js) : carte A6 (105 × 148 mm), cadre à 7 mm des
+   bords. Couleurs : palette de commun.css choisie dans infos.js (couleurs.demande ;
+   palette-blanc). */
+
+.page.demande {
+  width: 105mm;
+  height: 148mm;
+  background: radial-gradient(ellipse 85% 70% at 50% 42%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);
+}
+.demande .cadre { inset: 7mm; }
+.demande .losange.hg { top: 5.7mm; left: 5.7mm; }
+.demande .losange.hd { top: 5.7mm; right: 5.7mm; }
+.demande .losange.bg { bottom: 5.7mm; left: 5.7mm; }
+.demande .losange.bd { bottom: 5.7mm; right: 5.7mm; }
+
+.demande .contenu {
+  position: absolute;
+  inset: 7mm;
+  padding: 6mm 6mm 5.5mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.demande .entete { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.34em; padding-left: 0.34em; }
+.demande .monogramme { width: 24mm; height: 24mm; display: block; flex: none; margin-top: 3mm; }
+/* Titre et prénoms en écriture, sur une ligne ; marge intérieure haute pour les accents et les
+   majuscules ornées, qui montent au-dessus de la ligne. */
+.demande .titre { font-family: var(--script); font-weight: 400; font-size: 22pt; line-height: 1.2; padding: 1.5mm 3mm 0; margin-top: 1mm; white-space: nowrap; }
+.demande .ornement { width: 46mm; height: 3.5mm; flex: none; margin-top: 0.5mm; }
+.demande .texte-invitation { font-style: italic; font-size: 9.5pt; line-height: 1.35; margin-top: 2.5mm; text-wrap: balance; }
+.demande .noms { font-family: var(--script); font-weight: 400; font-size: 20pt; line-height: 1.25; padding: 1.5mm 3mm 0; margin-top: 0.5mm; white-space: nowrap; }
+.demande .noms .esperluette { color: var(--esperluette); }
+/* Date, heure et lieu : intitulé à gauche, valeur ou ligne à remplir à droite (lignes assez
+   espacées pour écrire à la main ; l'intitulé posé sur la ligne). */
+.demande .details {
+  width: 100%;
+  margin-top: 6mm;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4.5mm 2.5mm;
+  align-items: baseline;
+  text-align: left;
+}
+.demande .details .etiquette { color: var(--accent-texte); font-size: 6.5pt; letter-spacing: 0.2em; }
+.demande .details .valeur { font-size: 10pt; line-height: 1.25; }
+.demande .details .precision { display: block; font-size: 8pt; color: var(--texte-doux); }
+.demande .details .ligne-ecriture { min-height: 0; height: 6.5mm; align-self: end; }
+.demande .details .etiquette:has(+ .ligne-ecriture) { align-self: end; padding-bottom: 0.8mm; }
+.demande .complement { font-size: 8.5pt; line-height: 1.3; margin-top: 2.5mm; text-wrap: balance; }
+.demande .mot { font-family: var(--script); font-weight: 400; font-size: 14pt; line-height: 1.25; padding: 1.5mm 2mm 0; margin-top: auto; text-wrap: balance; }
+
+/* Feuilles à imprimer (invitation-demande.html) : A6, ou A4 de quatre cartes. */
+.feuille { position: relative; overflow: hidden; break-after: page; background: #fff; }
+.feuille:last-child { break-after: auto; }
+.feuille-a6 { width: 105mm; height: 148mm; }
+.feuille-a4 { width: 210mm; height: 297mm; }
+.place { position: absolute; width: 105mm; height: 148mm; }
+/* Sur une feuille, la carte n'est pas présentée en carte (ombre et marge de l'aperçu à
+   l'écran, commun.css) : la capture 8K se fait à l'écran. */
+.place .page { margin: 0; box-shadow: none; }
+.feuille .reperes-coupe { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }

@@ -11,14 +11,17 @@
                                     en deux), en PDF de 10 tables (…-A4-8k-tables-01-a-10.pdf…).
                                     Affiches : deux affiches A5 par feuille A4 paysage (recto
                                     seul, sans fond perdu, repères de coupe au milieu), et
-                                    affiches-A5-8k.pdf, une affiche par page A5 ;
+                                    affiches-A5-8k.pdf, une affiche par page A5. Invitation à
+                                    la demande en mariage : quatre cartes A6 par feuille A4
+                                    (recto seul, sans fond perdu, repères de coupe), et
+                                    invitation-demande-A6-8k.pdf, une carte par page A6 ;
    - <élément>-A4-vectoriel.pdf   : la même planche en vectoriel (fichier léger, net à toute taille)
-                                    (affiches : aussi affiches-A5-vectoriel.pdf) ;
-   - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 ;
+                                    (affiches et invitation : aussi …-A5- / …-A6-vectoriel.pdf) ;
+   - <élément>-maquette-8k.jpg    : mise en scène réaliste, 7680 × 4320 (pas pour l'invitation) ;
    - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
    - <élément>-<face>-8k.jpg      : chaque face à plat, 7680 px sur le grand côté (affiches : une
                                     par nom) ;
-   - whatsapp/                    : affiches seulement, chaque affiche et la maquette en 2048 px.
+   - whatsapp/                    : affiches et invitation, chaque face (et la maquette) en 2048 px.
    La pochette existe en deux versions : pochette-passeport/ (extérieur améthyste) et
    pochette-passeport-violet-royal/ (extérieur violet royal), au même intérieur.
    S'y ajoute export/<version>/ensemble-maquette-8k.jpg / .pdf (les trois supports réunis),
@@ -63,12 +66,16 @@ const QUALITE_WHATSAPP = 88;
 const FORMAT_MAQUETTE_PDF = [297, 210]; // mm : A4 paysage
 const A4_PT = [595.276, 841.89];
 const A5_PT = [419.528, 595.276];
+const A6_PT = [297.638, 419.528];
 const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone imprimable
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
 // `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles).
 // `couleurSeule` : pas d'édition noir et blanc (--xerox-b7035).
+// `planches` : feuilles sans fond perdu (affiches, invitation), produites par la page elle-même
+// (?format=, voir preparerFeuilles dans commun.js) : [format, taille en pt, nombre de feuilles]
+// pour chaque PDF ; ni planche impression.html ni, sans `maquette`, de maquette.
 // `chevalets` : cartes de table, une feuille A4 entière par table (cartes-tables.html), sans
 // planche ; `parPdf` feuilles par PDF 8K, pour des fichiers de moins de 30 Mo.
 const ELEMENTS = [
@@ -149,8 +156,16 @@ const ELEMENTS = [
     page: "affiches.html",
     maquette: "affiches",
     affiches: true,
+    planches: [["a4", A4_PT, Math.ceil(INFOS.affiches.length / 2)], ["a5", A5_PT, INFOS.affiches.length]],
     whatsapp: true,
     faces: INFOS.affiches.map((nom, i) => [nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-"), ".feuille", i]),
+  },
+  {
+    dossier: "invitation-demande",
+    page: "invitation-demande.html",
+    planches: [["a4", A4_PT, 1], ["a6", A6_PT, 1]],
+    whatsapp: true,
+    faces: [["carte", ".feuille", 0]],
   },
   {
     dossier: "cartes-tables",
@@ -260,9 +275,8 @@ async function chevalets8K(navigateur, element, nom, afficher) {
 // Affiches A5 (affiches.html) : planches A4 paysage de deux affiches, à couper en deux, et
 // affiches A5 seules, une par page ; chaque feuille en image 8K (fond et dessins, sans les
 // textes), les textes posés par-dessus en vectoriel ; et les mêmes PDF en vectoriel. Recto seul.
-async function affiches8K(navigateur, element, nom, afficher) {
-  for (const [format, taille, parFeuille] of [["a4", A4_PT, 2], ["a5", A5_PT, 1]]) {
-    const feuilles = Math.ceil(INFOS.affiches.length / parFeuille);
+async function planches8K(navigateur, element, nom, afficher) {
+  for (const [format, taille, feuilles] of element.planches) {
     const images = [];
     for (let i = 0; i < feuilles; i += 1) {
       const image = path.join(TEMPORAIRE, `${element.dossier}-${format}-${i}.${NB ? "png" : "jpg"}`);
@@ -285,7 +299,7 @@ async function affiches8K(navigateur, element, nom, afficher) {
 }
 
 // Chromium arrondit le format de page (594,96 × 841,92 pt au lieu de 595,28 × 841,89) : on
-// rétablit le format exact (A4, ou `format`, A5 pour les affiches), centré sur le contenu, et
+// rétablit le format exact (A4, ou `format` : A5 des affiches, A6 de l'invitation), centré sur le contenu, et
 // l'on demande aux lecteurs PDF (Acrobat, Chrome, Edge…) d'imprimer à 100 %, sur le bac du
 // format, en recto verso bord long pour les planches à deux
 // faces et en recto seul pour les étiquettes et les cartes de table (`rectoVerso` : true,
@@ -378,8 +392,8 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       }
       if (element.chevalets) {
         await chevalets8K(navigateur, element, nom, afficher);
-      } else if (element.affiches) {
-        await affiches8K(navigateur, element, nom, afficher);
+      } else if (element.planches) {
+        await planches8K(navigateur, element, nom, afficher);
       } else {
         const illustrations = await illustrations8K(navigateur, element, theme);
         await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
@@ -389,10 +403,12 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       }
       if (NB) continue; // pas de maquettes ni de faces à plat en noir et blanc
 
-      await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
-      afficher("maquette-8k.jpg");
-      await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [nom("maquette-8k.jpg")], nom("maquette-8k.pdf"));
-      afficher("maquette-8k.pdf");
+      if (element.maquette) {
+        await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
+        afficher("maquette-8k.jpg");
+        await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [nom("maquette-8k.jpg")], nom("maquette-8k.pdf"));
+        afficher("maquette-8k.pdf");
+      }
 
       for (const [face, selecteur, rang] of element.faces) {
         await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, nom(`${face}-8k.jpg`));
@@ -407,8 +423,8 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
         for (const [face, selecteur, rang] of element.faces) {
           await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, image(face), null, QUALITE_WHATSAPP, WHATSAPP);
         }
-        await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, image("maquette"), "maquettePrete", QUALITE_WHATSAPP, WHATSAPP);
-        console.log("✓", `${edition}/${element.dossier}/whatsapp/ (${element.faces.length + 1} images)`);
+        if (element.maquette) await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, image("maquette"), "maquettePrete", QUALITE_WHATSAPP, WHATSAPP);
+        console.log("✓", `${edition}/${element.dossier}/whatsapp/ (${element.faces.length + (element.maquette ? 1 : 0)} images)`);
       }
     }
 

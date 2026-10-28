@@ -52,40 +52,7 @@
   planches.innerHTML = feuillesAffiches(format, noms, images ? premier : INFOS.affiches.indexOf(noms[0]) + 1);
   Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
     await document.fonts.ready;
-    if (parametres.has("pdf") || images) {
-      const PX = 96 / 25.4;
-      const [l, h] = [largeurFeuille * PX, hauteurFeuille * PX];
-      // Feuilles 8K : textes mesurés au zoom de la capture (voir calqueTexte dans commun.js).
-      const zoom = images ? (await tailleImage(images[0]))[0] / l : 1;
-      planches.style.zoom = zoom;
-      vectoriserDegrades(document, zoom);
-      if (images) {
-        // Feuille 8K : l'image (fond et dessins) et, dans le même SVG, les textes de chaque
-        // affiche en vectoriel, à sa place (une image HTML serait calée au pixel CSS entier dans
-        // le PDF, pas les textes : voir exemplaire8K dans impression.html).
-        await Promise.all([...new Set(images)].map(tailleImage));
-        const feuilles = [...planches.querySelectorAll(".feuille")].map((feuille, i) => {
-          const origine = feuille.getBoundingClientRect();
-          const textes = [...feuille.querySelectorAll(".place-affiche")].map((place) => {
-            const r = place.getBoundingClientRect();
-            const [dx, dy] = [(r.left - origine.left) / zoom, (r.top - origine.top) / zoom];
-            return `<g transform="translate(${dx} ${dy})">${calqueTexte(place.querySelector(".page"), zoom)}</g>`;
-          });
-          return `<section class="feuille-8k">
-            <svg viewBox="0 0 ${l} ${h}" aria-hidden="true">
-              <image href="${esc(images[i])}" x="0" y="0" width="${l}" height="${h}" preserveAspectRatio="none"/>
-              ${textes.join("")}
-            </svg></section>`;
-        });
-        planches.innerHTML = feuilles.join("");
-        await Promise.all([...planches.querySelectorAll("image")].map((image) =>
-          new Promise((fin) => {
-            image.addEventListener("load", fin, { once: true });
-            image.addEventListener("error", fin, { once: true });
-          })));
-      }
-      planches.style.zoom = "";
-    }
+    await preparerFeuilles(planches, parametres, [largeurFeuille, hauteurFeuille]);
     window.pagesPretes = true;
   });
 </script>

@@ -24,7 +24,7 @@ function invitationDemande() {
         ? `<span class="valeur">${esc(valeur)}${precision ? `<span class="precision">${esc(precision)}</span>` : ""}</span>`
         : `<span class="ligne-ecriture"></span>`
     }`;
-  const complements = [D.tenue && `Tenue : ${D.tenue}`, D.confirmation].filter(Boolean);
+  const complements = [D.tenue && `Tenue\u00a0: ${D.tenue}`, D.confirmation].filter(Boolean);
   return `
   <section class="page demande${couleursDemande()}">
     ${encadrement()}
@@ -48,7 +48,8 @@ function invitationDemande() {
 
 // Repères de coupe d'une feuille A4 de quatre cartes : traits dans les marges blanches, sur les
 // deux lignes de coupe, jusqu'à 9 mm du bord (au-delà des 4 à 5 mm que les imprimantes
-// n'impriment pas ; les cadres des cartes sont à 7 mm de part et d'autre).
+// n'impriment pas ; les cadres des cartes sont à 7 mm de part et d'autre), et une petite
+// croix au centre, second repère de la coupe de chaque moitié (losanges des coins à 5 mm).
 function reperesCoupeDemande() {
   const [l, h] = FEUILLE_A4_DEMANDE;
   const [x, y] = [l / 2, h / 2];
@@ -56,6 +57,7 @@ function reperesCoupeDemande() {
     <g stroke="#000" stroke-width="0.2">
       <line x1="${x}" y1="1.5" x2="${x}" y2="9"/><line x1="${x}" y1="${h - 9}" x2="${x}" y2="${h - 1.5}"/>
       <line x1="1.5" y1="${y}" x2="9" y2="${y}"/><line x1="${l - 9}" y1="${y}" x2="${l - 1.5}" y2="${y}"/>
+      <path d="M${x - 3},${y} H${x + 3} M${x},${y - 3} V${y + 3}"/>
     </g>
   </svg>`;
 }

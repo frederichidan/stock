@@ -272,9 +272,10 @@ async function chevalets8K(navigateur, element, nom, afficher) {
   afficher("A4-vectoriel.pdf");
 }
 
-// Affiches A5 (affiches.html) : planches A4 paysage de deux affiches, à couper en deux, et
-// affiches A5 seules, une par page ; chaque feuille en image 8K (fond et dessins, sans les
-// textes), les textes posés par-dessus en vectoriel ; et les mêmes PDF en vectoriel. Recto seul.
+// Feuilles sans fond perdu (`element.planches`) : affiches (A4 paysage de deux affiches, et A5
+// une par page) et invitation à la demande en mariage (A4 de quatre cartes, et A6) ; chaque
+// feuille en image 8K (fond et dessins, sans les textes), les textes posés par-dessus en
+// vectoriel ; et les mêmes PDF en vectoriel. Recto seul.
 async function planches8K(navigateur, element, nom, afficher) {
   for (const [format, taille, feuilles] of element.planches) {
     const images = [];
@@ -416,7 +417,7 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       }
 
       if (element.whatsapp) {
-        // Dossier whatsapp/ : chaque face et la maquette, prêtes à partager.
+        // Dossier whatsapp/ : chaque face (et la maquette s'il y en a une), prêtes à partager.
         const whatsapp = path.join(dossier, "whatsapp");
         fs.mkdirSync(whatsapp, { recursive: true });
         const image = (suffixe) => path.join(whatsapp, `${element.dossier}-${suffixe}-whatsapp.jpg`);

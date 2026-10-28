@@ -143,12 +143,14 @@ mariage » et les prénoms en écriture, le texte d'invitation, puis la date, l'
 Tous ses textes sont dans `infos.js`, rubrique `demande` (titre, texte d'invitation, date,
 heure, lieu, précision sous le lieu, tenue, confirmation, mot de la fin). **Date, heure ou lieu
 laissés vides : la carte porte une ligne pointillée, à remplir à la main** ; tenue,
-confirmation et précision vides ne s'affichent pas. Aperçu : `invitation-demande.html` (la
+confirmation et précision vides ne s'affichent pas (la précision, seulement avec un lieu).
+Couleurs : blanc & or (`couleurs.demande: "blanc"`), seul fond adapté à cette carte sans fond
+perdu. Aperçu : `invitation-demande.html` (la
 carte) ou `invitation-demande.html?format=a4` (la feuille à imprimer).
 
 | Fichier | Usage |
 |---|---|
-| `invitation-demande-A4-8k.pdf` | **À imprimer sur A4** : quatre cartes par feuille, à 100 %, recto seul, puis à couper en quatre (repères au milieu de chaque bord). Fond et dessins en image 8K, textes vectoriels |
+| `invitation-demande-A4-8k.pdf` | **À imprimer sur A4** : quatre cartes par feuille, à 100 %, recto seul, puis à couper en quatre (repères au milieu de chaque bord et petite croix au centre). Fond et dessins en image 8K, textes vectoriels |
 | `invitation-demande-A6-8k.pdf` | La carte seule sur une page A6, pour une imprimante chargée en A6 ou un imprimeur |
 | `invitation-demande-A4-vectoriel.pdf`, `invitation-demande-A6-vectoriel.pdf` | Les mêmes, entièrement vectorielles |
 | `invitation-demande-carte-8k.jpg` | La carte en 8K |

@@ -15,7 +15,9 @@ const INFOS = {
   // "blanc" = blanc & or (fond blanc, textes et décors dorés), "or" = or champagne (fond ivoire,
   // bandeaux dorés), "argent" = argent ; pour le menu, "" = les couleurs de la version
   // ci-dessus (pour les étiquettes et les cartes de table, toute autre valeur revient au
-  // blanc & or). La pochette passeport garde celles de la version ; les billets ont une
+  // blanc & or). Affiches et invitation à la demande en mariage : garder "blanc", leur fond
+  // va jusqu'au bord de la coupe, sans fond perdu (un fond ivoire ou argenté y laisserait un
+  // liseré blanc au bord de la feuille). La pochette passeport garde celles de la version ; les billets ont une
   // couleur par catégorie (`billets` plus bas).
   couleurs: { menu: "blanc", etiquettes: "blanc", tables: "blanc", affiches: "blanc", demande: "blanc" },
 
@@ -159,7 +161,7 @@ const INFOS = {
     date: "Dimanche 1er novembre 2026", // vide : ligne à remplir à la main
     heure: "Dès 18h",
     lieu: "Restaurant Iroko",
-    precision: "Situé à Glass", // sous le lieu
+    precision: "Situé à Glass", // sous le lieu (affichée seulement si le lieu est rempli)
     tenue: "", // ex. "Touches de violet & d’or"
     confirmation: "", // ex. "Merci de confirmer votre présence au 077 00 00 00"
     mot: "Votre présence nous honorera",

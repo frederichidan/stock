@@ -70,3 +70,7 @@ Voici les propositions de maillots du Rugby Club Akanda pour la saison 2026-2027
 Lequel préférez-vous ? Dites-le-nous en commentaire 👇
 
 #RugbyClubAkanda #Maillots #Rugby #Gabon
+
+---
+
+> Mise à jour du 28/10/2026 : le numéro 074 85 69 48 est remplacé par **077 68 18 22**. Les publications n°2 et n°3 ci-dessus, déjà parues, sont à modifier directement sur Facebook.

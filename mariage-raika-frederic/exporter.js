@@ -70,9 +70,16 @@ const A6_PT = [297.638, 419.528];
 const MARGE_MAQUETTE_PDF = 10; // mm de blanc autour de l'image, dans la zone imprimable
 const TEMPORAIRE = fs.mkdtempSync(path.join(os.tmpdir(), "mariage-8k-"));
 
+// Nom de fichier tiré d'un prénom : « Mère Irène » → « mere-irene ».
+const enNomDeFichier = (texte) => texte.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+// Invités de l'invitation à la demande en mariage (comme invitesDemande, demande.js).
+const INVITES_DEMANDE = ((INFOS.demande || {}).invites || []).filter(Boolean);
+
 // Chaque image à plat : [nom de la face, sélecteur CSS, rang de l'élément].
 // `rectoVerso: false` : une seule face à imprimer (étiquettes de bouteilles).
 // `couleurSeule` : pas d'édition noir et blanc (--xerox-b7035).
+// `nominatives` : une face par nom (affiches, invitation) ; les images d'un nom corrigé ou
+// retiré sont effacées avant l'export.
 // `planches` : feuilles sans fond perdu (affiches, invitation), produites par la page elle-même
 // (?format=, voir preparerFeuilles dans commun.js) : [format, taille en pt, nombre de feuilles]
 // pour chaque PDF ; ni planche impression.html ni, sans `maquette`, de maquette.
@@ -155,17 +162,18 @@ const ELEMENTS = [
     dossier: "affiches",
     page: "affiches.html",
     maquette: "affiches",
-    affiches: true,
+    nominatives: true,
     planches: [["a4", A4_PT, Math.ceil(INFOS.affiches.length / 2)], ["a5", A5_PT, INFOS.affiches.length]],
     whatsapp: true,
-    faces: INFOS.affiches.map((nom, i) => [nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-"), ".feuille", i]),
+    faces: INFOS.affiches.map((nom, i) => [enNomDeFichier(nom), ".feuille", i]),
   },
   {
     dossier: "invitation-demande",
     page: "invitation-demande.html",
-    planches: [["a4", A4_PT, 1], ["a6", A6_PT, 1]],
+    nominatives: true,
+    planches: [["a4", A4_PT, Math.max(1, Math.ceil(INVITES_DEMANDE.length / 4))], ["a6", A6_PT, Math.max(1, INVITES_DEMANDE.length)]],
     whatsapp: true,
-    faces: [["carte", ".feuille", 0]],
+    faces: INVITES_DEMANDE.length ? INVITES_DEMANDE.map((nom, i) => [enNomDeFichier(nom), ".feuille", i]) : [["carte", ".feuille", 0]],
   },
   {
     dossier: "cartes-tables",
@@ -384,8 +392,8 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);
       const afficher = (suffixe) => console.log("✓", `${edition}/${element.dossier}/${element.dossier}-${suffixe}`);
 
-      if (element.affiches && !NB) {
-        // Images nommées d'après les affiches : celles d'un nom corrigé ou retiré disparaissent.
+      if (element.nominatives && !NB) {
+        // Images nommées d'après les affiches ou les invités : celles d'un nom corrigé ou retiré disparaissent.
         for (const fichier of fs.readdirSync(dossier)) {
           if (/-8k\.jpg$/.test(fichier) && !/-maquette-8k\.jpg$/.test(fichier)) fs.rmSync(path.join(dossier, fichier));
         }

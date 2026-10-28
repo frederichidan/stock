@@ -6,6 +6,8 @@
    la zone que toutes les imprimantes impriment.
    Date, heure ou lieu vides : une ligne pointillée, à remplir à la main. En-tête et ligne des
    prénoms réglables (`entete`, `noms` : demande surprise, au seul prénom de Raïka).
+   Une carte par invité (INFOS.demande.invites), son nom en tête du texte, comme une adresse
+   (« Nanette, ») ; sans liste, une carte sans nom.
    Couleurs : INFOS.couleurs.demande, blanc & or par défaut (palette-blanc, commun.css) ;
    textes lisibles à l'impression (commun.css, « Menu, pochette, billets… »). */
 
@@ -17,7 +19,13 @@ function couleursDemande() {
   return palette((INFOS.couleurs || {}).demande) || palette("blanc");
 }
 
-function invitationDemande() {
+// Invités, une carte chacun ; [""] sans liste (une carte sans nom).
+function invitesDemande() {
+  const invites = (INFOS.demande.invites || []).filter(Boolean);
+  return invites.length ? invites : [""];
+}
+
+function invitationDemande(invite = "") {
   const D = INFOS.demande;
   const champ = (etiquette, valeur, precision = "") =>
     `<span class="etiquette">${esc(etiquette)}</span>${
@@ -34,6 +42,7 @@ function invitationDemande() {
       ${monogramme({ taille: 24 })}
       <h1 class="titre texte-degrade">${esc(D.titre)}</h1>
       ${ornement()}
+      ${invite ? `<p class="invite">${esc(invite)},</p>` : ""}
       <p class="texte-invitation">${esc(D.invitation)}</p>
       <div class="noms texte-degrade">${D.noms ? esc(D.noms) : `${esc(INFOS.mariee)} <span class="esperluette">&amp;</span> ${esc(INFOS.marie)}`}</div>
       <div class="details">
@@ -63,13 +72,20 @@ function reperesCoupeDemande() {
   </svg>`;
 }
 
-/* Feuilles : en A4, quatre cartes identiques en deux rangées, la grille centrée sur la feuille
-   (296 mm de haut pour 297) ; en A6, une carte. */
-function feuillesDemande(format = "a6") {
-  if (format !== "a4") return `<section class="feuille feuille-a6"><div class="place" style="left:0;top:0">${invitationDemande()}</div></section>`;
+/* Feuilles : en A4, quatre cartes en deux rangées, la grille centrée sur la feuille (296 mm de
+   haut pour 297), les invités dans l'ordre de la liste (sans liste : quatre cartes sans nom) ;
+   en A6, une carte par feuille. */
+function feuillesDemande(format = "a6", invites = invitesDemande()) {
+  if (format !== "a4") {
+    return invites.map((invite) =>
+      `<section class="feuille feuille-a6"><div class="place" style="left:0;top:0">${invitationDemande(invite)}</div></section>`).join("");
+  }
   const [l, h] = FORMAT_DEMANDE;
   const haut = (FEUILLE_A4_DEMANDE[1] - 2 * h) / 2;
-  const cartes = [0, 1].flatMap((ligne) => [0, 1].map((colonne) =>
-    `<div class="place" style="left:${colonne * l}mm;top:${haut + ligne * h}mm">${invitationDemande()}</div>`));
-  return `<section class="feuille feuille-a4">${cartes.join("")}${reperesCoupeDemande()}</section>`;
+  const lots = invites.length > 1 ? Array.from({ length: Math.ceil(invites.length / 4) }, (_, i) => invites.slice(4 * i, 4 * i + 4)) : [Array(4).fill(invites[0])];
+  return lots.map((lot) => {
+    const cartes = lot.map((invite, k) =>
+      `<div class="place" style="left:${(k % 2) * l}mm;top:${haut + Math.floor(k / 2) * h}mm">${invitationDemande(invite)}</div>`);
+    return `<section class="feuille feuille-a4">${cartes.join("")}${reperesCoupeDemande()}</section>`;
+  }).join("");
 }

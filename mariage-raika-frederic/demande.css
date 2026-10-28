@@ -29,6 +29,9 @@
 .demande .titre { font-family: var(--script); font-weight: 400; font-size: 22pt; line-height: 1.2; padding: 1.5mm 3mm 0; margin-top: 1mm; white-space: nowrap; }
 .demande .ornement { width: 46mm; height: 3.5mm; flex: none; margin-top: 0.5mm; }
 .demande .texte-invitation { font-style: italic; font-size: 9.5pt; line-height: 1.35; margin-top: 2.5mm; text-wrap: balance; }
+/* Nom de l'invité, en tête du texte : plus grand, en gras, sur une ligne. */
+.demande .invite { font-size: 13pt; font-weight: 700; line-height: 1.25; margin-top: 2.5mm; white-space: nowrap; }
+.demande .invite + .texte-invitation { margin-top: 1mm; }
 .demande .noms { font-family: var(--script); font-weight: 400; font-size: 20pt; line-height: 1.25; padding: 1.5mm 3mm 0; margin-top: 0.5mm; white-space: nowrap; }
 .demande .noms .esperluette { color: var(--esperluette); }
 /* Date, heure et lieu : intitulé à gauche, valeur ou ligne à remplir à droite (lignes assez

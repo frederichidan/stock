@@ -156,7 +156,13 @@ const INFOS = {
   // lieu vides : la carte porte une ligne pointillée, à remplir à la main. `precision`,
   // `tenue` et `confirmation` sont facultatifs (vides = non affichés). Demande surprise :
   // l'invitation vient de Frédéric seul et la ligne des prénoms ne porte que celui de Raïka.
+  // `invites` : une carte par nom, le nom en tête du texte (« Nanette, ») ; liste vide = une
+  // carte sans nom.
   demande: {
+    invites: [
+      "Nanette", "Mère Irène", "Petula", "Audrey", "Martine", "Judith", "Lady", "Andréa",
+      "Abu", "Maestro", "Mathurin", "Olivier", "Marco", "Dominique", "Guylaine", "Linda",
+    ],
     entete: "Invitation surprise", // petites capitales en haut de la carte
     titre: "Demande en mariage",
     invitation: "Frédéric a la joie de vous convier, en toute discrétion, à sa demande en mariage surprise à",

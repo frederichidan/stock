@@ -8,8 +8,9 @@
 <link rel="stylesheet" href="demande.css">
 <style>
   /* Invitation à la demande en mariage (infos.js : demande). Paramètres d'adresse :
-       ?format=a4      feuille A4 de quatre cartes, à couper en quatre (sinon : une carte A6
+       ?format=a4      feuilles A4 de quatre cartes, à couper en quatre (sinon : une carte A6
                        par page) ;
+       ?invite=Nanette la carte de cet invité seule (INFOS.demande.invites) ;
        ?pdf=1          textes dorés vectorisés pour l'impression en PDF (vectoriserDegrades) ;
        ?capture=1      fond et dessins seuls, sans les textes (illustrations 8K) ;
        ?images=[…]     une feuille par image 8K, les textes posés par-dessus en vectoriel :
@@ -41,7 +42,8 @@
 
   const planches = document.getElementById("planches");
   if (parametres.has("capture")) document.body.classList.add("sans-texte");
-  planches.innerHTML = feuillesDemande(format);
+  const seul = INFOS.demande.invites && INFOS.demande.invites.find((nom) => nom === parametres.get("invite"));
+  planches.innerHTML = feuillesDemande(format, seul ? [seul] : invitesDemande());
   Promise.all([...document.fonts].map((police) => police.load())).then(async () => {
     await document.fonts.ready;
     await preparerFeuilles(planches, parametres, [largeurFeuille, hauteurFeuille]);

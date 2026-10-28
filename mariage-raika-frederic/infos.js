@@ -154,17 +154,20 @@ const INFOS = {
   /* ----------------- Invitation à la demande en mariage ----------------- */
   // Carte A6 (105 × 148 mm), quatre par feuille A4 (invitation-demande.html). Date, heure et
   // lieu vides : la carte porte une ligne pointillée, à remplir à la main. `precision`,
-  // `tenue` et `confirmation` sont facultatifs (vides = non affichés).
+  // `tenue` et `confirmation` sont facultatifs (vides = non affichés). Demande surprise :
+  // l'invitation vient de Frédéric seul et la ligne des prénoms ne porte que celui de Raïka.
   demande: {
+    entete: "Invitation surprise", // petites capitales en haut de la carte
     titre: "Demande en mariage",
-    invitation: "Le couple a la joie de vous convier à la cérémonie de demande en mariage de",
+    invitation: "Frédéric a la joie de vous convier, en toute discrétion, à sa demande en mariage surprise à",
+    noms: "Raïka", // ligne des prénoms ; vide = « Raïka & Frédéric »
     date: "Dimanche 1er novembre 2026", // vide : ligne à remplir à la main
     heure: "Dès 18h",
     lieu: "Restaurant Iroko",
     precision: "Situé à Glass", // sous le lieu (affichée seulement si le lieu est rempli)
     tenue: "", // ex. "Touches de violet & d’or"
     confirmation: "", // ex. "Merci de confirmer votre présence au 077 00 00 00"
-    mot: "Votre présence nous honorera",
+    mot: "Chut… Raïka ne se doute de rien\u202f!",
   },
 
   /* ------------------------- Carte de menu ------------------------- */

@@ -140,8 +140,11 @@ Pour ajouter, retirer ou corriger un nom : modifier la liste `affiches` de `info
 Un modèle simple de carte d'invitation à la cérémonie de demande en mariage, format A6
 (105 × 148 mm), dans la même charte : fond blanc, cadre doré, monogramme couronné, « Demande en
 mariage » et les prénoms en écriture, le texte d'invitation, puis la date, l'heure et le lieu.
-Tous ses textes sont dans `infos.js`, rubrique `demande` (titre, texte d'invitation, date,
-heure, lieu, précision sous le lieu, tenue, confirmation, mot de la fin). **Date, heure ou lieu
+Tous ses textes sont dans `infos.js`, rubrique `demande` (en-tête, titre, texte d'invitation,
+ligne des prénoms, date, heure, lieu, précision sous le lieu, tenue, confirmation, mot de la
+fin). **C'est une demande surprise** : l'invitation vient de Frédéric (« Invitation
+surprise », « … à sa demande en mariage surprise à Raïka », « Chut… Raïka ne se doute de
+rien ! ») ; ne pas l'envoyer à Raïka, ni dans un groupe où se trouve Raïka. **Date, heure ou lieu
 laissés vides : la carte porte une ligne pointillée, à remplir à la main** ; tenue,
 confirmation et précision vides ne s'affichent pas (la précision, seulement avec un lieu).
 Couleurs : blanc & or (`couleurs.demande: "blanc"`), seul fond adapté à cette carte sans fond
@@ -314,8 +317,8 @@ Billets et menus sur **papier couché brillant**, pochettes sur **papier couché
 
 ## Dates et lieux
 
-- **Demande en mariage**, dimanche 1er novembre 2026, dès 18h, au restaurant Iroko (Glass) :
-  invitation `invitation-demande/`
+- **Demande en mariage (surprise)**, dimanche 1er novembre 2026, dès 18h, au restaurant Iroko
+  (Glass) : invitation `invitation-demande/`
 - **Escale 1 : mariage coutumier**, mercredi 16 décembre 2026, à La Sablière (entrée Hôtel Onomo) :
   début de la cérémonie à 12h30
 - **Escale 2 : mariage civil**, vendredi 18 décembre 2026, à l'Hôtel de ville de Libreville : arrivée

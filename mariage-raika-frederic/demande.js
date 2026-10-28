@@ -4,7 +4,8 @@
    100 % : seule (PDF A6), ou quatre par feuille A4, coupée en quatre (repères de coupe).
    Fond blanc : ni fond perdu ni traits de coupe autour, le cadre reste à 7 mm des bords, dans
    la zone que toutes les imprimantes impriment.
-   Date, heure ou lieu vides : une ligne pointillée, à remplir à la main.
+   Date, heure ou lieu vides : une ligne pointillée, à remplir à la main. En-tête et ligne des
+   prénoms réglables (`entete`, `noms` : demande surprise, au seul prénom de Raïka).
    Couleurs : INFOS.couleurs.demande, blanc & or par défaut (palette-blanc, commun.css) ;
    textes lisibles à l'impression (commun.css, « Menu, pochette, billets… »). */
 
@@ -29,12 +30,12 @@ function invitationDemande() {
   <section class="page demande${couleursDemande()}">
     ${encadrement()}
     <div class="contenu">
-      <div class="etiquette entete">Invitation</div>
+      <div class="etiquette entete">${esc(D.entete || "Invitation")}</div>
       ${monogramme({ taille: 24 })}
       <h1 class="titre texte-degrade">${esc(D.titre)}</h1>
       ${ornement()}
       <p class="texte-invitation">${esc(D.invitation)}</p>
-      <div class="noms texte-degrade">${esc(INFOS.mariee)} <span class="esperluette">&amp;</span> ${esc(INFOS.marie)}</div>
+      <div class="noms texte-degrade">${D.noms ? esc(D.noms) : `${esc(INFOS.mariee)} <span class="esperluette">&amp;</span> ${esc(INFOS.marie)}`}</div>
       <div class="details">
         ${champ("Date", D.date)}
         ${champ("Heure", D.heure)}

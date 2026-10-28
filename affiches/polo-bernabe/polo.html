@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Polo officiel RCA x Bernabé</title>
+<title>Polo officiel RCA</title>
 <link href="fonts/fonts.css" rel="stylesheet">
 <style>
   :root{ --navy:#0a1747; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --ink:#0a1747; }
@@ -63,21 +63,17 @@
       <div class="club">Rugby Club Akanda<small>Sevens</small></div>
       <h1>Polo <span>officiel</span> du club</h1>
     </div>
-    <div class="spons">
-      <div>Partenaire officiel<b>Bernabé</b></div>
-      <img src="bernabe-patch.svg" alt="Logo Bernabé">
-    </div>
   </header>
 
   <div class="shadow" style="left:115px"></div><div class="shadow" style="left:755px"></div>
   <div class="polo" id="front" style="left:40px"></div>
   <div class="polo" id="back" style="left:680px"></div>
-  <div class="cap" style="left:40px">Vue de face<b>Écusson · Bernabé · valeurs</b></div>
-  <div class="cap" style="left:680px">Vue de dos<b>Rugby Club Akanda · Bernabé</b></div>
+  <div class="cap" style="left:40px">Vue de face<b>Écusson · valeurs · Bernabé sur la manche</b></div>
+  <div class="cap" style="left:680px">Vue de dos<b>Rugby Club Akanda · RCA</b></div>
 
   <div class="details">
     <div class="det" id="d1"><span>Écusson brodé</span></div>
-    <div class="det" id="d2"><span>Sponsor Bernabé brodé</span></div>
+    <div class="det" id="d2"><span>Bernabé sur la manche</span></div>
     <div class="det" id="d3"><span>Détail manche</span></div>
     <div class="det" id="d4"><span>Col &amp; boutons</span></div>
   </div>
@@ -87,9 +83,10 @@
     <ul>
       <li><b>Couleur</b><span>Bleu marine <span class="chips"><i style="background:#0f1d4f"></i></span></span></li>
       <li><b>Col &amp; manches</b><span>Liserés <span class="chips"><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#fff"></i></span> &nbsp;doublure de col verte</span></li>
-      <li><b>Poitrine</b><span>Écusson RCA brodé (cœur) · logo Bernabé brodé (côté droit)</span></li>
-      <li><b>Dos</b><span>« Rugby Club Akanda · RCA » + logo Bernabé</span></li>
-      <li><b>Manche</b><span>Courage, Engagement, Solidarité et Dépassement</span></li>
+      <li><b>Poitrine</b><span>Écusson RCA brodé (cœur)</span></li>
+      <li><b>Dos</b><span>« Rugby Club Akanda · RCA »</span></li>
+      <li><b>Manche gauche</b><span>Logo du sponsor Bernabé brodé</span></li>
+      <li><b>Manche droite</b><span>Courage, Engagement, Solidarité et Dépassement</span></li>
     </ul>
   </div>
 
@@ -137,6 +134,9 @@ function tipping(edge, clip) {
 
 function polo(view, uid, vb) {
   const id = n => `${n}${uid}`;
+  const values = (x, y, a) => `<g transform="translate(${x} ${y}) rotate(${a})" font-family="Montserrat" font-weight="800" font-size="8.4" fill="#fff" text-anchor="middle" filter="url(#${id('emb')})">
+        <text y="-13.5">COURAGE,</text><text y="-3">ENGAGEMENT,</text><text y="7.5">SOLIDARITÉ</text><text y="18">ET DÉPASSEMENT</text></g>`;
+  const sponsor = (x, y, a) => `<g transform="translate(${x} ${y}) rotate(${a})"><image href="bernabe.svg" x="-27" y="-23.2" width="54" height="46.3" filter="url(#${id('emb')})"/></g>`;
   const defs = `<defs>
     <clipPath id="${id('b')}"><path d="${BODY}"/></clipPath>
     <linearGradient id="${id('sh')}" x1="0" x2="1">
@@ -188,22 +188,19 @@ function polo(view, uid, vb) {
         <circle cx="298.4" cy="${y + 1.4}" r=".75" fill="#05091f"/><circle cx="301.6" cy="${y - 1.4}" r=".75" fill="#05091f"/>
         <circle cx="298.4" cy="${y - 1.4}" r=".75" fill="#05091f"/><circle cx="301.6" cy="${y + 1.4}" r=".75" fill="#05091f"/>`;
     }
-    // écusson (cœur) et sponsor (côté opposé)
-    inner += `<image href="ecusson.png" x="350" y="128" width="74" height="89" filter="url(#${id('emb')})"/>
-      <image href="bernabe.svg" x="176" y="140" width="80" height="69" filter="url(#${id('emb')})"/>`;
-    // valeurs sur la manche gauche (vue)
-    inner += `<g transform="translate(111 196) rotate(25)" font-family="Montserrat" font-weight="800" font-size="8.4" fill="#fff" text-anchor="middle" filter="url(#${id('emb')})">
-        <text y="-13.5">COURAGE,</text><text y="-3">ENGAGEMENT,</text><text y="7.5">SOLIDARITÉ</text><text y="18">ET DÉPASSEMENT</text></g>`;
+    // écusson (cœur) ; valeurs sur la manche droite du porteur, sponsor sur sa manche gauche
+    inner += `<image href="ecusson.png" x="350" y="128" width="74" height="89" filter="url(#${id('emb')})"/>`;
+    inner += values(111, 196, 25) + sponsor(488, 192, -18);
   } else {
-    // dos : nom du club + sponsor
+    // dos : nom du club ; manches vues de dos (sponsor à gauche de l'image, valeurs à droite)
     inner += `<g font-family="Montserrat" fill="#fff" text-anchor="middle" filter="url(#${id('emb')})">
-        <text x="300" y="168" font-weight="800" font-size="27" letter-spacing="2">RUGBY CLUB</text>
-        <text x="300" y="236" font-weight="900" font-size="70" letter-spacing="1">AKANDA</text>
-        <text x="300" y="279" font-weight="800" font-size="22" letter-spacing="3">RCA</text></g>
-      <path d="M212 271 L262 271" stroke="${GREEN}" stroke-width="3"/><path d="M226 271 L262 271" stroke="${YELLOW}" stroke-width="3"/>
-      <path d="M338 271 L388 271" stroke="${YELLOW}" stroke-width="3"/><path d="M374 271 L388 271" stroke="${GREEN}" stroke-width="3"/>
-      <text x="300" y="352" font-family="Inter" font-weight="700" font-size="11" letter-spacing="4" fill="#fff" fill-opacity=".85" text-anchor="middle">PARTENAIRE OFFICIEL</text>
-      <image href="bernabe.svg" x="230" y="364" width="140" height="120" filter="url(#${id('emb')})"/>`;
+        <text x="300" y="170" font-weight="800" font-size="22" letter-spacing="2">RUGBY CLUB</text>
+        <text x="300" y="224" font-weight="900" font-size="48" letter-spacing="1">AKANDA</text>
+        <text x="300" y="262" font-weight="800" font-size="18" letter-spacing="3">RCA</text></g>
+      <path d="M222 256 L268 256" stroke="${GREEN}" stroke-width="3"/><path d="M234 256 L268 256" stroke="${YELLOW}" stroke-width="3"/>
+      <path d="M332 256 L378 256" stroke="${YELLOW}" stroke-width="3"/><path d="M366 256 L378 256" stroke="${GREEN}" stroke-width="3"/>
+`;
+    inner += sponsor(112, 192, 18) + values(489, 196, -25);
   }
   // texture piquée + ombrages
   inner += `<rect width="600" height="640" fill="#fff" filter="url(#${id('pq')})" style="mix-blend-mode:overlay"/>
@@ -240,7 +237,7 @@ document.getElementById('front').innerHTML = polo('front', 'F', '0 30 600 620');
 document.getElementById('back').innerHTML = polo('back', 'B', '0 30 600 620');
 // vignettes de détail (zooms sur le même dessin)
 document.getElementById('d1').insertAdjacentHTML('afterbegin', polo('front', 'D1', '330 112 112 112'));
-document.getElementById('d2').insertAdjacentHTML('afterbegin', polo('front', 'D2', '158 116 116 116'));
+document.getElementById('d2').insertAdjacentHTML('afterbegin', polo('front', 'D2', '424 138 122 122'));
 document.getElementById('d3').insertAdjacentHTML('afterbegin', polo('front', 'D3', '44 140 126 126'));
 document.getElementById('d4').insertAdjacentHTML('afterbegin', polo('front', 'D4', '222 48 156 156'));
 const solo = new URLSearchParams(location.search).get('solo');

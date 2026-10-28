@@ -8,6 +8,9 @@
    prénoms réglables (`entete`, `noms` : demande surprise, au seul prénom de Raïka).
    Une carte par invité (INFOS.demande.invites), son nom en tête du texte, comme une adresse
    (« Nanette, ») ; sans liste, une carte sans nom.
+   Touche romantique : voile rose et lilas dans le cadre, cœurs aux coins du cadre et petits
+   cœurs semés autour du monogramme ; titres et prénoms en violet royal, or vif, cœurs rose
+   orchidée (demande.css).
    Couleurs : INFOS.couleurs.demande, blanc & or par défaut (palette-blanc, commun.css) ;
    textes lisibles à l'impression (commun.css, « Menu, pochette, billets… »). */
 
@@ -17,6 +20,32 @@ const FEUILLE_A4_DEMANDE = [210, 297];
 // Toute valeur autre que "or", "argent" ou "blanc" revient au blanc & or.
 function couleursDemande() {
   return palette((INFOS.couleurs || {}).demande) || palette("blanc");
+}
+
+// Petits cœurs semés de part et d'autre du monogramme, dans les deux coins hauts du cadre
+// (coordonnées en mm dans le cadre, 91 × 134) : [x, y, taille, rotation, couleur, plein].
+const COEURS_DEMANDE = [
+  [11, 19, 4.4, -15, "coeur", true], [5.8, 25.5, 2.7, 12, "coeur-or", true],
+  [16.8, 27, 2.4, -25, "coeur", false], [8.6, 12.4, 2, 18, "coeur-or", false],
+  [18.2, 14.6, 1.6, 0, "coeur", true], [4.6, 18.4, 1.4, -8, "coeur", false],
+];
+
+function coeursEpars() {
+  const [l, h] = [FORMAT_DEMANDE[0] - 14, FORMAT_DEMANDE[1] - 14];
+  const coeur = ([x, y, taille, rotation, couleur, plein]) => {
+    const echelle = taille / 20; // le tracé du cœur (24 × 24) mesure 20 unités de large
+    const peinture = plein ? `fill="var(--${couleur})"` : `fill="none" stroke="var(--${couleur})" stroke-width="${(0.28 / echelle).toFixed(2)}"`;
+    return `<path d="${ICONES.coeur}" transform="translate(${x} ${y}) rotate(${rotation}) scale(${echelle}) translate(-12 -12)" ${peinture}/>`;
+  };
+  const gauche = COEURS_DEMANDE.map(coeur).join("");
+  const droite = COEURS_DEMANDE.map(([x, y, taille, rotation, couleur, plein]) => coeur([l - x, y, taille, -rotation, couleur, plein])).join("");
+  return `<svg class="coeurs" viewBox="0 0 ${l} ${h}" aria-hidden="true">${gauche}${droite}</svg>`;
+}
+
+// Cadre doré à cœurs : voile dans le cadre, cœurs semés, double filet, un cœur à chaque coin.
+function encadrementRomantique() {
+  return `<div class="voile"></div>${coeursEpars()}<div class="cadre"></div>
+    ${["hg", "hd", "bg", "bd"].map((coin) => `<span class="coin ${coin}">${icone("coeur")}</span>`).join("")}`;
 }
 
 // Invités, une carte chacun ; [""] sans liste (une carte sans nom).
@@ -36,7 +65,7 @@ function invitationDemande(invite = "") {
   const complements = [D.tenue && `Tenue\u00a0: ${D.tenue}`, D.confirmation].filter(Boolean);
   return `
   <section class="page demande${couleursDemande()}">
-    ${encadrement()}
+    ${encadrementRomantique()}
     <div class="contenu">
       <div class="etiquette entete">${esc(D.entete || "Invitation")}</div>
       ${monogramme({ taille: 24 })}

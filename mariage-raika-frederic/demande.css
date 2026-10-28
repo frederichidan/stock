@@ -8,10 +8,20 @@
   background: radial-gradient(ellipse 85% 70% at 50% 42%, var(--fond-1) 0%, var(--fond-2) 50%, var(--fond-3) 100%);
 }
 .demande .cadre { inset: 7mm; }
-.demande .losange.hg { top: 5.7mm; left: 5.7mm; }
-.demande .losange.hd { top: 5.7mm; right: 5.7mm; }
-.demande .losange.bg { bottom: 5.7mm; left: 5.7mm; }
-.demande .losange.bd { bottom: 5.7mm; right: 5.7mm; }
+/* Cadre romantique (encadrementRomantique, demande.js) : voile dans le cadre, petits cœurs
+   semés, un cœur doré à chaque coin du cadre. */
+.demande .voile {
+  position: absolute;
+  inset: 7mm;
+  background: radial-gradient(ellipse 80% 65% at 50% 40%, var(--voile-1, transparent) 0%, var(--voile-2, transparent) 55%, var(--voile-3, transparent) 100%);
+}
+.demande .coeurs { position: absolute; left: 7mm; top: 7mm; width: 91mm; height: 134mm; opacity: var(--coeurs-opacite, 1); }
+.demande .coin { position: absolute; width: 3.6mm; height: 3.6mm; color: var(--accent); }
+.demande .coin svg { display: block; width: 100%; height: 100%; }
+.demande .coin.hg { top: 5.2mm; left: 5.2mm; }
+.demande .coin.hd { top: 5.2mm; right: 5.2mm; }
+.demande .coin.bg { bottom: 5.2mm; left: 5.2mm; }
+.demande .coin.bd { bottom: 5.2mm; right: 5.2mm; }
 
 .demande .contenu {
   position: absolute;
@@ -29,8 +39,8 @@
 .demande .titre { font-family: var(--script); font-weight: 400; font-size: 22pt; line-height: 1.2; padding: 1.5mm 3mm 0; margin-top: 1mm; white-space: nowrap; }
 .demande .ornement { width: 46mm; height: 3.5mm; flex: none; margin-top: 0.5mm; }
 .demande .texte-invitation { font-style: italic; font-size: 9.5pt; line-height: 1.35; margin-top: 2.5mm; text-wrap: balance; }
-/* Nom de l'invité, en tête du texte : plus grand, en gras, sur une ligne. */
-.demande .invite { font-size: 13pt; font-weight: 700; line-height: 1.25; margin-top: 2.5mm; white-space: nowrap; }
+/* Nom de l'invité, en tête du texte : plus grand, en gras, en violet, sur une ligne. */
+.demande .invite { font-size: 13pt; font-weight: 700; line-height: 1.25; margin-top: 2.5mm; white-space: nowrap; color: var(--lettres, var(--texte)); }
 .demande .invite + .texte-invitation { margin-top: 1mm; }
 .demande .noms { font-family: var(--script); font-weight: 400; font-size: 20pt; line-height: 1.25; padding: 1.5mm 3mm 0; margin-top: 0.5mm; white-space: nowrap; }
 .demande .noms .esperluette { color: var(--esperluette); }
@@ -52,6 +62,30 @@
 .demande .details .etiquette:has(+ .ligne-ecriture) { align-self: end; padding-bottom: 0.8mm; }
 .demande .complement { font-size: 8.5pt; line-height: 1.3; margin-top: 2.5mm; text-wrap: balance; }
 .demande .mot { font-family: var(--script); font-weight: 400; font-size: 14pt; line-height: 1.25; padding: 1.5mm 2mm 0; margin-top: auto; text-wrap: balance; }
+
+/* ------------ Touche romantique : violet royal, or vif et rose orchidée ------------ */
+/* Titres, prénom de Raïka, nom de l'invité et mot de la fin en violet royal (#4a2384, la couleur
+   du mariage : 9:1 au moins sur le voile), petites capitales en prune (7,8:1), textes violet
+   presque noir (13:1) ; or vif pour le cadre et les ornements ; rose orchidée pour les cœurs et
+   l'esperluette du monogramme ; voile rose et lilas très clair dans le cadre, le bord de la carte
+   restant blanc (pas de liseré à la coupe de la feuille A4). Remplace le brun de la palette
+   blanc & or (commun.css). */
+.page.demande.palette-blanc {
+  --texte: #2a1838; --texte-doux: #3d2850; --discret: #3d2850;
+  --lettres: #4a2384;
+  --accent-texte: #6b2a6e;
+  --accent: #c39a32;
+  --ligne: rgba(195, 154, 50, 0.85);
+  --orn-a: #9c7320; --orn-b: #f0cf6a; --orn-c: #c99a2e;
+  --esperluette: #c2407f;
+  --coeur: #c2407f; --coeur-or: #d1a43a;
+  --voile-1: #fffbfd; --voile-2: #fcf0f7; --voile-3: #f4dfef;
+}
+/* Édition noir et blanc (commun.css) : ni voile ni cœurs semés ; cœurs des coins en noir. */
+:root.nb .page.demande {
+  --voile-1: #fff !important; --voile-2: #fff !important; --voile-3: #fff !important;
+  --coeur: #000 !important; --coeur-or: #000 !important; --coeurs-opacite: 0 !important;
+}
 
 /* Feuilles à imprimer (invitation-demande.html) : A6, ou A4 de quatre cartes. */
 .feuille { position: relative; overflow: hidden; break-after: page; background: #fff; }

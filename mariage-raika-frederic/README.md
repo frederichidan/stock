@@ -138,8 +138,12 @@ Pour ajouter, retirer ou corriger un nom : modifier la liste `affiches` de `info
 ## Invitation à la demande en mariage : `export/violet/invitation-demande/`
 
 Un modèle simple de carte d'invitation à la cérémonie de demande en mariage, format A6
-(105 × 148 mm), dans la même charte : fond blanc, cadre doré, monogramme couronné, « Demande en
-mariage » et les prénoms en écriture, le texte d'invitation, puis la date, l'heure et le lieu.
+(105 × 148 mm), dans la même charte : cadre doré, monogramme couronné, « Demande en mariage » et
+les prénoms en écriture, le texte d'invitation, puis la date, l'heure et le lieu. Touche
+romantique : voile rose et lilas très clair dans le cadre (le bord de la carte reste blanc),
+un cœur doré à chaque coin, petits cœurs rose orchidée et or autour du monogramme ; titre,
+prénoms et mot de la fin en violet royal, or vif (`demande.css`). Édition noir et blanc : ni
+voile ni cœurs semés.
 Tous ses textes sont dans `infos.js`, rubrique `demande` (en-tête, titre, texte d'invitation,
 ligne des prénoms, date, heure, lieu, précision sous le lieu, tenue, confirmation, mot de la
 fin). **C'est une demande surprise** : l'invitation vient de Frédéric (« Invitation

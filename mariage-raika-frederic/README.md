@@ -312,6 +312,8 @@ Billets et menus sur **papier couché brillant**, pochettes sur **papier couché
 
 ## Dates et lieux
 
+- **Demande en mariage**, dimanche 1er novembre 2026, dès 18h, au restaurant Iroko (Glass) :
+  invitation `invitation-demande/`
 - **Escale 1 : mariage coutumier**, mercredi 16 décembre 2026, à La Sablière (entrée Hôtel Onomo) :
   début de la cérémonie à 12h30
 - **Escale 2 : mariage civil**, vendredi 18 décembre 2026, à l'Hôtel de ville de Libreville : arrivée

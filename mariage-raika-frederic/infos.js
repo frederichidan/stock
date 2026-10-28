@@ -155,11 +155,11 @@ const INFOS = {
   // `tenue` et `confirmation` sont facultatifs (vides = non affichés).
   demande: {
     titre: "Demande en mariage",
-    invitation: "Les familles des futurs mariés ont la joie de vous convier à la cérémonie de demande en mariage de",
-    date: "", // ex. "Samedi 5 décembre 2026"
-    heure: "", // ex. "15h00"
-    lieu: "", // ex. "Domicile familial, Libreville"
-    precision: "", // sous le lieu, ex. "Quartier Louis, près de la pharmacie"
+    invitation: "Le couple a la joie de vous convier à la cérémonie de demande en mariage de",
+    date: "Dimanche 1er novembre 2026", // vide : ligne à remplir à la main
+    heure: "Dès 18h",
+    lieu: "Restaurant Iroko",
+    precision: "Situé à Glass", // sous le lieu
     tenue: "", // ex. "Touches de violet & d’or"
     confirmation: "", // ex. "Merci de confirmer votre présence au 077 00 00 00"
     mot: "Votre présence nous honorera",

@@ -162,7 +162,7 @@ const INFOS = {
     invites: [
       "Nanette", "Mère Irène", "Petula", "Audrey", "Martine", "Judith", "Lady", "Andréa",
       "Abu", "Maestro", "Mathurin", "Olivier", "Marco", "Dominique", "Guylaine", "Linda",
-      "Sabrina",
+      "Sabrina", "Gabrielle",
     ],
     entete: "Invitation surprise", // petites capitales en haut de la carte
     titre: "Demande en mariage",

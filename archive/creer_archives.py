@@ -1,4 +1,4 @@
-"""Archive des visuels du Rugby Club Akanda, en volumes thématiques de moins de 29 Mo.
+"""Archive des visuels du Rugby Club Akanda : volumes thématiques de moins de 29 Mo + une archive unique qui les regroupe.
 
 Chaque volume est un ZIP autonome (il s'ouvre seul) et contient le sommaire LISEZMOI.txt.
 Les fichiers sont renommés proprement ; les sources (HTML, scripts, polices) ne sont pas incluses.
@@ -129,6 +129,13 @@ def main(sortie):
         assert taille < LIMITE, f'{nom} dépasse la limite'
     with open(os.path.join(sortie, 'LISEZMOI.txt'), 'w') as f:
         f.write(txt)
+    # archive unique regroupant les 8 volumes
+    complet = os.path.join(sortie, 'RCA-Visuels-Complet.zip')
+    with zipfile.ZipFile(complet, 'w') as z:
+        z.writestr('RCA-Visuels-Complet/LISEZMOI.txt', txt, compress_type=zipfile.ZIP_DEFLATED)
+        for nom, _, _ in VOLUMES:
+            z.write(os.path.join(sortie, nom + '.zip'), f'RCA-Visuels-Complet/{nom}.zip', compress_type=zipfile.ZIP_STORED)
+    print(f'RCA-Visuels-Complet.zip  {os.path.getsize(complet) / 1024 / 1024:5.1f} Mo')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Fiches postes – Rugby à 7 – RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<!--
+  Fiches pédagogiques «&nbsp;Les postes du rugby à 7&nbsp;» : 1 fiche d'ensemble + 7 fiches poste (A4).
+  Les pages sont générées depuis les données JS (POSTES) ; render.js produit le PDF et les PNG.
+-->
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{ --navy:#0a1747; --navy2:#0c1946; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --ink:#0a1747;
+    --muted:#4a5576; --paper:#f6f7fb; --line:#dfe3ee; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#888}
+  body{font-family:Inter,sans-serif;color:var(--ink)}
+  .page{position:relative;width:210mm;height:297mm;overflow:hidden;background:var(--paper);page-break-after:always;display:flex;flex-direction:column}
+
+  /* en-tête */
+  .head{position:relative;height:70mm;flex:none;color:#fff;padding:11mm 13mm 0;overflow:hidden;
+    background:radial-gradient(80% 90% at 100% 0%, #1c3f9e 0%, transparent 65%), var(--navy)}
+  .head .big{position:absolute;right:6mm;top:-12mm;font-family:Anton,sans-serif;font-size:118mm;line-height:1;color:var(--yellow);opacity:.95}
+  .head .big.two{font-size:92mm;top:-4mm}
+  .brand{display:flex;align-items:center;gap:3.5mm;position:relative}
+  .brand img{height:13mm;filter:drop-shadow(0 1mm 2mm rgba(0,0,0,.35))}
+  .brand div{font-weight:700;font-size:3.1mm;letter-spacing:.8mm;text-transform:uppercase;line-height:1.4}
+  .brand small{display:block;color:var(--yellow);font-size:2.6mm;letter-spacing:.7mm}
+  .kind{position:relative;margin-top:6.5mm;display:flex;gap:2mm}
+  .chip{font-size:2.8mm;font-weight:700;letter-spacing:.5mm;text-transform:uppercase;padding:1.3mm 3mm;border-radius:5mm;background:rgba(255,255,255,.14)}
+  .chip.y{background:var(--yellow);color:var(--navy)}
+  h1{position:relative;margin-top:3mm;font-family:Anton,sans-serif;font-weight:400;font-size:17mm;line-height:1;text-transform:uppercase;letter-spacing:.3mm;max-width:140mm}
+  .en{position:relative;margin-top:1.6mm;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500;font-size:6.4mm;color:rgba(255,255,255,.85)}
+  .flag{position:absolute;left:0;right:0;bottom:0;height:1.6mm;display:flex}
+  .flag i{flex:1}.flag i:nth-child(1){background:var(--green)}.flag i:nth-child(2){background:var(--yellow)}.flag i:nth-child(3){background:var(--royal)}
+
+  /* corps */
+  .body{flex:1;padding:6mm 13mm 0;display:flex;flex-direction:column;gap:4.2mm}
+  .row{display:grid;gap:4.2mm}
+  .card{background:#fff;border-radius:3mm;box-shadow:0 .3mm 1.2mm rgba(10,23,71,.08);padding:3.8mm 4.4mm}
+  h3{font-size:3.1mm;font-weight:700;letter-spacing:.6mm;text-transform:uppercase;color:#b38f00;margin-bottom:2.2mm;display:flex;align-items:center;gap:1.6mm}
+  h3::before{content:"";width:2.2mm;height:2.2mm;border-radius:.6mm;background:var(--yellow)}
+  p{font-size:3.75mm;line-height:1.48;color:#141c38}
+  p b{color:var(--ink)}
+  .profil{margin-top:3mm;padding-top:2.6mm;border-top:.3mm solid var(--line);font-size:3.5mm;color:#36405f}
+  .profil b{color:var(--ink);font-weight:700}
+  .field{padding:0;overflow:hidden;background:#1f8a3f}
+  .field svg{display:block;width:100%;height:100%}
+
+  .missions{grid-template-columns:1fr 1fr 1fr}
+  .m h4{font-family:Anton,sans-serif;font-weight:400;font-size:5.4mm;text-transform:uppercase;letter-spacing:.2mm;display:flex;align-items:center;gap:2mm;margin-bottom:2.2mm}
+  .m h4 svg{width:5.4mm;height:5.4mm;flex:none;stroke:var(--royal);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  ul{list-style:none;display:flex;flex-direction:column;gap:1.6mm}
+  li{position:relative;padding-left:3.4mm;font-size:3.45mm;line-height:1.4;color:#141c38;font-weight:500}
+  li::before{content:"";position:absolute;left:0;top:1.7mm;width:1.5mm;height:1.5mm;border-radius:50%;background:var(--yellow)}
+
+  .q{display:grid;grid-template-columns:36mm 1fr;align-items:center;gap:1.8mm 3mm}
+  .q span{font-size:3.4mm;font-weight:600}
+  .bars{display:flex;gap:1mm}
+  .bars i{height:2.6mm;flex:1;border-radius:.6mm;background:#e3e7f1}
+  .bars i.on{background:var(--navy2)}
+  .bars i.on.top{background:var(--yellow)}
+  ol{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:2mm}
+  ol li{counter-increment:n;padding-left:7mm}
+  ol li::before{content:counter(n);top:0;width:5mm;height:5mm;border-radius:50%;background:var(--navy);color:var(--yellow);
+    font-family:Anton,sans-serif;font-size:3.2mm;display:grid;place-items:center}
+
+  .coach{display:flex;gap:4mm;align-items:center;background:var(--navy);color:#fff;border-radius:3mm;padding:3.4mm 5mm;border-left:2mm solid var(--yellow)}
+  .coach svg{width:9mm;height:9mm;flex:none;fill:var(--yellow)}
+  .coach div{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500;font-size:5.3mm;line-height:1.22}
+  .coach small{display:block;margin-top:1mm;font-family:Inter;font-style:normal;font-size:2.6mm;letter-spacing:.6mm;text-transform:uppercase;color:var(--yellow);font-weight:700}
+
+  .foot{flex:none;height:13mm;margin-top:4mm;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 13mm;position:relative}
+  .foot .s{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:5mm}
+  .foot .s em{color:var(--yellow)}
+  .foot .pg{font-size:2.7mm;font-weight:700;letter-spacing:.8mm;text-transform:uppercase;color:rgba(255,255,255,.75)}
+
+  /* fiche d'ensemble */
+  .ov .field{height:80mm}
+  table{width:100%;border-collapse:collapse;font-size:3.35mm}
+  th{text-align:left;font-size:2.6mm;letter-spacing:.5mm;text-transform:uppercase;color:var(--muted);font-weight:700;padding:0 2mm 1.6mm}
+  td{padding:1.35mm 2mm;border-top:.3mm solid var(--line);vertical-align:middle;line-height:1.35}
+  td.n{width:9mm}
+  td.n b{display:grid;place-items:center;width:6.4mm;height:6.4mm;border-radius:50%;background:var(--navy);color:#fff;font-family:Anton;font-weight:400;font-size:3.6mm}
+  td.n b.f{background:var(--yellow);color:var(--navy)}
+  td.p{font-weight:700;white-space:nowrap}
+  td.x{color:var(--muted);white-space:nowrap;text-align:center}
+</style>
+</head>
+<body>
+<div id="pages"></div>
+<script>
+// ----------- terrain (formation offensive après une mêlée, attaque vers le haut) -----------
+const POS = { 1: [33, 42], 2: [40, 42], 3: [47, 42], 4: [25, 47], 5: [50, 60], 6: [66, 69], 7: [84, 78] };
+function field(sel, w = 100, h = 66, opts = {}) {
+  const X = v => v / 100 * w, Y = v => v / 100 * h;
+  let s = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice">`;
+  for (let i = 0; i < 10; i += 2) s += `<rect x="0" y="${i * h / 10}" width="${w}" height="${h / 10}" fill="#23974a"/>`;
+  s += `<path d="M0 ${Y(12)} H${w}" stroke="#fff" stroke-width=".6"/>
+    <path d="M0 ${Y(22)} H${w}" stroke="#fff" stroke-width=".4" stroke-dasharray="1.6 1.2"/>
+    <path d="M${X(46)} ${Y(4)} V${Y(12)} M${X(54)} ${Y(4)} V${Y(12)} M${X(46)} ${Y(9)} H${X(54)}" stroke="#fff" stroke-width=".6"/>
+    <text x="${X(3)}" y="${Y(9)}" font-size="${h * .045}" font-weight="700" fill="#fff" font-family="Inter" letter-spacing=".3">EN-BUT ADVERSE</text>
+    <g stroke="#f5c400" stroke-width=".8" fill="none" stroke-linecap="round"><path d="M${X(92)} ${Y(64)} V${Y(28)}"/><path d="M${X(90)} ${Y(32)} L${X(92)} ${Y(28)} L${X(94)} ${Y(32)}"/></g>
+    <text x="${X(88.5)}" y="${Y(66)}" font-size="${h * .036}" font-weight="700" fill="#f5c400" font-family="Inter" transform="rotate(-90 ${X(88.5)} ${Y(66)})" letter-spacing=".25">ATTAQUE</text>
+    <ellipse cx="${X(40)}" cy="${Y(42)}" rx="${X(13)}" ry="${Y(8.5)}" fill="none" stroke="#fff" stroke-width=".4" stroke-dasharray="1 .8"/>
+    <text x="${X(40)}" y="${Y(31.5)}" text-anchor="middle" font-size="${h * .04}" font-weight="700" fill="#fff" font-family="Inter" letter-spacing=".3">MÊLÉE</text>
+    <path d="M${X(29)} ${Y(51)} L${X(48)} ${Y(62)} L${X(64)} ${Y(71)} L${X(82)} ${Y(80)}" stroke="#fff" stroke-width=".45" stroke-dasharray="1 .9" fill="none"/>`;
+  const r = h * (opts.r || .052);
+  for (const [n, [x, y]] of Object.entries(POS)) {
+    const on = +n === sel;
+    if (on) s += `<circle cx="${X(x)}" cy="${Y(y)}" r="${r * 1.55}" fill="#0c1946"/><circle cx="${X(x)}" cy="${Y(y)}" r="${r * 1.55}" fill="none" stroke="#f5c400" stroke-width=".9"/>`;
+    s += `<g><circle cx="${X(x)}" cy="${Y(y)}" r="${r}" fill="${on ? '#f5c400' : '#0c1946'}" stroke="${on ? '#0c1946' : (+n <= 3 ? '#f5c400' : '#fff')}" stroke-width="${on ? .7 : .55}"/>
+      <text x="${X(x)}" y="${Y(y) + r * .42}" text-anchor="middle" font-family="Anton" font-size="${r * 1.2}" fill="${on ? '#0c1946' : '#fff'}">${n}</text></g>`;
+  }
+  return s + '</svg>';
+}
+
+// ----------- contenu -----------
+const ICON = {
+  att: '<svg viewBox="0 0 24 24"><path d="M4 20 20 4M12 4h8v8"/></svg>',
+  def: '<svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg>',
+  pha: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg>',
+};
+const QUOTE = '<svg viewBox="0 0 24 24"><path d="M10 7H6a2 2 0 0 0-2 2v4h4v4H6M20 7h-4a2 2 0 0 0-2 2v4h4v4h-2"/></svg>';
+
+const POSTES = [
+{ n: 1, mission: 'Stabilise la mêlée, avance dans le contact, soulève le sauteur.', nom: 'Pilier gauche', en: 'Loosehead prop', ligne: 'Avant · première ligne', xv: '1',
+  role: 'Le pilier gauche se place à gauche de la mêlée, tête à l’extérieur. Il apporte <b>stabilité et puissance</b>. Au 7, c’est aussi un avant mobile qui avance dans les contacts et aide à gagner les ballons aériens.',
+  profil: 'solide, puissant, plus mobile qu’au XV.',
+  att: ['Porter le ballon dans le contact et gagner du terrain.', 'Rester disponible comme soutien du porteur.', 'Sécuriser les rucks pour une sortie rapide.'],
+  def: ['Plaquer près des regroupements.', 'Contester le ballon au sol après un plaquage.', 'Remonter vite dans la ligne.'],
+  pha: ['Mêlée : pousser bas, dos plat, tête à l’extérieur.', 'Touche et coups d’envoi : souvent le «&nbsp;lifteur&nbsp;» qui soulève le sauteur.'],
+  q: [['Puissance', 5], ['Plaquage', 5], ['Technique de mêlée', 5], ['Endurance', 4], ['Mains / réception', 4], ['Vitesse', 3]],
+  ex: ['Gainage et poussée sur bouclier : 3 × 30 secondes.', 'Lever du sauteur en touche avec un partenaire : technique et timing.', 'Sprints de 10 m enchaînés après une remise debout.'],
+  coach: 'Gagne ton duel, puis relève-toi le premier : au 7, un avant au sol, c’est un joueur en moins.' },
+
+{ n: 2, mission: 'Talonne en mêlée, lance en touche, gratte les ballons.', nom: 'Talonneur', en: 'Hooker', ligne: 'Avant · première ligne', xv: '2',
+  role: 'Au centre de la première ligne, le talonneur <b>talonne le ballon en mêlée</b> et <b>lance en touche</b>. Souvent le plus rapide des avants, il est partout autour des regroupements.',
+  profil: 'explosif, précis, combatif.',
+  att: ['Faire le lien entre avants et arrières.', 'Attaquer les intervalles près des regroupements.', 'Soutenir vite le porteur du ballon.'],
+  def: ['Plaquer, puis se relever aussitôt.', '«&nbsp;Gratter&nbsp;» : récupérer le ballon au sol après un plaquage.', 'Ralentir les sorties de ruck adverses.'],
+  pha: ['Mêlée : talonner le ballon vers l’arrière.', 'Touche : lancer droit et précis sur le sauteur.'],
+  q: [['Lancer en touche', 5], ['Grattage', 5], ['Plaquage', 5], ['Puissance', 4], ['Vitesse', 4], ['Endurance', 4]],
+  ex: ['Lancers de touche sur cible à 5, 8 et 12 m : séries de 20.', 'Grattage en 1 contre 1 au sol, avec bouclier.', 'Talonnage en mêlée face à un partenaire.'],
+  coach: 'Ton lancer, c’est notre ballon : répète-le jusqu’à ce qu’il devienne automatique.' },
+
+{ n: 3, mission: 'Tient la mêlée, saute en touche et sur les coups d’envoi.', nom: 'Pilier droit', en: 'Tighthead prop', ligne: 'Avant · première ligne', xv: '3',
+  role: 'Pivot de la mêlée côté droit, le pilier droit <b>encaisse la poussée adverse</b>. Au 7, il est souvent grand et athlétique : c’est fréquemment <b>le sauteur principal</b> en touche et sur les coups d’envoi.',
+  profil: 'grand, puissant, bonne détente.',
+  att: ['Avancer dans le contact.', 'Rester disponible dans l’axe du terrain.', 'Nettoyer les rucks.'],
+  def: ['Plaquer et ralentir le ballon adverse.', 'Couvrir la zone proche des regroupements.', 'Se replacer vite après chaque action.'],
+  pha: ['Mêlée : tenir l’axe, ne jamais reculer.', 'Touche et coups d’envoi : sauter, attraper, protéger le ballon.'],
+  q: [['Puissance', 5], ['Jeu aérien', 5], ['Plaquage', 5], ['Mains / réception', 4], ['Endurance', 4], ['Vitesse', 3]],
+  ex: ['Réception de coups d’envoi : ballon haut, appel fort «&nbsp;À moi !&nbsp;».', 'Mêlée en 1 contre 1, encadrée et en sécurité.', 'Pliométrie : sauts sur boîte, 3 × 8.'],
+  coach: 'Sur un coup d’envoi, annonce fort, attaque le ballon au plus haut et protège-le en retombant.' },
+
+{ n: 4, mission: 'Distribue le ballon, accélère le jeu, balaie en défense.', nom: 'Demi de mêlée', en: 'Scrum-half', ligne: 'Arrière · charnière', xv: '9',
+  role: 'Le demi de mêlée fait le <b>lien entre les avants et les arrières</b>. Il introduit le ballon en mêlée, le récupère à chaque regroupement et le distribue vite. En défense, il joue souvent <b>«&nbsp;balayeur&nbsp;»</b> derrière la ligne.',
+  profil: 'vif, endurant, bon communicant.',
+  att: ['Arriver le premier sur chaque ruck.', 'Passes rapides et précises, des deux côtés.', 'Accélérer le jeu ou le fixer selon la situation.'],
+  def: ['Balayeur : couvrir derrière la ligne de défense.', 'Récupérer les coups de pied adverses.', 'Organiser la défense à la voix.'],
+  pha: ['Mêlée : introduire le ballon au milieu du tunnel.', 'Sortir le ballon des rucks et des mauls.'],
+  q: [['Passe', 5], ['Endurance', 5], ['Communication', 5], ['Vitesse', 4], ['Vision du jeu', 4], ['Plaquage', 3]],
+  ex: ['Passes depuis le sol vers des cibles : 20 à gauche, 20 à droite.', 'Six rucks en 30 secondes : arriver, passer, repartir.', 'Couverture : récupérer les coups de pied par-dessus la ligne.'],
+  coach: 'Sois toujours le premier sur le ballon et parle sans arrêt : tes partenaires doivent savoir où tu vas.' },
+
+{ n: 5, mission: 'Dirige l’attaque, tape les coups d’envoi et les drops.', nom: 'Demi d’ouverture', en: 'Fly-half · l’ouvreur', ligne: 'Arrière · charnière', xv: '10',
+  role: 'Le <b>chef d’orchestre</b>. À chaque action, il choisit l’option (passer, percer, taper) et place l’attaque. Au 7, il est souvent le <b>botteur</b> des coups d’envoi et des transformations en drop.',
+  profil: 'lucide, adroit, du sang-froid.',
+  att: ['Lire la défense et choisir la bonne option.', 'Fixer un défenseur avant de passer.', 'Lancer les combinaisons de l’équipe.'],
+  def: ['Plaquer dans le couloir intérieur.', 'Annoncer les décalages à ses partenaires.', 'Monter en ligne avec le reste de la défense.'],
+  pha: ['Coups d’envoi précis et récupérables.', 'Transformations et pénalités en drop, en moins de 30 secondes.'],
+  q: [['Jeu au pied', 5], ['Vision du jeu', 5], ['Passe', 5], ['Vitesse', 4], ['Endurance', 4], ['Plaquage', 3]],
+  ex: ['Drops face aux poteaux sous plusieurs angles : 10 tirs chronométrés à 30 s.', 'Coups d’envoi courts et précis vers une zone de 5 m.', '2 contre 1 : fixer le défenseur, puis passer au bon moment.'],
+  coach: 'Prends l’information avant de recevoir le ballon : quand il arrive, ta décision est déjà prise.' },
+
+{ n: 6, mission: 'Perce la défense et crée l’espace pour l’ailier.', nom: 'Centre', en: 'Centre', ligne: 'Arrière · trois-quarts', xv: '12 ou 13',
+  role: 'Le <b>perce-défense</b>. Il attaque les intervalles, fixe les défenseurs et <b>crée l’espace pour l’ailier</b>. En défense, il tient le milieu du terrain et plaque beaucoup.',
+  profil: 'puissant et rapide, bons appuis.',
+  att: ['Franchir la ligne ou attirer deux défenseurs.', 'Jouer après contact : passer dans le plaquage.', 'Soutenir l’ailier à l’intérieur.'],
+  def: ['Monter en ligne et plaquer.', 'Fermer les intervalles avec ses voisins.', 'Pousser l’attaque vers la touche.'],
+  pha: ['Relancer après les coups de pied.', 'Second meneur de jeu, à côté de l’ouvreur.'],
+  q: [['Appuis', 5], ['Plaquage', 5], ['Vitesse', 4], ['Puissance', 4], ['Passe', 4], ['Lecture du jeu', 4]],
+  ex: ['Appuis et changements de direction entre plots, à cadence rapide.', 'Passes après contact sur bouclier.', 'Plaquages de face et de côté, à hauteur de hanche.'],
+  coach: 'Attaque l’épaule du défenseur, pas le défenseur : c’est là que l’intervalle s’ouvre.' },
+
+{ n: 7, mission: 'Finit les actions grâce à sa vitesse.', nom: 'Ailier', en: 'Wing', ligne: 'Arrière · trois-quarts', xv: '11 ou 14',
+  role: 'Le <b>finisseur</b>. Il exploite sa vitesse dans le couloir extérieur pour marquer. Au 7, avec autant d’espace, <b>chaque ballon reçu peut devenir un essai</b>.',
+  profil: 'très rapide, explosif, mains sûres.',
+  att: ['Rester large pour étirer la défense.', 'Finir les actions jusqu’à l’en-but.', 'Crochets et raffuts face au dernier défenseur.'],
+  def: ['Défendre le couloir extérieur.', 'Revenir en couverture sur les coups de pied.', 'Ne jamais se faire déborder côté touche.'],
+  pha: ['Récupérer les coups d’envoi longs.', 'Relancer depuis son propre camp.'],
+  q: [['Vitesse', 5], ['Accélération', 5], ['Évitement', 5], ['Mains / réception', 4], ['Endurance', 4], ['Plaquage', 4]],
+  ex: ['Sprints de 20 à 40 m, départs arrêtés et lancés.', 'Finition : recevoir une passe en pleine course et aplatir.', 'Duels en 1 contre 1 dans un couloir de 5 m.'],
+  coach: 'Garde la ligne de touche à un mètre : plus tu es large, plus la défense doit courir.' },
+];
+
+// ----------- pages -----------
+const head = (big, title, en, chips, cls = '') => `<header class="head"><div class="big ${cls}">${big}</div>
+  <div class="brand"><img src="ecusson.png"><div>Rugby Club Akanda<small>Fiches postes · rugby à 7</small></div></div>
+  <div class="kind">${chips}</div><h1>${title}</h1><div class="en">${en}</div>
+  <div class="flag"><i></i><i></i><i></i></div></header>`;
+const foot = (pg) => `<footer class="foot"><div class="s">Plus qu’un club, <em>une famille !</em></div><div class="pg">${pg}</div></footer>`;
+
+let html = '';
+// fiche d'ensemble
+html += `<section class="page ov">${head('7', 'Les 7 postes', 'du rugby à 7 : qui fait quoi sur le terrain ?', '<span class="chip y">Fiche d’ensemble</span><span class="chip">3 avants · 4 arrières</span>', 'two')}
+  <div class="body">
+    <div class="row" style="grid-template-columns:1.05fr 1fr">
+      <div class="card field">${field(0, 100, 87, { r: .05 })}</div>
+      <div class="card"><h3>Le principe</h3>
+        <p>Au rugby à 7, chaque joueur couvre <b>beaucoup d’espace</b> : tout le monde attaque, défend et plaque. Chaque poste a pourtant des <b>missions précises</b>.</p>
+        <p style="margin-top:2.6mm"><b>Les avants (1 à 3)</b> gagnent le ballon : mêlée, touche, coups d’envoi, rucks.</p>
+        <p style="margin-top:2mm"><b>Les arrières (4 à 7)</b> l’utilisent : distribuer, percer, finir.</p>
+        <div class="profil"><b>En défense :</b> 6 joueurs montent en ligne, 1 «&nbsp;balayeur&nbsp;» couvre derrière (souvent le demi de mêlée).</div></div>
+    </div>
+    <div class="card"><h3>Les 7 postes</h3>
+      <table><tr><th></th><th>Poste</th><th>Mission principale</th><th style="text-align:center">N° au XV</th></tr>
+      ${POSTES.map(p => `<tr><td class="n"><b class="${p.n <= 3 ? 'f' : ''}">${p.n}</b></td><td class="p">${p.nom}</td><td>${p.mission}</td><td class="x">${p.xv}</td></tr>`).join('')}
+      </table></div>
+    <div class="coach">${QUOTE}<div>Au 7, il n’y a pas de petit rôle : sept joueurs, un seul objectif.<small>Le mot du coach</small></div></div>
+  </div>${foot('Fiche 0 · Vue d’ensemble')}</section>`;
+
+POSTES.forEach(p => {
+  const bars = v => `<div class="bars">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= v ? 'on' : ''} ${v === 5 && i <= v ? 'top' : ''}"></i>`).join('')}</div>`;
+  html += `<section class="page">${head(p.n, p.nom, p.en, `<span class="chip y">${p.ligne}</span><span class="chip">N° au 7 : ${p.n} · au XV : ${p.xv}</span>`)}
+  <div class="body">
+    <div class="row" style="grid-template-columns:76mm 1fr">
+      <div class="card field" style="height:58mm">${field(p.n, 100, 76)}</div>
+      <div class="card"><h3>Son rôle</h3><p>${p.role}</p><div class="profil"><b>Profil :</b> ${p.profil}</div></div>
+    </div>
+    <div class="row missions">
+      <div class="card m"><h4>${ICON.att}En attaque</h4><ul>${p.att.map(x => `<li>${x}</li>`).join('')}</ul></div>
+      <div class="card m"><h4>${ICON.def}En défense</h4><ul>${p.def.map(x => `<li>${x}</li>`).join('')}</ul></div>
+      <div class="card m"><h4>${ICON.pha}Phases de jeu</h4><ul>${p.pha.map(x => `<li>${x}</li>`).join('')}</ul></div>
+    </div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>Qualités clés</h3><div class="q">${p.q.map(([k, v]) => `<span>${k}</span>${bars(v)}`).join('')}</div></div>
+      <div class="card"><h3>Pour progresser</h3><ol>${p.ex.map(x => `<li>${x}</li>`).join('')}</ol></div>
+    </div>
+    <div class="coach">${QUOTE}<div>${p.coach}<small>Le conseil du coach</small></div></div>
+  </div>${foot(`Fiche ${p.n} · ${p.nom}`)}</section>`;
+});
+document.getElementById('pages').innerHTML = html;
+window.ready = () => Promise.all([document.fonts.ready, ...[...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))]);
+</script>
+</body>
+</html>

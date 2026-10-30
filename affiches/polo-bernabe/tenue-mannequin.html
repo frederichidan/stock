@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Tenue officielle RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<!--
+  Polos bleu et blanc + casquettes assorties, portés par un mannequin de vitrine (buste sur pied).
+  Casquette : écusson RCA brodé devant, logo Bernabé brodé sur le côté, visière liserée vert / jaune.
+-->
+<style>
+  :root{ --navy:#0a1747; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --ink:#0a1747; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden}
+  .board{position:relative;width:1920px;height:1080px;font-family:Inter,sans-serif;color:var(--ink);background:#e9edf4}
+  header{position:absolute;left:60px;right:60px;top:32px;display:flex;align-items:center;gap:22px}
+  header .crest{height:86px;filter:drop-shadow(0 6px 12px rgba(10,23,71,.3))}
+  header .club{font-weight:800;font-size:17px;letter-spacing:6px;text-transform:uppercase}
+  header .club small{color:#b38f00;margin-left:10px;letter-spacing:5px}
+  header h1{font-family:Anton,sans-serif;font-weight:400;font-size:52px;line-height:1.05;text-transform:uppercase;letter-spacing:1px}
+  header h1 span{color:var(--royal)}
+
+  .panel{position:absolute;top:140px;width:900px;height:842px;border-radius:22px;overflow:hidden}
+  .p-bleu{left:40px;background:radial-gradient(60% 70% at 28% 45%, #ffffff 0%, #eef1f7 55%, #d9dfea 100%)}
+  .p-blanc{left:980px;background:radial-gradient(60% 70% at 28% 45%, #e6eaf2 0%, #cfd6e4 55%, #b9c2d5 100%)}
+  .man{position:absolute;left:14px;top:14px;width:470px;height:812px}
+  .man svg,.capv svg{width:100%;height:100%;overflow:visible}
+  .side{position:absolute;left:500px;top:34px;width:370px}
+  .side .tag{font-family:Anton,sans-serif;font-size:44px;letter-spacing:1px;text-transform:uppercase;line-height:1}
+  .side .tag small{display:block;font-family:Inter;font-size:13px;letter-spacing:5px;font-weight:800;margin-top:9px;color:#b38f00}
+  .capv{position:relative;width:370px;height:264px;margin-top:40px;border-radius:18px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(10,23,71,.08)}
+  .capv .t{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:12px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:#5b6585}
+  .side h3{margin-top:26px;font-family:Anton,sans-serif;font-weight:400;font-size:28px;text-transform:uppercase;letter-spacing:.5px}
+  .side ul{list-style:none;margin-top:12px;display:grid;gap:9px}
+  .side li{display:flex;gap:10px;font-size:15.5px;line-height:1.35}
+  .side li::before{content:"";flex:none;width:8px;height:8px;margin-top:6px;border-radius:2px;background:var(--yellow)}
+  .chips{display:flex;gap:8px;margin-top:22px}
+  .chips i{width:30px;height:30px;border-radius:50%;border:2px solid rgba(10,23,71,.18)}
+
+  .band{position:absolute;left:0;right:0;bottom:0;height:46px;background:var(--navy);display:flex;align-items:center;justify-content:center;gap:28px;color:#fff;
+    font-size:15px;font-weight:600;letter-spacing:9px;text-transform:uppercase}
+  .band i{width:110px;height:1px;background:rgba(255,255,255,.5)}
+  .band em{font-style:normal;color:var(--yellow)}
+  .flag{position:absolute;left:0;right:0;bottom:46px;height:6px;display:flex}
+  .flag u{flex:1}
+  .flag u:nth-child(1){background:var(--green)}.flag u:nth-child(2){background:var(--yellow)}.flag u:nth-child(3){background:var(--royal)}
+</style>
+</head>
+<body>
+<div class="board">
+  <header>
+    <img class="crest" src="ecusson.png" alt="">
+    <div>
+      <div class="club">Rugby Club Akanda<small>Sevens</small></div>
+      <h1>Tenue <span>officielle</span> · polo &amp; casquette</h1>
+    </div>
+  </header>
+
+  <section class="panel p-bleu">
+    <div class="man" id="mb"></div>
+    <div class="side">
+      <div class="tag">Tenue bleue<small>Polo domicile + casquette</small></div>
+      <div class="capv" id="cb"><div class="t">Casquette assortie</div></div>
+      <h3>Casquette bleue</h3>
+      <ul>
+        <li>Écusson RCA brodé devant</li>
+        <li>Logo Bernabé brodé sur le côté</li>
+        <li>Visière marine liserée vert et jaune</li>
+        <li>Patte de réglage à l’arrière</li>
+      </ul>
+      <div class="chips"><i style="background:#0c1946"></i><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#fff"></i></div>
+    </div>
+  </section>
+
+  <section class="panel p-blanc">
+    <div class="man" id="mw"></div>
+    <div class="side">
+      <div class="tag">Tenue blanche<small>Polo extérieur + casquette</small></div>
+      <div class="capv" id="cw"><div class="t">Casquette assortie</div></div>
+      <h3>Casquette blanche</h3>
+      <ul>
+        <li>Écusson RCA brodé devant</li>
+        <li>Logo Bernabé brodé sur le côté</li>
+        <li>Visière marine liserée vert et jaune</li>
+        <li>Patte de réglage à l’arrière</li>
+      </ul>
+      <div class="chips"><i style="background:#f4f4f1"></i><i style="background:#0c1946"></i><i style="background:#22a34a"></i><i style="background:#f5c400"></i></div>
+    </div>
+  </section>
+
+  <div class="flag"><u></u><u></u><u></u></div>
+  <div class="band"><i></i>Plus qu’un club, <em>une famille</em><i></i></div>
+</div>
+
+<script src="polo-lib.js"></script>
+<script>
+const CAPS = {
+  bleu:  { crown: '#0c1946', visor: '#0c1946', button: '#0c1946', logo: 'bernabe.svg', shade: .45, hl: .14, stitch: '#ffffff' },
+  blanc: { crown: '#f4f4f1', visor: '#0c1946', button: '#0c1946', logo: 'bernabe-marine.svg', shade: .2, hl: .35, stitch: '#0c1946' },
+};
+const SKIN = '#d8d3cb';   // mannequin de vitrine (gris clair mat)
+
+function capDefs(id, C) {
+  return `<radialGradient id="${id('ch')}" cx=".35" cy=".25" r=".8"><stop offset="0" stop-color="#fff" stop-opacity="${C.hl}"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="${C.shade}"/></radialGradient>
+    <linearGradient id="${id('vs')}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>
+    <filter id="${id('ce')}" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy=".8" stdDeviation=".6" flood-color="#000" flood-opacity=".5"/></filter>
+    <filter id="${id('cs')}" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>`;
+}
+function visorTrim(edge, clip) {
+  return `<g clip-path="url(#${clip})" fill="none"><path d="${edge}" stroke="#f5c400" stroke-width="15"/><path d="${edge}" stroke="#22a34a" stroke-width="7.5"/></g>`;
+}
+
+// casquette vue de 3/4 (repère 420 x 300)
+function capProduct(C, uid) {
+  const id = n => `${n}${uid}`;
+  const CROWN = 'M96 196 C88 120 150 52 246 48 C330 46 382 104 384 176 C385 196 372 206 352 208 C290 214 170 214 120 210 C106 208 98 204 96 196 Z';
+  const VISOR = 'M104 197 C70 205 40 220 32 240 C26 258 72 268 132 263 C194 258 240 240 262 216 C236 213 198 212 168 210 C140 208 118 204 104 197 Z';
+  const VEDGE = 'M32 240 C26 258 72 268 132 263 C194 258 240 240 262 216';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 10 420 280"><defs>${capDefs(id, C)}
+      <clipPath id="${id('cc')}"><path d="${CROWN}"/></clipPath><clipPath id="${id('cv')}"><path d="${VISOR}"/></clipPath></defs>
+    <ellipse cx="215" cy="262" rx="170" ry="16" fill="#0a1747" opacity=".22" filter="url(#${id('cs')})"/>
+    <path d="${CROWN}" fill="${C.crown}"/>
+    <g clip-path="url(#${id('cc')})">
+      <g fill="none" stroke="#000" stroke-opacity=".28" stroke-width="1.6">
+        <path d="M240 50 C205 80 180 140 172 212"/><path d="M240 50 C276 86 300 150 306 212"/><path d="M240 50 C322 70 366 122 378 200"/></g>
+      <g fill="none" stroke="${C.stitch}" stroke-opacity=".22" stroke-width=".9" stroke-dasharray="2.5 2.5">
+        <path d="M236 52 C201 82 176 142 168 212"/><path d="M244 52 C280 88 304 152 310 212"/></g>
+      <g transform="translate(148 92) rotate(-5) scale(.9 1)"><image href="ecusson.png" width="68" height="82" filter="url(#${id('ce')})"/></g>
+      <g transform="translate(312 112) skewY(10) scale(.8 1)"><image href="${C.logo}" width="62" height="53" filter="url(#${id('ce')})"/></g>
+      <circle cx="205" cy="88" r="3" fill="#000" opacity=".45"/><circle cx="296" cy="92" r="3" fill="#000" opacity=".45"/>
+      <rect width="420" height="300" fill="url(#${id('ch')})"/>
+      <path d="M96 200 C150 214 300 214 384 186" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="5"/></g>
+    <path d="${CROWN}" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1.2"/>
+    <ellipse cx="240" cy="49" rx="11" ry="5" fill="${C.button}"/><ellipse cx="238" cy="47.5" rx="5" ry="2" fill="#fff" opacity=".25"/>
+    <path d="${VISOR}" fill="${C.visor}"/>
+    <g clip-path="url(#${id('cv')})"><rect width="420" height="300" fill="url(#${id('vs')})"/>${visorTrim(VEDGE, id('cv'))}
+      <path d="M50 238 C48 250 80 256 132 252 C186 248 222 234 240 220" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width=".9" stroke-dasharray="2.5 2.5"/></g>
+    <path d="${VISOR}" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="1.2"/>
+  </svg>`;
+}
+
+// mannequin de vitrine (tête + cou + hanches + pied) portant le polo et la casquette (vue de face)
+function mannequin(theme, uid) {
+  const id = n => `${n}${uid}`;
+  const C = CAPS[theme];
+  const [pdefs, pg] = polo(THEMES[theme], 'face', uid + 'P', null, true);
+  const HEAD = 'M300 -100 C333 -100 352 -72 352 -36 C352 2 330 30 300 30 C270 30 248 2 248 -36 C248 -72 267 -100 300 -100 Z';
+  const CROWN = 'M244 -40 C240 -100 268 -128 300 -128 C332 -128 360 -100 356 -40 Z';
+  const VISOR = 'M236 -43 Q300 -56 364 -43 L373 -27 Q300 -11 227 -27 Z';
+  const VEDGE = 'M227 -27 Q300 -11 373 -27';
+  const skin = `<linearGradient id="${id('sk')}" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".3" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
+    <radialGradient id="${id('hh')}" cx=".38" cy=".3" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".2"/></radialGradient>
+    <linearGradient id="${id('me')}" x1="0" x2="1"><stop offset="0" stop-color="#6d7383"/><stop offset=".35" stop-color="#e9ecf2"/><stop offset=".6" stop-color="#9aa1b1"/><stop offset="1" stop-color="#4c5263"/></linearGradient>
+    <radialGradient id="${id('bs')}" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="#5b6274"/><stop offset="1" stop-color="#22273a"/></radialGradient>
+    <clipPath id="${id('hc')}"><path d="${HEAD}"/></clipPath>
+    <clipPath id="${id('kc')}"><path d="${CROWN}"/></clipPath><clipPath id="${id('vc')}"><path d="${VISOR}"/></clipPath>`;
+  const cap = `<path d="${CROWN}" fill="${C.crown}"/>
+    <g clip-path="url(#${id('kc')})">
+      <g fill="none" stroke="#000" stroke-opacity=".28" stroke-width="1.3"><path d="M300 -128 C285 -104 279 -72 278 -40"/><path d="M300 -128 C315 -104 321 -72 322 -40"/>
+        <path d="M300 -128 C270 -118 252 -86 248 -40"/><path d="M300 -128 C330 -118 348 -86 352 -40"/></g>
+      <image href="ecusson.png" x="281" y="-108" width="38" height="46" filter="url(#${id('ce')})"/>
+      <g transform="translate(326 -96) skewY(14) scale(.5 1)"><image href="${C.logo}" width="40" height="34.3" filter="url(#${id('ce')})"/></g>
+      <rect x="230" y="-140" width="140" height="110" fill="url(#${id('ch')})"/>
+      <path d="M244 -42 Q300 -48 356 -42" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="3"/></g>
+    <path d="${CROWN}" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1"/>
+    <ellipse cx="300" cy="-128" rx="7" ry="3" fill="${C.button}"/>
+    <path d="${VISOR}" fill="${C.visor}"/>
+    <g clip-path="url(#${id('vc')})"><rect x="220" y="-60" width="160" height="50" fill="url(#${id('vs')})"/>${visorTrim(VEDGE, id('vc'))}</g>
+    <path d="${VISOR}" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="1"/>`;
+  const body = `
+    <ellipse cx="300" cy="928" rx="150" ry="20" fill="#0a1747" opacity=".25" filter="url(#${id('cs')})"/>
+    <ellipse cx="300" cy="914" rx="112" ry="19" fill="url(#${id('bs')})"/><ellipse cx="300" cy="908" rx="104" ry="14" fill="#3d4357"/>
+    <ellipse cx="290" cy="905" rx="60" ry="5" fill="#fff" opacity=".12"/>
+    <rect x="293" y="640" width="14" height="270" fill="url(#${id('me')})"/>
+    <path d="M168 588 C172 634 210 660 300 662 C390 660 428 634 432 588 Z" fill="${SKIN}"/><path d="M168 588 C172 634 210 660 300 662 C390 660 428 634 432 588 Z" fill="url(#${id('sk')})"/>
+    <path d="M269 0 L269 74 Q300 86 331 74 L331 0 Z" fill="${SKIN}"/><path d="M269 0 L269 74 Q300 86 331 74 L331 0 Z" fill="url(#${id('sk')})"/>
+`;
+  const head = `<path d="${HEAD}" fill="${SKIN}"/>
+    <g clip-path="url(#${id('hc')})"><rect x="240" y="-110" width="120" height="150" fill="url(#${id('hh')})"/>
+      <ellipse cx="300" cy="-16" rx="54" ry="13" fill="#000" opacity=".22" filter="url(#${id('cs')})"/>
+      <path d="M300 -10 C297 0 296 8 300 12" fill="none" stroke="#000" stroke-opacity=".08" stroke-width="5"/></g>
+    <path d="${HEAD}" fill="none" stroke="#000" stroke-opacity=".15" stroke-width="1"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -170 620 1120" preserveAspectRatio="xMidYMid meet">
+    <defs>${skin}${capDefs(id, C)}</defs>${pdefs}${body}
+    <g transform="translate(300 40) scale(1.14) translate(-300 -40)">${head}</g>${pg}
+    <g transform="translate(300 40) scale(1.14) translate(-300 -40)">${cap}</g></svg>`;
+}
+
+document.getElementById('mb').innerHTML = mannequin('bleu', 'MB');
+document.getElementById('mw').innerHTML = mannequin('blanc', 'MW');
+document.getElementById('cb').insertAdjacentHTML('afterbegin', capProduct(CAPS.bleu, 'CB'));
+document.getElementById('cw').insertAdjacentHTML('afterbegin', capProduct(CAPS.blanc, 'CW'));
+window.ready = () => Promise.all([document.fonts.ready, new Promise(r => setTimeout(r, 500))]);
+</script>
+</body>
+</html>

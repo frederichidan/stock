@@ -21,7 +21,8 @@
    - <élément>-maquette-8k.pdf    : la même image sur A4 paysage, centrée avec 10 mm de marge ;
    - <élément>-<face>-8k.jpg      : chaque face à plat, 7680 px sur le grand côté (affiches : une
                                     par nom) ;
-   - whatsapp/                    : affiches et invitation, chaque face (et la maquette) en 2048 px.
+   - whatsapp/                    : pochette, billets, affiches et invitation : chaque face (et la
+                                    maquette) en 2048 px, à partager sur WhatsApp.
    La pochette existe en deux versions : pochette-passeport/ (extérieur améthyste) et
    pochette-passeport-violet-royal/ (extérieur violet royal), au même intérieur.
    S'y ajoute export/<version>/ensemble-maquette-8k.jpg / .pdf (les trois supports réunis),
@@ -33,6 +34,8 @@
      node exporter.js            → la version choisie dans infos.js (theme)
      node exporter.js --toutes   → les 4 versions et le nuancier
      node exporter.js --seulement=etiquette-vin,etiquette-eau   → ces éléments seulement
+     node exporter.js --whatsapp  → seulement les images WhatsApp (dossiers whatsapp/), sans
+                                    refaire les PDF ni les images 8K
      node exporter.js --xerox-b7035  → édition noir et blanc pour imprimante laser monochrome
                                        (Xerox VersaLink B7035), dans export/xerox-b7035/ : textes,
                                        filets et ornements en noir plein, fonds blancs (commun.css,
@@ -53,6 +56,7 @@ const INFOS = new Function(`${fs.readFileSync(path.join(__dirname, "infos.js"), 
 const TOUTES = process.argv.includes("--toutes");
 const SEULEMENT = (process.argv.find((a) => a.startsWith("--seulement=")) || "").slice("--seulement=".length).split(",").filter(Boolean);
 const NB = process.argv.includes("--xerox-b7035");
+const WHATSAPP_SEUL = process.argv.includes("--whatsapp");
 
 const DOSSIER = __dirname;
 const SORTIE = path.join(DOSSIER, "export");
@@ -88,6 +92,7 @@ const INVITES_DEMANDE = ((INFOS.demande || {}).invites || []).filter(Boolean);
 const ELEMENTS = [
   {
     dossier: "pochette-passeport",
+    whatsapp: true,
     page: "pochette-passeport.html",
     impression: "passeport",
     maquette: "pochette",
@@ -99,6 +104,7 @@ const ELEMENTS = [
   },
   {
     dossier: "pochette-passeport-violet-royal",
+    whatsapp: true,
     page: "pochette-passeport.html",
     impression: "passeport",
     parametres: { exterieur: "royal" },
@@ -112,6 +118,7 @@ const ELEMENTS = [
   },
   {
     dossier: "billet-invitation-premium",
+    whatsapp: true,
     page: "billet-invitation.html",
     impression: "billet",
     parametres: { categorie: "premium" },
@@ -123,6 +130,7 @@ const ELEMENTS = [
   },
   {
     dossier: "billet-invitation-classique",
+    whatsapp: true,
     page: "billet-invitation.html",
     impression: "billet",
     parametres: { categorie: "classique" },
@@ -386,7 +394,8 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
   for (const theme of themes) {
     const edition = NB ? "xerox-b7035" : theme;
-    for (const element of ELEMENTS.filter((e) => (!SEULEMENT.length || SEULEMENT.includes(e.dossier)) && !(NB && e.couleurSeule))) {
+    const retenu = (e) => (!SEULEMENT.length || SEULEMENT.includes(e.dossier)) && !(NB && e.couleurSeule) && !(WHATSAPP_SEUL && (NB || !e.whatsapp));
+    for (const element of ELEMENTS.filter(retenu)) {
       const dossier = path.join(SORTIE, edition, element.dossier);
       fs.mkdirSync(dossier, { recursive: true });
       const nom = (suffixe) => path.join(dossier, `${element.dossier}-${suffixe}`);
@@ -394,34 +403,36 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
 
       if (element.nominatives && !NB) {
         // Images nommées d'après les affiches ou les invités : celles d'un nom corrigé ou retiré disparaissent.
-        for (const fichier of fs.readdirSync(dossier)) {
+        for (const fichier of WHATSAPP_SEUL ? [] : fs.readdirSync(dossier)) {
           if (/-8k\.jpg$/.test(fichier) && !/-maquette-8k\.jpg$/.test(fichier)) fs.rmSync(path.join(dossier, fichier));
         }
         fs.rmSync(path.join(dossier, "whatsapp"), { recursive: true, force: true });
       }
-      if (element.chevalets) {
-        await chevalets8K(navigateur, element, nom, afficher);
-      } else if (element.planches) {
-        await planches8K(navigateur, element, nom, afficher);
-      } else {
-        const illustrations = await illustrations8K(navigateur, element, theme);
-        await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
-        afficher("A4-8k.pdf");
-        await pdfA4(navigateur, element, theme, null, nom("A4-vectoriel.pdf"));
-        afficher("A4-vectoriel.pdf");
-      }
-      if (NB) continue; // pas de maquettes ni de faces à plat en noir et blanc
+      if (!WHATSAPP_SEUL) {
+        if (element.chevalets) {
+          await chevalets8K(navigateur, element, nom, afficher);
+        } else if (element.planches) {
+          await planches8K(navigateur, element, nom, afficher);
+        } else {
+          const illustrations = await illustrations8K(navigateur, element, theme);
+          await pdfA4(navigateur, element, theme, illustrations, nom("A4-8k.pdf"));
+          afficher("A4-8k.pdf");
+          await pdfA4(navigateur, element, theme, null, nom("A4-vectoriel.pdf"));
+          afficher("A4-vectoriel.pdf");
+        }
+        if (NB) continue; // pas de maquettes ni de faces à plat en noir et blanc
 
-      if (element.maquette) {
-        await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
-        afficher("maquette-8k.jpg");
-        await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [nom("maquette-8k.jpg")], nom("maquette-8k.pdf"));
-        afficher("maquette-8k.pdf");
-      }
+        if (element.maquette) {
+          await capturer8K(navigateur, adresse("maquettes.html", { scene: element.maquette, theme }), ".scene", 0, nom("maquette-8k.jpg"), "maquettePrete");
+          afficher("maquette-8k.jpg");
+          await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [nom("maquette-8k.jpg")], nom("maquette-8k.pdf"));
+          afficher("maquette-8k.pdf");
+        }
 
-      for (const [face, selecteur, rang] of element.faces) {
-        await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, nom(`${face}-8k.jpg`));
-        afficher(`${face}-8k.jpg`);
+        for (const [face, selecteur, rang] of element.faces) {
+          await capturer8K(navigateur, adresse(element.page, { theme, ...element.parametres }), selecteur, rang, nom(`${face}-8k.jpg`));
+          afficher(`${face}-8k.jpg`);
+        }
       }
 
       if (element.whatsapp) {
@@ -437,14 +448,14 @@ async function pdfA4(navigateur, element, theme, illustrations, fichier) {
       }
     }
 
-    if (NB || (SEULEMENT.length && !SEULEMENT.includes("ensemble"))) continue;
+    if (NB || WHATSAPP_SEUL || (SEULEMENT.length && !SEULEMENT.includes("ensemble"))) continue;
     const ensemble = path.join(SORTIE, theme, "ensemble-maquette-8k.jpg");
     await capturer8K(navigateur, adresse("maquettes.html", { scene: "ensemble", theme }), ".scene", 0, ensemble, "maquettePrete");
     await pdfDepuisImages(navigateur, FORMAT_MAQUETTE_PDF, MARGE_MAQUETTE_PDF, [ensemble], ensemble.replace(/\.jpg$/, ".pdf"));
     console.log("✓", `${theme}/ensemble-maquette-8k.jpg / .pdf`);
   }
 
-  if (TOUTES) {
+  if (TOUTES && !WHATSAPP_SEUL) {
     // Nuancier : la page entière, 7680 pixels sur le grand côté.
     const nuancier = await navigateur.newPage({ viewport: { width: 1200, height: 1000 } });
     await charger(nuancier, adresse("nuancier.html"));

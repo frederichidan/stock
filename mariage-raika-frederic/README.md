@@ -47,6 +47,7 @@ versions de la pochette, voir plus bas ; `billet-invitation-premium/`,
 | `…-maquette-8k.jpg` | Maquette de présentation réaliste, 7680 × 4320 (8K) |
 | `…-maquette-8k.pdf` | La même maquette sur A4 paysage, centrée avec 10 mm de marge blanche (imprimable telle quelle à 100 %) |
 | `…-recto-8k.jpg`, `…-verso-8k.jpg`, `…-exterieur-8k.jpg`, `…-interieur-8k.jpg`, `…-couverture-8k.jpg`, `…-face-8k.jpg` | Chaque face à plat, 7680 px sur le grand côté (partage numérique, WhatsApp…) ; pas pour les cartes de table |
+| `whatsapp/…-whatsapp.jpg` | **Faire-part sur WhatsApp** (pochette dans ses deux versions, billets premium et classique ; aussi affiches et invitation à la demande) : chaque face et la maquette en 2048 px, JPEG léger (200 à 320 Ko), nettes sur WhatsApp, y compris en qualité HD |
 
 Et `ensemble-maquette-8k.jpg` / `.pdf` : les trois supports réunis sur une même maquette.
 
@@ -366,6 +367,8 @@ npx playwright install chromium
 node exporter.js            # la version choisie dans infos.js (theme)
 node exporter.js --toutes   # les 4 versions de couleurs et un nuancier comparatif
 node exporter.js --seulement=etiquette-vin,etiquette-eau   # certains éléments seulement
+node exporter.js --whatsapp      # seulement les images WhatsApp (dossiers whatsapp/), sans refaire
+                                 # les PDF ni les images 8K
 node exporter.js --xerox-b7035   # édition noir et blanc pour laser monochrome (export/xerox-b7035/ ;
                                  # PDF convertis en niveaux de gris si Ghostscript, gs, est installé)
 ```

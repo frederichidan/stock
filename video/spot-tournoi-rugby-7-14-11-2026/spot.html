@@ -33,6 +33,10 @@
   #bug small{display:block;font-weight:500;font-size:16px;letter-spacing:6px;color:var(--yellow)}
 
   .streaks{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+  .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+  .cr{position:absolute;right:40px;bottom:34px;font-size:18px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.55);z-index:5}
+  #s4 .ph{opacity:.3;object-position:50% 75%}
+  #s7 .ph{opacity:.26}
 
   /* S1 intro : joueur détouré + titre */
   #s1 .player{position:absolute;right:-150px;top:40px;height:1040px}
@@ -56,23 +60,19 @@
   .v .val .bar{left:90px;top:1610px;width:420px}
 
   /* S3 clubs */
-  #s3 .bg{filter:blur(12px) brightness(.3) saturate(.8);transform:scale(1.1)}
-  #s3 .head{position:absolute;left:0;right:0;top:150px;text-align:center;font-size:32px;font-weight:700;letter-spacing:14px;color:var(--yellow);text-transform:uppercase}
-  #s3 .title{position:absolute;left:0;right:0;top:205px;text-align:center;font-size:130px}
-  #s3 .grid{position:absolute;left:150px;right:150px;top:450px;display:grid;grid-template-columns:repeat(12,1fr);gap:28px}
-  #s3 .team{grid-column:span 3;height:190px;border-radius:22px;background:rgba(255,255,255,.1);border:3px solid rgba(255,255,255,.22);
-    display:flex;align-items:center;justify-content:center;gap:24px;position:relative;overflow:hidden}
-  #s3 .team::before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:var(--c,var(--royal))}
-  #s3 .team.w{grid-column:span 4}
-  #s3 .team b{font-family:Anton,sans-serif;font-weight:400;font-size:96px;line-height:1;text-transform:uppercase;letter-spacing:4px;white-space:nowrap}
-  #s3 .team.rca{background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
-  #s3 .team.rca::before{display:none}
-  #s3 .team.rca img{height:130px}
-  .v #s3 .head{top:300px}
-  .v #s3 .title{top:360px;font-size:120px;line-height:1}
-  .v #s3 .grid{left:80px;right:80px;top:560px;grid-template-columns:1fr 1fr;gap:30px}
-  .v #s3 .team,.v #s3 .team.w{grid-column:span 1;height:200px}
-  .v #s3 .team.rca{grid-column:span 2}
+  #s3 .ph{opacity:.6}
+  #s3 .veil{position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 55%, rgba(10,23,71,.35) 0%, rgba(10,23,71,.8) 100%)}
+  #s3 .head{position:absolute;left:0;right:0;top:120px;text-align:center;font-size:32px;font-weight:700;letter-spacing:14px;color:var(--yellow);text-transform:uppercase}
+  #s3 .title{position:absolute;left:0;right:0;top:175px;text-align:center;font-size:130px}
+  #s3 .logos{position:absolute;left:100px;right:100px;top:400px;display:flex;flex-wrap:wrap;justify-content:center;gap:30px 50px}
+  #s3 .logo{width:300px;height:250px;display:flex;align-items:center;justify-content:center;position:relative}
+  #s3 .logo::before{content:"";position:absolute;inset:-20px 10px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.16),transparent)}
+  #s3 .logo.rca::before{background:radial-gradient(closest-side,rgba(245,196,0,.45),transparent)}
+  #s3 .logo img{position:relative;max-width:100%;max-height:100%;filter:drop-shadow(0 12px 22px rgba(0,0,0,.5))}
+  .v #s3 .head{top:300px;font-size:26px;letter-spacing:9px}
+  .v #s3 .title{top:350px;font-size:120px;line-height:1}
+  .v #s3 .logos{left:70px;right:70px;top:560px;gap:40px 40px}
+  .v #s3 .logo{width:286px;height:280px}
 
   /* S4 date */
   #s4 .card{position:absolute;left:170px;top:170px;width:640px;height:740px;background:var(--yellow);color:var(--navy);border-radius:36px;
@@ -140,12 +140,14 @@
 
   <!-- S1 : intro -->
   <section class="scene" id="s1">
+    <img class="ph" src="src/match-1.jpg">
     <div class="glow"></div>
     <svg class="streaks" id="st1"></svg>
     <img class="player" src="src/coureur-detoure.webp">
     <div class="k serif sh">Préparez-vous…</div>
     <div class="t1 anton sh">Tournoi</div>
     <div class="t2 anton sh">de rugby à 7</div>
+    <div class="cr">Photo : AFC Sports</div>
   </section>
 
   <!-- S2 : action (3 plans) -->
@@ -157,22 +159,26 @@
     <div class="num">RUGBY À 7</div><div class="word anton">Spectacle</div><div class="bar"></div></section>
 
   <!-- S3 : clubs -->
-  <section class="scene" id="s3"><img class="full bg" src="src/hd/ballon.jpg">
-    <div class="head">Samedi 14 novembre</div>
+  <section class="scene" id="s3"><img class="ph" src="src/match-2.jpg"><div class="veil"></div>
+    <div class="head">Championnat national · Gabon Sevens</div>
     <div class="title anton">Les clubs en lice</div>
-    <div class="grid">
-      <div class="team rca"><img src="src/ecusson.png"><b>RCA</b></div>
-      <div class="team" style="--c:var(--green)"><b>SOOF</b></div>
-      <div class="team" style="--c:var(--yellow)"><b>RCL</b></div>
-      <div class="team" style="--c:var(--royal)"><b>RCG</b></div>
-      <div class="team w" style="--c:var(--green)"><b>INJS</b></div>
-      <div class="team w" style="--c:var(--yellow)"><b>Margouillats</b></div>
-      <div class="team w" style="--c:var(--royal)"><b>POG 2</b></div>
+    <div class="logos">
+      <div class="logo rca"><img src="src/ecusson.png"></div>
+      <div class="logo"><img src="src/logos/soof.png"></div>
+      <div class="logo"><img src="src/logos/rcl.png"></div>
+      <div class="logo"><img src="src/logos/margouillats.png"></div>
+      <div class="logo"><img src="src/logos/aigle.png"></div>
+      <div class="logo"><img src="src/logos/rcg.png"></div>
+      <div class="logo"><img src="src/logos/rcpg.png"></div>
+      <div class="logo"><img src="src/logos/feux-follets.png"></div>
+      <div class="logo"><img src="src/logos/amazones.png"></div>
     </div>
+    <div class="cr">Photo : AFC Sports</div>
   </section>
 
   <!-- S4 : date et heure -->
   <section class="scene" id="s4">
+    <img class="ph" src="src/match-1.jpg">
     <div class="glow"></div>
     <svg class="streaks" id="st4"></svg>
     <div class="card"><span>Samedi</span><b>14</b><span>Novembre</span></div>
@@ -181,6 +187,7 @@
       <div class="lbl">Coup d’envoi</div>
       <div class="hour anton">Dès <span class="y">9h00</span></div>
     </div>
+    <div class="cr">Photo : AFC Sports</div>
   </section>
 
   <!-- S5 : lieu -->
@@ -188,7 +195,7 @@
     <div class="pin"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
     <div class="a serif">Rendez-vous au</div>
     <div class="b anton">Stade de l’INJS</div>
-    <div class="c serif">Soduco</div>
+    <div class="c serif">Soduco · Libreville</div>
   </section>
 
   <!-- S6 : venez nombreux -->
@@ -199,12 +206,13 @@
 
   <!-- S7 : signature -->
   <section class="scene" id="s7">
+    <img class="ph" src="src/match-2.jpg">
     <div class="glow"></div>
     <svg class="streaks" id="st7"></svg>
     <img class="crest" src="src/ecusson.png">
     <div class="shine"><i></i></div>
     <div class="info">
-      <div class="name" id="nm">Rugby Club Akanda<small>Sevens · Akanda</small></div>
+      <div class="name" id="nm">Rugby Club Akanda<small>Championnat national · Gabon Sevens</small></div>
       <div class="ttl anton" id="ttl">Tournoi de<br><span class="y">rugby à 7</span></div>
       <ul>
         <li id="l1"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Samedi 14 novembre</li>
@@ -213,6 +221,7 @@
       </ul>
       <div class="motto serif" id="mt">Plus qu’un club, <span class="y">une famille&nbsp;!</span></div>
     </div>
+    <div class="cr" style="bottom:44px">Photo : AFC Sports</div>
     <div class="flag"><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
   </section>
 
@@ -245,14 +254,6 @@ function streaks(svgId, seed, n){
   }
   return [...svg.querySelectorAll('.sk')];
 }
-// noms de clubs trop longs : taille réduite pour tenir dans leur case
-function fitTeams(){
-  for(const b of document.querySelectorAll('#s3 .team b')){
-    const box=b.parentElement, max=box.clientWidth-60-(box.querySelector('img')?.offsetWidth||0);
-    let s=parseFloat(getComputedStyle(b).fontSize);
-    while(b.scrollWidth>max && s>30) b.style.fontSize=(s-=2)+'px';
-  }
-}
 const sk1=streaks('st1',11,14), sk4=streaks('st4',5,10), sk7=streaks('st7',23,12);
 
 const tl=gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
@@ -277,6 +278,7 @@ function streakPass(list,at,dur,rot){
 // ===== S1 : 0 → 4 s =====
 show('s1',0);
 streakPass(sk1,0.0,2.2,-9); streakPass(sk1,2.0,1.8,-9);
+tl.fromTo('#s1 .ph',{scale:1.15},{scale:1.02,duration:4.2,ease:'none'},0);
 tl.fromTo('#s1 .player',{opacity:0,x:260,scale:1.08,transformOrigin:'60% 60%'},{opacity:1,x:0,scale:1,duration:1.1,ease:E},0.2);
 tl.to('#s1 .player',{x:-60,scale:1.06,duration:2.6,ease:'none'},1.3);
 tl.fromTo('#s1 .k',{opacity:0,x:-40},{opacity:1,x:0,duration:.6},0.5);
@@ -302,18 +304,20 @@ tl.to('#bug',{opacity:1,duration:.4},4.2);
 
 // ===== S3 : 10 → 15 s (un club par temps) =====
 wipe(10); show('s3',10); hide('s3',15);
-tl.fromTo('#s3 .bg',{scale:1.18},{scale:1.05,duration:5.2,ease:'none'},10);
+tl.to('#bug',{opacity:0,duration:.2},9.75);
+tl.fromTo('#s3 .ph',{scale:1.15},{scale:1.03,duration:5.2,ease:'none'},10);
 tl.fromTo('#s3 .head',{opacity:0,y:-20},{opacity:1,y:0,duration:.5},10.15);
 tl.fromTo('#s3 .title',{opacity:0,scale:1.15},{opacity:1,scale:1,duration:.5,ease:E},10.25);
-document.querySelectorAll('#s3 .team').forEach((el,i)=>{
-  tl.fromTo(el,{opacity:0,scale:.6,y:40},{opacity:1,scale:1,y:0,duration:.45,ease:'back.out(1.8)'},10.5+i*.5);
+document.querySelectorAll('#s3 .logo').forEach((el,i)=>{
+  tl.fromTo(el,{opacity:0,scale:.5,y:40},{opacity:1,scale:1,y:0,duration:.45,ease:'back.out(1.8)'},10.45+i*.4);
 });
-tl.to('#s3 .team.rca',{scale:1.06,duration:.15,yoyo:true,repeat:1,ease:'power1.out'},14.0);
+tl.to('#s3 .logo.rca',{scale:1.08,duration:.15,yoyo:true,repeat:1,ease:'power1.out'},14.1);
 
 // ===== S4 : 15 → 19 s =====
 wipe(15); show('s4',15); hide('s4',19);
 tl.to('#bug',{opacity:0,duration:.2},14.8);
 streakPass(sk4,15.0,2.0,-9);
+tl.fromTo('#s4 .ph',{scale:1.05,x:-30},{scale:1.15,x:30,duration:4.2,ease:'none'},15);
 tl.fromTo('#s4 .card',{opacity:0,scale:.7,rotation:-4,transformOrigin:'50% 50%'},{opacity:1,scale:1,rotation:0,duration:.7,ease:'back.out(1.6)'},15.15);
 tl.fromTo('#s4 .card span:first-child',{opacity:0,y:-30},{opacity:1,y:0,duration:.4},15.5);
 tl.fromTo('#s4 .card b',{opacity:0,scale:1.4},{opacity:1,scale:1,duration:.45,ease:E},15.7);
@@ -345,6 +349,7 @@ tl.to('#s6 .b',{scale:1.1,duration:1.9,ease:'power1.in'},24.1);
 // ===== S7 : 26 → 30 s =====
 show('s7',26); flash(26,1);
 streakPass(sk7,25.9,1.6,-9);
+tl.fromTo('#s7 .ph',{scale:1.12},{scale:1.02,duration:4.2,ease:'none'},26);
 tl.fromTo('#s7 .crest',{opacity:0,scale:.6,rotation:-6,transformOrigin:'50% 55%'},{opacity:1,scale:1,rotation:0,duration:.9,ease:'back.out(1.6)'},26.0);
 tl.fromTo('#s7 .shine i',{left:'-60%'},{left:'130%',duration:.9,ease:'power2.inOut'},26.9);
 const dx=V?0:40, dy=V?30:0;
@@ -364,7 +369,7 @@ window.seek=(t)=>{
   const f=Math.round(t*30), a=(f*7919)%512, b=(f*104729)%512;
   document.getElementById('grain').style.transform=`translate(${-a/4}px,${-b/4}px)`;
 };
-window.ready=()=>Promise.all([document.fonts.ready.then(fitTeams),...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))]);
+window.ready=()=>Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))]);
 window.seek(0);
 </script>
 </body>

@@ -2,7 +2,7 @@
 
 Structure calée sur le montage (1 mesure = 2 s) :
   0-4   intro : nappe, sub, toms et montée
-  4-22  groove complet (kick, clap, charleston, basse, nappe, arpège) ; un tom par club qui apparaît (10,5-13,5 s)
+  4-22  groove complet (kick, clap, charleston, basse, nappe, arpège) ; un tom par logo de club qui apparaît (10,45-13,65 s)
   22-24 groove allégé (« Venez nombreux »)
   24-26 break : roulement de caisse claire et montée
   26-30 final : impact, dernier groove, coup final et queue de réverbération
@@ -210,9 +210,9 @@ groove(4.0, 8.0, arp=False)
 groove(8.0, 16.0, arp=True)
 groove(16.0, 22.0, arp=True, open_hats=True)
 groove(22.0, 24.0, arp=False)
-# un tom par club qui apparaît, impacts sur la date et le lieu
-for i in range(7):
-    add(tom(150 - i * 7, 0.9), 10.5 + i * 0.5, pan=-0.3 + 0.1 * i, gain=0.6, rev=0.3)
+# un tom par logo de club qui apparaît, impacts sur la date et le lieu
+for i in range(9):
+    add(tom(155 - i * 6, 0.9), 10.45 + i * 0.4, pan=-0.4 + 0.1 * i, gain=0.6, rev=0.3)
 add(impact(0.6), 15.0, rev=0.4)
 add(impact(0.5), 19.0, rev=0.4)
 

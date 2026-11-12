@@ -3,7 +3,7 @@ import sys, numpy as np, cv2
 from PIL import Image
 from rembg import new_session
 sam = new_session('sam', sam_model='sam_vit_b_01ec64')
-names = ['soof','rcl','margouillats','aigle','rcg','rcpg','feux-follets','amazones']
+names = ['soof','rcl','margouillats','vautour-club','rcg','rcpg','feux-follets','amazones']
 rows = []
 for k in names:
     im = Image.open(f'{k}-x4.png').convert('RGB'); W, H = im.size

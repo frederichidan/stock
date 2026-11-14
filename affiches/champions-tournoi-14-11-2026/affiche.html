@@ -35,7 +35,7 @@
   .flag{position:absolute;left:0;right:0;bottom:0;height:5mm;display:flex;z-index:4}
   .flag i{flex:1}
   .flag i:nth-child(1){background:var(--green)} .flag i:nth-child(2){background:var(--yellow)} .flag i:nth-child(3){background:var(--royal)}
-  .poster > :not(.rays):not(#confetti):not(.flag){position:relative;z-index:2}
+  .poster > :not(.rays):not(#confetti):not(.flag){position:relative;z-index:2;flex-shrink:0}
 
   .club{font-weight:800;font-size:4mm;letter-spacing:1.4mm;text-transform:uppercase;margin-top:1mm}
   .club small{display:block;font-weight:700;color:var(--yellow);letter-spacing:1mm;font-size:3mm;margin-top:.6mm}
@@ -44,15 +44,15 @@
   .date i{width:2.2mm;height:2.2mm;border-radius:50%;background:var(--yellow)}
 
   h1{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;line-height:.95;margin-top:3mm}
-  h1 .k{display:block;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;text-transform:none;font-size:10mm;color:var(--ink);line-height:1;margin-bottom:1mm}
-  h1 .t{display:block;font-size:35mm;letter-spacing:1mm;
+  h1 .k{display:block;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;text-transform:none;font-size:9mm;color:var(--ink);line-height:1;margin-bottom:1mm}
+  h1 .t{display:block;font-size:32mm;letter-spacing:1mm;
     background:linear-gradient(180deg,#fff6c2 0%,#ffd84a 38%,#f5c400 62%,#c99700 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
     filter:drop-shadow(0 1.2mm 2.5mm rgba(0,0,0,.45))}
 
   /* écusson + lauriers */
-  .hero{position:relative;width:156mm;height:114mm;margin-top:2mm}
+  .hero{position:relative;width:146mm;height:100mm;margin-top:3mm}
   .laurel{position:absolute;inset:0;width:100%;height:100%}
-  .crest{position:absolute;left:50%;top:4mm;height:94mm;transform:translateX(-50%);filter:drop-shadow(0 3mm 7mm rgba(0,0,0,.55))}
+  .crest{position:absolute;left:50%;top:3mm;height:82mm;transform:translateX(-50%);filter:drop-shadow(0 3mm 7mm rgba(0,0,0,.55))}
   .stars{position:absolute;left:50%;top:-5mm;transform:translateX(-50%);display:flex;gap:3mm;align-items:flex-end}
   .stars svg{width:6mm;height:6mm;fill:var(--gold);filter:drop-shadow(0 .5mm 1mm rgba(0,0,0,.4))}
   .stars svg:nth-child(2){width:8mm;height:8mm}
@@ -61,17 +61,28 @@
     background:linear-gradient(180deg,#ffe066,#f5c400 55%,#d9a800);padding:2mm 11mm 2.2mm;
     clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);filter:drop-shadow(0 1.5mm 3mm rgba(0,0,0,.4))}
 
-  .what{margin-top:5mm}
-  .what b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:12.5mm;line-height:1.05;text-transform:uppercase;letter-spacing:.4mm}
+  /* score de la finale */
+  .final{margin-top:5mm;display:flex;flex-direction:column;align-items:center}
+  .final small{font-size:3.4mm;font-weight:800;letter-spacing:1.2mm;text-transform:uppercase;color:var(--yellow);margin-bottom:1.6mm}
+  .score{display:flex;align-items:center;gap:4mm;padding:2.2mm 6mm;border-radius:3mm;
+    background:rgba(6,16,47,.65);border:.35mm solid var(--yellow-soft);box-shadow:0 2mm 6mm rgba(0,0,0,.3)}
+  .score img{height:13mm;filter:drop-shadow(0 .8mm 1.5mm rgba(0,0,0,.4))}
+  .score .team{font-family:Anton,sans-serif;font-size:9mm;letter-spacing:.6mm;text-transform:uppercase;line-height:1}
+  .score .pts{font-family:Anton,sans-serif;font-size:13.5mm;line-height:1;letter-spacing:.5mm;display:flex;align-items:center;gap:2.5mm}
+  .score .pts b{font-weight:400;color:var(--yellow)}
+  .score .pts i{font-style:normal;font-size:9mm;color:var(--muted)}
+  .score .pts span{color:var(--muted)}
+  .what{margin-top:4.5mm}
+  .what b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:11mm;line-height:1.05;text-transform:uppercase;letter-spacing:.4mm}
   .what span{display:block;margin-top:2mm;font-size:4.4mm;font-weight:700;letter-spacing:.5mm;text-transform:uppercase;color:var(--yellow)}
   .what em{display:block;margin-top:1.2mm;font-style:normal;font-size:4.2mm;font-weight:600;color:var(--muted)}
 
-  .thanks{margin-top:5mm;max-width:150mm;font-size:4.5mm;font-weight:600;line-height:1.45;color:var(--muted);
+  .thanks{margin-top:4mm;max-width:150mm;font-size:4.2mm;font-weight:600;line-height:1.45;color:var(--muted);
     border-top:.35mm solid var(--line);border-bottom:.35mm solid var(--line);padding:3mm 4mm}
   .thanks b{color:var(--ink);font-weight:800}
 
-  .grow{flex:1;min-height:3mm}
-  .motto{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:9mm;line-height:1.1;margin-bottom:17mm}
+  .grow{flex:1 1 auto;min-height:2mm;flex-shrink:1}
+  .motto{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:8.6mm;line-height:1.1;margin-bottom:16mm}
   .motto em{color:var(--yellow)}
 </style>
 <script>if (location.hash === '#2x3') document.documentElement.classList.add('f2x3')</script>
@@ -87,7 +98,7 @@
   <h1><span class="k">Le RCA est</span><span class="t">Champion&nbsp;!</span></h1>
 
   <section class="hero">
-    <svg class="laurel" id="laurel" viewBox="0 0 150 110" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg class="laurel" id="laurel" viewBox="0 0 146 100" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="stars">
       <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.3 4.8 1.5 7-6.2-3.6L5.8 21l1.5-7L2 9.2l7.1-.7z"/></svg>
       <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.3 4.8 1.5 7-6.2-3.6L5.8 21l1.5-7L2 9.2l7.1-.7z"/></svg>
@@ -96,6 +107,17 @@
     <img class="crest" src="ecusson.png" alt="Écusson du Rugby Club Akanda">
     <div class="ribbon">Vainqueur du tournoi</div>
   </section>
+
+  <div class="final">
+    <small>Finale</small>
+    <div class="score">
+      <img src="ecusson.png" alt="">
+      <span class="team">RCA</span>
+      <span class="pts"><b>26</b><i>–</i><span>10</span></span>
+      <span class="team">RCL</span>
+      <img src="logos/rcl.png" alt="Rugby Club Libreville">
+    </div>
+  </div>
 
   <div class="what">
     <b>Tournoi de rugby à 7</b>
@@ -122,7 +144,7 @@
     const svg = document.getElementById('laurel');
     svg.innerHTML = `<defs><linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fff1a8"/><stop offset=".5" stop-color="#f5c400"/><stop offset="1" stop-color="#b98a00"/></linearGradient></defs>`;
-    const cx = 75, cy = 53, r = 50;
+    const cx = 73, cy = 47, r = 46;
     for (const side of [-1, 1]) {
       const stem = document.createElementNS(NS, 'path');
       const a0 = 100 * Math.PI / 180, a1 = 245 * Math.PI / 180;
@@ -156,7 +178,7 @@
       const mm = x / u, d = Math.abs(mm - 105 * W / u / 210 * 0 - W / u / 2), ymm = y / u;
       if (ymm < 11) return true;                              // tout en haut, au-dessus du nom du club
       if (d > W / u / 2 - 25) return ymm < 245;               // bandes latérales
-      if (d > 62 && ymm > 125 && ymm < 210) return true;      // de part et d'autre des lauriers
+      if (d > 62 && ymm > 118 && ymm < 196) return true;      // de part et d'autre des lauriers
       return false;
     };
     for (let i = 0, n = 0; i < 2000 && n < 120; i++) {

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>RCA champion – tournoi du 14 novembre</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{
+    --W:210mm; --H:297mm;
+    --bg:#0a1747; --yellow:#f5c400; --gold:#ffd84a; --yellow-soft:rgba(245,196,0,.3); --green:#22a34a; --royal:#1c3f9e;
+    --ink:#ffffff; --muted:rgba(255,255,255,.88); --line:rgba(255,255,255,.2);
+  }
+  /* format 2:3 (réseaux sociaux) : affiche.html#2x3 */
+  :root.f2x3{--W:200mm; --H:300mm}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:var(--W);height:var(--H);background:var(--bg)}
+  .poster{
+    position:relative;width:var(--W);height:var(--H);overflow:hidden;color:var(--ink);
+    font-family:Inter,sans-serif;text-align:center;
+    background:
+      radial-gradient(55% 32% at 50% 47%, rgba(245,196,0,.42) 0%, rgba(245,196,0,.1) 45%, transparent 75%),
+      radial-gradient(90% 55% at 50% 45%, #1c3f9e 0%, transparent 70%),
+      radial-gradient(90% 60% at 0% 100%, #06102f 0%, transparent 70%),
+      var(--bg);
+    padding:15mm 16mm 0;
+    display:flex;flex-direction:column;align-items:center;
+  }
+  /* rayons de lumière derrière l'écusson */
+  .rays{position:absolute;left:50%;top:47%;width:330mm;height:330mm;margin:-165mm 0 0 -165mm;z-index:0;
+    background:repeating-conic-gradient(from 0deg, rgba(255,216,74,.13) 0deg 5deg, transparent 5deg 15deg);
+    -webkit-mask-image:radial-gradient(closest-side, #000 18%, transparent 70%)}
+  #confetti{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+  .poster::before{content:"";position:absolute;inset:8mm 8mm 11mm;border:.35mm solid var(--yellow-soft);pointer-events:none;z-index:5}
+  .flag{position:absolute;left:0;right:0;bottom:0;height:5mm;display:flex;z-index:4}
+  .flag i{flex:1}
+  .flag i:nth-child(1){background:var(--green)} .flag i:nth-child(2){background:var(--yellow)} .flag i:nth-child(3){background:var(--royal)}
+  .poster > :not(.rays):not(#confetti):not(.flag){position:relative;z-index:2}
+
+  .club{font-weight:800;font-size:4mm;letter-spacing:1.4mm;text-transform:uppercase;margin-top:1mm}
+  .club small{display:block;font-weight:700;color:var(--yellow);letter-spacing:1mm;font-size:3mm;margin-top:.6mm}
+  .date{margin-top:4mm;display:inline-flex;align-items:center;gap:2.5mm;padding:1.8mm 4.5mm;border-radius:10mm;
+    background:rgba(6,16,47,.6);border:.35mm solid var(--yellow-soft);font-size:3.4mm;font-weight:800;letter-spacing:.6mm;text-transform:uppercase}
+  .date i{width:2.2mm;height:2.2mm;border-radius:50%;background:var(--yellow)}
+
+  h1{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;line-height:.95;margin-top:3mm}
+  h1 .k{display:block;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;text-transform:none;font-size:10mm;color:var(--ink);line-height:1;margin-bottom:1mm}
+  h1 .t{display:block;font-size:35mm;letter-spacing:1mm;
+    background:linear-gradient(180deg,#fff6c2 0%,#ffd84a 38%,#f5c400 62%,#c99700 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 1.2mm 2.5mm rgba(0,0,0,.45))}
+
+  /* écusson + lauriers */
+  .hero{position:relative;width:156mm;height:114mm;margin-top:2mm}
+  .laurel{position:absolute;inset:0;width:100%;height:100%}
+  .crest{position:absolute;left:50%;top:4mm;height:94mm;transform:translateX(-50%);filter:drop-shadow(0 3mm 7mm rgba(0,0,0,.55))}
+  .stars{position:absolute;left:50%;top:-5mm;transform:translateX(-50%);display:flex;gap:3mm;align-items:flex-end}
+  .stars svg{width:6mm;height:6mm;fill:var(--gold);filter:drop-shadow(0 .5mm 1mm rgba(0,0,0,.4))}
+  .stars svg:nth-child(2){width:8mm;height:8mm}
+  .ribbon{position:absolute;left:50%;bottom:0;transform:translateX(-50%);white-space:nowrap;
+    font-family:Anton,sans-serif;font-size:8.6mm;letter-spacing:.8mm;text-transform:uppercase;color:var(--bg);
+    background:linear-gradient(180deg,#ffe066,#f5c400 55%,#d9a800);padding:2mm 11mm 2.2mm;
+    clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);filter:drop-shadow(0 1.5mm 3mm rgba(0,0,0,.4))}
+
+  .what{margin-top:5mm}
+  .what b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:12.5mm;line-height:1.05;text-transform:uppercase;letter-spacing:.4mm}
+  .what span{display:block;margin-top:2mm;font-size:4.4mm;font-weight:700;letter-spacing:.5mm;text-transform:uppercase;color:var(--yellow)}
+  .what em{display:block;margin-top:1.2mm;font-style:normal;font-size:4.2mm;font-weight:600;color:var(--muted)}
+
+  .thanks{margin-top:5mm;max-width:150mm;font-size:4.5mm;font-weight:600;line-height:1.45;color:var(--muted);
+    border-top:.35mm solid var(--line);border-bottom:.35mm solid var(--line);padding:3mm 4mm}
+  .thanks b{color:var(--ink);font-weight:800}
+
+  .grow{flex:1;min-height:3mm}
+  .motto{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:9mm;line-height:1.1;margin-bottom:17mm}
+  .motto em{color:var(--yellow)}
+</style>
+<script>if (location.hash === '#2x3') document.documentElement.classList.add('f2x3')</script>
+</head>
+<body>
+<div class="poster">
+  <div class="rays"></div>
+  <svg id="confetti" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <div class="club">Rugby Club Akanda<small>Sevens</small></div>
+  <div class="date"><i></i>Samedi 14 novembre 2026<i></i></div>
+
+  <h1><span class="k">Le RCA est</span><span class="t">Champion&nbsp;!</span></h1>
+
+  <section class="hero">
+    <svg class="laurel" id="laurel" viewBox="0 0 150 110" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="stars">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.3 4.8 1.5 7-6.2-3.6L5.8 21l1.5-7L2 9.2l7.1-.7z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.3 4.8 1.5 7-6.2-3.6L5.8 21l1.5-7L2 9.2l7.1-.7z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.5 7.1.7-5.3 4.8 1.5 7-6.2-3.6L5.8 21l1.5-7L2 9.2l7.1-.7z"/></svg>
+    </div>
+    <img class="crest" src="ecusson.png" alt="Écusson du Rugby Club Akanda">
+    <div class="ribbon">Vainqueur du tournoi</div>
+  </section>
+
+  <div class="what">
+    <b>Tournoi de rugby à 7</b>
+    <span>Championnat national · Gabon Sevens</span>
+    <em>Stade de l’INJS · Soduco, Libreville</em>
+  </div>
+
+  <p class="thanks"><b>Bravo à nos joueurs</b> pour ce titre&nbsp;! Merci au staff, aux familles et à tous nos supporters
+    pour leur soutien tout au long de la journée.</p>
+
+  <div class="grow"></div>
+  <p class="motto">Plus qu’un club, <em>une famille&nbsp;!</em></p>
+
+  <div class="flag"><i></i><i></i><i></i></div>
+</div>
+<script>
+  // tirage pseudo-aléatoire déterministe (même rendu à chaque export)
+  let seed = 7;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const NS = 'http://www.w3.org/2000/svg';
+
+  // lauriers dorés : deux branches de feuilles le long d'un arc
+  (function laurel() {
+    const svg = document.getElementById('laurel');
+    svg.innerHTML = `<defs><linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff1a8"/><stop offset=".5" stop-color="#f5c400"/><stop offset="1" stop-color="#b98a00"/></linearGradient></defs>`;
+    const cx = 75, cy = 53, r = 50;
+    for (const side of [-1, 1]) {
+      const stem = document.createElementNS(NS, 'path');
+      const a0 = 100 * Math.PI / 180, a1 = 245 * Math.PI / 180;
+      const p = a => [cx + side * r * Math.cos(Math.PI - a) * -1, cy + r * Math.sin(a) * -1];
+      let d = '';
+      for (let i = 0; i <= 30; i++) { const a = a0 + (a1 - a0) * i / 30, [x, y] = p(a); d += (i ? 'L' : 'M') + x.toFixed(2) + ' ' + y.toFixed(2); }
+      stem.setAttribute('d', d); stem.setAttribute('fill', 'none'); stem.setAttribute('stroke', 'url(#gold)'); stem.setAttribute('stroke-width', '.9');
+      svg.appendChild(stem);
+      for (let i = 1; i <= 13; i++) {
+        const a = a0 + (a1 - a0) * i / 14, [x, y] = p(a);
+        const tang = Math.atan2(p(a + .01)[1] - y, p(a + .01)[0] - x) * 180 / Math.PI;
+        for (const o of [-1, 1]) {
+          const leaf = document.createElementNS(NS, 'ellipse');
+          const s = 1 - i / 22;
+          leaf.setAttribute('rx', (4.6 * s).toFixed(2)); leaf.setAttribute('ry', (1.7 * s).toFixed(2));
+          leaf.setAttribute('fill', 'url(#gold)');
+          leaf.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${(tang + o * 38).toFixed(1)}) translate(${(3.6 * s).toFixed(2)} 0)`);
+          svg.appendChild(leaf);
+        }
+      }
+    }
+  })();
+
+  // confettis aux couleurs du club, plus denses en haut
+  (function confetti() {
+    const svg = document.getElementById('confetti');
+    const W = svg.clientWidth, H = svg.clientHeight, u = W / 210;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const cols = ['#f5c400', '#ffd84a', '#22a34a', '#ffffff', '#3b6fe0', '#f5c400'];
+    const ok = (x, y) => {
+      const mm = x / u, d = Math.abs(mm - 105 * W / u / 210 * 0 - W / u / 2), ymm = y / u;
+      if (ymm < 11) return true;                              // tout en haut, au-dessus du nom du club
+      if (d > W / u / 2 - 25) return ymm < 245;               // bandes latérales
+      if (d > 62 && ymm > 125 && ymm < 210) return true;      // de part et d'autre des lauriers
+      return false;
+    };
+    for (let i = 0, n = 0; i < 2000 && n < 120; i++) {
+      const x = rnd() * W, y = Math.pow(rnd(), 1.4) * H * .85, c = cols[i % cols.length];
+      if (!ok(x, y)) continue;
+      n++;
+      const w = (1.2 + rnd() * 2.2) * u, h = (2.5 + rnd() * 4) * u, rot = rnd() * 360, o = .45 + rnd() * .5;
+      const el = document.createElementNS(NS, rnd() < .25 ? 'circle' : 'rect');
+      if (el.tagName === 'circle') { el.setAttribute('cx', x); el.setAttribute('cy', y); el.setAttribute('r', w * .6); }
+      else { el.setAttribute('x', -w / 2); el.setAttribute('y', -h / 2); el.setAttribute('width', w); el.setAttribute('height', h); el.setAttribute('rx', w * .2);
+        el.setAttribute('transform', `translate(${x} ${y}) rotate(${rot})`); }
+      el.setAttribute('fill', c); el.setAttribute('opacity', o.toFixed(2));
+      if (rnd() < .3) el.setAttribute('filter', 'blur(.6px)');
+      svg.appendChild(el);
+    }
+  })();
+
+  Promise.all([document.fonts.ready, ...[...document.images].map(i => i.complete || new Promise(r => { i.onload = i.onerror = r }))])
+    .then(() => { document.body.dataset.ready = 1 });
+</script>
+</body>
+</html>

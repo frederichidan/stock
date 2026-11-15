@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Tournoi de rugby à 7 – 14 novembre</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{
+    --W:210mm; --H:297mm;
+    --bg:#0a1747; --yellow:#f5c400; --yellow-soft:rgba(245,196,0,.25); --green:#22a34a; --royal:#1c3f9e;
+    --ink:#ffffff; --muted:rgba(255,255,255,.88); --line:rgba(255,255,255,.2);
+  }
+  /* format 2:3 (réseaux sociaux) : affiche.html#2x3 */
+  :root.f2x3{--W:200mm; --H:300mm}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:var(--W);height:var(--H);background:var(--bg)}
+  .poster{
+    position:relative;width:var(--W);height:var(--H);overflow:hidden;color:var(--ink);
+    font-family:Inter,sans-serif;
+    background:
+      radial-gradient(80% 40% at 75% 22%, #1c3f9e 0%, transparent 65%),
+      radial-gradient(90% 60% at 0% 100%, #06102f 0%, transparent 70%),
+      var(--bg);
+    padding:16mm 17mm 0;
+    display:flex;flex-direction:column;
+  }
+  .bgphoto{position:absolute;left:0;width:100%;object-fit:cover;z-index:0;pointer-events:none}
+  .bgphoto.p1{top:0;height:175mm;opacity:.5;object-position:50% 40%;
+    -webkit-mask-image:linear-gradient(to bottom,#000 35%,transparent 100%)}
+  .bgphoto.p2{bottom:0;height:135mm;opacity:.38;object-position:50% 45%;
+    -webkit-mask-image:linear-gradient(to top,#000 30%,transparent 100%)}
+  .credit{position:absolute;right:9.5mm;bottom:6.2mm;z-index:4;font-size:2.1mm;font-weight:600;letter-spacing:.3mm;color:rgba(255,255,255,.55)}
+  .poster::before{content:"";position:absolute;inset:8mm 8mm 11mm;border:.35mm solid var(--yellow-soft);pointer-events:none;z-index:3}
+  .flag{position:absolute;left:0;right:0;bottom:0;height:5mm;display:flex;z-index:4}
+  .flag i{flex:1}
+  .flag i:nth-child(1){background:var(--green)} .flag i:nth-child(2){background:var(--yellow)} .flag i:nth-child(3){background:var(--royal)}
+
+  /* en-tête */
+  .top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+  .club{display:flex;align-items:center;gap:5mm}
+  .crest{height:20mm;display:block;filter:drop-shadow(0 1.5mm 3mm rgba(0,0,0,.35))}
+  .club-name{font-weight:800;font-size:4.2mm;letter-spacing:.9mm;text-transform:uppercase;line-height:1.35;text-shadow:0 .3mm 1.5mm rgba(6,16,47,.8)}
+  .club-name small{display:block;font-weight:700;color:var(--yellow);letter-spacing:.8mm;font-size:3.2mm}
+  .tag{font-size:3.5mm;font-weight:800;letter-spacing:.5mm;text-transform:uppercase;color:var(--bg);
+    background:var(--yellow);padding:2.4mm 4.6mm;border-radius:10mm;white-space:nowrap;box-shadow:0 1mm 3mm rgba(6,16,47,.45)}
+
+  /* titre + illustration */
+  .hero{position:relative;z-index:1;height:92mm;margin-top:-2mm}
+  .art{position:absolute;z-index:0;right:-19mm;top:-16mm;width:146mm;
+    -webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 99%),linear-gradient(to right,transparent 0%,#000 22%);
+    -webkit-mask-composite:source-in;mask-composite:intersect}
+  .title{position:absolute;z-index:1;left:0;bottom:2mm}
+  .kicker{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:9.5mm;color:var(--yellow);line-height:1;margin-bottom:1.5mm;
+    text-shadow:0 .4mm 2mm rgba(6,16,47,.9)}
+  h1{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.5mm;line-height:1;
+    text-shadow:0 .6mm 3mm rgba(6,16,47,.85)}
+  h1 .l1{display:block;font-size:31mm;color:var(--yellow);line-height:1.02}
+  h1 .l2{display:block;font-size:13.5mm;margin-top:1mm}
+  .champ{display:inline-flex;align-items:center;gap:2.5mm;margin-top:3mm;padding:1.6mm 3.6mm 1.6mm 2.6mm;border-radius:10mm;
+    background:rgba(6,16,47,.72);border:.35mm solid var(--yellow-soft);font-size:3.3mm;font-weight:800;letter-spacing:.5mm;text-transform:uppercase}
+  .champ i{width:2.2mm;height:2.2mm;border-radius:50%;background:var(--yellow);flex:none}
+  .champ b{color:var(--yellow);font-weight:800;margin-left:1.2mm}
+
+  /* date, heure, lieu */
+  .info{position:relative;z-index:2;display:grid;grid-template-columns:56mm 1fr;gap:5mm;margin-top:5mm}
+  .date{background:var(--yellow);color:var(--bg);border-radius:3mm;padding:4mm 4mm 4.5mm;text-align:center;
+    display:flex;flex-direction:column;justify-content:center;box-shadow:0 2mm 6mm rgba(0,0,0,.3)}
+  .date span{font-family:Anton,sans-serif;font-size:8.6mm;line-height:1.1;text-transform:uppercase;letter-spacing:1mm}
+  .date b{font-family:Anton,sans-serif;font-weight:400;font-size:30mm;line-height:.98;letter-spacing:.5mm}
+  .rows{display:flex;flex-direction:column}
+  .row{flex:1;display:flex;align-items:center;gap:4.5mm;padding:2.4mm 0}
+  .row + .row{border-top:.4mm solid var(--line)}
+  .ico{flex:none;width:15mm;height:15mm;border-radius:50%;border:.5mm solid var(--yellow);display:grid;place-items:center}
+  .ico svg{width:7.5mm;height:7.5mm;stroke:var(--yellow);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .row small{display:block;font-size:3.3mm;font-weight:800;letter-spacing:.6mm;text-transform:uppercase;color:var(--yellow)}
+  .row b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:12mm;line-height:1.08;text-transform:uppercase;letter-spacing:.3mm;margin-top:1.6mm}
+  .row b em{font-style:normal;color:var(--yellow)}
+  .row span{display:block;font-size:4.4mm;font-weight:600;color:var(--muted)}
+
+  /* clubs */
+  .clubs{position:relative;z-index:2;margin-top:6mm}
+  .clubs h2{display:flex;align-items:center;gap:4mm;font-size:3.6mm;font-weight:800;letter-spacing:.9mm;text-transform:uppercase;color:var(--yellow);margin-bottom:3.5mm}
+  .clubs h2::before,.clubs h2::after{content:"";flex:1;height:.4mm;background:var(--line)}
+  .logos{display:flex;flex-wrap:wrap;justify-content:center;gap:3mm 4.5mm}
+  .logo{width:29.5mm;height:27mm;display:flex;align-items:center;justify-content:center;position:relative}
+  .logo::before{content:"";position:absolute;inset:-1mm 1mm;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(255,255,255,.13),transparent)}
+  .logo img{position:relative;max-width:100%;max-height:100%;filter:drop-shadow(0 1.2mm 2mm rgba(0,0,0,.45))}
+  .logo.rca::before{background:radial-gradient(closest-side,rgba(245,196,0,.38),transparent)}
+
+  .grow{flex:1;min-height:4mm}
+
+  .foot{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:8mm;margin-bottom:17mm}
+  .motto{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:8mm;line-height:1.15}
+  .motto em{color:var(--yellow)}
+  .phones{list-style:none;text-align:right}
+  .phones li:first-child{font-family:Inter;font-size:3mm;font-weight:800;letter-spacing:.8mm;text-transform:uppercase;color:var(--yellow);margin-bottom:1.2mm}
+  .phones li{font-family:Anton,sans-serif;font-size:5.6mm;line-height:1.3;letter-spacing:.3mm}
+  .phones li small{font-family:Inter;font-size:2.8mm;color:var(--yellow);font-weight:700;margin-right:1.5mm;vertical-align:.8mm}
+</style>
+<script>if (location.hash === '#2x3') document.documentElement.classList.add('f2x3')</script>
+</head>
+<body>
+<div class="poster">
+  <img class="bgphoto p1" src="photos/match-1.jpg" alt="">
+  <img class="bgphoto p2" src="photos/match-2.jpg" alt="">
+
+  <header class="top">
+    <div class="club">
+      <img class="crest" src="ecusson.png" alt="Écusson du Rugby Club Akanda">
+      <div class="club-name">Rugby Club Akanda<small>Sevens</small></div>
+    </div>
+    <div class="tag">Rugby à 7</div>
+  </header>
+
+  <section class="hero">
+    <img class="art" src="coureur.webp" alt="">
+    <div class="title">
+      <div class="kicker">Venez nombreux&nbsp;!</div>
+      <h1><span class="l1">Tournoi</span><span class="l2">de rugby à 7</span></h1>
+      <div class="champ"><i></i>Championnat national<b>Gabon Sevens</b></div>
+    </div>
+  </section>
+
+  <section class="info">
+    <div class="date"><span>Samedi</span><b>14</b><span>Novembre</span></div>
+    <div class="rows">
+      <div class="row">
+        <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
+        <div><small>Coup d’envoi</small><b>Dès <em>9h00</em></b></div>
+      </div>
+      <div class="row">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+        <div><small>Lieu</small><b>Stade de l’INJS</b><span>Soduco · Libreville</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="clubs">
+    <h2>Les clubs en lice</h2>
+    <div class="logos">
+      <div class="logo rca"><img src="ecusson.png" alt="Rugby Club Akanda"></div>
+      <div class="logo"><img src="logos/soof.png" alt="S.O.O.F"></div>
+      <div class="logo"><img src="logos/rcl.png" alt="Rugby Club Libreville"></div>
+      <div class="logo"><img src="logos/margouillats.png" alt="Les Margouillats de Port-Gentil"></div>
+      <div class="logo"><img src="logos/vautour-club.png" alt="Vautour Club"></div>
+      <div class="logo"><img src="logos/rcg.png" alt="Racing Club du Gabon"></div>
+      <div class="logo"><img src="logos/rcpg.png" alt="RCPG"></div>
+      <div class="logo"><img src="logos/feux-follets.png" alt="INJS Feux Follets"></div>
+      <div class="logo"><img src="logos/amazones.png" alt="INJS Amazones"></div>
+    </div>
+  </section>
+
+  <div class="grow"></div>
+
+  <footer class="foot">
+    <p class="motto">Plus qu’un club,<br><em>une famille&nbsp;!</em></p>
+    <ul class="phones">
+      <li>Infos</li>
+      <li><small>+241</small>077 05 44 13</li>
+      <li><small>+241</small>077 68 18 22</li>
+      <li><small>+241</small>074 91 40 12</li>
+    </ul>
+  </footer>
+
+  <div class="credit">Photos&nbsp;: AFC Sports</div>
+  <div class="flag"><i></i><i></i><i></i></div>
+</div>
+<script>
+  Promise.all([document.fonts.ready, ...[...document.images].map(i => i.complete || new Promise(r => { i.onload = i.onerror = r }))])
+    .then(() => { document.body.dataset.ready = 1 });
+</script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Bilan Facebook RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root{
+    --navy:#0a1747; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a;
+    --ink:#0d1530; --muted:#5b6478; --line:#dfe3ec; --panel:#f4f6fa; --ok:#1d8a43; --bad:#c0392b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#fff;color:var(--ink);font-family:Inter,sans-serif;font-size:3.3mm}
+  .page{position:relative;width:210mm;height:297mm;overflow:hidden;padding:0 14mm 16mm;display:flex;flex-direction:column;gap:6mm;page-break-after:always}
+  .page:last-child{page-break-after:auto}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* bandeau */
+  .band{margin:0 -14mm;padding:9mm 14mm 8mm;background:var(--navy);color:#fff;display:flex;align-items:center;gap:6mm;position:relative}
+  .band::after{content:"";position:absolute;left:0;right:0;bottom:-2.2mm;height:2.2mm;
+    background:linear-gradient(90deg,var(--green) 0 33.3%,var(--yellow) 33.3% 66.6%,var(--royal) 66.6%)}
+  .band img{height:24mm}
+  .band .t{flex:1;min-width:0}
+  .band small{display:block;font-size:3mm;font-weight:700;letter-spacing:.8mm;text-transform:uppercase;color:var(--yellow)}
+  .band h1{font-family:Anton,sans-serif;font-weight:400;font-size:11mm;line-height:1.05;text-transform:uppercase;letter-spacing:.3mm;margin-top:1mm}
+  .band p{font-size:3.4mm;color:rgba(255,255,255,.85);margin-top:1mm}
+  .band .ed{text-align:right;font-size:2.8mm;color:rgba(255,255,255,.7);line-height:1.5;white-space:nowrap}
+  .band .ed b{display:block;font-size:3.4mm;color:#fff;font-weight:700}
+  .band.mini{padding:5mm 14mm 4.5mm}
+  .band.mini img{height:11mm}
+  .band.mini h1{font-size:6.5mm}
+
+  .lede{font-size:3.9mm;line-height:1.5;max-width:175mm}
+  .lede b{font-weight:700}
+
+  /* chiffres clés */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+  .kpi{background:var(--panel);border-radius:2mm;padding:4mm 4.5mm;display:flex;flex-direction:column;gap:1mm;border-top:1.2mm solid var(--royal)}
+  .kpi:nth-child(1){border-top-color:var(--yellow)} .kpi:nth-child(3){border-top-color:var(--green)}
+  .kpi .l{font-size:2.8mm;font-weight:700;letter-spacing:.3mm;text-transform:uppercase;color:var(--muted)}
+  .kpi .v{font-family:Anton,sans-serif;font-size:10mm;line-height:1.1;color:var(--navy)}
+  .kpi .s{font-size:2.9mm;color:var(--muted)}
+  .kpi .s b{color:var(--ok);font-weight:700}
+  .kpi .s b.neg{color:var(--bad)}
+
+  h2{font-family:Anton,sans-serif;font-weight:400;font-size:5.4mm;letter-spacing:.2mm;text-transform:uppercase;color:var(--navy);display:flex;align-items:center;gap:2.5mm}
+  h2::before{content:"";width:1.4mm;height:5mm;background:var(--yellow);border-radius:.5mm}
+  .sec{display:flex;flex-direction:column;gap:2.5mm}
+  .note{font-size:3mm;color:var(--muted);line-height:1.45}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+  svg text{font-family:Inter,sans-serif}
+
+  /* points clés */
+  .points{list-style:none;display:flex;flex-direction:column;gap:2mm}
+  .points li{display:flex;gap:2.5mm;line-height:1.45;font-size:3.3mm}
+  .points li::before{content:"";flex:none;width:2mm;height:2mm;border-radius:50%;background:var(--yellow);margin-top:1.3mm}
+  .points b{font-weight:700}
+
+  /* tableaux */
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:3mm}
+  th,td{padding:1.5mm 2mm;border-bottom:.25mm solid var(--line);text-align:right;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  th{font-size:2.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase;color:var(--muted)}
+  td.m{color:var(--muted)}
+  .empty{font-size:3.1mm;color:var(--muted);padding:2mm 0}
+
+  .foot{position:absolute;left:14mm;right:14mm;bottom:7mm;display:flex;justify-content:space-between;gap:6mm;font-size:2.5mm;color:var(--muted);line-height:1.4}
+  .foot span:first-child{flex:1;min-width:0} .foot span:last-child{white-space:nowrap}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<section class="page">
+  <div class="band">
+    <img src="ecusson.png" alt="">
+    <div class="t">
+      <small>Rugby Club Akanda · page Facebook</small>
+      <h1>Bilan de la page</h1>
+      <p id="periode"></p>
+    </div>
+    <div class="ed">Édité le<b id="edite"></b></div>
+  </div>
+
+  <p class="lede" id="lede"></p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Abonnés</span><span class="v num" id="k-abonnes"></span><span class="s" id="k-abonnes-s"></span></div>
+    <div class="kpi"><span class="l">Vues</span><span class="v num" id="k-vues"></span><span class="s" id="k-vues-s"></span></div>
+    <div class="kpi"><span class="l">Interactions</span><span class="v num" id="k-inter"></span><span class="s" id="k-inter-s"></span></div>
+    <div class="kpi"><span class="l">Publications</span><span class="v num" id="k-pubs"></span><span class="s" id="k-pubs-s"></span></div>
+  </div>
+
+  <div class="two">
+    <div class="sec"><h2>Abonnés</h2><div id="g-abonnes"></div></div>
+    <div class="sec"><h2>Vues par jour</h2><div id="g-vues"></div></div>
+  </div>
+
+  <div class="sec">
+    <h2>Points clés</h2>
+    <ul class="points" id="points"></ul>
+  </div>
+
+  <div class="sec">
+    <h2>Depuis le dernier bilan</h2>
+    <p class="note" id="recent-note"></p>
+    <table id="t-recent"></table>
+  </div>
+
+  <div class="foot"><span id="foot-src"></span><span>Page <b>1</b> / 2</span></div>
+</section>
+
+<!-- PAGE 2 -->
+<section class="page">
+  <div class="band mini">
+    <img src="ecusson.png" alt="">
+    <div class="t"><small>Rugby Club Akanda · page Facebook</small><h1>Détail des publications</h1></div>
+    <div class="ed" id="periode2"></div>
+  </div>
+
+  <div class="sec">
+    <h2>Les 10 publications les plus vues</h2>
+    <p class="note">Barres bleues : vidéos des règles. Barres jaunes : autres publications.</p>
+    <div id="g-top"></div>
+  </div>
+
+  <div class="sec">
+    <h2>Par type de publication</h2>
+    <table id="t-cat"></table>
+  </div>
+
+  <div class="sec">
+    <h2>Les publications qui font le plus réagir</h2>
+    <table id="t-react"></table>
+  </div>
+
+  <div class="foot"><span id="foot-def"></span><span>Page <b>2</b> / 2</span></div>
+</section>
+
+<script>
+(function () {
+  const D = window.DONNEES;
+  const $ = (id) => document.getElementById(id);
+  const NS = 'http://www.w3.org/2000/svg';
+  const n0 = (v) => (v == null || v === '' || isNaN(+v) ? 0 : +v);
+  const fmt = (v) => Math.round(n0(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const fmt1 = (v) => (Math.round(n0(v) * 10) / 10).toString().replace('.', ',');
+  const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const MC = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  const JOURS = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  const d8 = (s) => new Date(String(s).slice(0, 10) + 'T00:00:00Z');
+  const dLong = (s) => { const d = d8(s); return `${d.getUTCDate() === 1 ? '1er' : d.getUTCDate()} ${MOIS[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
+  const dCourt = (s) => { const d = d8(s); return `${d.getUTCDate()} ${MC[d.getUTCMonth()]}`; };
+  const dJour = (s) => { const d = d8(s); return `${JOURS[d.getUTCDay()]} ${d.getUTCDate()} ${MOIS[d.getUTCMonth()]}`; };
+  const plural = (n, s, p) => (Math.abs(n) > 1 ? p : s);
+  const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+  const txt = (s) => document.createTextNode(s);
+
+  // --- titres et types de publication déduits du texte ---
+  const GARDE = { RCA: 'RCA', INJS: 'INJS', RCL: 'RCL', SOOF: 'SOOF', RCG: 'RCG', RCPG: 'RCPG', GABON: 'Gabon', SEVENS: 'Sevens', AKANDA: 'Akanda', LIBREVILLE: 'Libreville' };
+  function titre(p) {
+    let s = String(p.message || '').split('\n')[0];
+    s = s.replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/\s+/g, ' ').trim();
+    if (!s) return { cover_photo: 'Photo de couverture', profile_media: 'Photo de profil' }[p.type_fb] || (p.type === 'Vidéo' ? 'Vidéo sans légende' : 'Photo sans légende');
+    s = s.replace(/[\p{L}\d'’-]+/gu, (w) => {
+      const u = w.toUpperCase();
+      if (GARDE[u]) return GARDE[u];
+      if (w === u && /\p{L}/u.test(w) && !/\d/.test(w)) return w.toLowerCase();
+      if (/^\d+RE$/.test(w)) return w.toLowerCase();
+      return w;
+    });
+    s = s.charAt(0).toUpperCase() + s.slice(1);
+    return s.length > 62 ? s.slice(0, 60).replace(/\s+\S*$/, '') + '…' : s;
+  }
+  function categorie(p) {
+    const m = String(p.message || '');
+    if (/^\W*(R[ÈE]GLE\s*\d+|LES R[ÈE]GLES DU RUGBY)/iu.test(m)) return 'Vidéos des règles';
+    if (/FICHES?\s+POSTES?/i.test(m)) return 'Fiches postes';
+    if (/TOURNOI|VICTOIRE|REMPORTE|CHAMPION|GABON SEVENS|FINALE|MATCH/i.test(m)) return 'Compétitions';
+    if (!m.trim()) return 'Photos de page et autres';
+    return 'Vie du club';
+  }
+  const pubs = (D.publications || []).map((p) => ({ ...p, titre: titre(p), categorie: categorie(p),
+    vues: n0(p.vues), personnes: n0(p.personnes), reactions: n0(p.reactions), commentaires: n0(p.commentaires), partages: n0(p.partages) }));
+  const jours = [...(D.jours || [])].map((j) => ({ ...j, abonnes: n0(j.abonnes), vues: n0(j.vues), interactions: n0(j.interactions), reactions: n0(j.reactions) }))
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const somme = (k) => jours.reduce((s, j) => s + j[k], 0);
+
+  // --- en-tête ---
+  const debut = D.periode?.debut || jours[0]?.date, fin = D.periode?.fin || jours[jours.length - 1]?.date;
+  $('periode').textContent = `Du ${dLong(debut)} au ${dLong(fin)} (${jours.length} jours)`;
+  $('periode2').textContent = `Du ${dCourt(debut)} au ${dCourt(fin)}`;
+  $('edite').textContent = dLong(D.extrait_le || fin);
+
+  // --- chiffres clés ---
+  const ab0 = jours[0]?.abonnes ?? 0, ab1 = jours[jours.length - 1]?.abonnes ?? 0, gain = ab1 - ab0;
+  const vues = somme('vues'), inter = somme('interactions'), react = somme('reactions');
+  const videos = pubs.filter((p) => p.type === 'Vidéo').length;
+  $('k-abonnes').textContent = fmt(ab1);
+  $('k-abonnes-s').innerHTML = '';
+  const g = document.createElement('b'); g.textContent = (gain > 0 ? '+' : '') + fmt(gain); if (gain < 0) g.className = 'neg';
+  $('k-abonnes-s').append(g, txt(` sur la période`));
+  $('k-vues').textContent = fmt(vues);
+  $('k-vues-s').textContent = `soit ${fmt(vues / Math.max(1, jours.length))} par jour en moyenne`;
+  $('k-inter').textContent = fmt(inter);
+  $('k-inter-s').textContent = `dont ${fmt(react)} ${plural(react, 'réaction', 'réactions')}`;
+  $('k-pubs').textContent = fmt(pubs.length);
+  $('k-pubs-s').textContent = `dont ${fmt(videos)} ${plural(videos, 'vidéo', 'vidéos')}`;
+
+  const top = [...pubs].sort((a, b) => b.vues - a.vues);
+  const best = top[0];
+  $('lede').innerHTML = '';
+  const lede = $('lede');
+  const b = (s) => { const e = document.createElement('b'); e.textContent = s; return e; };
+  lede.append(txt('Sur la période, la page compte '), b(`${fmt(ab1)} abonnés`), txt(` (${gain >= 0 ? '+' : ''}${fmt(gain)}) et ses contenus ont été vus `), b(`${fmt(vues)} fois`), txt('.'));
+  if (best) lede.append(txt(' Publication la plus vue : '), b(`« ${best.titre} »`), txt(` (${fmt(best.vues)} vues).`));
+
+  // --- graphiques ---
+  function courbe(box, rows, key) {
+    const W = 86 * 3.78, H = 46 * 3.78, m = { t: 8, r: 26, b: 20, l: 28 };
+    const svg = el('svg', { width: '100%', viewBox: `0 0 ${W} ${H}` }, box);
+    const max = Math.max(1, ...rows.map((r) => r[key]));
+    const step = Math.pow(10, Math.floor(Math.log10(max))) / (max / Math.pow(10, Math.floor(Math.log10(max))) < 3 ? 2 : 1);
+    const top = Math.ceil(max / step) * step;
+    const x = (i) => m.l + (rows.length < 2 ? 0 : i * (W - m.l - m.r) / (rows.length - 1));
+    const y = (v) => H - m.b - v / top * (H - m.t - m.b);
+    for (let v = 0; v <= top + 1e-9; v += step) {
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: '#e6e9f0', 'stroke-width': .8 }, svg);
+      const t = el('text', { x: m.l - 4, y: y(v) + 3, 'text-anchor': 'end', 'font-size': 8, fill: '#5b6478' }, svg); t.textContent = fmt(v);
+    }
+    const every = Math.max(1, Math.ceil(rows.length / 5));
+    rows.forEach((r, i) => { if (i % every === 0) { const t = el('text', { x: x(i), y: H - 6, 'text-anchor': 'middle', 'font-size': 8, fill: '#5b6478' }, svg); t.textContent = dCourt(r.date); } });
+    el('path', { d: rows.map((r, i) => `${i ? 'L' : 'M'}${x(i)},${y(r[key])}`).join(''), fill: 'none', stroke: '#1c3f9e', 'stroke-width': 2.2, 'stroke-linejoin': 'round' }, svg);
+    const L = rows[rows.length - 1];
+    if (L) {
+      el('circle', { cx: x(rows.length - 1), cy: y(L[key]), r: 3.2, fill: '#f5c400', stroke: '#0a1747', 'stroke-width': 1 }, svg);
+      const t = el('text', { x: x(rows.length - 1) + 6, y: y(L[key]) + 3, 'font-size': 9, 'font-weight': 700, fill: '#0a1747' }, svg); t.textContent = fmt(L[key]);
+    }
+  }
+  function barres(box, rows, key) {
+    const W = 86 * 3.78, H = 46 * 3.78, m = { t: 12, r: 4, b: 20, l: 30 };
+    const svg = el('svg', { width: '100%', viewBox: `0 0 ${W} ${H}` }, box);
+    const max = Math.max(1, ...rows.map((r) => r[key]));
+    const step = Math.pow(10, Math.floor(Math.log10(max))) / (max / Math.pow(10, Math.floor(Math.log10(max))) < 3 ? 2 : 1);
+    const top = Math.ceil(max / step) * step;
+    const bw = (W - m.l - m.r) / Math.max(1, rows.length);
+    const y = (v) => H - m.b - v / top * (H - m.t - m.b);
+    for (let v = 0; v <= top + 1e-9; v += step) {
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: '#e6e9f0', 'stroke-width': .8 }, svg);
+      const t = el('text', { x: m.l - 4, y: y(v) + 3, 'text-anchor': 'end', 'font-size': 8, fill: '#5b6478' }, svg); t.textContent = fmt(v);
+    }
+    let imax = 0;
+    rows.forEach((r, i) => {
+      if (r[key] > rows[imax][key]) imax = i;
+      el('rect', { x: m.l + i * bw + bw * .12, y: y(r[key]), width: bw * .76, height: Math.max(0, y(0) - y(r[key])), rx: 1, fill: '#1c3f9e' }, svg);
+    });
+    const every = Math.max(1, Math.ceil(rows.length / 5));
+    rows.forEach((r, i) => { if (i % every === 0) { const t = el('text', { x: m.l + (i + .5) * bw, y: H - 6, 'text-anchor': 'middle', 'font-size': 8, fill: '#5b6478' }, svg); t.textContent = dCourt(r.date); } });
+    if (rows.length) {
+      el('rect', { x: m.l + imax * bw + bw * .12, y: y(rows[imax][key]), width: bw * .76, height: Math.max(0, y(0) - y(rows[imax][key])), rx: 1, fill: '#f5c400' }, svg);
+      const t = el('text', { x: Math.min(W - 14, Math.max(m.l + 10, m.l + (imax + .5) * bw)), y: y(rows[imax][key]) - 3, 'text-anchor': 'middle', 'font-size': 8.5, 'font-weight': 700, fill: '#0a1747' }, svg);
+      t.textContent = fmt(rows[imax][key]);
+    }
+  }
+  courbe($('g-abonnes'), jours, 'abonnes');
+  barres($('g-vues'), jours, 'vues');
+
+  // --- points clés (calculés) + observations éventuelles ---
+  const pts = [];
+  const jmax = jours.reduce((a, j) => (!a || j.vues > a.vues ? j : a), null);
+  if (jmax) pts.push([`Jour le plus fort : `, `${dJour(jmax.date)}`, ` avec ${fmt(jmax.vues)} vues.`]);
+  const cats = new Map();
+  for (const p of pubs) { if (!cats.has(p.categorie)) cats.set(p.categorie, []); cats.get(p.categorie).push(p); }
+  const catRows = [...cats].map(([c, ps]) => ({ c, n: ps.length, vm: ps.reduce((s, p) => s + p.vues, 0) / ps.length,
+    rm: ps.reduce((s, p) => s + p.reactions, 0) / ps.length, ech: ps.reduce((s, p) => s + p.commentaires + p.partages, 0) })).sort((a, b) => b.vm - a.vm);
+  if (catRows.length) pts.push([`Type de publication le plus vu : `, catRows[0].c, ` (${fmt(catRows[0].vm)} vues en moyenne).`]);
+  const rtop = [...catRows].sort((a, b) => b.rm - a.rm)[0];
+  if (rtop) pts.push([`Type qui fait le plus réagir : `, rtop.c, ` (${fmt1(rtop.rm)} réactions en moyenne).`]);
+  const engage = [...pubs].sort((a, b) => (b.reactions + b.commentaires * 2 + b.partages * 2) - (a.reactions + a.commentaires * 2 + a.partages * 2))[0];
+  if (engage) pts.push([`Publication la plus engageante : `, `« ${engage.titre} »`, ` (${fmt(engage.reactions)} réactions, ${fmt(engage.commentaires)} commentaires, ${fmt(engage.partages)} partages).`]);
+  for (const o of D.observations || []) pts.push(['', '', o]);
+  for (const [a, bb, c] of pts) { const li = document.createElement('li'); const s = document.createElement('span'); s.append(txt(a)); if (bb) s.append(b(bb)); s.append(txt(c)); li.appendChild(s); $('points').appendChild(li); }
+
+  // --- tableaux ---
+  function tableau(t, heads, rows, cells) {
+    t.innerHTML = '';
+    const tr = document.createElement('tr');
+    heads.forEach((h) => { const th = document.createElement('th'); th.textContent = h; tr.appendChild(th); });
+    const thead = document.createElement('thead'); thead.appendChild(tr); t.appendChild(thead);
+    const tb = document.createElement('tbody');
+    rows.forEach((r) => { const row = document.createElement('tr'); cells(r).forEach(([v, cls]) => { const td = document.createElement('td'); td.textContent = v; if (cls) td.className = cls; row.appendChild(td); }); tb.appendChild(row); });
+    t.appendChild(tb);
+  }
+  const depuis = D.dernier_bilan || null;
+  let recents = depuis ? pubs.filter((p) => String(p.date) > String(depuis)) : [...pubs].sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 6);
+  recents.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  $('recent-note').textContent = depuis
+    ? (recents.length ? `Publications parues après le ${dLong(depuis)}.` : `Aucune publication depuis le ${dLong(depuis)}.`)
+    : 'Les publications les plus récentes de la période.';
+  if (recents.length) {
+    tableau($('t-recent'), ['Publication', 'Date', 'Vues', 'Personnes', 'Réactions', 'Comm.', 'Partages'], recents.slice(0, 8),
+      (p) => [[p.titre], [dCourt(p.date), 'm'], [fmt(p.vues)], [fmt(p.personnes)], [fmt(p.reactions)], [fmt(p.commentaires)], [fmt(p.partages)]]);
+  } else { $('t-recent').remove(); }
+
+  tableau($('t-cat'), ['Type de publication', 'Publications', 'Vues en moyenne', 'Réactions en moyenne', 'Comm. et partages'], catRows,
+    (r) => [[r.c], [fmt(r.n)], [fmt(r.vm)], [fmt1(r.rm)], [fmt(r.ech)]]);
+  const parReact = [...pubs].sort((a, b) => (b.reactions + b.commentaires + b.partages) - (a.reactions + a.commentaires + a.partages)).slice(0, 8);
+  tableau($('t-react'), ['Publication', 'Date', 'Vues', 'Réactions', 'Comm.', 'Partages'], parReact,
+    (p) => [[p.titre], [dCourt(p.date), 'm'], [fmt(p.vues)], [fmt(p.reactions)], [fmt(p.commentaires)], [fmt(p.partages)]]);
+
+  // --- top 10 (barres horizontales) ---
+  (function () {
+    const rows = top.slice(0, 10), box = $('g-top');
+    const W = 182 * 3.78, rowH = 26, H = rows.length * rowH + 4;
+    const svg = el('svg', { width: '100%', viewBox: `0 0 ${W} ${H}` }, box);
+    const max = Math.max(1, ...rows.map((r) => r.vues)), lw = 250, bwMax = W - lw - 40;
+    rows.forEach((r, i) => {
+      const yy = i * rowH + 2;
+      const t = el('text', { x: 0, y: yy + 15, 'font-size': 9.5, fill: '#0d1530' }, svg);
+      t.textContent = r.titre.length > 40 ? r.titre.slice(0, 38).replace(/\s+\S*$/, '') + '…' : r.titre;
+      const d = el('text', { x: lw - 8, y: yy + 15, 'font-size': 8.5, fill: '#5b6478', 'text-anchor': 'end' }, svg); d.textContent = dCourt(r.date);
+      el('rect', { x: lw, y: yy + 5, width: Math.max(1, r.vues / max * bwMax), height: 13, rx: 1.5, fill: r.categorie === 'Vidéos des règles' ? '#1c3f9e' : '#f5c400' }, svg);
+      const v = el('text', { x: lw + r.vues / max * bwMax + 5, y: yy + 15, 'font-size': 9, 'font-weight': 700, fill: '#0a1747' }, svg); v.textContent = fmt(r.vues);
+    });
+  })();
+
+  $('foot-src').textContent = `Source : Facebook Insights (Supermetrics), données du ${dLong(debut)} au ${dLong(fin)}.`;
+  $('foot-def').textContent = 'Vues : nombre d’affichages d’un contenu. Personnes : personnes différentes touchées. Interactions : réactions, commentaires, partages et clics. Titres et types déduits du texte des publications.';
+  document.body.dataset.pret = '1';
+})();
+</script>
+</body>
+</html>

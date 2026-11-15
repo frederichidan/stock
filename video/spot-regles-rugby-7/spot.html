@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Les règles du rugby à 7 – RCA</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<!--
+  Spot explicatif « Les règles du rugby à 7 » (165 s, 1920 x 1080, rendu 4K).
+  Règles simplifiées d'après les Lois du Jeu World Rugby (variantes rugby à 7).
+  Chaque règle = un plan : numéro, titre, 3 points clés et un schéma animé (SVG + GSAP).
+  window.seek(t) positionne l'animation à l'instant t (rendu image par image).
+-->
+<style>
+  :root{ --navy:#0a1747; --navy2:#0b1a52; --royal:#1c3f9e; --yellow:#f5c400; --green:#22a34a; --red:#e53935; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy)}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:Inter,sans-serif;color:#fff;
+    background:radial-gradient(60% 70% at 80% 30%, rgba(28,63,158,.85) 0%, transparent 70%),radial-gradient(60% 70% at 0% 100%, #06102f 0%, transparent 70%),var(--navy)}
+  #lines{position:absolute;inset:0;opacity:.05;background:repeating-linear-gradient(90deg,#fff 0 2px,transparent 2px 240px)}
+  .scene{position:absolute;inset:0;visibility:hidden}
+  .anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:1px}
+  .serif{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500}
+  .y{color:var(--yellow)}
+
+  /* en-tête permanent */
+  #head{position:absolute;left:0;right:0;top:0;height:120px;z-index:30;opacity:0}
+  #head .brand{position:absolute;left:120px;top:38px;display:flex;align-items:center;gap:18px}
+  #head img{height:58px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
+  #head .brand div{font-weight:700;font-size:19px;letter-spacing:6px;text-transform:uppercase;line-height:1.35}
+  #head .brand small{display:block;color:var(--yellow);font-size:15px;letter-spacing:5px}
+  #prog{position:absolute;left:120px;right:120px;top:118px;height:4px;background:rgba(255,255,255,.14)}
+  #prog i{position:absolute;inset:0;background:var(--yellow);transform-origin:left center;transform:scaleX(0)}
+
+  /* plans « règle » */
+  .rule .count{position:absolute;right:120px;top:36px;text-align:right;font-weight:700;font-size:18px;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+  .rule .count b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:46px;letter-spacing:2px;color:#fff;line-height:1}
+  .rule .count b span{color:rgba(255,255,255,.45);font-size:30px}
+  .rule .col{position:absolute;left:120px;top:205px;width:860px;display:flex;flex-direction:column;align-items:flex-start}
+  .rule .num{font-weight:700;font-size:24px;letter-spacing:10px;color:var(--yellow);text-transform:uppercase}
+  .rule h2{margin-top:10px;font-size:104px;line-height:.98}
+  .rule .badge{margin-top:22px;background:var(--yellow);color:var(--navy);font-weight:800;font-size:20px;letter-spacing:4px;text-transform:uppercase;padding:10px 20px;border-radius:40px}
+  .rule ul{list-style:none;margin-top:34px;display:flex;flex-direction:column;gap:24px}
+  .rule li{position:relative;padding-left:38px;font-size:37px;font-weight:600;line-height:1.28}
+  .rule li::before{content:"";position:absolute;left:0;top:15px;width:16px;height:16px;border-radius:4px;background:var(--yellow)}
+  .rule li b{color:var(--yellow);font-weight:700}
+  .rule .panel{position:absolute;left:1040px;top:205px;width:760px;height:760px;border-radius:30px;overflow:hidden;
+    background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 2px rgba(255,255,255,.12)}
+  .rule .panel svg{position:absolute;inset:0;width:760px;height:760px;overflow:visible}
+  svg text{font-family:Inter,sans-serif}
+  svg .A{font-family:Anton,sans-serif;text-transform:uppercase}
+
+  /* intro */
+  #intro .crest{position:absolute;left:50%;top:150px;height:330px;transform:translateX(-50%);filter:drop-shadow(0 20px 40px rgba(0,0,0,.5))}
+  #intro .k{position:absolute;left:0;right:0;top:500px;text-align:center;font-size:30px;font-weight:700;letter-spacing:14px;text-transform:uppercase;color:var(--yellow)}
+  #intro .t{position:absolute;left:0;right:0;top:550px;text-align:center;font-size:200px;line-height:1}
+  #intro .s{position:absolute;left:0;right:0;top:780px;text-align:center;font-size:64px}
+
+  /* fin */
+  #outro .crest{position:absolute;left:200px;top:170px;height:700px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.5))}
+  #outro .info{position:absolute;left:880px;top:200px;width:900px}
+  #outro .a{font-size:150px;line-height:1}
+  #outro .b{margin-top:20px;font-size:70px}
+  #outro .train{margin-top:50px;padding-top:34px;border-top:2px solid rgba(255,255,255,.25);font-size:34px;font-weight:600;line-height:1.45;color:rgba(255,255,255,.9)}
+  #outro .train b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:64px;letter-spacing:2px;color:#fff;text-transform:uppercase;line-height:1.1}
+  #outro .src{position:absolute;left:880px;bottom:70px;font-size:20px;color:rgba(255,255,255,.55);letter-spacing:1px}
+  #outro .flag{position:absolute;left:0;bottom:0;height:18px;width:1920px;display:flex;transform-origin:left center}
+  #outro .flag i{flex:1}
+
+  .wipe{position:absolute;top:-300px;height:1680px;width:1500px;transform:skewX(-18deg);z-index:40;left:-2200px}
+  #wipeY{background:var(--yellow)} #wipeN{background:var(--navy2)}
+  #grain{position:absolute;inset:-50%;background:url(src/grain.png);opacity:.06;mix-blend-mode:overlay;pointer-events:none;z-index:50}
+  #vignette{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 50%, transparent 60%, rgba(0,0,0,.4) 100%);pointer-events:none;z-index:49}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="lines"></div>
+
+  <section class="scene" id="intro">
+    <img class="crest" src="src/ecusson.png">
+    <div class="k">Le Rugby Club Akanda présente</div>
+    <div class="t anton">Le rugby à <span class="y">7</span></div>
+    <div class="s serif">Toutes les règles du jeu, expliquées simplement</div>
+  </section>
+
+  <div id="rules"></div>
+
+  <section class="scene" id="outro">
+    <img class="crest" src="src/ecusson.png">
+    <div class="info">
+      <div class="a anton">À toi de <span class="y">jouer&nbsp;!</span></div>
+      <div class="b serif">Plus qu’un club, <span class="y">une famille&nbsp;!</span></div>
+      <div class="train"><b>Lundi &amp; jeudi · dès 17h30</b>Entraînements seniors au stade de l’INJS (Soduco)</div>
+    </div>
+    <div class="src">Règles simplifiées d’après les Lois du Jeu World Rugby – variantes du rugby à 7.</div>
+    <div class="flag"><i style="background:#22a34a"></i><i style="background:#f5c400"></i><i style="background:#1c3f9e"></i></div>
+  </section>
+
+  <div id="head">
+    <div class="brand"><img src="src/ecusson.png"><div>Les règles du rugby à 7<small>Rugby Club Akanda</small></div></div>
+    <div id="prog"><i></i></div>
+  </div>
+  <div class="wipe" id="wipeN"></div>
+  <div class="wipe" id="wipeY"></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+</div>
+
+<script src="lib/gsap.min.js"></script>
+<script>
+const NAVY = '#0c1946', YEL = '#f5c400', GRN = '#22a34a', RED = '#e53935', WHITE = '#ffffff';
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+const E = 'expo.out', BACK = 'back.out(2)';
+
+// ---------- éléments de schéma (SVG) ----------
+const field = (x, y, w, h, dir = 'v') => {
+  let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="#1f8a3f"/>`;
+  const n = 8;
+  for (let i = 0; i < n; i += 2) s += dir === 'v'
+    ? `<rect x="${x + i * w / n}" y="${y}" width="${w / n}" height="${h}" fill="#23974a"/>`
+    : `<rect x="${x}" y="${y + i * h / n}" width="${w}" height="${h / n}" fill="#23974a"/>`;
+  return `<g>${s}<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3"/></g>`;
+};
+const player = (id, team, label = '') => `<g id="${id}"><circle r="26" fill="${team === 'rca' ? NAVY : '#f4f4f1'}" stroke="${team === 'rca' ? YEL : RED}" stroke-width="5"/>
+  ${label ? `<text y="8" text-anchor="middle" font-size="22" font-weight="700" fill="${team === 'rca' ? '#fff' : NAVY}">${label}</text>` : ''}</g>`;
+const ball = (id) => `<g id="${id}"><ellipse rx="15" ry="10" fill="#fff" stroke="${NAVY}" stroke-width="2.5"/><path d="M-6 0 H6 M-3 -3 V3 M3 -3 V3" stroke="${NAVY}" stroke-width="2"/></g>`;
+const line = (id, d, col = '#fff', w = 5, dash = false) => `<path id="${id}" d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" ${dash ? 'stroke-dasharray="14 12"' : ''}/>`;
+const arrow = (id, d, col = YEL, w = 6) => `<g id="${id}"><path class="ar" d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+  <path class="hd" d="${d}" fill="none" stroke="none" stroke-width="${w}" opacity="0" marker-end="url(#ah-${col.slice(1)})"/></g>`;
+const check = (id, x, y, s = 1) => `<g id="${id}"><g transform="translate(${x} ${y}) scale(${s})"><circle r="34" fill="${GRN}"/><path d="M-15 1 L-4 12 L16 -10" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g></g>`;
+const cross = (id, x, y, s = 1) => `<g id="${id}"><g transform="translate(${x} ${y}) scale(${s})"><circle r="34" fill="${RED}"/><path d="M-12 -12 L12 12 M12 -12 L-12 12" stroke="#fff" stroke-width="8" stroke-linecap="round"/></g></g>`;
+const label = (id, x, y, txt, o = {}) => `<text id="${id}" x="${x}" y="${y}" text-anchor="${o.anchor || 'middle'}" font-size="${o.size || 26}" font-weight="${o.weight || 800}" fill="${o.fill || '#fff'}" letter-spacing="${o.ls ?? 3}" ${o.anton ? 'class="A"' : ''}>${txt}</text>`;
+const pill = (id, x, y, txt, bg = YEL, fg = NAVY, size = 24) => {
+  const w = txt.length * size * 0.66 + 40;
+  return `<g id="${id}"><g transform="translate(${x} ${y})"><rect x="${-w / 2}" y="-26" width="${w}" height="52" rx="26" fill="${bg}"/>
+    <text y="9" text-anchor="middle" font-size="${size}" font-weight="800" fill="${fg}" letter-spacing="2">${txt}</text></g></g>`;
+};
+const DEFS = `<defs>${[YEL, GRN, RED, WHITE].map(c => `<marker id="ah-${c.slice(1)}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${c}"/></marker>`).join('')}</defs>`;
+
+// ---------- aides d'animation ----------
+const $ = s => document.querySelector(s);
+const pos = (sel, x, y) => gsap.set(sel, { x, y });
+const pop = (sel, at, d = .45) => tl.fromTo(sel, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: d, ease: BACK }, at);
+const fade = (sel, at, d = .4, y = 16) => tl.fromTo(sel, { opacity: 0, y: `+=${y}` }, { opacity: 1, y: `-=${y}`, duration: d }, at);
+const fadeIn = (sel, at, d = .4) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d }, at);
+const draw = (sel, at, d = .7) => {
+  tl.fromTo(sel + ' .ar', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, at);
+  tl.fromTo(sel + ' .hd', { opacity: 0 }, { opacity: 1, duration: .12 }, at + d * .85);
+};
+const move = (sel, at, d, x, y, ease = 'power2.inOut') => tl.to(sel, { x, y, duration: d, ease }, at);
+const counter = (sel, at, d, from, to, fmt) => {
+  const o = { v: from };
+  tl.fromTo(o, { v: from }, { v: to, duration: d, ease: 'none', onUpdate: () => { $(sel).textContent = fmt(o.v); } }, at);
+};
+const mmss = v => { const s = Math.max(0, Math.ceil(v - 1e-6)); return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; };
+
+// ---------- les règles ----------
+const RULES = [
+{ k: 'equipe', d: 8, title: 'L’équipe', badge: true, bullets: [
+  '<b>7 joueurs</b> sur le terrain : 3 avants et 4 arrières.',
+  'Jusqu’à <b>5 remplaçants</b> sur la feuille de match.',
+  'Un joueur remplacé ne revient pas (sauf saignement ou test commotion).'],
+  svg: () => field(40, 40, 680, 520) + label('eq-l1', 380, 120, '3 AVANTS', { fill: YEL }) + label('eq-l2', 380, 520, '4 ARRIÈRES', { fill: YEL })
+    + [1, 2, 3].map(i => player('eq-a' + i, 'rca')).join('') + [1, 2, 3, 4].map(i => player('eq-b' + i, 'rca')).join('')
+    + `<g id="eq-bench"><rect x="110" y="600" width="540" height="120" rx="20" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+      ${label('eq-bl', 380, 640, 'REMPLAÇANTS (5 MAX)', { size: 20, fill: 'rgba(255,255,255,.8)' })}
+      ${[0, 1, 2, 3, 4].map(i => `<circle cx="${220 + i * 80}" cy="684" r="18" fill="${NAVY}" stroke="${YEL}" stroke-width="4"/>`).join('')}</g>`,
+  anim: at => {
+    [[250, 200], [380, 200], [510, 200]].forEach(([x, y], i) => { pos('#eq-a' + (i + 1), x, y); pop('#eq-a' + (i + 1), at + .6 + i * .15); });
+    [[160, 400], [300, 440], [460, 440], [600, 400]].forEach(([x, y], i) => { pos('#eq-b' + (i + 1), x, y); pop('#eq-b' + (i + 1), at + 1.3 + i * .15); });
+    fadeIn('#eq-l1', at + .9); fadeIn('#eq-l2', at + 1.9);
+    tl.fromTo('#eq-bench', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .6 }, at + 2.6);
+  } },
+
+{ k: 'terrain', d: 8, title: 'Le terrain', bullets: [
+  'Le <b>même terrain</b> qu’au rugby à XV.',
+  'Jusqu’à <b>100 m</b> entre les lignes d’essai et <b>70 m</b> de large.',
+  'Derrière chaque ligne d’essai : l’<b>en-but</b>, la zone où l’on marque.'],
+  svg: () => `<g id="te-f">${field(60, 190, 640, 380)}
+      <rect x="60" y="190" width="56" height="380" rx="18" fill="#156b31"/><rect x="644" y="190" width="56" height="380" rx="18" fill="#156b31"/>
+      ${line('te-t1', 'M116 190 V570')}${line('te-t2', 'M644 190 V570')}${line('te-h', 'M380 190 V570')}
+      ${line('te-22a', 'M232 190 V570', '#fff', 3)}${line('te-22b', 'M528 190 V570', '#fff', 3)}
+      ${line('te-10a', 'M327 190 V570', '#fff', 3, true)}${line('te-10b', 'M433 190 V570', '#fff', 3, true)}
+      <path d="M108 350 V410 M124 350 V410 M108 380 H124" stroke="#fff" stroke-width="4"/><path d="M636 350 V410 M652 350 V410 M636 380 H652" stroke="#fff" stroke-width="4"/>
+      <text x="88" y="380" transform="rotate(-90 88 380)" text-anchor="middle" font-size="18" font-weight="800" fill="#fff" letter-spacing="4">EN-BUT</text>
+      <text x="672" y="380" transform="rotate(90 672 380)" text-anchor="middle" font-size="18" font-weight="800" fill="#fff" letter-spacing="4">EN-BUT</text></g>
+    ${arrow('te-w', 'M380 140 H130', YEL)}${arrow('te-w2', 'M380 140 H630', YEL)}${label('te-wl', 380, 115, '100 M MAX', { fill: YEL, size: 30, anton: true, weight: 400 })}
+    <g id="te-hl">${arrow('te-v', 'M730 380 V205', YEL)}${arrow('te-v2', 'M730 380 V555', YEL)}</g>
+    ${label('te-vl', 380, 650, 'LARGEUR : 70 M MAX', { fill: YEL, size: 30, anton: true, weight: 400 })}
+    ${label('te-il', 380, 715, 'EN-BUT : DE 10 À 22 M DE PROFONDEUR', { size: 20, fill: 'rgba(255,255,255,.8)' })}`,
+  anim: at => {
+    tl.fromTo('#te-f', { opacity: 0, scale: .9, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: .7 }, at + .5);
+    draw('#te-w', at + 1.2); draw('#te-w2', at + 1.2); fade('#te-wl', at + 1.4);
+    draw('#te-v', at + 2.0); draw('#te-v2', at + 2.0); fade('#te-vl', at + 2.2); fade('#te-il', at + 3.0);
+  } },
+
+{ k: 'temps', d: 9, title: 'Le temps de jeu', badge: true, bullets: [
+  '<b>2 mi-temps de 7 minutes</b>, 2 minutes de pause maximum.',
+  'En finale : <b>2 × 10 minutes</b>.',
+  'Égalité en phase finale : prolongations de 5 min, <b>la première équipe qui marque gagne</b>.'],
+  svg: () => `<g id="tm-c"><circle cx="380" cy="280" r="200" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="18"/>
+      <circle id="tm-arc" cx="380" cy="280" r="200" fill="none" stroke="${YEL}" stroke-width="18" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" transform="rotate(-90 380 280)"/>
+      <text id="tm-t" x="380" y="320" text-anchor="middle" font-size="130" class="A" fill="#fff" letter-spacing="2">07:00</text>
+      <text x="380" y="380" text-anchor="middle" font-size="24" font-weight="800" fill="${YEL}" letter-spacing="6">PAR MI-TEMPS</text></g>
+    ${pill('tm-p1', 200, 560, '2 × 7 MIN')}${pill('tm-p2', 560, 560, 'PAUSE 2 MIN', 'rgba(255,255,255,.15)', '#fff')}
+    ${pill('tm-p3', 200, 640, 'FINALE 2 × 10 MIN', 'rgba(255,255,255,.15)', '#fff', 22)}${pill('tm-p4', 560, 640, 'PROLONG. 5 MIN', 'rgba(255,255,255,.15)', '#fff', 22)}
+    ${label('tm-gp', 380, 720, '1ER QUI MARQUE GAGNE', { fill: YEL, size: 30, anton: true, weight: 400 })}`,
+  anim: at => {
+    pop('#tm-c', at + .4, .6);
+    counter('#tm-t', at + 1.0, 3.0, 420, 0, mmss);
+    tl.fromTo('#tm-arc', { strokeDashoffset: 0 }, { strokeDashoffset: 1, duration: 3.0, ease: 'none' }, at + 1.0);
+    pop('#tm-p1', at + 1.3); pop('#tm-p2', at + 1.9); pop('#tm-p3', at + 3.2); pop('#tm-p4', at + 4.4); fade('#tm-gp', at + 4.9);
+  } },
+
+{ k: 'but', d: 7, title: 'Le but du jeu', bullets: [
+  'Porter le ballon jusque dans l’<b>en-but adverse</b>.',
+  'L’aplatir au sol avec contrôle : c’est un <b>essai</b>.',
+  'La ligne d’essai fait partie de l’en-but.'],
+  svg: () => `${field(40, 140, 680, 480)}<rect x="500" y="140" width="220" height="480" rx="18" fill="#156b31"/>
+    ${line('bt-l', 'M500 140 V620', '#fff', 6)}${label('bt-eb', 610, 190, 'EN-BUT', { size: 22 })}
+    ${player('bt-d', 'adv')}${player('bt-p', 'rca')}${ball('bt-b')}
+    <g id="bt-burst"><circle cx="600" cy="420" r="110" fill="${YEL}" opacity=".25"/>${label('bt-es', 610, 280, 'ESSAI !', { size: 64, anton: true, weight: 400, fill: YEL, ls: 2 })}</g>
+    ${pill('bt-5', 600, 520, '+ 5 POINTS')}`,
+  anim: at => {
+    pos('#bt-p', 120, 400); pos('#bt-b', 150, 390); pos('#bt-d', 300, 250);
+    fadeIn('#bt-p, #bt-b, #bt-d', at + .4);
+    move('#bt-p', at + .9, 2.0, 560, 400, 'power1.inOut'); move('#bt-b', at + .9, 2.0, 590, 390, 'power1.inOut');
+    move('#bt-d', at + 1.1, 1.9, 470, 330, 'power1.inOut');
+    tl.to('#bt-b', { x: 600, y: 440, rotation: 30, duration: .35, ease: 'power2.in' }, at + 2.9);
+    pop('#bt-burst', at + 3.2, .5); pop('#bt-5', at + 3.6);
+  } },
+
+{ k: 'points', d: 9, title: 'Les points', bullets: [
+  'Essai : <b>5 points</b> · transformation : <b>2 points</b>.',
+  'Pénalité ou drop réussis : <b>3 points</b>.',
+  'Essai de pénalité : <b>7 points</b>, sans transformation.'],
+  svg: () => [['5', 'ESSAI'], ['2', 'TRANSFORMATION'], ['3', 'PÉNALITÉ AU BUT'], ['3', 'DROP EN COURS DE JEU'], ['7', 'ESSAI DE PÉNALITÉ']].map(([n, t], i) =>
+    `<g id="pt-${i}" transform="translate(0 ${60 + i * 132})"><rect x="60" y="0" width="640" height="112" rx="20" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+      <rect x="60" y="0" width="128" height="112" rx="20" fill="${YEL}"/><text x="124" y="86" text-anchor="middle" font-size="84" class="A" fill="${NAVY}">${n}</text>
+      <text x="220" y="68" font-size="30" font-weight="800" fill="#fff" letter-spacing="3">${t}</text></g>`).join(''),
+  anim: at => { [0, 1, 2, 3, 4].forEach(i => tl.fromTo('#pt-' + i, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .5, ease: E }, at + .5 + [0, .5, 1.6, 2.1, 3.2][i])); } },
+
+{ k: 'drop', d: 8, title: 'Les tirs au but', badge: true, bullets: [
+  'Transformation et pénalité au but : <b>obligatoirement en drop</b>.',
+  'La transformation se tente <b>dans les 30 secondes</b> après l’essai.',
+  'Elle se tire dans l’axe de l’endroit où l’essai a été marqué.'],
+  svg: () => `<g id="dr-posts"><path d="M290 70 V520 M470 70 V520 M290 330 H470" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+      <rect x="40" y="520" width="680" height="200" rx="18" fill="#1f8a3f"/></g>
+    <g id="dr-ring"><circle cx="120" cy="120" r="70" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.2)" stroke-width="10"/>
+      <circle id="dr-arc" cx="120" cy="120" r="70" fill="none" stroke="${YEL}" stroke-width="10" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" transform="rotate(-90 120 120)"/>
+      <text id="dr-t" x="120" y="138" text-anchor="middle" font-size="52" class="A" fill="#fff">30</text></g>
+    ${label('dr-sec', 120, 222, 'SECONDES', { size: 18, fill: YEL })}
+    ${ball('dr-b')}${pill('dr-lb', 600, 660, 'DROP', 'rgba(255,255,255,.15)', '#fff')}
+    <g id="dr-ok">${check('dr-c', 380, 220, 1.2)}${label('dr-2', 380, 298, '+ 2 PTS', { size: 30, anton: true, weight: 400, fill: YEL })}</g>`,
+  anim: at => {
+    fadeIn('#dr-posts', at + .3, .5); pop('#dr-ring', at + .6); fadeIn('#dr-sec', at + .8);
+    counter('#dr-t', at + .9, 4.5, 30, 15, v => String(Math.ceil(v)));
+    tl.fromTo('#dr-arc', { strokeDashoffset: 0 }, { strokeDashoffset: .5, duration: 4.5, ease: 'none' }, at + .9);
+    pos('#dr-b', 380, 600); fadeIn('#dr-b', at + 1.0); pop('#dr-lb', at + 1.2);
+    tl.to('#dr-b', { y: 690, rotation: 90, duration: .45, ease: 'power2.in' }, at + 1.8);
+    tl.to('#dr-b', { y: 240, scale: .45, rotation: 600, duration: 1.2, ease: 'power2.out' }, at + 2.25);
+    tl.to('#dr-b', { opacity: 0, duration: .2 }, at + 3.4);
+    pop('#dr-ok', at + 3.4, .5);
+  } },
+
+{ k: 'envoi', d: 8, title: 'Le coup d’envoi', badge: true, bullets: [
+  'Au centre du terrain, en drop : au début de chaque mi-temps et <b>après chaque score</b>.',
+  'Le ballon doit franchir la <b>ligne des 10 m</b> adverse.',
+  'Au 7, c’est <b>l’équipe qui vient de marquer</b> qui donne le coup d’envoi.'],
+  svg: () => `${field(40, 140, 680, 480)}${line('ce-h', 'M380 140 V620', '#fff', 6)}${line('ce-10', 'M480 140 V620', '#fff', 4, true)}
+    ${label('ce-10l', 480, 120, '10 M', { fill: YEL, size: 26 })}
+    ${[0, 1, 2].map(i => player('ce-r' + i, 'rca')).join('')}${[0, 1, 2].map(i => player('ce-a' + i, 'adv')).join('')}${ball('ce-b')}
+    ${pill('ce-who', 210, 680, 'A MARQUÉ', YEL, NAVY, 22)}${pill('ce-who2', 560, 680, 'REÇOIT', 'rgba(255,255,255,.15)', '#fff', 22)}
+    ${check('ce-ok', 640, 220)}`,
+  anim: at => {
+    [[300, 260], [250, 400], [300, 540]].forEach(([x, y], i) => { pos('#ce-r' + i, x, y); pop('#ce-r' + i, at + .5 + i * .1); });
+    [[560, 240], [620, 380], [560, 520]].forEach(([x, y], i) => { pos('#ce-a' + i, x, y); pop('#ce-a' + i, at + .8 + i * .1); });
+    pos('#ce-b', 380, 380); pop('#ce-b', at + 1.0); fadeIn('#ce-10l', at + 1.2); pop('#ce-who', at + 1.4); pop('#ce-who2', at + 1.6);
+    move('#ce-r1', at + 2.0, .6, 350, 380);
+    tl.to('#ce-b', { x: 580, y: 300, duration: 1.3, ease: 'power1.inOut' }, at + 2.6);
+    tl.to('#ce-b', { scale: 1.8, duration: .65, ease: 'power1.out', yoyo: true, repeat: 1 }, at + 2.6);
+    pop('#ce-ok', at + 4.0);
+  } },
+
+{ k: 'passe', d: 7, title: 'La passe', bullets: [
+  'Toujours <b>vers l’arrière ou à plat</b>, jamais vers l’avant.',
+  'Passe en avant : <b>mêlée pour l’adversaire</b>.',
+  'On peut courir avec le ballon et taper au pied vers l’avant.'],
+  svg: () => `${field(40, 140, 680, 480)}${arrow('pa-dir', 'M200 100 H560', WHITE, 5)}${label('pa-dl', 380, 80, 'SENS DE L’ATTAQUE', { size: 20 })}
+    ${player('pa-p', 'rca')}${player('pa-back', 'rca')}${player('pa-fwd', 'rca')}${ball('pa-b')}
+    ${arrow('pa-ok', 'M400 380 Q330 470 260 520', GRN, 6)}${arrow('pa-no', 'M440 380 Q520 450 590 500', RED, 6)}
+    ${check('pa-c', 220, 600, .8)}${cross('pa-x', 630, 600, .8)}${pill('pa-m', 560, 690, 'MÊLÉE ADVERSE', RED, '#fff', 22)}`,
+  anim: at => {
+    draw('#pa-dir', at + .4, .6); fadeIn('#pa-dl', at + .5);
+    pos('#pa-p', 420, 340); pos('#pa-back', 240, 520); pos('#pa-fwd', 610, 520); pos('#pa-b', 450, 330);
+    pop('#pa-p', at + .7); pop('#pa-back', at + .85); pop('#pa-fwd', at + 1.0); pop('#pa-b', at + 1.0);
+    draw('#pa-ok', at + 1.5); tl.to('#pa-b', { x: 270, y: 500, duration: .7, ease: 'power1.inOut' }, at + 1.6); pop('#pa-c', at + 2.2);
+    draw('#pa-no', at + 3.0); pop('#pa-x', at + 3.6); pop('#pa-m', at + 4.0);
+  } },
+
+{ k: 'enavant', d: 7, title: 'L’en-avant', bullets: [
+  'Le ballon échappe des mains et part <b>vers l’avant</b> : en-avant.',
+  'Sanction : <b>mêlée pour l’adversaire</b>.',
+  'Un en-avant volontaire est sanctionné d’une pénalité.'],
+  svg: () => `${field(40, 140, 680, 480)}${arrow('ea-dir', 'M200 100 H560', WHITE, 5)}${label('ea-dl', 380, 80, 'SENS DE L’ATTAQUE', { size: 20 })}
+    ${player('ea-p', 'rca')}${ball('ea-b')}${line('ea-tr', 'M300 300 Q360 420 420 470 Q470 410 520 470 Q550 440 580 470', YEL, 4, true)}
+    <g id="ea-stamp"><g transform="translate(470 250) rotate(-8)"><rect x="-170" y="-48" width="340" height="96" rx="12" fill="none" stroke="${RED}" stroke-width="8"/>
+      <text y="22" text-anchor="middle" font-size="64" class="A" fill="${RED}" letter-spacing="2">EN-AVANT</text></g></g>
+    ${pill('ea-m', 380, 690, 'MÊLÉE ADVERSE', RED, '#fff', 22)}`,
+  anim: at => {
+    draw('#ea-dir', at + .4, .6); fadeIn('#ea-dl', at + .5);
+    pos('#ea-p', 260, 300); pos('#ea-b', 300, 300); pop('#ea-p', at + .7); pop('#ea-b', at + .8);
+    tl.to('#ea-b', { keyframes: [{ x: 420, y: 470, rotation: 160, duration: .55, ease: 'power2.in' }, { x: 520, y: 470, rotation: 300, duration: .45, ease: 'sine.inOut' }, { x: 580, y: 470, rotation: 380, duration: .35 }] }, at + 1.4);
+    tl.fromTo('#ea-tr', { opacity: 0 }, { opacity: .7, duration: .4 }, at + 1.5);
+    tl.fromTo('#ea-stamp', { opacity: 0, scale: 2.2, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: .35, ease: 'power3.in' }, at + 2.8);
+    pop('#ea-m', at + 3.4);
+  } },
+
+{ k: 'plaquage', d: 9, title: 'Le plaquage', bullets: [
+  'Seul le <b>porteur du ballon</b> peut être plaqué.',
+  '<b>Sous la ligne des épaules</b>, en entourant avec les bras. Jamais à la tête ni au cou.',
+  'Le plaqué lâche le ballon tout de suite ; le plaqueur le relâche et se relève.'],
+  svg: () => `<g id="pl-zone-no"><rect x="40" y="40" width="680" height="220" rx="18" fill="${RED}" opacity=".22"/>${label('pl-no', 380, 90, 'INTERDIT : TÊTE ET COU', { fill: '#ff8a80', size: 28 })}</g>
+    <g id="pl-zone-ok"><rect x="40" y="260" width="680" height="460" rx="18" fill="${GRN}" opacity=".22"/>${label('pl-ok', 380, 690, 'AUTORISÉ : SOUS LES ÉPAULES, AVEC LES BRAS', { fill: '#9be7a6', size: 24 })}</g>
+    <g id="pl-man" fill="${NAVY}" stroke="${YEL}" stroke-width="5" stroke-linejoin="round">
+      <circle cx="380" cy="170" r="58"/>
+      <path d="M380 228 C330 228 280 240 250 268 L210 420 L250 432 L290 320 L300 470 L280 650 L340 650 L372 500 L388 500 L420 650 L480 650 L460 470 L470 320 L510 432 L550 420 L510 268 C480 240 430 228 380 228 Z"/></g>
+    ${line('pl-line', 'M60 260 H700', YEL, 5, true)}${label('pl-ll', 62, 246, 'LIGNE DES ÉPAULES', { anchor: 'start', size: 15, fill: YEL, ls: 2 })}
+    ${cross('pl-x', 600, 170, .9)}${check('pl-c', 600, 420, .9)}`,
+  anim: at => {
+    fadeIn('#pl-man', at + .4, .5); draw2('#pl-line', at + 1.0); fadeIn('#pl-ll', at + 1.3);
+    fadeIn('#pl-zone-no', at + 1.7); pop('#pl-x', at + 1.9); fadeIn('#pl-zone-ok', at + 2.6); pop('#pl-c', at + 2.8);
+  } },
+
+{ k: 'ruck', d: 8, title: 'Le ruck', bullets: [
+  'Le ballon est <b>au sol</b> : les joueurs restent <b>debout</b>, liés, au-dessus.',
+  'Interdit de prendre le ballon avec les mains dans le ruck.',
+  'On entre <b>uniquement par l’arrière</b>, dans l’axe (la « porte »).'],
+  svg: () => `${field(40, 140, 680, 480)}${ball('rk-b')}${player('rk-r', 'rca')}${player('rk-a', 'adv')}${player('rk-j', 'rca')}${player('rk-s', 'rca')}
+    <path id="rk-gate" d="M250 300 H170 M250 460 H170" stroke="#fff" stroke-width="5" stroke-dasharray="12 10"/>
+    ${label('rk-gl', 180, 285, 'LA PORTE', { size: 20, fill: YEL, anchor: 'start' })}
+    ${arrow('rk-in', 'M110 380 H230', GRN, 7)}${arrow('rk-side', 'M380 600 V460', RED, 7)}
+    ${check('rk-c', 110, 470, .75)}${cross('rk-x', 460, 590, .75)}
+    <g id="rk-hand" transform="translate(560 220)"><circle r="46" fill="${RED}"/><path d="M-14 18 V-8 M-14 -8 V-22 M-4 -8 V-26 M6 -8 V-22 M16 -2 V-14 M-14 18 Q-14 30 0 30 H8 Q20 30 20 16 V-2" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-30 -30 L30 30" stroke="#fff" stroke-width="7"/></g>
+    ${label('rk-hl', 560, 300, 'PAS LES MAINS', { size: 20, fill: '#ff8a80' })}`,
+  anim: at => {
+    pos('#rk-b', 380, 380); pos('#rk-r', 330, 380); pos('#rk-a', 430, 380); pos('#rk-j', 120, 380); pos('#rk-s', 380, 560);
+    pop('#rk-b', at + .5); pop('#rk-r', at + .7); pop('#rk-a', at + .8);
+    tl.fromTo('#rk-gate', { opacity: 0 }, { opacity: 1, duration: .4 }, at + 1.5); fadeIn('#rk-gl', at + 1.6);
+    pop('#rk-j', at + 2.0); draw('#rk-in', at + 2.2); move('#rk-j', at + 2.6, .7, 275, 380); pop('#rk-c', at + 3.0);
+    pop('#rk-s', at + 3.4); draw('#rk-side', at + 3.6); pop('#rk-x', at + 4.0);
+    pop('#rk-hand', at + 4.6); fadeIn('#rk-hl', at + 4.8);
+  } },
+
+{ k: 'maul', d: 8, title: 'Le maul', bullets: [
+  'Le porteur est <b>debout</b>, tenu par un adversaire et un coéquipier lié à lui.',
+  'Les deux équipes <b>poussent</b> pour gagner du terrain.',
+  'Si le maul s’arrête, le ballon doit sortir vite, sinon mêlée.'],
+  svg: () => `${field(40, 140, 680, 480)}${arrow('ml-dir', 'M200 100 H560', WHITE, 5)}${label('ml-dl', 380, 80, 'SENS DE L’ATTAQUE', { size: 20 })}
+    <g id="ml-g">${player('ml-p', 'rca')}${ball('ml-b')}${player('ml-a', 'adv')}${player('ml-t', 'rca')}${player('ml-t2', 'rca')}${player('ml-a2', 'adv')}</g>
+    ${arrow('ml-push', 'M200 520 H520', YEL, 8)}${label('ml-pl', 360, 570, 'ÇA POUSSE !', { size: 30, anton: true, weight: 400, fill: YEL })}
+    ${player('ml-dm', 'rca')}${pill('ml-out', 380, 680, 'LE BALLON DOIT SORTIR')}`,
+  anim: at => {
+    pos('#ml-p', 0, 0); pos('#ml-b', 22, -12); pos('#ml-a', 54, 0); pos('#ml-t', -54, 0); pos('#ml-t2', -54, 56); pos('#ml-a2', 54, 56);
+    pos('#ml-g', 260, 330); pos('#ml-dm', 120, 420);
+    draw('#ml-dir', at + .3, .6); fadeIn('#ml-dl', at + .4);
+    pop('#ml-p', at + .6); pop('#ml-b', at + .6); pop('#ml-a', at + .9); pop('#ml-t', at + 1.2); pop('#ml-t2', at + 1.6); pop('#ml-a2', at + 1.7);
+    move('#ml-g', at + 2.2, 2.2, 420, 330, 'power1.inOut'); draw('#ml-push', at + 2.2, 2.0); fadeIn('#ml-pl', at + 2.6);
+    pop('#ml-dm', at + 4.4); move('#ml-dm', at + 4.5, .5, 300, 420);
+    tl.to('#ml-b', { x: -150, y: 90, rotation: -220, duration: .6, ease: 'power2.out' }, at + 4.9);
+    pop('#ml-out', at + 5.0);
+  } },
+
+{ k: 'horsjeu', d: 8, title: 'Le hors-jeu', bullets: [
+  'En jeu courant, un joueur <b>devant le coéquipier</b> qui porte ou vient de taper le ballon est hors-jeu.',
+  'Il ne doit pas jouer tant qu’il n’est pas revenu en jeu.',
+  'Ruck, maul, mêlée : rester <b>derrière la ligne du dernier pied</b>.'],
+  svg: () => `${field(40, 140, 680, 480)}${ball('hj-b')}${player('hj-r', 'rca')}${player('hj-a', 'adv')}
+    ${line('hj-l1', 'M300 160 V600', YEL, 5, true)}${line('hj-l2', 'M460 160 V600', YEL, 5, true)}
+    ${[0, 1].map(i => player('hj-rr' + i, 'rca')).join('')}${[0, 1, 2].map(i => player('hj-aa' + i, 'adv')).join('')}
+    ${label('hj-t1', 300, 640, 'LIGNE DE HORS-JEU', { size: 18, fill: YEL })}${label('hj-t2', 460, 128, 'LIGNE DE HORS-JEU', { size: 18, fill: YEL })}
+    <g id="hj-flag"><circle cx="380" cy="230" r="50" fill="${RED}" opacity=".3"/></g>${pill('hj-hj', 380, 700, 'HORS-JEU : PÉNALITÉ', RED, '#fff', 22)}`,
+  anim: at => {
+    pos('#hj-b', 380, 400); pos('#hj-r', 330, 400); pos('#hj-a', 430, 400);
+    [[220, 300], [220, 500]].forEach(([x, y], i) => pos('#hj-rr' + i, x, y));
+    [[540, 280], [560, 520], [380, 230]].forEach(([x, y], i) => pos('#hj-aa' + i, x, y));
+    pop('#hj-b', at + .4); pop('#hj-r', at + .5); pop('#hj-a', at + .6);
+    pop('#hj-rr0', at + .9); pop('#hj-rr1', at + 1.0); pop('#hj-aa0', at + 1.1); pop('#hj-aa1', at + 1.2);
+    draw2('#hj-l1', at + 1.6); draw2('#hj-l2', at + 1.6); fadeIn('#hj-t1', at + 1.9); fadeIn('#hj-t2', at + 1.9);
+    pop('#hj-aa2', at + 2.8); pop('#hj-flag', at + 3.0);
+    tl.to('#hj-flag circle', { attr: { r: 70 }, opacity: .5, duration: .4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, at + 3.1);
+    pop('#hj-hj', at + 3.6);
+  } },
+
+{ k: 'melee', d: 8, title: 'La mêlée', badge: true, bullets: [
+  '<b>3 joueurs par équipe</b> (contre 8 au rugby à XV).',
+  'Elle sanctionne un en-avant ou une passe en avant.',
+  'L’arbitre annonce <b>« Flexion – Lier – Jeu »</b>, puis le demi de mêlée introduit le ballon au milieu.'],
+  svg: () => `${field(40, 140, 680, 480)}<g id="me-r">${[0, 1, 2].map(i => player('me-r' + i, 'rca')).join('')}</g><g id="me-a">${[0, 1, 2].map(i => player('me-a' + i, 'adv')).join('')}</g>
+    ${player('me-dm', 'rca', '9')}${ball('me-b')}
+    ${['FLEXION', 'LIER', 'JEU !'].map((w, i) => pill('me-c' + i, 170 + i * 210, 80, w, i === 2 ? YEL : 'rgba(255,255,255,.15)', i === 2 ? NAVY : '#fff', 24)).join('')}
+    ${label('me-3', 380, 690, '3 CONTRE 3', { size: 44, anton: true, weight: 400, fill: YEL })}`,
+  anim: at => {
+    [0, 1, 2].forEach(i => { pos('#me-r' + i, 0, 300 + i * 60); pos('#me-a' + i, 0, 300 + i * 60); });
+    pos('#me-r', 270, 0); pos('#me-a', 490, 0); pos('#me-dm', 380, 560); pos('#me-b', 410, 545);
+    pop('#me-r', at + .5); pop('#me-a', at + .6); fadeIn('#me-3', at + 1.0);
+    pop('#me-c0', at + 1.6); pop('#me-c1', at + 2.2); pop('#me-c2', at + 2.8);
+    move('#me-r', at + 2.9, .3, 350, 0, 'power3.in'); move('#me-a', at + 2.9, .3, 410, 0, 'power3.in');
+    pop('#me-dm', at + 3.3); pop('#me-b', at + 3.3);
+    tl.to('#me-b', { x: 380, y: 360, duration: .5, ease: 'power1.inOut' }, at + 3.8);
+    tl.to('#me-b', { x: 250, y: 380, rotation: -180, duration: .6, ease: 'power1.inOut' }, at + 4.5);
+  } },
+
+{ k: 'touche', d: 8, title: 'La touche', bullets: [
+  'Le ballon ou le porteur sort du terrain : on joue une <b>touche</b>.',
+  'Le lancer revient à <b>l’adversaire</b> de l’équipe qui a fait sortir le ballon.',
+  'Lancer <b>droit</b>, entre les deux alignements (au moins 2 joueurs par équipe).'],
+  svg: () => `${field(40, 140, 560, 480)}${line('to-l', 'M600 140 V620', '#fff', 8)}${label('to-lt', 660, 125, 'TOUCHE', { size: 20, fill: YEL })}
+    ${[0, 1, 2].map(i => player('to-r' + i, 'rca')).join('')}${[0, 1, 2].map(i => player('to-a' + i, 'adv')).join('')}${player('to-th', 'rca')}${ball('to-b')}
+    ${line('to-axis', 'M640 380 H200', YEL, 4, true)}${label('to-ax', 140, 372, 'LANCER DROIT', { size: 20, fill: YEL })}`,
+  anim: at => {
+    [0, 1, 2].forEach(i => { pos('#to-r' + i, 520 - i * 90, 330); pos('#to-a' + i, 520 - i * 90, 430); pop('#to-r' + i, at + .6 + i * .1); pop('#to-a' + i, at + .9 + i * .1); });
+    pos('#to-th', 670, 380); pos('#to-b', 650, 370); pop('#to-th', at + 1.4); pop('#to-b', at + 1.5); fadeIn('#to-lt', at + 1.5);
+    tl.fromTo('#to-axis', { opacity: 0 }, { opacity: .8, duration: .5 }, at + 2.0); fadeIn('#to-ax', at + 2.1);
+    tl.to('#to-r1', { y: 360, scale: 1.25, duration: .4, ease: 'power2.out' }, at + 3.0);
+    tl.to('#to-b', { x: 430, y: 375, rotation: 360, duration: .7, ease: 'power1.out' }, at + 2.9);
+  } },
+
+{ k: 'penalite', d: 9, title: 'La pénalité', bullets: [
+  'Après une faute, l’équipe adverse obtient une <b>pénalité</b>.',
+  'Elle choisit : jouer vite à la main, taper en touche <b>et garder le lancer</b>, viser les poteaux en drop, ou une mêlée.',
+  'Les adversaires doivent reculer à <b>10 m</b>.'],
+  svg: () => [['JOUER À LA MAIN', 'On relance tout de suite'], ['TAPER EN TOUCHE', 'Et on garde le lancer'], ['VISER LES POTEAUX', 'En drop : 3 points'], ['DEMANDER UNE MÊLÉE', 'Introduction pour nous']].map(([t, s], i) =>
+    `<g id="pn-${i}" transform="translate(${60 + (i % 2) * 330} ${60 + Math.floor(i / 2) * 270})"><rect width="310" height="250" rx="22" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
+      <circle cx="58" cy="62" r="34" fill="${YEL}"/><text x="58" y="78" text-anchor="middle" font-size="44" class="A" fill="${NAVY}">${i + 1}</text>
+      <text x="28" y="150" font-size="27" class="A" fill="#fff" letter-spacing="1">${t}</text><text x="28" y="196" font-size="21" font-weight="600" fill="rgba(255,255,255,.75)">${s}</text></g>`).join('')
+    + `<g id="pn-10"><rect x="60" y="610" width="640" height="90" rx="22" fill="${YEL}"/><text x="380" y="668" text-anchor="middle" font-size="36" class="A" fill="${NAVY}" letter-spacing="1">ADVERSAIRES À 10 MÈTRES</text></g>`,
+  anim: at => { [0, 1, 2, 3].forEach(i => pop('#pn-' + i, at + 1.6 + i * .45, .5)); tl.fromTo('#pn-10', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .5 }, at + 4.2); } },
+
+{ k: 'avantage', d: 7, title: 'L’avantage', bullets: [
+  'Après une faute, l’arbitre peut <b>laisser jouer</b> si l’équipe qui l’a subie en profite.',
+  'Si aucun avantage ne vient, il <b>revient à la faute</b>.'],
+  svg: () => `<g id="av-ref" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="250" cy="200" r="46" fill="${NAVY}"/><path d="M250 250 V450 M250 450 L200 620 M250 450 L300 620 M250 300 L190 400"/><path id="av-arm" d="M250 300 L450 300"/></g>
+    ${label('av-t', 575, 250, 'AVANTAGE !', { size: 56, anton: true, weight: 400, fill: YEL })}
+    ${arrow('av-go', 'M470 360 H690', GRN, 8)}${label('av-gl', 575, 410, 'LE JEU CONTINUE', { size: 22, fill: '#9be7a6' })}
+    ${arrow('av-back', 'M690 520 C620 640 480 640 470 520', RED, 7)}${label('av-bl', 560, 680, 'SINON : RETOUR À LA FAUTE', { size: 19, fill: '#ff8a80', ls: 2 })}`,
+  anim: at => {
+    fadeIn('#av-ref', at + .4, .5); tl.fromTo('#av-arm', { rotation: 70, svgOrigin: '250 300' }, { rotation: 0, duration: .6, ease: BACK, svgOrigin: '250 300' }, at + 1.0);
+    pop('#av-t', at + 1.4); draw('#av-go', at + 2.0); fadeIn('#av-gl', at + 2.3); draw('#av-back', at + 3.4, .9); fadeIn('#av-bl', at + 3.8);
+  } },
+
+{ k: 'cartons', d: 8, title: 'Les cartons', badge: true, bullets: [
+  'Carton jaune : <b>2 minutes</b> d’exclusion (contre 10 au XV).',
+  'Carton rouge : <b>exclusion définitive</b>, le joueur n’est pas remplacé.',
+  'Pendant l’exclusion, l’équipe joue en infériorité numérique.'],
+  svg: () => `<g id="ca-y"><g transform="translate(220 340) rotate(-8)"><rect x="-130" y="-190" width="260" height="360" rx="22" fill="${YEL}"/>
+      <text id="ca-t" y="20" text-anchor="middle" font-size="96" class="A" fill="${NAVY}">2:00</text><text y="90" text-anchor="middle" font-size="26" font-weight="800" fill="${NAVY}" letter-spacing="3">EXCLUSION</text></g></g>
+    <g id="ca-r"><g transform="translate(540 340) rotate(8)"><rect x="-130" y="-190" width="260" height="360" rx="22" fill="${RED}"/>
+      <text y="10" text-anchor="middle" font-size="60" class="A" fill="#fff">DÉFINITIF</text><text y="70" text-anchor="middle" font-size="22" font-weight="800" fill="#fff" letter-spacing="2">NON REMPLACÉ</text></g></g>
+    ${pill('ca-n', 380, 650, '7 CONTRE 6', 'rgba(255,255,255,.15)', '#fff', 30)}`,
+  anim: at => {
+    tl.fromTo('#ca-y', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: .6, ease: BACK }, at + .5);
+    counter('#ca-t', at + 1.2, 3.5, 120, 0, v => { const s = Math.max(0, Math.ceil(v)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; });
+    tl.fromTo('#ca-r', { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: .6, ease: BACK }, at + 2.4);
+    pop('#ca-n', at + 4.2);
+  } },
+
+{ k: 'esprit', d: 7, title: 'L’esprit du rugby', bullets: [
+  'L’arbitre a le dernier mot : <b>seul le capitaine</b> lui parle.',
+  'Respect des adversaires, des partenaires et du public.',
+  'Nos valeurs : <b>Courage, Engagement, Solidarité, Dépassement.</b>'],
+  svg: () => `<image id="es-crest" href="src/ecusson.png" x="250" y="160" width="260" height="312"/>
+    ${['COURAGE', 'ENGAGEMENT', 'SOLIDARITÉ', 'DÉPASSEMENT'].map((w, i) => label('es-' + i, [190, 570, 190, 570][i], [120, 120, 560, 560][i], w, { size: 40, anton: true, weight: 400, fill: i % 2 ? YEL : '#fff', ls: 2 })).join('')}
+    ${pill('es-c', 380, 660, 'RESPECT', YEL, NAVY, 30)}`,
+  anim: at => { pop('#es-crest', at + .5, .7); [0, 1, 2, 3].forEach(i => fade('#es-' + i, at + 1.6 + i * .35)); pop('#es-c', at + 3.4); } },
+];
+
+// tracé d'une ligne simple (sans flèche)
+function draw2(sel, at, d = .6) {
+  const el = $(sel);
+  if (el.getAttribute('stroke-dasharray')) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: d }, at); return; }
+  el.setAttribute('pathLength', '1'); el.setAttribute('stroke-dasharray', '1');
+  tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: 'power2.inOut' }, at);
+}
+
+// ---------- construction des plans ----------
+// pointes de flèches : définies une seule fois, hors des plans masqués
+document.getElementById('stage').insertAdjacentHTML('afterbegin', `<svg width="0" height="0" style="position:absolute">${DEFS}</svg>`);
+const N = RULES.length, T0 = 6;
+let t = T0;
+RULES.forEach((r, i) => {
+  r.at = t; t += r.d;
+  const sec = document.createElement('section');
+  sec.className = 'scene rule'; sec.id = 'r-' + r.k;
+  sec.innerHTML = `<div class="count">Règle<b>${String(i + 1).padStart(2, '0')} <span>/ ${N}</span></b></div>
+    <div class="col"><div class="num">Règle ${String(i + 1).padStart(2, '0')}</div><h2 class="anton">${r.title}</h2>
+      ${r.badge ? '<div class="badge">Spécifique au 7</div>' : ''}<ul>${r.bullets.map(b => `<li>${b}</li>`).join('')}</ul></div>
+    <div class="panel"><svg viewBox="0 0 760 760">${r.svg()}</svg></div>`;
+  $('#rules').appendChild(sec);
+});
+const T_OUT = t, DUR = T_OUT + 8;
+gsap.set('.panel svg g[id], .panel svg image', { transformOrigin: '50% 50%' });
+
+const show = (sel, at) => tl.set(sel, { visibility: 'visible' }, at);
+const hide = (sel, at) => tl.set(sel, { visibility: 'hidden' }, at);
+function wipe(at) {
+  tl.fromTo('#wipeN', { x: 0 }, { x: 4400, duration: .62, ease: 'power2.inOut' }, at - .31);
+  tl.fromTo('#wipeY', { x: -300 }, { x: 4300, duration: .62, ease: 'power2.inOut' }, at - .36);
+}
+
+// ===== Intro : 0 → 6 s =====
+show('#intro', 0); hide('#intro', T0);
+tl.fromTo('#intro .crest', { opacity: 0, scale: .6, xPercent: -50, x: 0 }, { opacity: 1, scale: 1, xPercent: -50, duration: 1.0, ease: 'back.out(1.6)' }, .2);
+tl.fromTo('#intro .k', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .6 }, 1.0);
+tl.fromTo('#intro .t', { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: .6, ease: E }, 1.5);
+tl.fromTo('#intro .s', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .7 }, 2.4);
+tl.to('#intro .t', { scale: 1.05, duration: 3, ease: 'none' }, 2.1);
+
+// ===== Règles =====
+tl.to('#head', { opacity: 1, duration: .5 }, T0);
+tl.fromTo('#prog i', { scaleX: 0 }, { scaleX: 1, duration: T_OUT - T0, ease: 'none' }, T0);
+RULES.forEach(r => {
+  const s = '#r-' + r.k, at = r.at;
+  wipe(at); show(s, at); hide(s, at + r.d);
+  tl.fromTo(s + ' .count', { opacity: 0 }, { opacity: 1, duration: .3 }, at + .1);
+  tl.fromTo(s + ' .num', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: .4 }, at + .15);
+  tl.fromTo(s + ' h2', { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .5, ease: E }, at + .25);
+  if (r.badge) pop(s + ' .badge', at + .6);
+  const lis = [...document.querySelectorAll(s + ' li')];
+  const step = Math.min(1.6, (r.d - 2.2) / lis.length);
+  lis.forEach((li, j) => tl.fromTo(li, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: .5 }, at + .9 + j * step));
+  tl.fromTo(s + ' .panel', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .6 }, at + .3);
+  r.anim(at);
+});
+
+// ===== Fin =====
+wipe(T_OUT); show('#outro', T_OUT);
+tl.to('#head', { opacity: 0, duration: .3 }, T_OUT - .2);
+tl.fromTo('#outro .crest', { opacity: 0, scale: .7, rotation: -6, transformOrigin: '50% 55%' }, { opacity: 1, scale: 1, rotation: 0, duration: .9, ease: 'back.out(1.6)' }, T_OUT + .1);
+tl.fromTo('#outro .a', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .6, ease: E }, T_OUT + .5);
+tl.fromTo('#outro .b', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .6 }, T_OUT + 1.1);
+tl.fromTo('#outro .train', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .6 }, T_OUT + 1.8);
+tl.fromTo('#outro .src', { opacity: 0 }, { opacity: 1, duration: .6 }, T_OUT + 2.4);
+tl.fromTo('#outro .flag', { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: 'power3.inOut' }, T_OUT + .3);
+tl.to('#outro', { opacity: 0, duration: .5, ease: 'power1.in' }, DUR - .55);
+tl.set({}, {}, DUR);
+
+window.DUR = DUR;
+window.TIMES = RULES.map(r => [r.k, r.at]);
+window.seek = (t) => {
+  tl.seek(t, false);
+  const f = Math.round(t * 30), a = (f * 7919) % 512, b = (f * 104729) % 512;
+  document.getElementById('grain').style.transform = `translate(${-a / 4}px,${-b / 4}px)`;
+  document.getElementById('lines').style.transform = `translateX(${-(t * 12) % 240}px)`;
+};
+window.ready = () => Promise.all([document.fonts.ready, ...[...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))]);
+window.seek(0);
+</script>
+</body>
+</html>
